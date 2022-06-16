@@ -1,0 +1,154 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 19/07/2018, 20:00:42
+    Author     : COMUNICAÇÃO - WEB
+*/
+
+
+:root {
+    --cor-bg-paracatu :#1e4592;
+}
+
+.card-title img{
+  max-width: 120px;
+  max-height: 160px;
+}
+
+.card-body{
+    border: 1px solid #F1F1F1;
+}
+
+
+.register {
+
+    color: #555;
+    padding: 0 0 0 20px;
+    position: relative;
+    
+}
+
+.center {
+    text-align: center;
+}
+
+.open > .dropdown-menu {
+    display: block;
+}
+.dropdown-menu .pull-right {
+    right: 0;
+    left: auto;
+}
+
+.alerts_info {
+    color:#856404;
+    background: #fff3cd;
+}
+
+.card .header {
+    height:80px;
+}
+
+.btn {
+     
+}
+
+.btn-viewer{
+    background-color: rgb(38, 166, 154);
+}
+
+.btn-system {
+    background-color: rgb(38, 166, 154);
+    box-sizing:border-box;
+    color:rgb(255, 255, 255);
+    
+    font-size:14px;
+    font-weight:400;
+
+    text-decoration-color:rgb(255, 255, 255);
+    text-decoration-line:none;
+    text-decoration-style:solid;
+    text-size-adjust:100%;
+    transition-delay:0s;
+    transition-duration:0.3s;
+    transition-property:all;
+    transition-timing-function:ease-out;
+    user-select:none;
+    vertical-align:middle;
+
+    height:37px;
+    
+   
+    
+    width:107.594px;
+
+}
+.btn-system:hover , .btn-primary:hover {
+    color:#000;
+}
+
+.gmap {
+    width: 100%;
+    height: 200px;
+}
+
+.card-top {
+    background: #f7f7f7;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 2px 0 2px 0;
+}
+
+.card .header {
+    border-bottom: 1px solid #f1f1f1;
+    height: 0px;
+}
+
+.listasProvas .card {
+    padding: 0px;
+}
+.listasProvas .body {
+    padding:5px;
+}
+
+.listasProvas .card .body {
+    font-size: 14px;
+    color: #555;
+    padding: 5px;
+}
+
+.listasProvas .card .body .col-xs-6, .card .body .col-sm-6, .card .body .col-md-6, .card .body .col-lg-6 {
+    margin-bottom: 5px;
+}
+
+.iconesPainel img{
+    text-align: center;
+}
+
+.thumbnail {
+    width: 150px;
+}
+
+.pull-right span{
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+li.action-courses{
+    margin:10px 0 10px 0;
+}
+
+p.linkAtual {
+    background: rgba(50,153,204,0.6);
+    padding: 10px;
+}
+div.informacoes-cadastradas{
+    margin:1rem;
+    padding: 10px;
+    
+}
+.separacao-forms{
+    background:#f1f1f1;margin-top:5px;height:1px;padding-bottom:5px;margin-bottom:1rem;
+}

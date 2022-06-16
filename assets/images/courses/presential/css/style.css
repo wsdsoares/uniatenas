@@ -1,0 +1,411 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+*	{margin:0px; padding:0px;}
+
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+html, body							{height:100%;}
+
+.row, col 							{margin:0px; padding:0px;}
+
+body								{background:#FFF; font-family: 'Raleway', sans-serif;}
+
+.azul								{color:#2980B9}
+
+#ocurso .azul p a:hover				{color:#2980B9; transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+
+.vermelho							{color:#C0392B}
+.fundovermelho						{background:#C0392B}
+#ocurso .vermelho p a:hover			{color:#C0392B; transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+
+.verde								{color:#26AD5F}
+.fundoverde							{background:#26AD5F}
+#ocurso .verde p a:hover			{color:#26AD5F; transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+
+.roxo								{color:#8D44AC}
+.fundoroxo							{background:#8D44AC}
+#ocurso .roxo p a:hover				{color:#8D44AC; transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+
+
+.home_efeito{
+	
+	background-color:rgba(0, 0, 0, .65);
+    height:100% !important;
+    padding:1.875rem;
+    width:100%;
+	height:100% !important;
+	
+	}
+
+.circle {
+	position:absolute;
+	top:85%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	border: 2px solid #FFF;
+	border-radius:50%;
+	width:100px;
+	height:100px;
+	text-align:center;
+	line-height:100px;
+	font-size:80px;
+	over-flow:hidden;
+}
+
+
+.circle .fa{ 
+	color:#fff;
+	margin:0;
+	padding:0;
+	-webkit-animation: animate 1s linear infinite ;
+	
+}
+
+
+nav.fixed-nav{
+	position:fixed;
+	width:100%;
+	
+}
+
+
+nav.fixed-hidden{
+	display:none;
+	
+}
+
+nav.menu-navegacao-adm {
+	z-index:999;
+	background:#004775;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-dir {
+	z-index:999;
+	background:#8B1A1A;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-edu {
+	z-index:999;
+	background:#26AD5F;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-enf {
+	z-index:999;
+	background:#006600;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-eng {
+	z-index:999;
+	background:#8A9615;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-far {
+	z-index:999;
+	background:#3D7A5C;
+	margin-bottom:30px;
+}
+
+
+nav.menu-navegacao-med {
+	z-index:999;
+	background:#06B15A;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-nut {
+	z-index:999;
+	background:#08BE68;
+	margin-bottom:30px;
+}
+
+
+nav.menu-navegacao-ped {
+	z-index:999;
+	background:#13266A;
+	margin-bottom:30px;
+}
+
+
+nav.menu-navegacao-psi {
+	z-index:999;
+	background:#243A76;
+	margin-bottom:30px;
+}
+
+nav.menu-navegacao-sis {
+	z-index:999;
+	background:#0868B9;
+	margin-bottom:30px;
+}
+
+
+
+
+
+
+
+.nome_curso {margin:5px 0 10px 0;}
+
+@-webkit-keyframes animate
+{
+	0%	
+	{
+		transform: translateY(5.1px);
+	}
+	20%	
+	{
+		transform: translateY(0px);
+	}
+	40%	
+	{
+		transform: translateY(0px);
+	}
+	60%	
+	{
+		transform: translateY(0px);
+	}
+	100%	
+	{
+		transform: translateY(5px);
+	}
+}
+
+
+.logo_menu {padding:5px;}
+.logo_youtube {display:block;}
+
+.logo_youtube .imagem {margin-top:15px;line-height:10px;float:right;}
+
+
+.logo_menu a img  {width:164px;height:76px;}
+
+.submenu_cursos {font-size:18px;font-family: 'Raleway', sans-serif;font-weight:bold;}
+.submenu_cursos li a span {margin-top:10px;color:#fff; line-height:50px; }
+ 
+li.submenu_cursos {margin-top:15px;}
+
+
+
+.informacoes_curso_scrool {margin-top:20px;}
+
+.titulo_topo_adm {color:#2980B9;}
+.titulo_topo {text-align:center;margin:0px; padding:0px; font-size:28px; font-weight:300; margin-bottom:10px; margin-top:30px;}
+
+
+
+/*****************************************************/
+
+.disciplinas p, .campos_atuacao {font-size:17px}
+
+.verticalsanfona h3 {background:red;}
+.campos_atuacao {border-bottom-left-radius:10px;border-bottom-right-radius:10px;}
+.campos_atuacao , .informativos	{background:#f1f1f1;padding:0 0 15px 0;}
+
+.campos_atuacao {padding:10px;}
+
+
+.informativos {margin:0 0 20px 0px;}
+
+
+.icon_pdf {margin:10px;text-align:center;}
+/****************************************************/
+
+.inscreva_se_footer {margin:15px;}
+
+
+
+/*********************************/
+
+
+
+.titulos_cursos {}
+
+
+	
+@media screen and (max-width: 600px) {
+	
+	.logo_menua img {max-width:200px;
+    max-height:150px;
+    width: auto;
+    height: auto;}
+
+	.circle {display:none;}
+	
+	nav.fixed-hidden{
+		display:none;
+		
+	}
+	
+	
+	.homeadm							{background-image:url('../img/adm.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homedir							{background-image:url('../img/dir.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeedb							{background-image:url('../img/edb.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeedl							{background-image:url('../img/edl.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeenf							{background-image:url('../img/enf.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeeng							{background-image:url('../img/eng.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homefar							{background-image:url('../img/far.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homemed							{background-image:url('../img/med.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homenut							{background-image:url('../img/nut.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeped							{background-image:url('../img/ped.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homepsi							{background-image:url('../img/psi.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homesis							{background-image:url('../img/sis.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	#home .logo							{margin:10px 5px; height:50px;}
+	#home .dados						{margin:15px 5px; height:30px;}
+	#home .curso						{margin-top:100px;}
+	#home .logocurso					{height:60px; margin:0 20px -10px 20px;}
+	#home .titulobranco					{font-size:24px; color:#FFF; font-weight:100; margin:0px; text-shadow:1px 1px 3px #444;}
+	#home .tituloPreto					{font-size:24px; color:#222; font-weight:100; margin:0px; text-shadow:1px 1px 3px #444;}
+	#home .curso h1						{font-size:20px; color:#26ffff; font-weight:300; margin:30px 0px; line-height:38px; text-shadow:1px 1px 3px #444;}
+	#home .seta 						{float:left; margin:10px 0; margin-left:calc(50% - 35px); margin-left:-webkit-calc(50% - 35px); margin-left:-o-calc(50% - 35px); margin-left:-moz-calc(50% - 35px); margin-left:-ms-calc(50% - 35px); margin-left:-khtml-calc(50% - 35px);}
+	#home .seta #setabranca				{width:50px; height:50px; background:rgba(0,0,0,.25); border-radius:50%; -webkit-border-radius:50%; -o-border-radius:50%; -moz-border-radius:50%; -ms-border-radius:50%; -khtml-border-radius:50%; line-height:55px;}
+	#home .seta #setabranca:hover		{background:rgba(255,255,255,.25); transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+	#home .seta #setabranca	img			{width:20px;}
+	
+	
+	
+	#ocurso								{padding:60px 0;}
+	#ocurso .nomecurso h2				{margin:0px; padding:0px; font-size:38px; font-weight:600; margin-bottom:15px;}
+	#ocurso .videocurso p				{font-size:16px; color:#545454; text-align:justify;}
+	#ocurso .videocurso p iframe		{width:280px; height:158px; float:left; margin:0 30px 15px 0;}
+	#ocurso .dadoscurso img				{float:left; margin: 0 20px 10px 0; width:120px;}
+	#ocurso .dadoscurso p				{font-size:16px; color:#545454; text-align:justify;}
+	#ocurso .dadoscurso .coord			{font-weight:bold; font-size:18px; line-height: 30px; text-align:left;}
+	#ocurso .dadoscurso p a				{font-size:16px; color:#545454; text-align:justify; text-decoration:underline;}
+	
+	
+	
+	
+	#ocurso .dadoscurso .icons a p					{font-size:12px; text-decoration:none; text-align:center;}
+	#ocurso .dadoscurso .icons a img				{width:40px; margin-bottom:10px; margin-left:calc(50% - 20px);  margin-left:-webkit-calc(50% - 20px);  margin-left:-o-calc(50% - 20px);  margin-left:-moz-calc(50% - 20px);  margin-left:-ms-calc(50% - 20px); margin-left:-khtml-calc(50% - 20px);}
+	#ocurso .dadoscurso .icons p					{font-size:12px; text-decoration:none; text-align:center;}
+	#ocurso .dadoscurso .icons img					{width:40px; margin-bottom:10px; margin-left:calc(50% - 20px);  margin-left:-webkit-calc(50% - 20px);  margin-left:-o-calc(50% - 20px);  margin-left:-moz-calc(50% - 20px);  margin-left:-ms-calc(50% - 20px); margin-left:-khtml-calc(50% - 20px);}
+	#ocurso .dadoscurso .valor						{margin-top:30px; text-align:center; padding:30px 0;}
+	#ocurso .dadoscurso .valor h5					{color:#FFF; font-weight:100; font-size:12px; margin:0px; line-height:22px;}
+	#ocurso .dadoscurso .valor h5 span				{font-size:22px;}
+	#ocurso .dadoscurso .valor h4					{color:#FFF; font-weight:100; font-size:20px; margin:0px;}
+	#ocurso .dadoscurso .valor h4 span				{font-size:48px; line-height:50px;}
+	
+	
+	
+	
+	#rodape							{background-image:url('../img/rodape.jpg'); background-position:center; background-size:100% 100%; background-size:cover; padding:60px 0 10px 0;}
+	#rodape .titulo h1 				{color:#26FFFF; font-weight:300; font-size:32px; text-shadow:1px 1px 3px #444; margin:0px; line-height:45px;}
+	#rodape .titulo p 				{color:#FFF; font-weight:100; font-size:16px; margin:40px 0 20px 0;}
+	#rodape .titulo p img 			{height:20px; position:relative; top:5px; margin-right:5px;}
+	#rodape .motivos				{margin:30px 0; padding:0 50px;}
+	#rodape	.motivos img			{height:50px;}
+	#rodape	.motivos h2				{color:#06FF7F; font-size:20px;}
+	#rodape	.motivos p				{color:#FFF; font-size:16px; font-weight:100;}
+	#rodape .footer					{color:#FFF; font-size:12px;}
+}
+
+@media screen and (min-width: 601px) {
+	.homeadm_ead							{background-image:url('../img/adm_ead.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homerh_ead								{background-image:url('../img/rh_ead.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeadm							{background-image:url('../img/adm.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homedir							{background-image:url('../img/dir.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeedb							{background-image:url('../img/edb.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeedl							{background-image:url('../img/edl.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeenf							{background-image:url('../img/enf.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeeng							{background-image:url('../img/eng.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homefar							{background-image:url('../img/far.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homemed							{background-image:url('../img/med.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homenut							{background-image:url('../img/nut.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homeped							{background-image:url('../img/ped.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homepsi							{background-image:url('../img/psi.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	.homesis							{background-image:url('../img/sis.jpg'); background-position:center; background-size:100% 100%; background-size:cover; }
+	#home 								{height:100%;}
+	#home .logo							{margin:10px 5px; height:60px;}
+	#home .dados						{margin:15px 5px; height:35px;}
+	#home .curso						{position:relative; top:calc(50% - 170px); top:-webkit-calc(50% - 170px); top:-moz-calc(50% - 170px); top:-o-calc(50% - 170px); top:-ms-calc(50% - 170px); top:-khtml-calc(50% - 170px); height:300px;}
+	#home .logocurso					{height:80px; margin:0 20px -10px 20px;}
+	#home .titulobranco					{font-size:32px; color:#FFF; font-weight:100; margin:0px; text-shadow:1px 1px 3px #444;}
+	#home .tituloPreto					{font-size:32px; color:#222; font-weight:100; margin:0px; text-shadow:1px 1px 3px #444;}
+	#home .curso h1						{font-size:42px; color:#26ffff; font-weight:300; margin:30px 0px; line-height:54px; text-shadow:1px 1px 3px #444;}
+	#home .seta 						{float:left; position:absolute; bottom:20px;}
+	#home .seta #setabranca				{width:50px; height:50px; background:rgba(0,0,0,.25); border-radius:50%; -webkit-border-radius:50%; -o-border-radius:50%; -moz-border-radius:50%; -ms-border-radius:50%; -khtml-border-radius:50%; line-height:55px;}
+	#home .seta #setabranca:hover		{background:rgba(255,255,255,.25); transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+	#home .seta #setabranca	img			{width:20px;}
+	
+	
+	
+	#ocurso								{padding:60px 0;}
+	#ocurso .nomecurso h2				{margin:0px; padding:0px; font-size:48px; font-weight:600; margin-bottom:15px;}
+	#ocurso .videocurso p				{font-size:16px; color:#545454; text-align:justify;}
+	#ocurso .videocurso p iframe		{width:300px; height:169px; float:left; margin:0 30px 15px 0;}
+	#ocurso .dadoscurso 				{padding:0 15px;}
+	#ocurso .dadoscurso img				{float:left; margin: 0 20px 10px 0; width:120px;}
+	#ocurso .dadoscurso p				{font-size:16px; color:#545454; text-align:justify;}
+	#ocurso .dadoscurso .coord			{font-weight:bold; font-size:20px; line-height: 30px; text-align:left;}
+	#ocurso .dadoscurso p a				{font-size:16px; color:#545454; text-align:justify; text-decoration:underline;}
+	#ocurso .dadoscurso p a:hover		{transition:.3s; -o-transition:.3s; -webkit-transition:.3s; -moz-transition:.3s; -ms-transition:.3s; -khtml-transition:.3s;}
+	
+	
+	
+	
+	
+	#ocurso .dadoscurso .icons 						{margin-top:30px;}
+	#ocurso .dadoscurso .icons a p					{font-size:14px; text-decoration:none; text-align:center;}
+	#ocurso .dadoscurso .icons a img				{width:40px; margin-bottom:10px; margin-left:calc(50% - 20px);  margin-left:-webkit-calc(50% - 20px);  margin-left:-o-calc(50% - 20px);  margin-left:-moz-calc(50% - 20px);  margin-left:-ms-calc(50% - 20px); margin-left:-khtml-calc(50% - 20px);}
+	#ocurso .dadoscurso .icons p					{font-size:14px; text-decoration:none; text-align:center;}
+	#ocurso .dadoscurso .icons img					{width:40px; margin-bottom:10px; margin-left:calc(50% - 20px);  margin-left:-webkit-calc(50% - 20px);  margin-left:-o-calc(50% - 20px);  margin-left:-moz-calc(50% - 20px);  margin-left:-ms-calc(50% - 20px); margin-left:-khtml-calc(50% - 20px);}
+	#ocurso .dadoscurso .valor						{margin:30px 15px 0 15px; text-align:center; padding:30px 0;}
+	#ocurso .dadoscurso .valor h5					{color:#FFF; font-weight:100; font-size:14px; margin:0px; line-height:24px;}
+	#ocurso .dadoscurso .valor h5 span				{font-size:24px;}
+	#ocurso .dadoscurso .valor h4					{color:#FFF; font-weight:100; font-size:18px; margin:0px;}
+	#ocurso .dadoscurso .valor h4 span				{font-size:48px; line-height:50px;}
+	
+	
+	
+	#rodape							{background-image:url('../img/rodape.jpg'); background-position:center; background-size:100% 100%; background-size:cover; padding:80px 0 20px 0;}
+	#rodape .titulo h1 				{color:#26FFFF; font-weight:300; font-size:54px; text-shadow:1px 1px 3px #444; margin:0px; line-height:70px;}
+	#rodape .titulo p 				{color:#FFF; font-weight:100; font-size:18px; margin:40px 0 20px 0;}
+	#rodape .titulo p img 			{height:24px; position:relative; top:5px; margin-right:5px;}
+	#rodape .motivos				{margin:80px 0; padding:0 20px;}
+	#rodape	.motivos img			{height:50px;}
+	#rodape	.motivos h2				{color:#06FF7F; font-size:20px;}
+	#rodape	.motivos p				{color:#FFF; font-size:16px; font-weight:100;}
+	#rodape .footer					{color:#FFF; font-size:14px;}
+}
+
+@media screen and (min-width: 993px) {
+	#home .logo							{height:70px;}
+	#home .dados						{height:40px;}
+	#home .logocurso					{height:80px; margin:0 30px -10px 30px;}
+	#home .titulobranco					{font-size:36px;}
+	#home .tituloPreto					{font-size:36px;}
+	#home .curso h1						{font-size:48px; margin:40px 0px; line-height:64px;}
+	
+
+
+	#ocurso .nomecurso h2				{font-size:64px;}
+	#ocurso .videocurso p				{font-size:18px;}
+	#ocurso .videocurso p iframe		{width:500px; height:282px;}
+	#ocurso .dadoscurso					{padding:0 20px;}
+	#ocurso .dadoscurso h3				{font-size:36px; margin-top:40px;}
+	#ocurso .dadoscurso img				{width:180px;}
+	#ocurso .dadoscurso p				{font-size:18px;}
+	#ocurso .dadoscurso .coord			{font-size:22px;}
+	#ocurso .dadoscurso p a				{font-size:18px;}
+	#ocurso .dadoscurso .icons a p				{font-size:16px;}
+	#ocurso .dadoscurso .icons p				{font-size:16px;}
+	#ocurso .dadoscurso .valor h5				{font-size:16px; line-height:28px;}
+	#ocurso .dadoscurso .valor h5 span			{font-size:28px;}
+	#ocurso .dadoscurso .valor h4				{font-size:24px;}
+	#ocurso .dadoscurso .valor h4 span			{font-size:58px; line-height:60px;}
+	
+	
+	
+	#rodape							{padding:80px 0 30px 0;}
+	#rodape .titulo h1 				{font-size:64px; line-height:90px;}
+	#rodape .titulo p 				{font-size:24px; margin:20px 0;}
+	#rodape .titulo p img 			{height:32px; top:7px;}
+	#rodape .motivos				{margin:100px 0; padding:0 50px;}
+	#rodape	.motivos img			{height:70px;}
+	#rodape	.motivos h2				{font-size:24px;}
+	#rodape	.motivos p				{font-size:18px;}
+	#rodape .footer					{font-size:14px;}
+}
