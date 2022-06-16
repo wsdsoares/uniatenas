@@ -822,7 +822,6 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-
     public function lista_indicadores($uriCampus) {
         verificaLogin();
 
@@ -862,7 +861,6 @@ class Painel_campus extends CI_Controller {
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
-
 
     public function cadastrar_indicador($uriCampus=NULL) {
         verificaLogin();
@@ -1046,7 +1044,7 @@ class Painel_campus extends CI_Controller {
 
     }
 
-       /*************************************************************************
+    /*************************************************************************
      * Indicadores que são exibidos no rodapé das páginas
      * Página: todas as dirigentes - Informações no link
      * uniatenas/site/dirigentes/NOME_DO_CAMPUS
@@ -1071,8 +1069,7 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_dirigente()
-    {
+    public function cadastrar_dirigente(){
         verificaLogin();
        
         $this->form_validation->set_rules('nome', 'Nome', 'required');
@@ -1110,8 +1107,7 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_dirigente($dirigenteId=NULL)
-    {
+    public function editar_dirigente($dirigenteId=NULL){
         verificaLogin();
 
         $dirigente = $this->painelbd->where('*','dirigentes',NULL, array('dirigentes.id'=>$dirigenteId))->row();
@@ -1166,6 +1162,37 @@ class Painel_campus extends CI_Controller {
                 'page'=> "<span>Edição de dirigente.</span>",
             )
         );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    /*************************************************************************
+     * Indicadores que são exibidos no rodapé das páginas
+     * Página: Página infraestrutura - Informações no link
+     * uniatenas/site/infraestrutura/NOME_DO_CAMPUS
+    *************************************************************************/
+    
+    public function lista_campus_infraestrutura() {
+        verificaLogin();
+
+        $colunasResultadoCursos = 
+            array('campus.id',
+            'campus.name',
+            'campus.city',
+            'campus.uf'
+        );
+    
+        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/campus/indicadores/lista_campus_indicadores',
+            'dados' => array(
+                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
+                'page' => 'Lista de Indicadores (Itens exibidos no rodapé) - <strong>Gestão Por Campus</strong>',
+                'campus'=> $listagemDosCampus,
+                'tipo'=> '' 
+            )
+        );
+
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
