@@ -1,0 +1,13 @@
+
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/jquery.waypoints.min.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/jquery.counterup.min.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/swiper.min.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/lightcase.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/custom.map.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/plugins.isotope.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/isotope.pkgd.min.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/custom.isotope.js"></script>
+<script type="text/javascript"src="<?php echo base_url(); ?>assets/js/custom.js"></script>
