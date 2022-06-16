@@ -1,0 +1,35 @@
+.uniatenas-menu >li > a{
+    padding: 25px 10px 25px 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.dropdown-menu > li > a {
+    padding: 10px 10px;
+}
+li.menu-graducao ul li ul li a{
+    width: 100%;
+}
+li.menu-graducao ul li ul li a:hover{
+    color:#fff;
+}
+.mega-dropdown-menu li ul li ul li:hover{
+    background:#009FE1;
+}
+.menu-simpes li a:hover {
+    background:#009FE1;
+    color:#fff;
+}
+
+.mega-dropdown-menu:hover{
+    color:#fff;
+}
+
+@media screen and (max-width: 990px) {
+    .uniatenas-menu > li > a {
+        padding: 10px 0px 10px 0px;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+    }
+}

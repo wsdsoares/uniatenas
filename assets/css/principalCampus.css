@@ -1,0 +1,400 @@
+@font-face {
+    font-family: Helvetica;
+    src: url('../fonts/helvetica/HELR47W_0.TTF');
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('../fonts/Montserrat/Montserrat-Regular.ttf');
+}
+
+* {
+    margin: 0 auto;
+    padding: 0;
+}
+
+@media screen and (min-width: 1200px) {
+    body {
+        overflow: hidden;
+    }
+
+    .botoes-principais div {
+        height: 80px;
+    }
+
+    .btn-vestibular-ead i {
+        padding-top: 10px;
+
+    }
+}
+
+.background-valenca{
+    background-image: url("../../assets/images/background/principal-valenca.jpg");
+}
+.background-setelagoas {
+    background-image: url("../../assets/images/background/bg-transp-blue-principal-sete-lagoas.jpg");
+}
+
+.background-passos{
+    background-image: url("../../assets/images/background/bg-transp-blue-principal-sete-passos.jpg");
+}
+
+.background-paracatu{
+    background-image: url("../../assets/images/background/bg-transp-blue-principal.jpg");
+}
+.background-sorriso{
+    background-image: url("../../assets/images/background/bg-transp-blue-principal-sorriso.jpg");
+}
+
+.background-paracatu , .background-setelagoas , .background-passos, .background-valenca, .background-sorriso{
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-animation: kenburns-top 3s ease-in-out reverse;
+    animation: kenburns-top 3s ease-in-out reverse;
+    background-size: cover;
+}
+
+@media screen and (min-width: 769px) {
+    .img {
+        opacity: 1;
+        width: 250px;
+        height: 250px;
+        -webkit-animation: slide-top 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: slide-top 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .img img {
+        padding-top: 10px;
+        max-width: 100px;
+        height: 60px;
+    }
+
+    .botoes-principais div {
+        height: 80px;
+    }
+
+    .btn-pos-graduacao i {
+        margin-top: 5px;
+    }
+}
+
+.img img {
+    max-width: 200px;
+    max-height: 200px;
+
+}
+
+.slogam {
+    font-family: Montserrat;
+    /*text-transform: uppercase;*/
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 7px;
+    color: #fff;
+    text-align: center;
+    -webkit-animation: tracking-in-expand-fwd-top 0.2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+    animation: tracking-in-expand-fwd-top 4s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
+
+
+.rede {
+    width: 60px;
+    height: 60px;
+    transition: all 0.4s ease-out;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px 2px rgba(255, 255, 255, 0.45);
+}
+
+.rede:hover {
+    cursor: pointer;
+    transform: translateY(-20px);
+    box-shadow: 2px 15px 10px 0px rgba(255, 255, 255, 0.45);
+}
+
+
+.rede#facebook {
+    background-color: #2372a3;
+}
+
+.rede#instagram {
+    background-color: #f58529;
+}
+
+.rede#youttube {
+    background-color: #b00;
+}
+
+.icone {
+    margin: 0px auto;
+    padding: 2px;
+}
+
+main {
+    margin: 15px 0;
+    padding: 8px;
+}
+
+main div {
+    color: white;
+    padding: 15px;
+    max-width: 125px;
+    margin: 5px;
+}
+
+.inline-block-centralizado div {
+    display: inline-block;
+    text-align: left;
+}
+
+.flex-centralizado {
+    display: flex;
+    justify-content: center;
+}
+
+footer {
+    text-align: right;
+    color: #fff;
+}
+
+.socialMediaCampus {
+    padding-top: 2%;
+    text-align: center;
+}
+
+.socialMediaCampus .box a {
+    margin: 0 10px;
+}
+
+.socialMediaCampus .box a img {
+    width: 50px;
+}
+
+.box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    vertical-align: middle;
+}
+
+.box img {
+    transition: all 0.4s ease-out;
+    border-radius: 50%;
+
+}
+
+.box img:hover {
+    cursor: pointer;
+    transform: translateY(-20px);
+    box-shadow: 2px 15px 10px 0px rgba(255, 255, 255, 0.45);
+}
+
+
+/**
+ * ----------------------------------------
+ * animation  - kenburns-top Background do plano de fundo principal
+ * ----------------------------------------
+ */
+
+@-webkit-keyframes kenburns-top {
+    0% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+        -webkit-transform-origin: 50% 16%;
+        transform-origin: 50% 16%;
+    }
+    100% {
+        -webkit-transform: scale(1.25) translateY(-15px);
+        transform: scale(1.25) translateY(-15px);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+    }
+}
+
+@keyframes kenburns-top {
+    0% {
+        -webkit-transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0);
+        -webkit-transform-origin: 50% 16%;
+        transform-origin: 50% 16%;
+    }
+    100% {
+        -webkit-transform: scale(1.25) translateY(-15px);
+        transform: scale(1.25) translateY(-15px);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+    }
+}
+
+/**
+ * ----------------------------------------
+ * animation slide-top - Logo da tocha descendo
+ * ----------------------------------------
+ */
+
+@-webkit-keyframes slide-top {
+    0% {
+        -webkit-transform: translateY(-10);
+        transform: translateY(-10);
+    }
+    100% {
+        -webkit-transform: translateY(100px);
+        transform: translateY(100px);
+    }
+}
+
+@keyframes slide-top {
+    0% {
+        /*-webkit-transform: translateY(0);
+        transform: translateY(0);*/
+        -webkit-transform: translateY(-10);
+        transform: translateY(-10);
+    }
+    100% {
+        /*-webkit-transform: translateY(100px);
+        transform: translateY(100px);*/
+        *-webkit-transform: translateY(60px);
+        transform: translateY(60px);
+    }
+}
+
+/**
+ * ----------------------------------------
+ * animation tracking-in-expand-fwd-top - Slogam Descendo do TOPO
+ * ----------------------------------------
+ */
+@-webkit-keyframes tracking-in-expand-fwd-top {
+    0% {
+        letter-spacing: -0.5em;
+        -webkit-transform: translateZ(-700px) translateY(-500px);
+        transform: translateZ(-700px) translateY(-500px);
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        -webkit-transform: translateZ(0) translateY(0);
+        transform: translateZ(0) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes tracking-in-expand-fwd-top {
+    0% {
+        letter-spacing: -0.5em;
+        -webkit-transform: translateZ(-700px) translateY(-500px);
+        transform: translateZ(-700px) translateY(-500px);
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        -webkit-transform: translateZ(0) translateY(60);
+        transform: translateZ(0) translateY(60);
+        opacity: 1;
+    }
+}
+
+
+/*Início de responsividade*/
+/**
+ * ----------------------------------------
+ * Imagem para mídias responsivas
+ * ----------------------------------------
+ */
+
+
+@media screen and (min-width: 426px)  and (max-width: 767px) {
+    .img img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    .slogam {
+        font-family: Helvetica;
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: -140px;
+        color: #fff;
+        text-align: center;
+        filter: drop-shadow(0px 0px 1px #fff);
+        -webkit-animation: tracking-in-expand-fwd-top 0.9s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+        animation: tracking-in-expand-fwd-top 4s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+    }
+
+    .botoes-principais-portais {
+        margin-top: 5px;
+    }
+
+    .botoes-principais div {
+        margin-bottom: 2px;
+    }
+
+    main {
+        margin: 0px 0;
+        padding: 5px;
+    }
+
+    .rede:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+        box-shadow: 2px 15px 10px 0px rgba(255, 255, 255, 0.45);
+    }
+
+    /**
+ * ----------------------------------------
+ * animation tracking-in-expand-fwd-top - Slogam Descendo do TOPO - Responsivo
+ * ----------------------------------------
+ */
+    @-webkit-keyframes tracking-in-expand-fwd-top {
+        0% {
+            letter-spacing: -0.5em;
+            -webkit-transform: translateZ(-700px) translateY(-500px);
+            transform: translateZ(-700px) translateY(-500px);
+            opacity: 0;
+        }
+        40% {
+            opacity: 0.6;
+        }
+        100% {
+            -webkit-transform: translateZ(0) translateY(0);
+            transform: translateZ(0) translateY(0);
+            opacity: 1;
+        }
+    }
+    @keyframes tracking-in-expand-fwd-top {
+        0% {
+            letter-spacing: -0.5em;
+            -webkit-transform: translateZ(-700px) translateY(-500px);
+            transform: translateZ(-700px) translateY(-500px);
+            opacity: 0;
+        }
+        40% {
+            opacity: 0.6;
+        }
+        100% {
+            -webkit-transform: translateZ(0) translateY(0);
+            transform: translateZ(0) translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+/*
+Fim responsividade
+*/
+
+

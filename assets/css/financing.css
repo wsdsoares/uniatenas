@@ -1,0 +1,17 @@
+@media screen and (min-width: 362px) {
+    img.imgFinancing {
+        float: left;
+        margin: 2% 5% 2% 0;
+        max-width: 400px;
+    }
+}
+
+.btns {
+    margin: 0px;
+}
+
+@media screen and (max-width: 320px) {
+    img.imgFinancing{
+        width: 320px !important;
+    }
+}

@@ -1,0 +1,331 @@
+@font-face {
+    font-family: americaSans;
+    src: url('../fonts/AMERSN_.TTF');
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url('../fonts/Montserrat/Montserrat-Regular.ttf');
+}
+
+@font-face {
+    font-family: MontserratBlack;
+    src: url('../fonts/Montserrat/Montserrat-Black.ttf');
+}
+
+@font-face {
+    font-family: MontserratBold;
+    src: url('../fonts/Montserrat/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: MontserratBlackItalic;
+    src: url('../fonts/Montserrat/Montserrat-BlackItalic.ttf'),
+    url('../fonts/Montserrat/Montserrat-BoldItalic.ttf');
+}
+
+@font-face {
+    font-family: MontserratExtraBold;
+    src: url('../fonts/Montserrat/Montserrat-ExtraBold.ttf'),
+    url('../fonts/Montserrat/Montserrat-ExtraLightItalic.ttf')
+}
+
+@font-face {
+    font-family: MontserratItalic;
+    src: url('../fonts/Montserrat/Montserrat-Italic.ttf')
+}
+
+@font-face {
+/*url('../fonts/Montserrat/Montserrat-Light.ttf'),
+url('../fonts/Montserrat/Montserrat-LightItalic.ttf'),
+url('../fonts/Montserrat/Montserrat-Medium.ttf'),
+url('../fonts/Montserrat/Montserrat-MediumItalic.ttf'),
+url('../fonts/Montserrat/Montserrat-SemiBold.ttf'),
+url('../fonts/Montserrat/Montserrat-SemiBoldItalic.ttf'),
+url('../fonts/Montserrat/Montserrat-Thin.ttf'),
+url('../fonts/Montserrat/Montserrat-ThinItalic.ttf');*/
+}
+
+body {
+    background: url('../bg-teste/backgrounds/graduation-cap-3430714_1920.jpg') no-repeat center center fixed;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+
+.Icampi {
+    color: #f05f22;
+}
+
+:root {
+    --cor-bg-paracatu: #6f8ec8;
+    --cor-bg-passos: #65933e;
+    --cor-bg-setelagoas: #f8a419;
+    --cor-bg-valenca: #c42a1f;
+    --cor-bg-sorriso: #7FFFD4;
+}
+
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+    color: #333;
+    text-shadow: none; /* Prevent inheritence from `body` */
+    background-color: #fff;
+    border: 1px solid #fff;
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+    display: table;
+    width: 100%;
+    height: 600px;
+    /*height: 100%; */
+    /*min-height: 100%;*/
+}
+
+.site-wrapper-inner {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.cover-container {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner-principal {
+    padding: 20px;
+}
+
+.leads {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.masthead-nav > li {
+    display: inline-block;
+}
+
+.masthead-nav > li + li {
+    margin-left: 20px;
+}
+
+.masthead-nav > li > a {
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000; /* IE8 proofing */
+    color: rgba(1, 1, 1, .75);
+    border-bottom: 2px solid transparent;
+}
+
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+    background-color: transparent;
+    border-bottom-color: #a9a9a9;
+    border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+    color: #000;
+    border-bottom-color: #000;
+}
+
+@media (min-width: 768px) {
+    .masthead-brand {
+        float: left;
+    }
+
+    .masthead-nav {
+        float: right;
+    }
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+    padding: 0 20px;
+
+}
+
+.cover .btn-lg {
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.cover-heading {
+    margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+    .site-wrapper-inner {
+        vertical-align: middle;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 984px) {
+    h3.nomecampus{
+        font-size: 20px;
+        margin:0px 0 10px 0;
+        padding-top: 10px;
+    }
+
+}
+
+.dadosCampus{
+    text-align: center;
+    margin: 5px;
+}
+.dados{
+    -webkit-animation: slide-top 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-top 5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+
+/***/
+.logo {
+    text-align: center;
+    -webkit-animation: tracking-in-expand-fwd-top 0.2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+    animation: tracking-in-expand-fwd-top 2.1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
+
+.logo img{
+    max-width: 80px;
+}
+
+.iconesocial{
+    max-width: 64px;
+}
+.redes img{
+    transition: all 0.4s ease-out;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px 2px rgba(255,255,255,0.45);
+}
+
+.redes img:hover{
+    cursor: pointer;
+    transform: translateY(-20px) ;
+    box-shadow: 2px 15px 10px 0px rgba(255,255,255,0.45);
+}
+
+/****/
+
+
+.socialMedia div{
+    margin-top:5px;
+    margin-left:10px ;
+    padding-bottom:5px ;
+
+}
+
+.titleSocialMedias h5{
+    padding-top: 20px;
+    font-size: 15px;
+}
+
+.bg-paracatu{
+    background: rgba(111,142,200,0.3);
+}
+
+.bg-passos{
+    background: rgba(101,147,62,0.3);
+}
+.bg-setelagoas{
+    background: rgba(248,164,25,0.3);
+}
+.bg-valenca{
+    background: rgba(236, 202, 9, 0.329);
+}
+.bg-sorriso{
+    background: rgba(127, 255, 212, 0.329);
+}
+
+
+
+/*#facebooks img {
+    background: #2372a3;
+}
+
+#instagrams img {
+    background: #f58529;
+}
+
+#youtubes img {
+    background: #b00;
+}*/
+
+@media screen and (min-width: 768px) and (max-width: 1194px) {
+    .socialMedia div {
+        margin-top: 5px;
+        margin-left: 5px;
+        padding-bottom: 5px;
+    }
+
+}
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    .redes img{
+        max-width: 50px;
+    }
+}
+
+
+/*----------------------------------------
+* animation tracking-in-expand-fwd-top - Slogam Descendo do TOPO
+* ----------------------------------------*/
+@-webkit-keyframes tracking-in-expand-fwd-top {
+    0% {
+        letter-spacing: -0.5em;
+        -webkit-transform: translateZ(-700px) translateY(-500px);
+        transform: translateZ(-700px) translateY(-500px);
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        -webkit-transform: translateZ(0) translateY(0);
+        transform: translateZ(0) translateY(0);
+        opacity: 1;
+    }
+}
+@keyframes tracking-in-expand-fwd-top {
+    0% {
+        letter-spacing: -0.5em;
+        -webkit-transform: translateZ(-700px) translateY(-500px);
+        transform: translateZ(-700px) translateY(-500px);
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        -webkit-transform: translateZ(0) translateY(60);
+        transform: translateZ(0) translateY(60);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-top {
+    0% {
+        /*-webkit-transform: translateY(0);
+        transform: translateY(0);*/
+        -webkit-transform: translateY(-10);
+        transform: translateY(-10);
+    }
+    100% {
+        /*-webkit-transform: translateY(100px);
+        transform: translateY(100px);*/
+        *-webkit-transform: translateY(10px);
+        transform: translateY(10px);
+    }
+}

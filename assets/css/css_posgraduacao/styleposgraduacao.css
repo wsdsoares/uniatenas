@@ -1,0 +1,57 @@
+.chamadacursos {
+    margin-left: 12%;
+}
+
+#cursohome {
+    width: 135px;
+    height: 200px;
+    float: left;
+    text-align: center;
+    padding: 5px;
+}
+
+#cursohome a {
+    color: #787878;
+    font-size: 16px;
+    border: 0px;
+    text-decoration: none;
+}
+
+#cursohome a:hover {
+    color: #F49A2F;
+    transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -khtml-transition: 0.3s;
+}
+
+#cursohome a img {
+    width: 98px;
+    height: 98px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    filter: grayscale(1);
+    -webkit-filter: grayscale(1);
+    -o-filter: grayscale(1);
+    -moz-filter: grayscale(1);
+    -ms-filter: grayscale(1);
+    -khtml-filter: grayscale(1);
+    display: block;
+}
+
+#cursohome a:hover img {
+    filter: grayscale(0);
+    -webkit-filter: grayscale(0);
+    -o-filter: grayscale(0);
+    -moz-filter: grayscale(0);
+    -ms-filter: grayscale(0);
+    -khtml-filter: grayscale(0);
+    transition: 0.3s;
+    -moz-transition: 0.3s;
+    -o-transition: 0.3s;
+    -webkit-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -khtml-transition: 0.3s;
+}

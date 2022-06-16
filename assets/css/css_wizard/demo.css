@@ -1,0 +1,37 @@
+.logo-container{
+    left: 50px;
+    position: absolute;
+    top: 20px;
+    z-index: 3;
+}
+.logo-container .logo{
+    overflow: hidden;
+    border-radius: 50%;
+    border: 1px solid #333333;
+    width: 60px;
+    float: left;
+}
+.logo-container .brand{
+    font-size: 18px;
+    color: #FFFFFF;
+    line-height: 20px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 60px
+}
+
+
+.btn.btn-next{
+    background-color: #FF9500;
+    border-color: #FF9500;
+    color:#fff;
+    padding: 10px;
+}
+.btn.btn-finish{
+    background-color: #FF5722;
+    border-color: #FF5722;
+    color:#fff;
+    padding: 10px;
+}
+
