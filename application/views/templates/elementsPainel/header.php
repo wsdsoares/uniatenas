@@ -84,6 +84,11 @@ $permissionCampusArray = '';
                 echo anchor('Painel_campus/lista_campus_nossa_historia', '<span>História <strong>(Missão, visão e valores)</strong></span>');
               ?>
             </li>
+            <li>
+              <?php
+                echo anchor('Painel_campus/lista_campus_infraestrutura', '<span>Infraestrutura Campus</span>');
+              ?>
+            </li>
           </ul>
         </li>
 

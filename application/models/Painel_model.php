@@ -20,7 +20,7 @@ class Painel_model extends CI_Model
         endif;
     }
 
-    public function salvar($tabela = NULL, $dados = NULL)
+    public function salvar($tabela = NULL, $dados = NULL,$typeInsert=NULL)
     {
         if (isset($dados['id'])) {
             $this->db->where('id', $dados['id']);
@@ -28,8 +28,13 @@ class Painel_model extends CI_Model
             $this->db->update("$tabela", $dados);
             return TRUE;
         } else {
-            $this->db->insert("$tabela", $dados);
-            return TRUE;
+            if($typeInsert == 'exibirIdInsert'){
+                $this->db->insert("$tabela", $dados);
+                return $this->db->insert_id();
+            }else{
+                $this->db->insert("$tabela", $dados);
+                return TRUE;
+            }
         }
     }
 

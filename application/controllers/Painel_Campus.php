@@ -1184,16 +1184,311 @@ class Painel_campus extends CI_Controller {
         $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/campus/indicadores/lista_campus_indicadores',
+            'conteudo' => 'paineladm/campus/infraestrutura/lista_campus_infraestrutura',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'page' => 'Lista de Indicadores (Itens exibidos no rodapé) - <strong>Gestão Por Campus</strong>',
+                'page' => 'Infraestrutura do Campus - <strong>Gestão Por Campus</strong>',
                 'campus'=> $listagemDosCampus,
-                'tipo'=> '' 
+                'tipo'=>'',
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
+    public function lista_infraestrutura($uriCampus) {
+        verificaLogin();
+
+        $uriCampus = $this->uri->segment(3);
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $page = $this->painelbd->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
+        
+        $joinCategoriasInfraestruturaCampus = array(
+            'campus' => 'campus.id = photos_category.campusid',
+            'pages' => 'pages.campusid = campus.id',
+            'page_contents' => "page_contents.pages_id = $page->idpages",
+        );
+        $colunasResultadoInfraestrutura = array(
+            'campus.id as idCampus',
+            'campus.city',
+
+            'photos_category.id',
+            'photos_category.title ',
+            'photos_category.type',
+            'photos_category.status',
+            'photos_category.created_at',
+            'photos_category.updated_at',
+            'photos_category.user_id',
+        );
+        $whereCategoriasInfraestrutura= array(
+            'photos_category.campusid'=>$uriCampus,
+        );
+        
+        $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'photos_category',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null,'photos_category.id')->result();     
+
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/campus/infraestrutura/lista_infraestrutura',
+            'dados' => array(
+                'listaInfraestrutura'=>$listaInfraestrutura,
+                'campus'=>$campus,
+                'page' => "itens da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'tipo'=>'tabelaDatatable'
+            )
+        );
+
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function cadastrar_infraestrutura($uriCampus){
+        verificaLogin();
+        
+        $uriCampus = $this->uri->segment(3);
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+   
+        $this->form_validation->set_rules('title', 'Nome da área', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+            $dados_form = elements(array('title','status'), $this->input->post());
+
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+            $dados_form['campusid'] = $campus->id;
+            if ($id = $this->painelbd->salvar('photos_category', $dados_form)) {
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+            } else {
+                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+            }
+        }
+        $data = array(
+            'conteudo' => 'paineladm/campus/infraestrutura/cadastrar_infraestrutura',
+            'titulo' => 'Infraestrutura - UniAtenas',
+            'dados' => array(
+                'tipo' => '',
+                'campus' => $campus,
+                'page' => "Cadastro da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function lista_fotos_infraestrutura($idCategoriaInfraestrutura=NULL,$uriCampus=NULL)
+    {
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $colunaPagina = array('pages.idPages');
+
+        $pagina = $this->painelbd->where($colunaPagina,'pages',Null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
+
+        $joinCategoriaInfraestruturaCampus = array(
+            'campus' => 'campus.id = photos_category.campusid',
+            'pages' => 'pages.campusid = campus.id',
+            'page_contents' => "page_contents.pages_id = $pagina->idPages",
+        );
+        $colunasResultadoInfraestrutura = array(
+            'photos_category.id',
+            'photos_category.title',
+        );
+        $whereCategoriaInfraestrutura= array(
+            'photos_category.id'=>$idCategoriaInfraestrutura,
+        );
+        
+        $categoriaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'photos_category',$joinCategoriaInfraestruturaCampus,$whereCategoriaInfraestrutura, null, null,'photos_category.id')->row();         
+        $listaFotosInfraestrutura = $this->painelbd->where('*','photos_gallery',null,array('photos_gallery.photoscategoryid'=>$idCategoriaInfraestrutura))->result();     
+        
+        $data = array(
+            'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/lista_fotos_infra',
+            'titulo' => 'Fotos da Infraestrutura',
+            'dados' => array(
+                'page' => "Fotos da infraestrutura  <strong> $categoriaInfraestrutura->title <i>Campus - $campus->name ($campus->city) </i></strong>",
+                'tipo' => 'tabelaDatatable',
+                'fotosInfraestrutura' => $listaFotosInfraestrutura,
+                'pagina'=>$pagina,
+                'categoriaInfraestrutura'=>$categoriaInfraestrutura,
+                'campus' => $campus,
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function cadastrar_fotos_infraestrutura($idCategoriaInfraestrutura=NULL,$uriCampus=NULL)
+    {
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $categoriaFoto = $this->painelbd->where('*','photos_category',NULL, array('photos_category.id'=>$idCategoriaInfraestrutura))->row();
+        
+        $this->form_validation->set_rules('title', 'Título', 'required');
+        
+
+        if (empty($_FILES['file'])) {
+            $_FILES['file']['size'][0] = 0;
+        }
+
+        if ($_FILES['file']['size'][0] <= 0) {
+            $this->form_validation->set_rules('file', 'Arquivo', 'callback_file_check');
+            $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPEG, PNG ou JPG.');
+        }
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+            
+            $path = "assets/images/gallery/$campus->id/$categoriaFoto->id";
+            is_way($path);
+            $number_of_files = count($_FILES['file']['name']);
+            $files = $_FILES;
+
+           for ($i = 0; $i < $number_of_files; $i++) {
+                $_FILES['file']['name'] = $files['file']['name'][$i];
+                $_FILES['file']['type'] = $files['file']['type'][$i];
+                $_FILES['file']['tmp_name'] = $files['file']['tmp_name'][$i];
+                $_FILES['file']['error'] = $files['file']['error'][$i];
+                $_FILES['file']['size'] = $files['file']['size'][$i];
+            
+                $upload = $this->painelbd->uploadFiles('file', $path, $types = 'jpg|JPG|jpeg|JPEG|png|PNG', NULL);
+            
+                if ($upload) {
+                    $dados_form['user_id'] = $this->session->userdata('codusuario');
+                    $dados_form['file'] = $path . '/' . $upload['file_name']; 
+                    $dados_form['title'] = $this->input->post('title');; 
+                    $dados_form['status'] = $this->input->post('status');
+                    $dados_form['photoscategoryid'] = $categoriaFoto->id;
+
+                    if ($id = $this->painelbd->salvar('photos_gallery', $dados_form)) {
+                        if ($number_of_files == ($i + 1)) {
+                            setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
+                            redirect("Painel_Campus/lista_fotos_infraestrutura/$categoriaFoto->id/$campus->id");
+                        }
+                    } else {
+                        setMsg('<p>Erro! A foto não pode ser cadastrada.</p>', 'error');
+                    }
+                } else {
+                    //erro no upload
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
+        }
+
+        $data = array(
+            'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/cadastrar_fotos_infra',
+            'titulo' => "Fotos - $categoriaFoto->title $campus->name - $campus->city",
+            'dados' => array(
+                'tipo' => '',
+                'campus' => $campus,
+                'categoriaFoto'=>$categoriaFoto,
+                'page'=> "<span>Cadastro Fotos: <strong>$categoriaFoto->title <i>$campus->name - $campus->city</i></strong></span>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function editar_foto_infraestrutura($idCategoriaInfraestrutura=NULL,$uriCampus=NULL,$id=NULL)
+    {
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $categoriaFoto = $this->painelbd->where('*','photos_category',NULL, array('photos_category.id'=>$idCategoriaInfraestrutura))->row();
+        $fotoInfraestrutura = $this->painelbd->where('*','photos_gallery',null,array('photos_gallery.id'=>$id))->row();     
+        
+        $this->form_validation->set_rules('title', 'Título', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+            if ($fotoInfraestrutura->title != $this->input->post('title')) {
+                $dados_form['title'] = $this->input->post('title');
+            }
+
+            if ($fotoInfraestrutura->status != $this->input->post('status')) {
+                $dados_form['status'] = $this->input->post('status');
+            }
+            
+
+            if (isset($_FILES['file']) and !empty($_FILES['file']['name'])) {
+                
+                $path = "assets/images/gallery/$campus->id/$categoriaFoto->id";
+
+                is_way($path);
+
+                if (file_exists($fotoInfraestrutura->file)) {
+                    unlink($fotoInfraestrutura->file);
+                }
+                
+                $upload = $this->painelbd->uploadFiles('file', $path, $types = 'jpg|JPG|jpeg|JPEG|png|PNG', NULL);
+
+                if ($upload){
+                    //upload efetuado
+                    $dados_form['file'] = $path . '/' . $upload['file_name'];
+                }else{
+                    //erro no upload
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
+
+            $dados_form['id'] = $fotoInfraestrutura->id;
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+           
+            if ($this->painelbd->salvar('photos_gallery', $dados_form) == TRUE){
+                setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_fotos_infraestrutura/$idCategoriaInfraestrutura/$campus->id");
+            }else{
+                setMsg('<p>Erro! A foto não pode ser cadastrada.</p>', 'error');
+            }   
+        }
+
+        $data = array(
+            'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/editar_fotos_infra',
+            'titulo' => "Fotos - $categoriaFoto->title $campus->name - $campus->city",
+            'dados' => array(
+                'tipo' => '',
+                'campus' => $campus,
+                'fotoInfraestrutura' => $fotoInfraestrutura,
+                'categoriaFoto'=>$categoriaFoto,
+                'page'=> "<span>Edição dados foto: <strong>$categoriaFoto->title <i>$campus->name - $campus->city</i></strong></span>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function deletar_foto_infra($idCategoriaInfraestrutura=NULL,$uriCampus=NULL,$id = NULL)
+    {
+        verifica_login();
+    
+        $uriCampus=$this->uri->segment(4);
+        $id=$this->uri->segment(5);
+        $item = $this->painelbd->where('*','photos_gallery', NULL, array('photos_gallery.id' => $id))->row(); 
+
+        if (file_exists($item->file)) {
+            unlink($item->file);
+        }
+
+        if ($this->painelbd->deletar('photos_gallery', $item->id)) {
+            setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+            redirect("Painel_Campus/lista_fotos_infraestrutura/$idCategoriaInfraestrutura/$uriCampus");
+        } else {
+            setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+            redirect("Painel_Campus/lista_fotos_curso/$idCategoriaInfraestrutura/$uriCampus");
+        }
+
+    }
+    
 }
