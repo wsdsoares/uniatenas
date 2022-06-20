@@ -17,18 +17,7 @@ class IniciacaoCientifica extends CI_Controller {
 
     public function comite_etica($uricampus = NULL) {
 
-        if($uricampus == null){
-            redirect("");
-        }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'cep','campusid'=>$dataCampus->id))->row();
 
@@ -53,7 +42,7 @@ class IniciacaoCientifica extends CI_Controller {
 
         $data = array(
             'head' => array(
-                'title' => 'Comitê de Ética em Pesquisa ' . $dataCampus->name . ' ' . $city,
+                'title' => 'Comitê de Ética em Pesquisa ' . $dataCampus->name . ' ' . $dataCampus->city,
             ),
             'conteudo' => 'uniatenas/cep/homeComiteEtica.php',
             'footer' => '',
@@ -76,15 +65,7 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("");
         }
 
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+         $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao', 'campusid'=>$dataCampus->id))->row();
 
@@ -127,16 +108,7 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("");
         }
 
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
-
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $sql = "SELECT * FROM at_site.publicacoes
             where revistas_id =$idRevista
@@ -175,16 +147,9 @@ class IniciacaoCientifica extends CI_Controller {
         if($uricampus == null){
             redirect("");
         }
+        
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
         $page = $this->bancosite->getWhere('pages', array('title' => 'revistas','campusid'=>$dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
 
@@ -215,14 +180,8 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("");
         }
 
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        
         $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao','campusid'=>$dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
         $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->row();
@@ -264,15 +223,8 @@ class IniciacaoCientifica extends CI_Controller {
         if (!isset($idRevista) and $revista == NULL) {
             redirect("iniciacaoCientifica/revistas/$uricampus");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $sql = "SELECT * FROM at_site.publicacoes
             where revistas_id =$idRevista

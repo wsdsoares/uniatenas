@@ -53,88 +53,94 @@ class Painel_campus extends CI_Controller {
             endif;
         }else {
 
-            if (!empty($_FILES['logo']['name'])) {
-                $pathLogo = 'assets/images';
-            }else{
-                $pathLogo=NULL;
+            $pathLogo = "assets/images/logos";
+            is_way($pathLogo);
+
+            if (isset($_FILES['logo']) && !empty($_FILES['logo']['name'])) {
+                
+                
+                $upload = $this->painelbd->uploadFiles('logo', $pathLogo, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', null);
+                if($upload){
+                    $dados_form['logo'] = $pathLogo.'/'.$upload['file_name'];
+                }else{
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+
             }
+
             if (!empty($_FILES['logoBranca']['name'])) {
-                $pathLogo = 'assets/images';
-            }else{
-                $pathLogo=NULL;
-            }            // $pathIcone = 'assets/images/campus';
-            // 
-            // $pathBackground = 'assets/images/background';
-            // is_way($pathIcone);
-            // is_way($pathLogo);
-            // is_way($pathBackground);
+                
+                $upload = $this->painelbd->uploadFiles('logoBranca', $pathLogoBranca, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-            // if (unique_name_args(noAccentuation($this->input->post('name'), NULL), $path)) {
-            //     $name_tmp = null;
-            // } else {
-            //     $name_tmp = noAccentuation($this->input->post('name'), NULL);
-            // }
+                if($upload){
+                    $dados_form['logoBranca'] = $pathLogo.'/'.$upload['file_name'];
+                }else{
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }        
+            
+            if (!empty($_FILES['iconeCampus']['name'])) {
+                
+                $upload = $this->painelbd->uploadFiles('iconeCampus', $pathLogo, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-            // $upload = $this->bd->uploadFiles('files', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', $name_tmp);
+                if($upload){
+                    $dados_form['iconeCampus'] = $pathLogo.'/'.$upload['file_name'];
+                }else{
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
 
-            // if ($upload):
-            //     //upload efetuado
+            }  
 
-            //     //aqui pega os dados dos formulários por meio do input
-            //     //os nomes - names dos inputs devem ser iguais aos do BD.
-            //     $dados_form = elements(array(
-            //         'name','phone','city','email',
-            //         'uf',
-            //         'logo',
-            //         'logoBranca',
-            //         'iconeCampus',
-            //         'facebook',
-            //         'instagram',
-            //         'youtube',
-            //         'locationMaps',
-            //         'mapsFrame',
-            //         'street',
-            //         'description',
-            //         'backgroundPrincipal',
-            //         'status',
-            //     ), $this->input->post());
+            if (!empty($_FILES['backgroundPrincipal']['name'])) {
+                
+                $upload = $this->painelbd->uploadFiles('backgroundPrincipal', $pathLogo, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-            //     $dados_form['files'] = $path . '/' . $upload['file_name'];
-            //     $dados_form['type'] = 'slideshowprincipal';
-            //     $dados_form['usersid'] = $this->session->userdata('codusuario');
+                if($upload){
+                    $dados_form['backgroundPrincipal'] = $pathLogo.'/'.$upload['file_name'];
+                }else{
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
 
-            //     $ordens = $this->getBannerPositionbyCampus($dados_form['campusid']);
-            //     $updatePosition = FALSE;
-            //     foreach ($ordens as $key => $ordem) {
-            //         $posic[$key] = $ordem->id . "///" . $dados_form['priority'];
+            $shurtName = strtolower(noAccentuation($this->input->post('city')));
+          
+            //aqui pega os dados dos formulários por meio do input
+            //os nomes - names dos inputs devem ser iguais aos do BD.
+            $dados_form['name'] =$this->input->post('name');
+            $dados_form['phone'] =$this->input->post('phone');
+            $dados_form['email'] =$this->input->post('email');
+            $dados_form['facebook'] =$this->input->post('facebook');
+            $dados_form['instagram'] =$this->input->post('instagram');
+            $dados_form['youtube'] =$this->input->post('youtube');
+            $dados_form['locationMaps'] =$this->input->post('locationMaps');
+            $dados_form['mapsFrame'] =$this->input->post('mapsFrame');
+            $dados_form['street'] =$this->input->post('street');
+            $dados_form['uf'] =$this->input->post('uf');
+            $dados_form['city'] =$this->input->post('city');
+            $dados_form['type'] =$this->input->post('type');
+            $dados_form['description'] =$this->input->post('description');
+            $dados_form['visible'] =$this->input->post('visible');
+            $dados_form['status'] =$this->input->post('status');
+            $dados_form['shurtName'] = $shurtName;
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-            //         if ($updatePosition == TRUE) {
+        
+            if ($this->painelbd->salvar('campus', $dados_form) == TRUE) {
 
-            //             $this->bd->alterar('banners', 'priority', 'id', $ordem->id, $ordem->priority + 1);
-            //         }
-            //         if ($ordem->priority == $dados_form['priority']) {
-
-            //             $dados_form['priority'] = $ordem->priority;
-            //             $updatePosition = true;
-            //             $this->bd->alterar('banners', 'priority', 'id', $ordem->id, $ordem->priority + 1);
-
-            //         }
-            //     }
-
-            // else:
-            //     //erro no upload
-            //     $msg = $this->upload->display_errors();
-            //     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-            //     setMsg($msg, 'erro');
-            // endif;
-            // if ($this->bd->salvar('banners', $dados_form) == TRUE) {
-
-            //     setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
-            //     redirect('Painel_home/slideshow');
-            // } else {
-            //     setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
-            //     redirect('Painel_home/slideshow');
-            // }
+                setMsg('<p>Campus cadastrado com sucesso.</p>', 'success');
+                redirect('Painel_campus/lista_campus');
+            } else {
+                setMsg('<p>Erro! O campus não foi cadastrado.</p>', 'error');
+                redirect('Painel_campus/lista_campus');
+            }
         }
 
 
@@ -143,7 +149,7 @@ class Painel_campus extends CI_Controller {
 
         $data = array(
             'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/campus/cadastrar_campus',
+            'conteudo' => 'paineladm/campus/campus/cadastrar_campus',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => $page,
@@ -226,8 +232,11 @@ class Painel_campus extends CI_Controller {
             if ($campus->status != $this->input->post('status')) {
                 $dados_form['status'] = $this->input->post('status');
             }
+            if ($campus->visible != $this->input->post('visible')) {
+                $dados_form['visible'] = $this->input->post('visible');
+            }
 
-            $pathLogos = "assets/images/logo/$campus->id";
+            $pathLogos = "assets/images/logos";
             is_way($pathLogos);
 
             if (isset($_FILES['logo']) && !empty($_FILES['logo']['name'])) {
@@ -328,49 +337,6 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    // public function cadastrar_botoes_acesso_campus(){
-    //     verificaLogin();
-    //     $this->load->helper('file');
-
-    //     //Validaçãoes via Form Validation
-    //     $this->form_validation->set_rules('name', 'Tipo do Campus', 'required');
-          
-    //     if ($this->form_validation->run() == FALSE) {
-    //         if (validation_errors()):
-    //             setMsg(validation_errors(), 'error');
-    //         endif;
-    //     }else {
-
-    //         if (!empty($_FILES['logo']['name'])) {
-    //             $pathLogo = 'assets/images';
-    //         }else{
-    //             $pathLogo=NULL;
-    //         }
-    //         if (!empty($_FILES['logoBranca']['name'])) {
-    //             $pathLogo = 'assets/images';
-    //         }else{
-    //             $pathLogo=NULL;
-    //         }            // $pathIcone = 'assets/images/campus';
-            
-    //     }
-
-    //     $page = $this->uri->segment(2);
-
-    //     $data = array(
-    //         'titulo' => 'UniAtenas',
-    //         'conteudo' => 'paineladm/campus/cadastrar_botoes_acesso_campus',
-    //         'dados' => array(
-    //             // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-    //             'page' => $page,
-    //             'listagem'=> $this->bd->getWhere('dirigentes')->result(),
-    //             'tipo'=>''
-    //         )
-    //     );
-
-
-    //     $this->load->view('templates/layoutPainelAdm', $data);
-    // }
-
     /*************************************************************************
      * Botões de acesso rápido - Página dos campus - Segunda Página
      * Página: www.atenas.edu.br/uniatenas/NOME_DO_CAMPUS
@@ -400,7 +366,6 @@ class Painel_campus extends CI_Controller {
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
-
 
     public function lista_botoes_acesso_rapido($uriCampus=NULL) {
         verificaLogin();

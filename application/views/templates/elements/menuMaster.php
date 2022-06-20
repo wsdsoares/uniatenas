@@ -169,14 +169,17 @@ $informacoesCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NUL
                                             ?>
                     </ul>
                   </li>
+
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Como
                       ingressar<span class="caret"></span></a>
                     <ul class="dropdown-menu menu-simpes" role="menu">
 
-                      <?php if ($informacoesCampus->shurtName == "paracatu") { ?>
+                      <?php 
+                      
+                      if ($informacoesCampus->shurtName == "paracatu") { ?>
                       <li>
-                        <?php echo anchor("graduacao/como_ingressar/vestibularagendado", 'Vestibular Agendado'); ?>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/vestibularagendado", 'Vestibular Agendado'); ?>
                       </li>
                       <?php }
                                             if ($informacoesCampus->id != 3) {

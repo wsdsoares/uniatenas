@@ -16,7 +16,7 @@
         <div class="container">
           <div class="col-xs-6">
             <?php
-            //echo anchor("Painel_campus/cadastrar_campus", '<i class="material-icons">add_box</i> CADASTRAR Campus', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+            echo anchor("Painel_campus/cadastrar_campus", '<i class="material-icons">add_box</i> CADASTRAR Campus', array('class' => 'btn btn-primary m-t-15 waves-effect'));
             ?>
           </div>
 
@@ -32,7 +32,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Cidade</th>
-                <th>Situação</th>
+                <th>Situação / Visivel</th>
                 <th>Tipo</th>
                 <th>Criado em:</th>
                 <th>Modificado em, por:</th>
@@ -43,7 +43,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Cidade</th>
-                <th>Situação</th>
+                <th>Situação / Visível</th>
                 <th>Tipo</th>
                 <th>Criado em:</th>
                 <th>Modificado em, por:</th>
@@ -80,10 +80,15 @@
                 <td><?php echo $campus->city; ?></td>
                 <td>
                   <?php
-                  if($campus->visible =='NÂO'){
-                    echo 'Inativo';
+                   if($campus->status =='1'){
+                    echo 'ativo /';
                   }else{
-                    echo'Ativo';
+                    echo 'inativo /';
+                  }
+                  if($campus->visible =='SIM'){
+                    echo 'Visível';
+                  }else{
+                    echo'Invisível';
                   }
                   ?>
                 </td>

@@ -22,9 +22,41 @@ class Graduacao extends CI_Controller
             redirect("");
         }
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        
-        $pages_content = $this->bancosite->getWhere('pages', array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
 
+        $pages_content = $this->bancosite->where(array('pages.idpages','pages.title'),'pages', null,array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
+        
+        // $pages_content = $this->bancosite->getWhere('pages', array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
+
+        $joinConteudoPagina = array(
+            'pages'=>'pages.idpages = page_contents.pages_id',
+            'campus' => 'campus.id= pages.campusid'
+            
+        );
+
+        $colunaResultadPagina = array(
+            'page_contents.id',
+            'page_contents.title',
+            'page_contents.title_short',
+        );
+
+        $wherePagina = array(
+            'campus.id'=>$dataCampus->id, 
+            'page_contents.pages_id'=>$pages_content->idpages,
+            'page_contents.status'=>1);
+        
+        $listaItensMenuComoIngressar = $this->bancosite->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
+
+        echo '<pre>';
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        print_r($pages_content);
+        //print_r($listaItensMenuComoIngressar);
+        
+        echo '</pre>';
         if ($type == 'vestibulartradicional') {
             $vestibular = "Vestibular Tradicional";
         } elseif ($type == 'vestibularagendado') {
@@ -48,6 +80,7 @@ class Graduacao extends CI_Controller
         where page_contents.title like '%$vestibular%'
         and pages_id =  $pages_content->idpages
         ";
+
         $conteudoPrincipal = $this->bancosite->getQuery($queryHowToJoin)->row();
 
         $data = array(
@@ -63,11 +96,67 @@ class Graduacao extends CI_Controller
             'dados' => array(
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
+                'menuComoIngressar'=> isset($listaItensMenuComoIngressar) ? $listaItensMenuComoIngressar : '';
             )
         );
         $this->output->cache(14.400);
         $this->load->view('templates/master', $data);
     }
+
+    // public function como_ingressar($uricampus = NULL, $type = NULL)
+    // {
+
+    //     if ($uricampus == null) {
+    //         redirect("");
+    //     }
+    //     $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        
+    //     $pages_content = $this->bancosite->getWhere('pages', array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
+
+    //     if ($type == 'vestibulartradicional') {
+    //         $vestibular = "Vestibular Tradicional";
+    //     } elseif ($type == 'vestibularagendado') {
+    //         $vestibular = "Agendado";
+    //     } elseif ($type == 'notaenem') {
+    //         $vestibular = "ENEM";
+    //     } elseif ($type == 'segundagraduacao') {
+    //         $vestibular = "SEGUNDA";
+    //     } elseif ($type == 'transferencia') {
+    //         $vestibular = "TRANSF";
+    //     } elseif ($type == 'reingresso') {
+    //         $vestibular = "REING";
+    //     } elseif ($type == 'reopcaodecurso') {
+    //         $vestibular = "REOPC";
+    //     }
+
+    //     $queryHowToJoin = "SELECT 
+    //         *
+    //     FROM
+    //         page_contents
+    //     where page_contents.title like '%$vestibular%'
+    //     and pages_id =  $pages_content->idpages
+    //     ";
+
+    //     $conteudoPrincipal = $this->bancosite->getQuery($queryHowToJoin)->row();
+
+    //     $data = array(
+    //         'head' => array(
+    //             'title' => 'Como Ingressar - ' . $dataCampus->name,
+    //             'css' => base_url('assets/wizzard/css/styleWizzard.css')
+    //         ),
+    //         'conteudo' => "uni_graduacao/comoIngressar/formasIngresso",
+    //         'js' => NULL,
+    //         'footer' => array(//'specific_JS' => 'assets/plugins/lightbox/dist/js/lightbox-plus-jquery.js',
+    //         ),
+
+    //         'dados' => array(
+    //             'campus' => $dataCampus,
+    //             'conteudoPag' => $conteudoPrincipal,
+    //         )
+    //     );
+    //     $this->output->cache(14.400);
+    //     $this->load->view('templates/master', $data);
+    // }
 
     public function cursos($campus = NULL)
     {

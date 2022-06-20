@@ -370,7 +370,22 @@
                         '1' => 'Visível - Ativo',
                         '0' => 'Oculto - Inativo'
                     );
-                    echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                    echo form_dropdown('status', $optionSituation, set_value('status',$campus->status), array('class' => 'form-control show-tick'));
+                    ?>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="campusid">Exibir na página principal dos CAMPUS
+                  <small>(www.atenas.edu.br/uniatenas)</small></label>
+                <?php
+                    $optionSituation = array(
+                        'SIM' => 'Visível - SIM',
+                        'NÃO' => 'Invisível - NÂO'
+                    );
+                    echo form_dropdown('visible', $optionSituation, set_value('visible',$campus->visible), array('class' => 'form-control show-tick'));
                     ?>
               </div>
             </div>

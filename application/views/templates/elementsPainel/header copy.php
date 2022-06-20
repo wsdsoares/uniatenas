@@ -159,7 +159,7 @@ $permissionCampusArray = '';
           Menu para gestão dos itens curriculo - Todos os campus Trabalhe conosco
         ------------------------------------------------------------------------->
         <li class="header">Gestão - Trabalhe Conosco</li>
-        <!-- <li>
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">menu_book</i>
             <span>Trabalhe Conosco</span>
@@ -177,28 +177,87 @@ $permissionCampusArray = '';
               <?php echo anchor('TrabalheConosco/areasSetores', '<span>Áreas / Setores</span>');?>
             </li>
           </ul>
-        </li> -->
-        <li>
-
-          <?php //include_once('itens_header/item_h_financeiro.php');?>
-          <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
-          <?php //include_once('itens_header/item_h_vestibular.php');?>
-
-          <?php //include_once('itens_header/item_h_secretaria.php');?>
         </li>
 
+        <!-----------------------------------------------------------------------
+          Menu para gestão das informações do menu instituição
+        -----------------------------------------------------------------------
+
+        <ul class="ml-menu">
+          <li>
+            <a href="javascript:void(0);" class="menu-toggle">
+              <span>Vagas</span>
+            </a>
+            <ul class="ml-menu">
+
+              <li>
+                <a href="javascript:void(0);">
+                  <span>Currículos - Recebidos</span>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+
         <li>
-          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>Gestão Curriculos</span>
+          </a>
+
+
+          <ul class="ml-menu">
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Vagas</span>
+              </a>
+              <ul class="ml-menu">
+
+                <li>
+                  <a href="javascript:void(0);">
+                    <span>Currículos - Recebidos</span>
+                  </a>
+                </li>
+
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+
+        <li class="header">Instituição</li>
+        <li>
+
+          <?php
+            //include_once('itens_header/item_h_instituicao.php');
+          ?>
+
+        </li>
+-->
+        <li>
+
+          <?php include_once('itens_header/item_h_financeiro.php');?>
+          <?php include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
+          <?php include_once('itens_header/item_h_vestibular.php');?>
+
+          <?php include_once('itens_header/item_h_secretaria.php');?>
         </li>
         <li>
-          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
+          <?php echo anchor('TrabalheConosco/areasSetores', '<span>Corpo Docente</span>');?>
+        </li>
+        <li>
+          <?php echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
+        </li>
+        <li>
+          <?php echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
         </li>
 
 
 
 
-        <li class="header">Biblioteca</li>
-        <!-- <li>
+
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>Gestão Biblioteca</span>
@@ -217,18 +276,13 @@ $permissionCampusArray = '';
                 </li>
               </ul>
             </li>
-            <li>
-              <?php
-                echo anchor('Painel_graduacao/lista_campus_cursos', '<span>Cursos Por Campus</span>');
-                ?>
-            </li>
           </ul>
 
         </li>
--->
 
 
-        <!--li>
+
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>Mural Site</span>
@@ -277,9 +331,9 @@ $permissionCampusArray = '';
               </ul>
             </li>
           </ul>
-          </li-->
+        </li>
 
-        <!-- <li>
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>TV</span>
@@ -289,13 +343,11 @@ $permissionCampusArray = '';
               <?php echo anchor('mural/tv/1', '<span>Passos</span>'); ?>
             </li>
           </ul>
-        </li> -->
-        <li class="header">Gestão - Pesquisa e Iniciação</li>
-        <li>
-          <?php // include_once('itens_header/item_h_iniciacao.php');?>
         </li>
-        <li class="header">Gestão - Vestibular Medicina</li>
-        <!-- <li>
+        <li>
+          <?php include_once('itens_header/item_h_iniciacao.php');?>
+        </li>
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>PROCESSO SELETIVO</span>
@@ -315,7 +367,7 @@ $permissionCampusArray = '';
               </ul>
             </li>
           </ul>
-        </li> -->
+        </li>
       </ul>
     </div>
 

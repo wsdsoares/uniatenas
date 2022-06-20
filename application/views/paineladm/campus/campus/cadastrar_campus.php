@@ -1,23 +1,21 @@
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
 </div>
-<!-- Input -->
-
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <div class="header">
         <h2>
-          <?php echo 'Cadastro de Campus - Página Princial'; ?>
+          <?php echo $page; ?>
         </h2>
       </div>
       <div class="body">
         <?php
-                if ($msg = getMsg()):
-                    echo $msg;
-                endif;
-                ?>
-        <?php echo form_open_multipart('Painel_Campus/cadastrar_campus/') ?>
+        if ($msg = getMsg()){
+            echo $msg;
+        }
+        ?>
+        <?php echo form_open_multipart('Painel_campus/cadastrar_campus') ?>
 
         <h2 class="card-inside-title">Informações do Campus</h2>
         <div class="row clearfix">
@@ -28,14 +26,27 @@
                 <?php
                   $tipoCampus = array(
                       'faculdade' => 'Faculdade',
-                      'centroUniversitario' => 'Centro Universitário'
+                      'centrouniversitario' => 'Centro Universitário'
                   );
-                  echo form_dropdown('name', $tipoCampus, set_value('name'), array('class' => 'form-control show-tick'));
+                  echo form_dropdown('type', $tipoCampus, set_value('type'), array('class' => 'form-control show-tick'));
                   ?>
               </div>
             </div>
           </div>
 
+          <div class="col-sm-3">
+            <label for="title">Nome do Campus</label>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="material-icons">mode_comment</i>
+              </span>
+              <div class="form-line">
+                <?php
+                  echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => 'Ex.: Uniatenas'), set_value('city'));
+                ?>
+              </div>
+            </div>
+          </div>
           <div class="col-sm-3">
             <label for="title">Cidade</label>
             <div class="input-group">
@@ -43,8 +54,6 @@
                 <i class="material-icons">map</i>
               </span>
               <div class="form-line">
-
-
                 <?php
                   echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Cidade'), set_value('city'));
                 ?>
@@ -60,40 +69,41 @@
               <div class="form-line">
                 <?php
                 $ufs = array(
-                  'selecione'=>'selecione',
-                  'AC'=>'Acre',
-                  'AL'=> 'Alagoas',
-                  'AP'=>'Amapá',
-                  'AM'=>'Amazonas',
-                  'BA'=>'Bahia',
-                  'CE'=>'Ceará',
-                  'DF'=>'Distrito Federal',
-                  'ES'=>'Espirito Santo',
-                  'GO'=>'Goiás',
-                  'MA'=>'Maranhão',
-                  'MS'=>'Mato Grosso do Sul',
-                  'MT'=>'Mato Grosso',
-                  'MG'=>'Minas Gerais',
-                  'PA'=>'Pará',
-                  'PB'=>'Paraíba',
-                  'PR'=>'Paraná',
-                  'PE'=>'Pernambuco',
-                  'PI'=>'Piauí',
-                  'RJ'=>'Rio de Janeiro',
-                  'RN'=>'Rio Grande do Norte',
-                  'RS'=>'Rio Grande do Sul',
-                  'RO'=>'Rondônia',
-                  'RR'=>'Roraima',
-                  'SC'=>'Santa Catarina',
-                  'SP'=>'São Paulo',
-                  'SE'=>'Sergipe',
-                  'TO'=>'Tocantins');
+                  'AC'=>'AC',
+                  'AL'=> 'AL',
+                  'AP'=>'AP',
+                  'AM'=>'AM',
+                  'BA'=>'BA',
+                  'CE'=>'CE',
+                  'DF'=>'DF',
+                  'ES'=>'ES',
+                  'GO'=>'GO',
+                  'MA'=>'MA',
+                  'MS'=>'MS',
+                  'MT'=>'MT',
+                  'MG'=>'MG',
+                  'PA'=>'PA',
+                  'PB'=>'PB',
+                  'PR'=>'PR',
+                  'PE'=>'PE',
+                  'PI'=>'PI',
+                  'RJ'=>'RJ',
+                  'RN'=>'RN',
+                  'RS'=>'RS',
+                  'RO'=>'RO',
+                  'RR'=>'RR',
+                  'SC'=>'SC',
+                  'SP'=>'SP',
+                  'SE'=>'SE',
+                  'TO'=>'TO');
               echo form_dropdown('uf', $ufs, set_value('uf'), array('class' => 'form-control show-tick'));
                   // echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Nome da Cidade'), set_value('city'));
                 ?>
               </div>
             </div>
           </div>
+        </div>
+        <div class="row clearfix">
           <div class="col-md-2">
             <label for="title">Telefone (Principal)</label>
             <div class="input-group">
@@ -107,6 +117,19 @@
               </div>
             </div>
           </div>
+          <!--div class="col-md-2">
+            <label for="title">Telefone (Whatsapp)</label>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="material-icons">phone</i>
+              </span>
+              <div class="form-line">
+                <?php
+                  echo form_input(array('name' => 'whatsapp', 'class' => 'form-control', 'placeholder' => 'Número do Whatsapp'), set_value('whatsapp'));
+                ?>
+              </div>
+            </div>
+          </div-->
         </div>
 
         <div class="separacao-forms"></div>
@@ -177,11 +200,18 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'street', 'class' => 'form-control', 'placeholder' => 'Endereço do campus'), set_value('street'));
+                  echo form_textarea(array('name' => 'street', 'class' => 'form-control', 'placeholder' => 'Endereço do campus'), toHtml(set_value('street')));
                 ?>
               </div>
             </div>
           </div>
+          <script type="text/javascript">
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('street', {
+            customConfig: 'config.js'
+          });
+          </script>
           <div class="col-md-12">
             <label for="title">Link da Localização do GOOGLE MAPS (MAPS Frame)</label>
             <div class="input-group">
@@ -207,18 +237,24 @@
                   <small> (Explicação e inforamções pertinentes ao campus)</small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), set_value('briefText'));
+                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description')));
                 ?>
               </div>
             </div>
           </div>
         </div>
-
+        <script type="text/javascript">
+        // replace: substitui o formato padrão do textarea (descricao)
+        // e aplica as configurações do CKEDitor através do arquivo config.js
+        var editor = CKEDITOR.replace('description', {
+          customConfig: 'config.js'
+        });
+        </script>
         <div class="separacao-forms"></div>
 
         <h2 class="card-inside-title">Imagens do Campus - Destaques e logotipos</h2>
         <div class="row clearfix" style="background:#f1f1f1">
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Logotipo
@@ -228,7 +264,10 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+
+        </div>
+        <div class="row clearfix" style="background:#D0D0D0">
+          <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Logotipo
@@ -238,7 +277,10 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Icone Campus
@@ -248,6 +290,9 @@
               </div>
             </div>
           </div>
+
+        </div>
+        <div class="row clearfix">
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
@@ -266,13 +311,29 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
+                <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small><br /></label>
                 <?php
                     $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
+                        '1' => 'Ativo',
+                        '0' => 'Inativo'
                     );
                     echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                    ?>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="campusid">Exibir na página principal dos CAMPUS
+                  <small>(www.atenas.edu.br/uniatenas)</small></label>
+                <?php
+                    $optionSituation = array(
+                        'SIM' => 'Visível - SIM',
+                        'NÃO' => 'Invisível - NÂO'
+                    );
+                    echo form_dropdown('visible', $optionSituation, set_value('visible'), array('class' => 'form-control show-tick'));
                     ?>
               </div>
             </div>
@@ -283,14 +344,13 @@
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
               echo anchor('Painel_Campus/lista_campus', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-
               ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>
