@@ -356,12 +356,12 @@ class Painel_campus extends CI_Controller {
             unlink($item->backgroundPrincipal);
         }
 
-        if ($this->painelbd->deletar('campus_indicadores', $id)) {
+        if ($this->painelbd->deletar('campus', $id)) {
             setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
             redirect("Painel_Campus/lista_campus");
         } else {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-            redirect("Painel_Campus/lista_indicadores");
+            redirect("Painel_Campus/lista_campus");
         }
 
     }
