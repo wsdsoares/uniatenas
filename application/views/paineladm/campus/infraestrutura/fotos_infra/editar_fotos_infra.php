@@ -6,7 +6,8 @@
     <div class="card">
       <div class="header">
         <h2>
-          <?php echo $page; ?>
+          <?php
+          echo $page; ?>
         </h2>
 
       </div>
@@ -17,7 +18,7 @@
         }
         ?>
         <?php
-        echo form_open_multipart("Painel_Campus/editar_foto_infraestrutura/$categoriaFoto->id/$campus->id/$fotoInfraestrutura->id");
+        echo form_open_multipart("Painel_Campus/editar_foto_infraestrutura/$categoriaInfraestrutura->id/$campus->id/$fotoInfraestrutura->id");
         ?>
         <div class="row clearfix">
         </div>
@@ -81,7 +82,7 @@
               echo form_submit(array('name' => 'submit', 'class' => 'btn btn-lg btn-primary m-t-15 m-r-15 waves-effect'), 'SALVAR');
               ?>
             <?php
-            echo anchor("Painel_Campus/lista_fotos_infraestrutura/$categoriaFoto->id/$campus->id", '
+            echo anchor("Painel_Campus/lista_fotos_infraestrutura/$categoriaInfraestrutura->id/$campus->id", '
                 <i class = "material-icons">
                 assignment_return
                 </i> <span>Voltar</span>', array('class' => 'btn btn-warning m-t-15 waves-effect'));

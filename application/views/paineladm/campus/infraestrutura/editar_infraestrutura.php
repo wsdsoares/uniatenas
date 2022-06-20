@@ -12,13 +12,15 @@
       </div>
       <div class="body">
         <?php
-     
+        echo '<pre>';
+        //print_r($dados);
+        echo '</pre>';
         if ($msg = getMsg()){
             echo $msg;
         }
         
         ?>
-        <?php echo form_open_multipart("Painel_Campus/cadastrar_infraestrutura/$campus->id") ?>
+        <?php echo form_open_multipart("Painel_Campus/editar_infraestrutura/$dadosInfraestrutura->id/$campus->id") ?>
         <div class="row clearfix">
           <div class="col-md-6">
             <label for="title">Nome da Local/ Área / Setor da infraestrutura <small><i>(Título)</i></small></label>
@@ -28,7 +30,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Ex: Laboratório de informática '), set_value('title'));
+                  echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Ex: Laboratório de informática '), set_value('title',$dadosInfraestrutura->title));
                 ?>
               </div>
             </div>
@@ -43,7 +45,7 @@
                   <small> </small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => '(Explicação como é o ambiente. Ex.: Sala de aula com tantos metros quadrados... etc.)'), toHtml(set_value('description')));
+                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => '(Explicação como é o ambiente. Ex.: Sala de aula com tantos metros quadrados... etc.)'), toHtml(set_value('description',$dadosInfraestrutura->description)));
                 ?>
               </div>
             </div>
@@ -57,6 +59,33 @@
         });
         </script>
 
+        <!-- <div class="row clearfix" style="background:#f1f1f1">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="title">Imagem CAPA
+                  <small><br />
+                    (Imagem exibida como destaque da área/local/setor <br />Página de fotos da
+                    infraestrutura)
+                  </small>
+                </label>
+                <?php //echo form_input(array('name' => 'img_destaque', 'type' => 'file', 'class' => 'form-control'), set_value('img_destaque')); ?>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="informacoes-cadastradas">
+              <?php
+              // if($dadosInfraestrutura->img_destaque!='' and !empty($dadosInfraestrutura->img_destaque)){
+              //   echo anchor(base_url(verifyImg($dadosInfraestrutura->img_destaque)), '<img src="' . base_url(verifyImg($dadosInfraestrutura->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
+              //   }else{
+              //     echo '<span> Sem imagem cadastrada. <span>';
+              //   }
+              ?>
+            </div>
+          </div>
+        </div> -->
+
         <div class="row clearfix">
           <div class="col-sm-4">
             <div class="form-group">
@@ -67,7 +96,7 @@
                         '1' => 'Visível - Ativo',
                         '0' => 'Oculto - Inativo'
                     );
-                    echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                    echo form_dropdown('status', $optionSituation, set_value('status',$dadosInfraestrutura->status), array('class' => 'form-control show-tick'));
                     ?>
               </div>
             </div>

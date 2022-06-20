@@ -1136,19 +1136,30 @@ and revistas.id =$id;
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $dataCampus->id))->row();
         
-        //$pages_content = $this->bancosite->get_contents($page->idpages, '1')->result();
         $pages_content = $this->bancosite->where('*','page_contents',NULL,array('pages_id'=>$page->idpages,'status'=>1),array('campo'=>'order','ordem'=>'asc'))->result();
         $photosConted = array();
-        $datajoin = array(
-            'photos_category' => 'photos_category.id = page_contents.Fk_photosCat',
-            'photos_gallery' => 'photos_gallery.photoscategoryid = photos_category.id'
-        );
+
+        // $datajoin = array(
+        //     'page_contents' => 'page_contents.id = photos_gallery.id_page_contents',
+        //     'photos_gallery' => 'photos_gallery.photoscategoryid = photos_category.id'
+        // );
         foreach ($pages_content as $contend) {
-            $where =  array("photos_category.id" => $contend->Fk_photosCat);
+            $where =  array("photos_gallery.id_page_contents" => $contend->id);
             $campos = array("photos_gallery.file", "photos_gallery.id");
-            $photos = array("photo" => $this->bancosite->where($campos, "page_contents", $datajoin, $where)->result());
-            $contend->Fk_photosCat = $photos;
+            $photos = array("photo" => $this->bancosite->where('*', "photos_gallery", null, $where)->result());
+            $contend->array_fotos = $photos;
+            // $contend->Fk_photosCat = $photos;
         }
+        // $datajoin = array(
+        //     'photos_category' => 'photos_category.id = page_contents.Fk_photosCat',
+        //     'photos_gallery' => 'photos_gallery.photoscategoryid = photos_category.id'
+        // );
+        // foreach ($pages_content as $contend) {
+        //     $where =  array("photos_category.id" => $contend->Fk_photosCat);
+        //     $campos = array("photos_gallery.file", "photos_gallery.id");
+        //     $photos = array("photo" => $this->bancosite->where($campos, "page_contents", $datajoin, $where)->result());
+        //     $contend->Fk_photosCat = $photos;
+        // }
         
         /*unset($where);
         unset($photos);

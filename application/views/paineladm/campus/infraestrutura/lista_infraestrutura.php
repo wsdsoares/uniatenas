@@ -11,7 +11,9 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      
+        echo '<pre>';
+        //print_r($dados);
+        echo '</pre>';
         if ($msg = getMsg()){
             echo $msg;
         }
@@ -45,10 +47,10 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Nome</th>
+                <th>Descrição</th>
                 <th>Fotos</th>
                 <th>Situação</th>
                 <th>Campus</th>
-                <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </thead>
@@ -57,10 +59,10 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Nome</th>
+                <th>Descrição</th>
                 <th>Fotos</th>
                 <th>Situação</th>
                 <th>Campus</th>
-                <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
@@ -72,15 +74,15 @@
                 <td class="center">
                   <?php 
 
-                      echo '<a href=' . base_url("Painel_Campus/editar_indicador/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_Campus/editar_infraestrutura/$item->id/$campus->id") . '>'
                           . '<i class="material-icons">edit</i>'
                           . '</a> ';
-                      // echo '<a href="" 
-                      //     data-toggle="modal" 
-                      //     data-target="#modalDelete" 
-                      //     data-nome="' . $item->id . '" data-id="' . $item->id . '" >'
-                      //     . '<i class="material-icons">delete</i>'
-                      //     . '</a>';
+                      echo '<a href="" 
+                          data-toggle="modal" 
+                          data-target="#modalDelete" 
+                          data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                          . '<i class="material-icons">delete</i>'
+                          . '</a>';
 /*
                                     $redirect = 'Painel_home-slideshow';
                                     $table = 'banners';
@@ -97,14 +99,14 @@
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->title;?></td>
                 <td>
+                  <?php 
+                  echo substr ($item->description, 0, 150).".......";
+                  ?>
+                </td>
+                <td>
                   <div class="btn-opcoes-curso">
                     <?php
-                     echo anchor("Painel_Campus/lista_fotos_infraestrutura/$item->id/$item->idCampus",'Fotos da infraestrutura',array('class'=>"btn-opcoes-curso btn btn-primary")); 
-                     ?>
-                  </div>
-                  <div class="btn-opcoes-curso">
-                    <?php
-                     echo anchor("Painel_Campus/lista_fotos_infraestrutura/$item->id/$item->idCampus",'Descrição e informações da infraestrutura',array('class'=>"btn-opcoes-curso btn btn-warning")); 
+                     echo anchor("Painel_Campus/lista_fotos_infraestrutura/$item->id/$campus->id",'Fotos da infraestrutura',array('class'=>"btn-opcoes-curso btn btn-primary")); 
                      ?>
                   </div>
                 </td>
@@ -117,10 +119,7 @@
                   }
                   ?>
                 </td>
-                <td><?php echo $item->city;?></td>
-                <td>
-
-                </td>
+                <td><?php echo $campus->city;?></td>
 
                 <td>
                   <?php 
@@ -156,7 +155,8 @@
           ligados a esse item serão removidos <span class="text-danger"
             style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
-        <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
+        <p>O item selecionado é: <span class="text-info nomeItem"
+            style="font-weight: bold"><?php echo $item->title;?></span></p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
@@ -171,9 +171,8 @@
 $('#modalDelete').on('show.bs.modal', function(e) {
   var nomeItem = $(e.relatedTarget).attr('data-nome');
   var id = $(e.relatedTarget).attr('data-id');
-  console.log(id);
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_Campus/delete_indicador/$campus->id/"); ?>' + id);
+    '<?php echo base_url("Painel_Campus/deletar_infraestrutura/$campus->id/"); ?>' + id);
 });
 </script>

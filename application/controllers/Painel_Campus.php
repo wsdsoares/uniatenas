@@ -1206,27 +1206,28 @@ class Painel_campus extends CI_Controller {
         $page = $this->painelbd->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
         
         $joinCategoriasInfraestruturaCampus = array(
-            'campus' => 'campus.id = photos_category.campusid',
-            'pages' => 'pages.campusid = campus.id',
+            'campus' => 'campus.id = pages.campusid',
             'page_contents' => "page_contents.pages_id = $page->idpages",
         );
         $colunasResultadoInfraestrutura = array(
-            'campus.id as idCampus',
-            'campus.city',
+       
 
-            'photos_category.id',
-            'photos_category.title ',
-            'photos_category.type',
-            'photos_category.status',
-            'photos_category.created_at',
-            'photos_category.updated_at',
-            'photos_category.user_id',
+            'page_contents.id',
+            'page_contents.title',
+            'page_contents.description', 
+            'page_contents.img_destaque', 
+            'page_contents.pages_id', 
+            'page_contents.status', 
+            'page_contents.created_at', 
+            'page_contents.updated_at', 
+            'page_contents.user_id', 
+
         );
         $whereCategoriasInfraestrutura= array(
-            'photos_category.campusid'=>$uriCampus,
+            'pages.idpages'=>$page->idpages,
         );
         
-        $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'photos_category',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null,'photos_category.id')->result();     
+        $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'pages',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null)->result();     
 
         $data = array(
             'titulo' => 'UniAtenas',
@@ -1242,7 +1243,7 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_infraestrutura($uriCampus){
+    public function s($uriCampus){
         verificaLogin();
         
         $uriCampus = $this->uri->segment(3);
@@ -1281,36 +1282,182 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_fotos_infraestrutura($idCategoriaInfraestrutura=NULL,$uriCampus=NULL)
+
+    public function cadastrar_infraestrutura($uriCampus=NULL){
+        verificaLogin();
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $page = $this->painelbd->where('*','pages', null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
+        
+        $this->form_validation->set_rules('title', 'Nome da área', 'required');
+        $this->form_validation->set_rules('description', 'Descrição da área', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+
+            $dados_form['title'] = $this->input->post('title');
+            $dados_form['description'] = $this->input->post('description');
+            $dados_form['status'] = $this->input->post('status');
+            $dados_form['pages_id'] = $page->idpages;
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+            $dados_form['order'] = 'service';
+
+
+            if ($id=$this->painelbd->salvar('page_contents', $dados_form)) {
+                setMsg('<p>Informações da infraestrutura cadastradas com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+            } else {
+                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+            }
+        }
+        $data = array(
+            'conteudo' => 'paineladm/campus/infraestrutura/cadastrar_infraestrutura',
+            'titulo' => 'Infraestrutura - UniAtenas',
+            'dados' => array(
+                'tipo' => '',
+                'campus' => $campus,
+                'page' => "Cadastro de infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function editar_infraestrutura($idCoteudoPaginaInfraestrutura=NULL,$uriCampus=NULL){
+        verificaLogin();
+        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $page = $this->painelbd->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
+
+        $colunasPaginaInfraestrutura = array(
+            'page_contents.id',
+            'page_contents.title',
+            'page_contents.description', 
+            'page_contents.title_short', 
+            'page_contents.img_destaque', 
+            'page_contents.pages_id', 
+            'page_contents.status', 
+            'page_contents.created_at', 
+            'page_contents.updated_at', 
+            'page_contents.user_id', 
+
+        );
+        $wherePaginaInfraestrutura= array(
+            'page_contents.id'=>$idCoteudoPaginaInfraestrutura,
+        );
+        
+        $dadosInfraestrutura = $this->painelbd->where($colunasPaginaInfraestrutura,'page_contents',null,$wherePaginaInfraestrutura)->row();     
+
+        $this->form_validation->set_rules('title', 'Nome da área', 'required');
+        $this->form_validation->set_rules('description', 'Descrição da área', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+
+            if ($dadosInfraestrutura->title != $this->input->post('title')) {
+                $dados_form['title'] = $this->input->post('title');
+            }
+            if ($dadosInfraestrutura->description != $this->input->post('description')) {
+                $dados_form['description'] = $this->input->post('description');
+            }
+
+            if ($dadosInfraestrutura->status != $this->input->post('status')) {
+                $dados_form['status'] = $this->input->post('status');
+            }
+
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+            $dados_form['id'] = $dadosInfraestrutura->id;
+
+            if ($id = $this->painelbd->salvar('page_contents', $dados_form)) {
+                setMsg('<p>Informações da infraestrutura atualizada com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+            } else {
+                setMsg('<p>Erro! Erro no edição.</p>', 'error');
+                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+            }
+        }
+        $data = array(
+            'conteudo' => 'paineladm/campus/infraestrutura/editar_infraestrutura',
+            'titulo' => 'Infraestrutura - UniAtenas',
+            'dados' => array(
+                'tipo' => '',
+                'campus' => $campus,
+                'dadosInfraestrutura' => $dadosInfraestrutura,
+                'page' => "Editar infraestrutura - <strong>$dadosInfraestrutura->title <i>Campus - $campus->name ($campus->city) </i></strong>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function deletar_infraestrutura($uriCampus=NULL,$id = NULL)
+    {
+        verifica_login();
+    
+        $item = $this->painelbd->where('*','page_contents', NULL, array('page_contents.id' => $id))->row(); 
+
+        if ($this->painelbd->deletar('page_contents', $item->id)) {
+            setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+            redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+        } else {
+            setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+            redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+        }
+
+    }
+    
+   
+
+    public function lista_fotos_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL)
     {
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-        $colunaPagina = array('pages.idPages');
+        $colunaPagina = array('pages.idpages');
 
         $pagina = $this->painelbd->where($colunaPagina,'pages',Null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
 
-        $joinCategoriaInfraestruturaCampus = array(
-            'campus' => 'campus.id = photos_category.campusid',
-            'pages' => 'pages.campusid = campus.id',
-            'page_contents' => "page_contents.pages_id = $pagina->idPages",
+     
+        $colunasFotosInfraestrutura = array(
+            'photos_gallery.id',
+            'photos_gallery.id_page_contents',
+            'photos_gallery.file',
+            'photos_gallery.title',
+            'photos_gallery.status',
+            'photos_gallery.created_at',
+            'photos_gallery.updated_at',
+            'photos_gallery.user_id',
         );
-        $colunasResultadoInfraestrutura = array(
-            'photos_category.id',
-            'photos_category.title',
-        );
-        $whereCategoriaInfraestrutura= array(
-            'photos_category.id'=>$idCategoriaInfraestrutura,
+
+        $whereFotosInfraestrutura= array(
+            'photos_gallery.id_page_contents'=>$idConteudoPaginaInfraestrutura,
         );
         
-        $categoriaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'photos_category',$joinCategoriaInfraestruturaCampus,$whereCategoriaInfraestrutura, null, null,'photos_category.id')->row();         
-        $listaFotosInfraestrutura = $this->painelbd->where('*','photos_gallery',null,array('photos_gallery.photoscategoryid'=>$idCategoriaInfraestrutura))->result();     
+        $listaFotosInfraestrutura = $this->painelbd->where($colunasFotosInfraestrutura,'photos_gallery',NULL,$whereFotosInfraestrutura)->result();     
+
+        $whereInfraestrutura= array(
+            'page_contents.id'=>$idConteudoPaginaInfraestrutura,
+        );
+        $colunaInfraestrutura = array(
+            'page_contents.id',
+            'page_contents.title',
+        );
+        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();         
         
         $data = array(
             'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/lista_fotos_infra',
             'titulo' => 'Fotos da Infraestrutura',
             'dados' => array(
-                'page' => "Fotos da infraestrutura  <strong> $categoriaInfraestrutura->title <i>Campus - $campus->name ($campus->city) </i></strong>",
+                'page' => "Fotos da infraestrutura  <strong>  $categoriaInfraestrutura->title <i>Campus - $campus->name ($campus->city) </i></strong>",
                 'tipo' => 'tabelaDatatable',
                 'fotosInfraestrutura' => $listaFotosInfraestrutura,
                 'pagina'=>$pagina,
@@ -1320,16 +1467,17 @@ class Painel_campus extends CI_Controller {
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
-
-    public function cadastrar_fotos_infraestrutura($idCategoriaInfraestrutura=NULL,$uriCampus=NULL)
+    
+    public function cadastrar_fotos_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL)
     {
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-
-        $categoriaFoto = $this->painelbd->where('*','photos_category',NULL, array('photos_category.id'=>$idCategoriaInfraestrutura))->row();
-        
+       
+        $colunaInfraestrutura = array('page_contents.id','page_contents.title');
+        $whereInfraestrutura= array('page_contents.id'=>$idConteudoPaginaInfraestrutura);
+        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();         
+                
         $this->form_validation->set_rules('title', 'Título', 'required');
-        
 
         if (empty($_FILES['file'])) {
             $_FILES['file']['size'][0] = 0;
@@ -1346,7 +1494,7 @@ class Painel_campus extends CI_Controller {
             endif;
         } else {
             
-            $path = "assets/images/gallery/$campus->id/$categoriaFoto->id";
+            $path = "assets/images/gallery/$campus->id/$categoriaInfraestrutura->id";
             is_way($path);
             $number_of_files = count($_FILES['file']['name']);
             $files = $_FILES;
@@ -1365,12 +1513,12 @@ class Painel_campus extends CI_Controller {
                     $dados_form['file'] = $path . '/' . $upload['file_name']; 
                     $dados_form['title'] = $this->input->post('title');; 
                     $dados_form['status'] = $this->input->post('status');
-                    $dados_form['photoscategoryid'] = $categoriaFoto->id;
+                    $dados_form['id_page_contents'] = $categoriaInfraestrutura->id;
 
                     if ($id = $this->painelbd->salvar('photos_gallery', $dados_form)) {
                         if ($number_of_files == ($i + 1)) {
                             setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
-                            redirect("Painel_Campus/lista_fotos_infraestrutura/$categoriaFoto->id/$campus->id");
+                            redirect("Painel_Campus/lista_fotos_infraestrutura/$categoriaInfraestrutura->id/$campus->id");
                         }
                     } else {
                         setMsg('<p>Erro! A foto não pode ser cadastrada.</p>', 'error');
@@ -1386,22 +1534,26 @@ class Painel_campus extends CI_Controller {
 
         $data = array(
             'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/cadastrar_fotos_infra',
-            'titulo' => "Fotos - $categoriaFoto->title $campus->name - $campus->city",
+            'titulo' => "Fotos - $categoriaInfraestrutura->title $campus->name - $campus->city",
             'dados' => array(
                 'tipo' => '',
                 'campus' => $campus,
-                'categoriaFoto'=>$categoriaFoto,
-                'page'=> "<span>Cadastro Fotos: <strong>$categoriaFoto->title <i>$campus->name - $campus->city</i></strong></span>",
+                'categoriaFoto'=>$categoriaInfraestrutura,
+                'page'=> "<span>Cadastro Fotos: <strong> $categoriaInfraestrutura->title <i>$campus->name - $campus->city</i></strong></span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_foto_infraestrutura($idCategoriaInfraestrutura=NULL,$uriCampus=NULL,$id=NULL)
+    public function editar_foto_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL,$id=NULL)
     {
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        $categoriaFoto = $this->painelbd->where('*','photos_category',NULL, array('photos_category.id'=>$idCategoriaInfraestrutura))->row();
+        
+        $colunaInfraestrutura = array('page_contents.id','page_contents.title');
+        $whereInfraestrutura= array('page_contents.id'=>$idConteudoPaginaInfraestrutura);
+        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura)->row();         
+
         $fotoInfraestrutura = $this->painelbd->where('*','photos_gallery',null,array('photos_gallery.id'=>$id))->row();     
         
         $this->form_validation->set_rules('title', 'Título', 'required');
@@ -1422,7 +1574,7 @@ class Painel_campus extends CI_Controller {
 
             if (isset($_FILES['file']) and !empty($_FILES['file']['name'])) {
                 
-                $path = "assets/images/gallery/$campus->id/$categoriaFoto->id";
+                $path = "assets/images/gallery/$campus->id/$categoriaInfraestrutura->id";
 
                 is_way($path);
 
@@ -1449,7 +1601,7 @@ class Painel_campus extends CI_Controller {
            
             if ($this->painelbd->salvar('photos_gallery', $dados_form) == TRUE){
                 setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
-                redirect("Painel_Campus/lista_fotos_infraestrutura/$idCategoriaInfraestrutura/$campus->id");
+                redirect("Painel_Campus/lista_fotos_infraestrutura/$idConteudoPaginaInfraestrutura/$campus->id");
             }else{
                 setMsg('<p>Erro! A foto não pode ser cadastrada.</p>', 'error');
             }   
@@ -1457,13 +1609,13 @@ class Painel_campus extends CI_Controller {
 
         $data = array(
             'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/editar_fotos_infra',
-            'titulo' => "Fotos - $categoriaFoto->title $campus->name - $campus->city",
+            'titulo' => "Fotos - $categoriaInfraestrutura->title $campus->name - $campus->city",
             'dados' => array(
                 'tipo' => '',
                 'campus' => $campus,
                 'fotoInfraestrutura' => $fotoInfraestrutura,
-                'categoriaFoto'=>$categoriaFoto,
-                'page'=> "<span>Edição dados foto: <strong>$categoriaFoto->title <i>$campus->name - $campus->city</i></strong></span>",
+                'categoriaInfraestrutura'=>$categoriaInfraestrutura,
+                'page'=> "<span>Edição dados foto: <strong>$categoriaInfraestrutura->title <i>$campus->name - $campus->city</i></strong></span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);

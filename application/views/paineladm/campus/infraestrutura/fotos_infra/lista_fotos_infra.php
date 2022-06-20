@@ -3,7 +3,7 @@
       <div class="card">
         <div class="header">
           <h2>
-            Gestão de <?php echo $page; ?>
+            <?php echo $page; ?>
           </h2>
         </div>
         <div class="botoes-acoes-formularios">
@@ -20,14 +20,13 @@
             </div>
           </div>
         </div>
-
-
         <div class="body">
           <?php
-        if ($msg = getMsg()){
-          echo $msg;
-        }
-        ?>
+          
+          if ($msg = getMsg()){
+            echo $msg;
+          }
+          ?>
           <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover dataTable js-exportable">
               <thead>
@@ -57,7 +56,7 @@
                 <tr>
                   <td class="center">
                     <?php
-                    echo '<a href=' . base_url("Painel_Campus/editar_foto_infraestrutura/$categoriaInfraestrutura->id/$campus->id/$foto->id") . '>'
+                    echo '<a href=' . base_url("Painel_Campus/editar_foto_infraestrutura/$foto->id_page_contents/$campus->id/$foto->id") . '>'
                      . '<i class="material-icons">edit</i>'
                      . '</a> ';
                      
