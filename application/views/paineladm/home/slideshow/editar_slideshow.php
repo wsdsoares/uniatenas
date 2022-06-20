@@ -8,17 +8,17 @@
     <div class="card">
       <div class="header">
         <h2>
-          <?php echo 'Edição de Slide Show - Página Inicial'; ?>
+          <?php echo $page; ?>
         </h2>
       </div>
       <div class="body">
         <?php
-                if ($msg = getMsg()):
-                    echo $msg;
-                endif;
-                ?>
+        if ($msg = getMsg()){
+            echo $msg;
+        }
+        ?>
 
-        <?php echo form_open_multipart('Painel_home/editarSlideshow/' . $slideshow->id) ?>
+        <?php echo form_open_multipart('Painel_home/editarSlideshow/'.$campus->id.'/'. $slideshow->id) ?>
         <h2 class="card-inside-title">Informações</h2>
         <div class="row clearfix">
           <div class="col-sm-6">
@@ -26,57 +26,12 @@
               <div class="form-line">
                 <label for="title">Título *</label>
                 <?php
-                                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title', $slideshow->title));
-                                ?>
+                  echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title', $slideshow->title));
+                  ?>
               </div>
             </div>
 
           </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <div class="form-line">
-                <label for="title">Texto Breve <small> (Máximo 55 caracteres)</small> *</label>
-                <?php
-                                echo form_input(array('name' => 'briefText', 'class' => 'form-control', 'placeholder' => 'Texto Breve (máximo 55 caracteres)'), set_value('briefText', $slideshow->briefText));
-                                ?>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row clearfix">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <div class="form-line">
-                <label for="campusid">Local Campus</label>
-                <?php
-                                foreach ($locaisCampus as $local) {
-                                    $optionLocal[0] = 'Selecione o campus';
-                                    $optionLocal[$local->id] = $local->name . ' - ' . $local->city;
-                                }
-                                echo form_dropdown('campusid', $optionLocal, set_value('campusid'), array('class' => 'form-control show-tick', 'id' => 'idcampus'));
-
-                                ?>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="form-group">
-              <div class="form-line">
-                <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
-                <?php
-                                $optionSituation = array(
-                                    '1' => 'Visível - Ativo',
-                                    '0' => 'Oculto - Inativo'
-                                );
-                                echo form_dropdown('status', $optionSituation, set_value('status', $slideshow->status), array('class' => 'form-control show-tick'));
-                                ?>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row clearfix">
           <div class="col-md-3">
             <label for="title">Data Início</label>
             <div class="input-group">
@@ -85,8 +40,9 @@
               </span>
               <div class="form-line">
                 <?php
-                                echo form_input(array('name' => 'dataInicio', 'type' => 'date', 'class' => 'form-control', '30/07/2016"'), set_value('date_start'));
-                                ?>
+                  echo $dataInicio = isset($slideshow->datestart) ? date('d/m/Y',strtotime($slideshow->datestart)) : '';
+                  echo form_input(array('name' => 'datestart', 'type' => 'date', 'class' => 'form-control'), set_value('datestart'));
+                  ?>
               </div>
             </div>
           </div>
@@ -98,22 +54,23 @@
               </span>
               <div class="form-line">
                 <?php
-                                echo form_input(array('name' => 'dataFim', 'type' => 'date', 'class' => 'form-control'), set_value('datee_end'));
-                                ?>
+                  echo $dataTermino = isset($slideshow->dateend) ? date('d/m/Y',strtotime($slideshow->dateend)) : '';
+                  echo form_input(array('name' => 'dateend', 'type' => 'date', 'class' => 'form-control'), set_value('datee_end'));
+                  ?>
               </div>
             </div>
           </div>
-
-
         </div>
+
+
         <div class="row clearfix">
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Arquivo Atual</label>
                 <?php
-                                echo form_input(array('name' => 'fileatual', 'class' => 'form-control', 'placeholder' => 'Texto breve', 'readonly' => 'readonly'), set_value('fileatual', $slideshow->files));
-                                ?>
+                echo form_input(array('name' => 'fileatual', 'class' => 'form-control', 'placeholder' => 'Texto breve', 'readonly' => 'readonly'), set_value('fileatual', $slideshow->files));
+                ?>
               </div>
             </div>
           </div>
@@ -130,13 +87,14 @@
                             ?>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-offset-6 col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label for="campusid">Ordem <small> - Exibido na página inicial</small></label>
-                <?php
-                                echo form_dropdown('priority', 'Selecione uma ordem', set_value('priority'), array('class' => 'form-control show-tick', 'id' => 'selectOrder'));
-                                ?>
+                <label for="priority">Ordem <small> (Exibido na página inicial)</small>
+                  <br /><small>A ordem será sequencial. Ex.:1 (primeiro), 2 (segundo), etc... </small></label>
+                <?php 
+                echo form_input(array('name' => 'priority', 'type' => 'number', 'class' => 'form-control'), set_value('priority',$slideshow->priority)); 
+                ?>
               </div>
             </div>
           </div>
@@ -168,8 +126,24 @@
               </span>
               <div class="form-line">
                 <?php
-                                echo form_input(array('name' => 'linkRedir', 'class' => 'form-control', 'placeholder' => 'Link Completo da página a ser redirecionada'), set_value('linkRedir'));
-                                ?>
+                  echo form_input(array('name' => 'linkRedir', 'class' => 'form-control', 'placeholder' => 'Link Completo da página a ser redirecionada'), set_value('linkRedir'));
+                  ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
+                <?php
+                  $optionSituation = array(
+                      '1' => 'Visível - Ativo',
+                      '0' => 'Oculto - Inativo'
+                  );
+                  echo form_dropdown('status', $optionSituation, set_value('status', $slideshow->status), array('class' => 'form-control show-tick'));
+                  ?>
               </div>
             </div>
           </div>
@@ -177,16 +151,16 @@
         <div class="row clearfix">
           <div class="col-sm-6">
             <?php
-                        echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
-                        echo anchor('Painel_home/slideshow', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
+            echo anchor("Painel_home/slideshow/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
-                        ?>
+            ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
 
       </div>
     </div>

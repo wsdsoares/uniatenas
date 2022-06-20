@@ -337,6 +337,35 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
+    public function deletar_campus($id)
+    {
+        verifica_login();
+        
+        $item = $this->painelbd->where('*','campus', NULL, array('campus.id' => $id))->row();
+
+        if (file_exists($item->logo)) {
+            unlink($item->logo);
+        }
+        if (file_exists($item->logoBranca)) {
+            unlink($item->logoBranca);
+        }
+        if (file_exists($item->iconeCampus)) {
+            unlink($item->iconeCampus);
+        }
+        if (file_exists($item->backgroundPrincipal)) {
+            unlink($item->backgroundPrincipal);
+        }
+
+        if ($this->painelbd->deletar('campus_indicadores', $id)) {
+            setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+            redirect("Painel_Campus/lista_campus");
+        } else {
+            setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+            redirect("Painel_Campus/lista_indicadores");
+        }
+
+    }
+
     /*************************************************************************
      * Botões de acesso rápido - Página dos campus - Segunda Página
      * Página: www.atenas.edu.br/uniatenas/NOME_DO_CAMPUS

@@ -60,11 +60,11 @@
                   echo '<a href=' . base_url("Painel_Campus/editar_campus/$campus->id") . '>'
                       . '<i class="material-icons">edit</i>'
                       . '</a> ';
-                          /*          echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
-                                        . '<i class="material-icons">delete</i>'
-                                        . '</a>';
+                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $campus->name . '" data-id="' . $campus->id . '" >'
+                          . '<i class="material-icons">delete</i>'
+                          . '</a>';
 
-                                    $redirect = 'Painel_home-slideshow';
+                        /*            $redirect = 'Painel_home-slideshow';
                                     $table = 'banners';
 
                                     if ($campus->status == 1) {
@@ -155,9 +155,8 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
+  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_campus/deletar_campus/"); ?>' + id);
 
-  console.log()
 
 });
 </script>

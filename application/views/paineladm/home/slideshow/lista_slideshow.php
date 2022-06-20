@@ -69,7 +69,7 @@
                 <td class="center">
                   <?php
 
-                                    echo '<a href=' . base_url("Painel_home/editarSlideShow/$item->id") . '>'
+                                    echo '<a href=' . base_url("Painel_home/editarSlideShow/$campus->id/$item->id") . '>'
                                         . '<i class="material-icons">edit</i>'
                                         . '</a> ';
                                     echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
@@ -90,33 +90,38 @@
                 </td>
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->title; ?></td>
-                <td><?php
-                                    if($item->status ==0){
-                                        $situacao = 'Inativo';
-                                    }else{
-                                        $situacao = 'Ativo';
-                                    }
-
-                                    echo $situacao.' - '.$item->status;
-                                    ?></td>
-                <td><?php
-
-                                    echo $item->nameCampus . ' ' . $item->city;
-                                    ?></td>
                 <td>
                   <?php
-                                    echo anchor(base_url(verifyImg($item->files)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
-                                    ?>
+                  if($item->status ==0){
+                    echo 'Inativo';
+                  }else{
+                    echo 'Ativo';
+                  }
+
+                  ?>
                 </td>
-                <td><?php
-                                    $item->datestart = !empty($item->datestart) ? $item->datestart : 'Não Definido';
-                                    $item->dateend = !empty($item->dateend) ? $item->dateend : 'Não Definido';
-                                    echo '<b><i>Início:</i></b> <small>' . $item->datestart . '</small><br/>' . '<b><i>Término</i></b> <small>' . $item->dateend . '</small>';
-                                    ?></td>
-                <td><?php
-                                    $dateModification = empty($item->datemodified) ? $item->datecreated : $item->datemodified;
-                                    echo $dateModification . ' - ' . $item->usersid;
-                                    ?>
+                <td>
+                  <?php
+                  echo $item->nameCampus . ' ' . $item->city;
+                  ?>
+                </td>
+                <td>
+                  <?php
+                  echo anchor(base_url(verifyImg($item->files)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
+                  ?>
+                </td>
+                <td>
+                  <?php
+                  $item->datestart = !empty($item->datestart) ? $item->datestart : 'Não Definido';
+                  $item->dateend = !empty($item->dateend) ? $item->dateend : 'Não Definido';
+                  echo '<b><i>Início:</i></b> <small>' . $item->datestart . '</small><br/>' . '<b><i>Término</i></b> <small>' . $item->dateend . '</small>';
+                  ?>
+                </td>
+                <td>
+                  <?php
+                  $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
+                  echo $dateModification . ' - ' . $item->user_id;
+                  ?>
                 </td>
 
               </tr>
@@ -145,7 +150,9 @@
           ligados a esse item serão removidos <span class="text-danger"
             style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
-        <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
+
+        <p>O item selecionado é: <span class="text-info nomeItem"
+            style="font-weight: bold"><?php echo $item->title;?></span></p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
@@ -162,9 +169,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
-
-  console.log()
-
+  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/$campus->id/"); ?>' +
+    id);
 });
 </script>
