@@ -86,7 +86,7 @@ $permissionCampusArray = '';
             </li>
             <li>
               <?php
-                echo anchor('Painel_campus/lista_campus_infraestrutura', '<span>Infraestrutura Campus</span>');
+                echo anchor('Painel_cpa/lista_campus_cpa', '<span>CPA <small> <strong>(Comissão Própria de Avaliação)</strong></small></span>');
               ?>
             </li>
           </ul>

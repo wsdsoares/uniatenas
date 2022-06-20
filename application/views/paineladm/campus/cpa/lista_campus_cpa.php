@@ -30,7 +30,7 @@
                 <h4 class="card-title"><?php echo $item->name.'<br/> '.$item->city.'('.$item->uf.')'; ?></h4>
 
                 <?php
-                echo anchor('Painel_graduacao/lista_cursos/' . $item->id.'/presencial', '<span>Ver cursos</span>','class="btn btn-lg btn-block btn-info"');
+                echo anchor('Painel_cpa/lista_dados_cpa/' . $item->id, '<span>Ver dados CPA</span>','class="btn btn-lg btn-block btn-info"');
                 ?>
               </div>
             </div>
