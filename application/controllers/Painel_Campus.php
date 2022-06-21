@@ -1204,8 +1204,6 @@ class Painel_campus extends CI_Controller {
             'page_contents' => "page_contents.pages_id = $page->idpages",
         );
         $colunasResultadoInfraestrutura = array(
-       
-
             'page_contents.id',
             'page_contents.title',
             'page_contents.description', 
@@ -1237,44 +1235,44 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function s($uriCampus){
-        verificaLogin();
+    // public function s($uriCampus){
+    //     verificaLogin();
         
-        $uriCampus = $this->uri->segment(3);
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+    //     $uriCampus = $this->uri->segment(3);
+    //     $colunasCampus = array('campus.id','campus.name','campus.city');
+    //     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
    
-        $this->form_validation->set_rules('title', 'Nome da área', 'required');
+    //     $this->form_validation->set_rules('title', 'Nome da área', 'required');
 
-        if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
-                setMsg(validation_errors(), 'error');
-            endif;
-        } else {
-            $dados_form = elements(array('title','status'), $this->input->post());
+    //     if ($this->form_validation->run() == FALSE) {
+    //         if (validation_errors()):
+    //             setMsg(validation_errors(), 'error');
+    //         endif;
+    //     } else {
+    //         $dados_form = elements(array('title','status'), $this->input->post());
 
-            $dados_form['user_id'] = $this->session->userdata('codusuario');
-            $dados_form['updated_at'] = date('Y-m-d H:i:s');
-            $dados_form['campusid'] = $campus->id;
-            if ($id = $this->painelbd->salvar('photos_category', $dados_form)) {
-                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
-            } else {
-                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
-                redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
-            }
-        }
-        $data = array(
-            'conteudo' => 'paineladm/campus/infraestrutura/cadastrar_infraestrutura',
-            'titulo' => 'Infraestrutura - UniAtenas',
-            'dados' => array(
-                'tipo' => '',
-                'campus' => $campus,
-                'page' => "Cadastro da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-            )
-        );
-        $this->load->view('templates/layoutPainelAdm', $data);
-    }
+    //         $dados_form['user_id'] = $this->session->userdata('codusuario');
+    //         $dados_form['updated_at'] = date('Y-m-d H:i:s');
+    //         $dados_form['campusid'] = $campus->id;
+    //         if ($id = $this->painelbd->salvar('photos_category', $dados_form)) {
+    //             setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+    //             redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+    //         } else {
+    //             setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+    //             redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
+    //         }
+    //     }
+    //     $data = array(
+    //         'conteudo' => 'paineladm/campus/infraestrutura/cadastrar_infraestrutura',
+    //         'titulo' => 'Infraestrutura - UniAtenas',
+    //         'dados' => array(
+    //             'tipo' => '',
+    //             'campus' => $campus,
+    //             'page' => "Cadastro da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+    //         )
+    //     );
+    //     $this->load->view('templates/layoutPainelAdm', $data);
+    // }
 
 
     public function cadastrar_infraestrutura($uriCampus=NULL){
@@ -1409,7 +1407,6 @@ class Painel_campus extends CI_Controller {
 
     }
     
-   
 
     public function lista_fotos_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL)
     {
