@@ -96,7 +96,7 @@ class Graduacao extends CI_Controller
             'dados' => array(
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
-                'menuComoIngressar'=> isset($listaItensMenuComoIngressar) ? $listaItensMenuComoIngressar : '';
+                'menuComoIngressar'=> isset($listaItensMenuComoIngressar) ? $listaItensMenuComoIngressar : ''
             )
         );
         $this->output->cache(14.400);

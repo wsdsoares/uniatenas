@@ -214,7 +214,7 @@ class Site extends CI_Controller
 
         $data = array(
             'head' => array(
-                'title' => 'Notícias - UniAtenas ' . $city,
+                'title' => 'Notícias - UniAtenas ' . $dataCampus->city,
             ),
             'conteudo' => 'uniatenas/noticias/principal',
             'footer' => '',
@@ -259,7 +259,7 @@ class Site extends CI_Controller
 
         $data = array(
             'head' => array(
-                'title' => 'Visualizar Notícias - UniAtenas ' . $city,
+                'title' => 'Visualizar Notícias - UniAtenas ' . $dataCampus->city,
                 'specific_CSS' => 'assets/plugins/lightbox/dist/css/lightbox.min.css'
             ),
             'conteudo' => 'uniatenas/noticias/ver_noticia',
@@ -450,7 +450,7 @@ class Site extends CI_Controller
         $catArray['fotos'] = $this->bancosite->getWhere('photos_gallery', array('photoscategoryid' => $Category->id), null)->result();
         $data = array(
             'head' => array(
-                'title' => 'Galeira - UniAtenas ' . $city,
+                'title' => 'Galeira - UniAtenas ' . $dataCampus->city,
                 'css' => base_url('assets/css/css_course/style-course.css')
             ),
             'conteudo' => "uniatenas/galeriaFotos/fotosGaleria",
@@ -644,15 +644,6 @@ class Site extends CI_Controller
         if ($uricampus == null) {
             redirect("");
         }
-        // if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valença";
-        // }
 
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
         $page = $this->bancosite->getWhere('pages', array('title' => 'npa'))->row();
@@ -668,14 +659,14 @@ class Site extends CI_Controller
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
         $data = array(
             'head' => array(
-                'title' => 'NPA - ' . $city,
+                'title' => 'NPA - ' . $dataCampus->city,
             ),
             'conteudo' => 'uniatenas/npa/principal',
             'footer' => '',
             'menu' => '',
             'js' => null,
             'dados' => array(
-                'city' => $city,
+                'city' => $dataCampus->city,
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
             )
@@ -694,16 +685,7 @@ class Site extends CI_Controller
         if ($uricampus == null) {
             redirect("");
         }
-        // if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valença";
-        // }
-
+       
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'npas'))->row();
@@ -726,7 +708,7 @@ class Site extends CI_Controller
             'menu' => '',
             'js' => null,
             'dados' => array(
-                'city' => $city,
+                'city' => $dataCampus->city,
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
             )
@@ -745,15 +727,6 @@ class Site extends CI_Controller
         if ($uricampus == null) {
             redirect("");
         }
-        // if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valença";
-        // }
 
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
         
@@ -879,16 +852,7 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        // if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valença";
-        // }
-
+      
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
@@ -976,17 +940,7 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
         $this->form_validation->set_rules('email', 'E-mail', 'valid_email|required');
@@ -1132,7 +1086,7 @@ and revistas.id =$id;
 
         $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
-        //$dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        //$dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $dataCampus->id))->row();
         
@@ -1192,18 +1146,7 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        //DELETAR if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valença";
-        // }
-
-        // $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
-        $dataCampus = $this->bancosite->getWhere('campus', array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'nossaHistoria', 'campusid' => $dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'status' => 1))->result();
@@ -1232,16 +1175,6 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        // if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valença";
-        // }
-        //$dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
         
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
@@ -1321,21 +1254,8 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-            $tipocampus = 'Uniatenas ' . $city;
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-            $tipocampus = 'Faculdade Atenas ' . $city;
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-            $tipocampus = 'Faculdade Atenas ' . $city;
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-            $tipocampus = 'Faculdade Atenas ' . $city;
-        }
 
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'trabalheconosco', 'campusid' => $dataCampus->id))->row();
 
@@ -1354,7 +1274,7 @@ and revistas.id =$id;
 
         $data = array(
             'head' => array(
-                'title' => 'Trabalhe Conosco - ' . $tipocampus,
+                'title' => 'Trabalhe Conosco - ' . $dataCampus->city,
             ),
             'conteudo' => 'uni_trabalheConosco/inicio',
             'menu' => '',
@@ -1378,19 +1298,7 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-        }
-
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city, 'visible' => 'SIM'))->row();
-
+        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus,'visible' => 'SIM'))->row();
         $this->load->helper('file');
 
         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
@@ -1791,18 +1699,7 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
-
+        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $data = array(
             'head' => array(
@@ -1825,22 +1722,7 @@ and revistas.id =$id;
 
     public function comunicados($uricampus = NULL)
     {
-
-
-        if ($uricampus == null) {
-            redirect("");
-        }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $data = array(
             'head' => array(
@@ -1863,17 +1745,8 @@ and revistas.id =$id;
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        
+        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $data = array(
             'head' => array(
@@ -1897,21 +1770,7 @@ and revistas.id =$id;
     public function telefones($uricampus = 'paracatu')
     {
 
-
-        if ($uricampus == null) {
-            redirect("");
-        }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valença";
-        }
-
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $field = array('contatos_setores.id', 'contatos_setores.responsible', 'contatos_setores.ramal', 'contatos_setores.phone', 'setores.nome');
         $table = 'contatos_setores';

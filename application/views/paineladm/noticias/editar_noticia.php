@@ -13,46 +13,36 @@ $id = $this->uri->segment(3);
       </div>
       <div class="body">
         <?php
-                if ($msg = get_msg()):
-                    echo $msg;
-                endif;
-                ?>
+          if ($msg = get_msg()){
+            echo $msg;
+          }
+          ?>
         <?php
-                echo form_open_multipart('Painel_noticias/editar_noticia/'.$id);
-                ?>
-
+        echo form_open_multipart('Painel_noticias/editar_noticia/'.$campus->id.'/'.$news->id);
+        ?>
         <div class="row clearfix">
-        </div>
-        <div class="row clearfix">
-          <div class="col-sm-12">
+          <div class="col-sm-7">
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Título</label>
                 <?php
-                                echo form_input(array('name' => "title", 'type' => 'text', 'class' => 'form-control', 'placeholder' => 'Titúlo da notícia'), set_value('title', toHtml($news->title)), 'autofocus required');
-                                ?>
+                echo form_input(array('name' => "title", 'type' => 'text', 'class' => 'form-control', 'placeholder' => 'Titúlo da notícia'), set_value('title', toHtml($news->title)), 'autofocus required');
+                ?>
               </div>
             </div>
           </div>
-        </div>
-        <div class="row clearfix">
-          <div class="col-sm-3">
-            <label for="campusid">Campus</label>
-            <?php echo form_input(array('name' => "campusid", 'type' => 'text', 'class' => 'form-control', 'readonly' => 'readonly'), set_value('campusid', $campus->city), );?>
-
-          </div>
-
-
           <div class="col-sm-5">
             <div class="form-group">
               <div class="form-line">
                 <label for="keywords">Palavras-chave </label><small>Ex. (Educação; Evento; UniAtenas;)</small>
                 <?php
-                                echo form_input(array('name' => "keywords", 'type' => 'text', 'class' => 'form-control', 'placeholder' => 'Coloque as palavras chave separadas por ponto e vírgula'), set_value('keywords', $news->keywords), 'required');
-                                ?>
+                echo form_input(array('name' => "keywords", 'type' => 'text', 'class' => 'form-control', 'placeholder' => 'Coloque as palavras chave separadas por ponto e vírgula'), set_value('keywords', $news->keywords));
+                ?>
               </div>
             </div>
           </div>
+        </div>
+        <div class="row clearfix">
           <div class="col-md-2">
             <label for="title">Data Início *</label>
             <div class="input-group">
@@ -61,11 +51,12 @@ $id = $this->uri->segment(3);
               </span>
               <div class="form-line">
                 <?php
-                                echo form_input(array('name' => 'datestart', 'type' => 'date', 'class' => 'form-control'), set_value('datestart',date("Y-m-d",strtotime($news->datestart))));
-                                ?>
+                echo form_input(array('name' => 'datestart', 'type' => 'date', 'class' => 'form-control'), set_value('datestart',date("Y-m-d",strtotime($news->datestart))));
+                ?>
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="row clearfix">
@@ -94,8 +85,8 @@ $id = $this->uri->segment(3);
 
         <div class="col-sm-12">
           <?php
-                    echo form_textarea('description', to_html(set_value('description', toHtml($news->description))));
-                    ?>
+          echo form_textarea('description', to_html(set_value('description', toHtml($news->description))));
+          ?>
         </div>
         <script type="text/javascript">
         // replace: substitui o formato padrão do textarea (descricao)
@@ -110,17 +101,17 @@ $id = $this->uri->segment(3);
           <div class="col-md-12">
             <?php echo form_submit(array('name' => 'submit', 'class' => 'btn btn-lg btn-primary m-t-15 m-r-15 waves-effect'), 'SALVAR'); ?>
             <?php
-                        echo anchor('Painel_noticias/noticias', '
-                            <i class = "material-icons">
-                            assignment_return
-                            </i> <span>Voltar</span>', array('class' => 'btn btn-warning m-t-15 waves-effect'));
-                        ?>
+            echo anchor("Painel_noticias/noticias/$campus->id", '
+                <i class = "material-icons">
+                assignment_return
+                </i> <span>Voltar</span>', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>

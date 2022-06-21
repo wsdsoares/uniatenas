@@ -65,7 +65,7 @@
                   <?php
                     echo anchor("Painel_noticias/editar_noticia/$campus->id/$noticia->id", '<i class="material-icons">edit</i>');
 
-                    echo anchor("site/ver_noticia/$campus->shurtName/$noticia->id", '<i class="material-icons">search</i>', array('title' => "Ver noticia", "target" => "_blank"));
+                    echo anchor(base_url("site/ver_noticia/$campus->shurtName/$noticia->id"), '<i class="material-icons">search</i>', array('title' => "Ver noticia", "target" => "_blank"));
                     echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $noticia->title . '" data-id="' . $noticia->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
@@ -141,6 +141,6 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   console.log(id);
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_noticias/delete_noticas/$campus->id/"); ?>' + id);
+    '<?php echo base_url("Painel_noticias/deletar_noticia/$campus->id/"); ?>' + id);
 });
 </script>

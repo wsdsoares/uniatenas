@@ -45,11 +45,10 @@ class Painel_noticias extends CI_Controller
     }
 
 
-    public function noticias()
+    public function noticias($uriCampus)
     {
         verificaLogin();
 
-        $uriCampus = $this->uri->segment(3);
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf','campus.shurtName');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
         
@@ -80,14 +79,6 @@ class Painel_noticias extends CI_Controller
 
         $this->form_validation->set_rules('title', 'Título', 'required');
         $this->form_validation->set_rules('keywords', 'Palavras-chave', 'required');
-        $this->form_validation->set_rules('datestart', 'Data início da exibição', 'required');
-
-        if ($this->input->post('campusid') == '0') {
-            $this->form_validation->set_rules('campusid', 'Campus', 'select_validate');
-            $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um campus.');
-        } else {
-            $this->form_validation->set_rules('campusid', 'Campus');
-        }
 
         if (empty($_FILES['files']['name'])) {
             $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
@@ -122,13 +113,19 @@ class Painel_noticias extends CI_Controller
             $result = $this->painelbd->getQuery("Select max(id) as id from news")->row();
             $maxId = $result->id + 1;
 
-            if (is_dir(FCPATH . "/assets/images/news/n$maxId")) {
-                $path = "assets/images/news/n$maxId";
+            if (is_dir(FCPATH . "/assets/images/news/campus$campus->id/n$maxId")) {
+                $path = "assets/images/news/campus$campus->id/n$maxId";
             } else {
-                mkdir(FCPATH . "/assets/images/news/n$maxId", 0777, true);
-                $path = "assets/images/news/n$maxId";
+                mkdir(FCPATH . "/assets/images/news/campus$campus->id/n$maxId", 0777, true);
+                $path = "assets/images/news/campus$campus->id/n$maxId";
             }
-            $dados_form = elements(array('title', 'campusid', 'keywords','datestart'), $this->input->post());
+            $dados_form = elements(array('title', 'keywords'), $this->input->post());
+
+            if($this->input->post('datestart')){
+                $dados_form['datestart'] = $this->input->post('datestart');
+            }else{
+                $dados_form['datestart'] = date('Y-m-d H:i:s');
+            }
 
             $upload = $this->painelbd->uploadFiles('files', $path, $types = 'jpg|png|jpeg', 'capa_' . $name_tmp);
 
@@ -140,7 +137,8 @@ class Painel_noticias extends CI_Controller
 
                 $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
                 $dados_form['url_youtube'] = NULL;
-                $dados_form['campusid'] = $campus->id;
+                $dados_form['campusid'] = $campus->id; 
+                $dados_form['campusid'] = $campus->id; 
                 $dados_form['status'] = 1;
 
                 $dados_form['description'] = toBd($this->input->post('description'));
@@ -177,31 +175,15 @@ class Painel_noticias extends CI_Controller
         verificaLogin();
         $this->load->helper('file');
 
-        if (empty($idNoticia)) {
-            redirect("Painel_noticias/noticias/$uriCampus");
-        }
-        $uriCampus = $this->uri->segment(3);
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf','campus.shurtName');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
         
-        //$listaNoticias = $this->painelbd->getWhere('news', NULL, array('campo' => 'id', 'ordem' => 'desc'))->result();
         $news = $this->painelbd->where('*','news',NULL,array('news.id'=>$idNoticia),array('campo' => 'id', 'ordem' => 'desc'))->row();
 
-        // $news = $this->painelbd->getWhere('news', array('id' => $id))->row();
-
-        $path = "assets/images/news/n" . $news->id;
+       
 
         $this->form_validation->set_rules('title', 'Título', 'required');
         $this->form_validation->set_rules('keywords', 'Palavras-chave', 'required');
-        $this->form_validation->set_rules('datestart', 'Data início da exibição', 'required');
-
-        if ($this->input->post('campusid') == '0') {
-            $this->form_validation->set_rules('campusid', 'Campus', 'select_validate');
-            $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um campus.');
-        } else {
-            $this->form_validation->set_rules('campusid', 'Campus');
-        }
-
         $this->form_validation->set_rules('description', 'Texto da Matéria', 'required');
 
         if ($this->form_validation->run() == FALSE) {
@@ -209,97 +191,58 @@ class Painel_noticias extends CI_Controller
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-
+            $path = "assets/images/news/campus$campus->id/n".$news->id;
             //depois da validação cria apenas um dados - Elements
             $dados_form = elements(array('title', 'campusid', 'keywords','datestart'), $this->input->post());
             $description = $this->input->post('description');
             $user = $this->session->userdata('codusuario');
 
             if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
-
-
                 is_way($path);
-
                 $name_tmp =  noAccentuation($this->input->post('keywords'),'capa');
 
-                $upload = $this->painelbd->uploadFiles('files', $path, $types = 'jpg|png|jpeg', $name_tmp);
+                $upload = $this->painelbd->uploadFiles('files', $path, $types = 'jpg|png|jpeg|PNG|JPEG|JPG', $name_tmp);
 
                 if ($upload) {
-                    $dados_form['usersid'] = $user;
-                    $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
-                    $dados_form['url_youtube'] = NULL;
-
-                    $dados_form['status'] = 1;
-                    $dados_form['datemodified'] = date('Y-m-d H:i:s');
-                    $dados_form['id'] = $news->id;
-                    $dados_form['description'] = toBd($this->input->post('description'));
-                    if ($id = $this->painelbd->salvar('news', $dados_form)) {
-                        setMsg('<p>Notícia editada com sucesso.</p>', 'success');
-                        redirect("Painel_noticias/noticias/$campus->id");
-                    } else {
-                        setMsg('<p>Erro! A notícia não pode ser editada.</p>', 'error');
-                        redirect("Painel_noticias/noticias/$campus->id");
-                    }
+                    $dados_form['img_destaque'] = $path.'/'.$upload['file_name'];
                 } else {
                     //erro no upload
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
                 }
+            }
+
+            if ($this->input->post('title')) {
+                $dados_form['title'] = $this->input->post('title');
+            }
+
+            if ($this->input->post('datestart')) {
+                $dados_form['datestart'] = $this->input->post('datestart');
+            }
+
+            if ($this->input->post('keywords')) {
+                $dados_form['keywords'] = $this->input->post('keywords');
+            }
+            if ($this->input->post('description')) {
+                $dados_form['description'] = $this->input->post('description');
+            }
+            if ($this->input->post('url_youtube')) {
+                $dados_form['url_youtube'] = $this->input->post('url_youtube');
+            }
+
+            $dados_form['status'] = $this->input->post('status');
+            $dados_form['datemodified'] = date('Y-m-d H:i:s');
+            $dados_form['user_id'] = $user;
+            $dados_form['campusid'] = $campus->id;
+            $dados_form['id'] = $news->id;
+
+            if ($id = $this->painelbd->salvar('news', $dados_form)) {
+                setMsg('<p>Notícia editada com sucesso.</p>', 'success');
+                redirect("Painel_noticias/noticias/$campus->id");
             } else {
-
-                if ($news->title == $dados_form['title'] and
-                    $news->keywords == $dados_form['keywords'] and
-                    $news->campusid == $dados_form['campusid'] and
-                    $news->campusid == $dados_form['datestart'] and
-                    $news->description == toBd($description)) {
-                    setMsg('<img src="' . base_url('assets/images/icons/wait.png') . '" alt=""><br><p>Atenção! <br>Você não modificou nehuma informação!.</p>', 'alert');
-                    redirect(current_url());
-                } else {
-
-                    if ($news->keywords != $dados_form['keywords']) {
-                        $name_tmp = noAccentuation($dados_form['keywords'],'capa');
-                        $ext = pathinfo($path . '/' . $news->img_destaque, PATHINFO_EXTENSION);
-                        rename("$news->img_destaque", "$path/$name_tmp.$ext");
-                        $novaimg = "$path/$name_tmp.$ext";
-                    }
-
-
-                    if(isset($novaimg)){
-                        $dados_form['img_destaque'] = $novaimg;
-                    }
-
-                    $dados_form['datemodified'] = date('Y-m-d H:i:s');
-
-                    if ($news->title != $this->input->post('title')) {
-                        $dados_form['title'] = $this->input->post('title');
-                    }
-
-                    if ($news->title != $this->input->post('datestart')) {
-                        $dados_form['datestart'] = $this->input->post('datestart');
-                    }
-
-                    if ($news->campusid != $this->input->post('campusid')) {
-                        $dados_form['campusid'] = $this->input->post('campusid');
-                    }
-                    if ($news->keywords != $this->input->post('keywords')) {
-                        $dados_form['keywords'] = $this->input->post('keywords');
-                    }
-                    if ($news->description != toBd($description)) {
-                        $dados_form['description'] = toBd($this->input->post('description'));
-                    }
-
-                    $dados_form['usersid'] = $user;
-                    $dados_form['status'] = '1';
-                    $dados_form['id'] = $news->id;
-
-                    if ($this->painelbd->salvar('news', $dados_form) == TRUE):
-                        setMsg('<p>Publicação editada com sucesso.</p>', 'success');
-                        redirect('Painel_noticias/noticias');
-                    else:
-                        setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
-                    endif;
-                }
+                setMsg('<p>Erro! A notícia não pode ser editada.</p>', 'error');
+                redirect("Painel_noticias/noticias/$campus->id");
             }
         }
         $data = array(
@@ -308,6 +251,7 @@ class Painel_noticias extends CI_Controller
             'dados' => array(
                 'tipo' => '',
                 'news' => $news,
+                'page'=> "<span>Edição de Notícia: <strong><i> $campus->name - $campus->city</i></strong></span>",
                 'campus' => $campus
             )
         );
@@ -315,7 +259,7 @@ class Painel_noticias extends CI_Controller
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function delete_noticas($uriCampus=NULL,$id)
+    public function deletar_noticia($uriCampus=NULL,$id)
     {
         verifica_login();
         
@@ -324,32 +268,27 @@ class Painel_noticias extends CI_Controller
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-        $id=$this->uri->segment(4);
-        $slideold = $this->painelbd->getWhere('news', array('id' => $id))->row();
+        $item = $this->painelbd->getWhere('news', array('id' => $id))->row();
 
 
-        $origem = $slideold->img_destaque;
+        $origem = $item->img_destaque;
         $nome = explode('/', $origem);
         $nome = end($nome);
 
-        $destino = "assets/delete/news/n".$id;
+        $destino = "assets/delete/images/news/campus$campus->id/n".$id;
         is_way($destino);
         $destino = $destino . $nome;
 
-
         if(copy($origem,$destino)|| $nome == '<') {
-            if ($this->bd->deletar('news', $id)) {
-                setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-                redirect("Painel_noticias/noticias/$campus->id");
-            } else {
-                setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-                redirect("Painel_noticias/noticias/$campus->id");
-            }
-        }else{
-            setMsg('<p>Erro! Ao passar arquivo de Bckp</p></br><p>Arquivo foi não deletado</p>', 'error');
+
+        }
+        if ($this->bd->deletar('news', $id)) {
+            setMsg('<p>A notícia foi deletada com sucesso.</p>', 'success');
+            redirect("Painel_noticias/noticias/$campus->id");
+        } else {
+            setMsg('<p>Erro! A notícia foi não deletada.</p>', 'error');
             redirect("Painel_noticias/noticias/$campus->id");
         }
-
     }
 
     public function verFotos($campusId=NULL,$id)
