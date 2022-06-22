@@ -70,9 +70,14 @@ div.homeInicio a:hover {
     <div class="container ">
       <div class="row">
         <?php
+        echo '<pre>';
+        //print_r($dados['lista_botoes_acesso']);
+        echo '</pre>';
           foreach($dados['lista_botoes_acesso'] as $botao)
           {
-            echo anchor($botao->link_redirecionamento, '
+            $linkBotao = isset($botao->arquivo) ? $botao->arquivo: $botao->link_redirecionamento;
+            $target = isset($botao->arquivo) ? array('target'=>'_blank') : '';
+            echo anchor($linkBotao, '
               <div class="col-sm-3 col-md-2 justify-content-sm-center botoes"
                 style="background:'.$botao->cor_hexadecimal.'">
                 <div class="card">
@@ -82,7 +87,7 @@ div.homeInicio a:hover {
                   </div>
                 </div>
               </div>
-            ', array('class' => 'text-center'));
+            ', array('class' => 'text-center',$target));
            }
         ?>
       </div>
