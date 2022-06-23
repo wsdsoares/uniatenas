@@ -19,13 +19,9 @@
   vertical-align: top;
 }
 
-/* Footer left */
-
 .footer-distributed .footer-left {
   width: 40%;
 }
-
-/* The company logo */
 
 .footer-distributed h3 {
   color: #ffffff;
@@ -36,8 +32,6 @@
 .footer-distributed h3 span {
   color: lightseagreen;
 }
-
-/* Footer links */
 
 .footer-distributed .footer-links {
   color: #ffffff;
@@ -60,8 +54,6 @@
   font-weight: normal;
   margin: 0;
 }
-
-/* Footer Center */
 
 .footer-distributed .footer-center {
   width: 35%;
@@ -106,7 +98,6 @@
   ;
 }
 
-/* Footer Right */
 .footer-distributed h4 {
   color: #fff;
 
@@ -152,8 +143,6 @@
   margin-right: 3px;
   margin-bottom: 5px;
 }
-
-/* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 880px) {
 
@@ -203,42 +192,121 @@ img.partnerimg {
   font-size: 10px;
   color: #fff;
 }
+
+/** Botão do whatsapp */
+.float {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #25d366;
+  z-index: 100;
+}
+
+.my-float {
+  margin-top: 16px;
+}
+
+div#div-fixa {
+  display: fixed;
+  margin: 0 20px;
+  background: rgb(89, 245, 122);
+  width: 50px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.5s all;
+  overflow: hidden;
+}
+
+div#div-fixa.shrink {
+  width: 250px;
+}
+
+div#div-fixa img {
+  width: 50px;
+  height: 50px;
+}
+
+div#div-fixa a .flex-itens {
+  display: flex;
+  align-items: center;
+}
+
+div#div-fixa a .flex-itens span.aparecer {
+  display: block;
+  font-weight: bold;
+  color: #040305;
+  margin-left: 5px;
+  font-size: 15px;
+  min-width: 190px;
+  opacity: 1;
+}
+
+div#div-fixa a .flex-itens span {
+  transition: 0.5s all;
+  opacity: 0;
+}
+
+.flutuar {
+  animation-name: flutuar;
+  animation-duration: 0.7s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes flutuar {
+  from {
+    transform: translate3d(0, 0, 0);
+    filter: brightness(100%);
+  }
+
+  to {
+    transform: translate3d(0, -1px, 0);
+    filter: brightness(105%);
+  }
+}
 </style>
 <?php
-$uricampus = $this->uri->segment(3);
 
-$colunasTabelaCampus = array(
-  'campus.facebook',
-  'campus.instagram',
-  'campus.youtube',
-  'campus.shurtName',
-  'campus.logoBranca',
-  'campus.id',
-  'campus.email',
-  'campus.description',
-  'campus.name',
-  'campus.phone',
-  'campus.city',
+$uricampus = $this->uri->segment(3);
+$joinWhatsapp = array(
+  'campus'=>'campus.id=integracao_whatsapp.id_campus'
+);
+$whereWhatsapp = array(
+'campus.shurtName'=>$uricampus
 );
 
+if($this->bancosite->where('*','integracao_whatsapp',$joinWhatsapp, $whereWhatsapp,null)->row()){
+  $dadosIntegracaoWhatsapp = $this->bancosite->where('*','integracao_whatsapp',$joinWhatsapp, $whereWhatsapp,null)->row();
+}else{
+  $dadosIntegracaoWhatsapp = '';
+}
+
+$colunasTabelaCampus = array('campus.facebook','campus.instagram','campus.youtube','campus.shurtName','campus.logoBranca',
+  'campus.id','campus.email','campus.description','campus.name','campus.phone','campus.city');
 $informacoesCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NULL, array('campus.shurtName' => $uricampus))->row();
-
-
 $indicadores = $this->bancosite->where(array('campus_indicadores.arquivo', 'campus_indicadores.nome'), 'campus_indicadores', NULL, array('campus_indicadores.campusid' => $informacoesCampus->id))->result();
 
-
-
-// if ($campus == 'paracatu') {
-//   $city = "Paracatu";
-// } elseif ($campus == 'passos') {
-//   $city = "Passos";
-// } elseif ($campus == 'setelagoas') {
-//   $city = "Sete Lagoas";
-// } elseif ($campus == 'valenca') {
-//   $city = "Valenca";
-// }
 ?>
 
+<?php
+if($dadosIntegracaoWhatsapp!=''){
+?>
+<div id="div-fixa" class="float flutuar" data-shrink="yes">
+  <a href="https://api.whatsapp.com/send?phone=<?php echo $dadosIntegracaoWhatsapp->numero_whatsapp?>&text=<?php echo $dadosIntegracaoWhatsapp->texto_padrao_mensagem?>"
+    target="_blank">
+    <div class="flex-itens">
+      <img src="<?php echo base_url('assets/images/icones/whatsapp.png')?>" alt="chamar no whatsapp">
+      <span><?php echo $dadosIntegracaoWhatsapp->titulo_botao ?></span>
+    </div>
+  </a>
+</div>
+<?php 
+}
+?>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <footer class="footer-distributed">
   <div class="container">
     <div class="col-md-3">
@@ -253,15 +321,6 @@ $indicadores = $this->bancosite->where(array('campus_indicadores.arquivo', 'camp
           echo anchor('site/trabalheconosco/' . $informacoesCampus->shurtName, 'Trabalhe Conosco ');
           ?>
         </p>
-
-        <?php
-        if ($informacoesCampus->shurtName == 'paracatu') {
-        ?>
-
-        <?php
-        }
-        ?>
-
         <p class="linkFooter">
           <?php
           echo anchor('site/inicio/' . $informacoesCampus->shurtName, 'Espaço para Eventos ');
@@ -276,16 +335,15 @@ $indicadores = $this->bancosite->where(array('campus_indicadores.arquivo', 'camp
       </div>
     </div>
     <div class="col-md-3">
-
       <p class="footer-company-about">
         <span>Sobre <?php
-                    if ($informacoesCampus->shurtName == 'paracatu') {
-                      echo "o ";
-                    } else {
-                      echo "a ";
-                    }
-                    echo $informacoesCampus->name . ' ' . $dados['campus']->city;
-                    ?> </span>
+        if ($informacoesCampus->shurtName == 'paracatu') {
+          echo "o ";
+        } else {
+          echo "a ";
+        }
+        echo $informacoesCampus->name . ' ' . $dados['campus']->city;
+        ?> </span>
         <?php echo $informacoesCampus->description; ?>
       </p>
       <p class="footer-company-about">
@@ -335,11 +393,33 @@ $indicadores = $this->bancosite->where(array('campus_indicadores.arquivo', 'camp
     }
     ?>
   </div>
-
 </footer>
+<?php
+if($dadosIntegracaoWhatsapp!=''){
+?>
+<script>
+const content = document.querySelector('[data-shrink="yes"]');
+
+const span = document.querySelector('[data-shrink="yes"] span');
+
+span.classList.remove('aparecer');
+
+setInterval(function() {
+  content.classList.toggle('shrink');
+}, <?php echo $dadosIntegracaoWhatsapp->tempo_interacao_segundos;?>);
+
+setTimeout(() => {
+  setInterval(function() {
+    span.classList.toggle('aparecer');
+  }, <?php echo $dadosIntegracaoWhatsapp->tempo_interacao_segundos;?>);
+}, 200);
+</script>
 <div class="copyr">
   <div class="container">
 
     <p class="footer-company-name">uniatenas©<?php echo date('Y'); ?></p>
   </div>
 </div>
+<?php 
+} 
+?>
