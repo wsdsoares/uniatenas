@@ -18,12 +18,10 @@
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
-          <div class="col-xs-6">
-            <?php echo anchor("Painel_geral/cadastrar_dados_integracao_whatsapp/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR dados Integração Whatsapp', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
-          </div>
+
           <div class="col-xs-6">
             <?php 
-          echo anchor('Painel_geral/lista_campus_whatsapp', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+          echo anchor("Painel_mensagens_contatos/lista_campus_mensagens_contatos", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
           ?>
           </div>
         </div>
@@ -39,8 +37,6 @@
                 <th>Título Página</th>
                 <th>Descrição</th>
                 <th>Situação</th>
-                <th>Cidade</th>
-                <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </thead>
@@ -51,23 +47,21 @@
                 <th>Título Página</th>
                 <th>Descrição</th>
                 <th>Situação</th>
-                <th>Cidade</th>
-                <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['dadosIntegracaoWhatsapp'] as $item):
+              foreach ($dados['listaMensagensContato'] as $item):
               ?>
               <tr>
                 <td class="center">
                   <?php 
 
-                    echo '<a href=' . base_url("Painel_geral/editar_dados_integracao_whatsapp/$campus->id/$item->id") . '>'
+                    echo '<a href=' . base_url("Painel_cpa/editar_dados_cpa/$campus->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="'.$item->titulo_botao.'" data-id="'. $item->id . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="'.$item->name.'" data-id="'. $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
 
@@ -85,28 +79,20 @@
                   ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
-                <td><?php echo str_replace("%20"," ",$item->titulo_botao);?></td>
-                <td><?php echo $item->numero_whatsapp;?></td>
-
-                <td>
-                  <?php
-                    if($item->status =='0'){
-                      echo 'Inativo';
-                    }else{
-                      echo 'Ativo';
-                    }
-                    ?>
-                </td>
-                <td><?php echo $item->city;?></td>
-
-                <td> <?php echo date("d/m/Y",strtotime($item->created_at)); ?></td>
+                <td><?php echo toHtml($item->name)?></td>
                 <td>
                   <?php 
-                    $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).' - '.$item->user_id; 
+                  echo toHtml(substr ($item->message, 0, 50))."....";
+                  ?>
+                </td>
+
+                <td>
+                  <?php 
+                    echo anchor("Painel_mensagens_contatos/ver_mensagem/$campus->id/$item->id", '<i class="material-icons">desktop_windows</i> Visualizar mensagem', array('class' => 'btn btn-info m-t-15 waves-effect'));
                     ?>
                 </td>
 
+                <td> <?php echo date("d/m/Y",strtotime($item->datacreated)); ?></td>
 
               </tr>
               <?php
@@ -134,8 +120,8 @@
           ligados a esse item serão removidos <span class="text-danger"
             style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
-        <p>O item selecionado é:
-          <span class="text-info nomeItem" style="font-weight: bold"><?php echo $item->titulo_botao;?></span>
+        <p>A mensagem selecionada:
+          <span class="text-info nomeItem" style="font-weight: bold"></span>
         </p>
       </div>
       <div class="modal-footer">
@@ -153,6 +139,6 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_geral/deletar_item_whatsapp/$campus->id/"); ?>' + id);
+    '<?php echo base_url("Painel_mensagens_contatos/deletar_mensagem_contato/$campus->id/"); ?>' + id);
 });
 </script>
