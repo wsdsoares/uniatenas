@@ -1235,45 +1235,6 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    // public function s($uriCampus){
-    //     verificaLogin();
-        
-    //     $uriCampus = $this->uri->segment(3);
-    //     $colunasCampus = array('campus.id','campus.name','campus.city');
-    //     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-   
-    //     $this->form_validation->set_rules('title', 'Nome da área', 'required');
-
-    //     if ($this->form_validation->run() == FALSE) {
-    //         if (validation_errors()):
-    //             setMsg(validation_errors(), 'error');
-    //         endif;
-    //     } else {
-    //         $dados_form = elements(array('title','status'), $this->input->post());
-
-    //         $dados_form['user_id'] = $this->session->userdata('codusuario');
-    //         $dados_form['updated_at'] = date('Y-m-d H:i:s');
-    //         $dados_form['campusid'] = $campus->id;
-    //         if ($id = $this->painelbd->salvar('photos_category', $dados_form)) {
-    //             setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-    //             redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
-    //         } else {
-    //             setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
-    //             redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
-    //         }
-    //     }
-    //     $data = array(
-    //         'conteudo' => 'paineladm/campus/infraestrutura/cadastrar_infraestrutura',
-    //         'titulo' => 'Infraestrutura - UniAtenas',
-    //         'dados' => array(
-    //             'tipo' => '',
-    //             'campus' => $campus,
-    //             'page' => "Cadastro da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-    //         )
-    //     );
-    //     $this->load->view('templates/layoutPainelAdm', $data);
-    // }
-
 
     public function cadastrar_infraestrutura($uriCampus=NULL){
         verificaLogin();
@@ -1407,7 +1368,6 @@ class Painel_campus extends CI_Controller {
 
     }
     
-
     public function lista_fotos_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL)
     {
         $colunasCampus = array('campus.id','campus.name','campus.city');
@@ -1419,21 +1379,21 @@ class Painel_campus extends CI_Controller {
 
      
         $colunasFotosInfraestrutura = array(
-            'photos_gallery.id',
-            'photos_gallery.id_page_contents',
-            'photos_gallery.file',
-            'photos_gallery.title',
-            'photos_gallery.status',
-            'photos_gallery.created_at',
-            'photos_gallery.updated_at',
-            'photos_gallery.user_id',
+            'page_contents_photos.id',
+            'page_contents_photos.id_page_contents',
+            'page_contents_photos.file',
+            'page_contents_photos.title',
+            'page_contents_photos.status',
+            'page_contents_photos.created_at',
+            'page_contents_photos.updated_at',
+            'page_contents_photos.user_id',
         );
 
         $whereFotosInfraestrutura= array(
-            'photos_gallery.id_page_contents'=>$idConteudoPaginaInfraestrutura,
+            'page_contents_photos.id_page_contents'=>$idConteudoPaginaInfraestrutura,
         );
         
-        $listaFotosInfraestrutura = $this->painelbd->where($colunasFotosInfraestrutura,'photos_gallery',NULL,$whereFotosInfraestrutura)->result();     
+        $listaFotosInfraestrutura = $this->painelbd->where($colunasFotosInfraestrutura,'page_contents_photos',NULL,$whereFotosInfraestrutura)->result();     
 
         $whereInfraestrutura= array(
             'page_contents.id'=>$idConteudoPaginaInfraestrutura,
@@ -1502,11 +1462,12 @@ class Painel_campus extends CI_Controller {
                 if ($upload) {
                     $dados_form['user_id'] = $this->session->userdata('codusuario');
                     $dados_form['file'] = $path . '/' . $upload['file_name']; 
-                    $dados_form['title'] = $this->input->post('title');; 
+                    $dados_form['title'] = $this->input->post('title');
                     $dados_form['status'] = $this->input->post('status');
+                    // $dados_form['categoria'] = trim($categoriaInfraestrutura->title);
                     $dados_form['id_page_contents'] = $categoriaInfraestrutura->id;
 
-                    if ($id = $this->painelbd->salvar('photos_gallery', $dados_form)) {
+                    if ($id = $this->painelbd->salvar('page_contents_photos', $dados_form)) {
                         if ($number_of_files == ($i + 1)) {
                             setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
                             redirect("Painel_Campus/lista_fotos_infraestrutura/$categoriaInfraestrutura->id/$campus->id");
@@ -1545,7 +1506,7 @@ class Painel_campus extends CI_Controller {
         $whereInfraestrutura= array('page_contents.id'=>$idConteudoPaginaInfraestrutura);
         $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura)->row();         
 
-        $fotoInfraestrutura = $this->painelbd->where('*','photos_gallery',null,array('photos_gallery.id'=>$id))->row();     
+        $fotoInfraestrutura = $this->painelbd->where('*','page_contents_photos',null,array('page_contents_photos.id'=>$id))->row();     
         
         $this->form_validation->set_rules('title', 'Título', 'required');
 
@@ -1590,7 +1551,7 @@ class Painel_campus extends CI_Controller {
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
            
-            if ($this->painelbd->salvar('photos_gallery', $dados_form) == TRUE){
+            if ($this->painelbd->salvar('page_contents_photos', $dados_form) == TRUE){
                 setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
                 redirect("Painel_Campus/lista_fotos_infraestrutura/$idConteudoPaginaInfraestrutura/$campus->id");
             }else{
@@ -1618,13 +1579,13 @@ class Painel_campus extends CI_Controller {
     
         $uriCampus=$this->uri->segment(4);
         $id=$this->uri->segment(5);
-        $item = $this->painelbd->where('*','photos_gallery', NULL, array('photos_gallery.id' => $id))->row(); 
+        $item = $this->painelbd->where('*','page_contents_photos', NULL, array('page_contents_photos.id' => $id))->row(); 
 
         if (file_exists($item->file)) {
             unlink($item->file);
         }
 
-        if ($this->painelbd->deletar('photos_gallery', $item->id)) {
+        if ($this->painelbd->deletar('page_contents_photos', $item->id)) {
             setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
             redirect("Painel_Campus/lista_fotos_infraestrutura/$idCategoriaInfraestrutura/$uriCampus");
         } else {
@@ -1632,6 +1593,5 @@ class Painel_campus extends CI_Controller {
             redirect("Painel_Campus/lista_fotos_curso/$idCategoriaInfraestrutura/$uriCampus");
         }
 
-    }
-    
+    }    
 }

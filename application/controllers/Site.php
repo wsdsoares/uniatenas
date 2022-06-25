@@ -379,7 +379,36 @@ class Site extends CI_Controller
             redirect("");
         }
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        $idcampus = $dataCampus->id;
+
+        $colunasFotosGaleria = array(
+            'photos_gallery.id',
+            'photos_gallery.id_page_contents',
+            'photos_gallery.file',
+            'photos_gallery.title',
+            'photos_gallery.status',
+            'photos_gallery.created_at',
+            'photos_gallery.updated_at',
+            'photos_gallery.user_id',
+        );
+
+        $whereFotosGaleria= array(
+            //'photos_gallery.id_page_contents'=>$idConteudoPaginaInfraestrutura,
+        );
+        
+        $listaFotosInfraestrutura = $this->bancosite->where('*','photos_gallery',NULL,NULL)->result();     
+        
+        $whereInfraestrutura= array(
+            // 'page_contents.id'=>$idConteudoPaginaInfraestrutura,
+        );
+        $colunaInfraestrutura = array(
+            'page_contents.id',
+            'page_contents.title',
+        );
+
+       
+        // $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();         
+ 
+        
         $sqlCategoria = "
                      SELECT
                      photos_category.id,
@@ -391,12 +420,25 @@ class Site extends CI_Controller
                         photos_category ON photos_category.id = photos_gallery.photoscategoryid
                             INNER JOIN
                         campus ON campus.id = photos_gallery.campusid
-                        where photos_category.visible = 1 and photos_gallery.campusid = $idcampus
+                        where photos_category.status = 1 and photos_gallery.campusid = $dataCampus->id
                     group by photos_category.id
                  ";
         $categoria = $this->bancosite->getQuery($sqlCategoria)->result();
         $i = 0;
         $catArray[] = array();
+
+        // echo '<pre>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // echo '<br/>';
+        // print_r(count($listaFotosInfraestrutura));
+        // print_r(count($categoria));
+        // echo '</pre>';
         foreach ($categoria as $item) {
             $catArray[$i]['id'] = $item->id;
             $catArray[$i]['title'] = $item->title;
@@ -898,6 +940,7 @@ and revistas.id =$id;
             $config['newline'] = '\r\n';
             $config['charset'] = 'utf-8';
 
+            // $email = $dataCampus->email;
             $email = $dataCampus->email;
             $this->email->initialize($config);
 
@@ -910,12 +953,16 @@ and revistas.id =$id;
             $this->email->subject($assunto);
             $this->email->message($mensagem);
 
+            
+
             if ($this->email->send()) {
+                $data['message'] = toBd($this->input->post('message'));
                 $this->bancosite->salvar('campus_contacts', $data);
                 setMsg('<p>Contato realizado com sucesso. <br>
                     Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
-                echo "<script>alert('Email enviado com sucesso!');</script>";
+                redirect(base_url("site/contato/$dataCampus->shurtName"));
             } else {
+                redirect(base_url("site/contato/$dataCampus->shurtName"));
                 setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
             }
         }
@@ -1098,9 +1145,9 @@ and revistas.id =$id;
         //     'photos_gallery' => 'photos_gallery.photoscategoryid = photos_category.id'
         // );
         foreach ($pages_content as $contend) {
-            $where =  array("photos_gallery.id_page_contents" => $contend->id);
-            $campos = array("photos_gallery.file", "photos_gallery.id");
-            $photos = array("photo" => $this->bancosite->where('*', "photos_gallery", null, $where)->result());
+            $where =  array("page_contents_photos.id_page_contents" => $contend->id);
+            $campos = array("page_contents_photos.file", "page_contents_photos.id");
+            $photos = array("photo" => $this->bancosite->where('*', "page_contents_photos", null, $where)->result());
             $contend->array_fotos = $photos;
             // $contend->Fk_photosCat = $photos;
         }
