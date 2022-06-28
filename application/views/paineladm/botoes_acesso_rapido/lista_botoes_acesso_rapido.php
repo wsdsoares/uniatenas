@@ -91,7 +91,7 @@
                 <td>
                   <?php 
                   if($item->link_redirecionamento !=''){
-                    echo anchor($item->link_redirecionamento,'ACESSAR LINK').' - '.$item->link_redirecionamento;
+                    echo anchor($item->link_redirecionamento,'ACESSAR LINK',array('target'=>'_blank')).' - '.$item->link_redirecionamento;
                   }elseif($item->arquivo !=''){
                     echo anchor(base_url($item->arquivo),'<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
                   }

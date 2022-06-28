@@ -6,9 +6,16 @@ include_once 'navbar.php';
 
 $permissionCampusArray = '';
 ?>
+<script type="text/javascript">
+function ativo() {
+  const elemento = document.querySelectorAll("<li> .active");
+  console.log(elemento);
+  alert(elemento);
+}
+</script>
 <section>
   <aside id="leftsideba" class="sidebar">
-    <div class="menu">
+    <div class="menu" id="menu">
       <ul class="list">
 
         <li class="header">Informações Gerais</li>
@@ -38,8 +45,17 @@ $permissionCampusArray = '';
             </li>
             <li>
               <?php
-                // echo anchor('Painel_Campus/lista_indicadores', '<span>Indicadores <strong>(Item do Rodapé)</strong></span>');
                 echo anchor('Painel_Campus/lista_campus_indicadores', '<span>Indicadores <strong>(Item do Rodapé)</strong></span>');
+              ?>
+            </li>
+            <li>
+              <?php
+                echo anchor('Painel_galeria/lista_campus_galeria_fotos', '<span>Galeria <small> <strong>(Fotos diversas do Campus)</strong></small></span>');
+              ?>
+            </li>
+            <li>
+              <?php
+                echo anchor('Painel_geral/lista_campus_whatsapp', '<span>WhatsApp <small> <strong>(Exibido em todo site)</strong></small></span>');
               ?>
             </li>
           </ul>
@@ -63,6 +79,47 @@ $permissionCampusArray = '';
             </li>
           </ul>
         </li>
+
+        <!-----------------------------------------------------------------------
+          Menu para gestão de todas as informações da página inicial
+        ------------------------------------------------------------------------->
+        <li class="header">Pagína Inicial - Home</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">view_list</i>
+            <span>Página Inicial - HOME</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+                echo anchor('Painel_home/lista_campus', '<span>Banners Principal - Slide</span>');
+                ?>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <?php 
+          echo anchor('Painel_noticias/lista_campus_noticias', '<i class="material-icons">newspaper</i><span>Notícias</span>');
+          ?>
+        </li>
+        <!-----------------------------------------------------------------------
+          Menu para gestão dos contatos recebidos no site
+        ------------------------------------------------------------------------->
+        <li class="header">Contatos - Mensages do site</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">view_list</i>
+            <span>Dados do contato - Mensagens</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+                echo anchor('Painel_mensagens_contatos/lista_campus_mensagens_contatos', '<span>Mensagens Recebidas</span>');
+                ?>
+            </li>
+          </ul>
+        </li>
+
         <!-----------------------------------------------------------------------
           Menu para gestão dos campus
         ------------------------------------------------------------------------->
@@ -73,7 +130,6 @@ $permissionCampusArray = '';
           </a>
 
           <ul class="ml-menu">
-
             <li>
               <?php
                 echo anchor('Painel_campus/lista_dirigentes', '<span>Dirigentes <strong>(Diretores/Reitores)</strong></span>');
@@ -96,38 +152,23 @@ $permissionCampusArray = '';
             </li>
           </ul>
         </li>
-
-
-
-
         <!-----------------------------------------------------------------------
-          Menu para gestão de todas as informações da página inicial
+          Menu para gestão dos contatos recebidos no site
         ------------------------------------------------------------------------->
-        <li class="header">Pagína Inicial - Home</li>
+        <li class="header">Menu - Financeiro</li>
         <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">view_list</i>
-            <span>Página Inicial - HOME</span>
+            <span>Financeiro</span>
           </a>
           <ul class="ml-menu">
             <li>
               <?php
-                /*************************
-                 * Banners da página inicial
-                 * ***********************/
-                // echo anchor('Painel_home/slideshow', '<span>Banners Principal - Slide</span>');
-                echo anchor('Painel_home/lista_campus', '<span>Banners Principal - Slide</span>');
+                echo anchor('Painel_financeiro/lista_campus_financeiro', '<span>Páginas por Campus</span>');
                 ?>
             </li>
           </ul>
         </li>
-        <li>
-          <?php 
-          echo anchor('Painel_noticias/lista_campus_noticias', '<i class="material-icons">newspaper</i><span>Notícias</span>');
-          ?>
-        </li>
-
-
         <!-----------------------------------------------------------------------
           Menu para gestão das opçoes referente à graduação - Todos os cursos e gestao dos cursos por campus
         ------------------------------------------------------------------------->

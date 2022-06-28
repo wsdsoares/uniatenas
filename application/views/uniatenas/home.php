@@ -25,13 +25,13 @@ $uricampus = $this->uri->segment(3);
 
     <div class="carousel-inner" role="listbox">
       <?php
-            foreach ($slideshow as $key=>$slider) {
-                if ($key == 0) {
-                    $ativo = 'active';
-                } else {
-                    $ativo = '';
-                }
-                ?>
+      foreach ($slideshow as $key=>$slider) {
+          if ($key == 0) {
+              $ativo = 'active';
+          } else {
+              $ativo = '';
+          }
+          ?>
       <div class="item <?php echo $ativo; ?>">
         <a class="sliderLink" href="<?php echo $slider->linkRedir; ?>" target="_blank">
           <div class="slider-item">
@@ -86,8 +86,8 @@ $uricampus = $this->uri->segment(3);
 
 </section>
 <?php
- if($news){
-     ?>
+if($news)
+{?>
 <section class="bg-news" data-container="noticias" id="noticias">
   <div class="container">
     <div class="col-md-12">
@@ -101,14 +101,14 @@ $uricampus = $this->uri->segment(3);
       <div class="col-md-8 col-xs-12">
         <div class="row">
           <?php
-                    for ($i = 0; $i < 3; $i++) {
-                        ?>
+        for ($i = 0; $i < 3; $i++){
+          ?>
           <div class="col-sm-4 col-xs-12">
             <div class="news">
               <div class="news-capa">
                 <?php
-                                    echo anchor('site/ver_noticia/' .$uricampus.'/'.$news[$i]->id, '<img src="' . base_url() . $news[$i]->img_destaque . '" class="img-responsive"/>');
-                                    ?>
+                  echo anchor('site/ver_noticia/'.$campus->shurtName.'/'.$news[$i]->id, '<img src="' . base_url() . $news[$i]->img_destaque . '" class="img-responsive"/>');
+                ?>
                 <h6>
                   <span><?=date('d/m/yy',strtotime($news[$i]->datestart)); ?></span>
                 </h6>
@@ -116,27 +116,24 @@ $uricampus = $this->uri->segment(3);
 
               <div class="newstitle">
                 <h4>
-                  <?php echo anchor('site/ver_noticia/'.$uricampus.'/'.$news[$i]->id, toHtml($news[$i]->title)); ?>
+                  <?php echo anchor('site/ver_noticia/'.$campus->shurtName.'/'.$news[$i]->id, toHtml($news[$i]->title)); ?>
                 </h4>
               </div>
 
             </div>
           </div>
           <?php
-                    }
-                    ?>
+          }
+          ?>
         </div>
         <div class="see-all-news">
           <p class="btn-see-all text-center">
             <?php
-                        echo anchor("site/noticias/$uricampus", '<span>Ler todas as notícias.</span>');
-                        ?>
+            echo anchor("site/noticias/$campus->shurtName", '<span>Ler todas as notícias.</span>');
+            ?>
           </p>
-
         </div>
       </div>
-
-
       <div class="col-md-offset-1 col-md-3 col-xs-12 text-center">
         <h4>Informações</h4>
         <div class="bannerRigth">
@@ -144,29 +141,23 @@ $uricampus = $this->uri->segment(3);
             <img src="<?php echo base_url('assets/images/bannerLateral.png') ?>" alt="Banner" class="img-responsive" />
           </div>
           <?php
-                    if ($dados['campus']->id == 1) {
-                        ?>
+          if ($dados['campus']->id == 1) {
+          ?>
           <div class="col-md-12">
-            <?php echo anchor('graduacao/inscricao/' . $uricampus, ' 
-                            <img src="' . base_url('assets/images/bannerLateral2.png') . '" alt="Banner"
-                             class="img-responsive"/>');
-                            ?>
+            <?php 
+            echo anchor('graduacao/inscricao/' . $campus->shurtName, ' <img src="' . base_url('assets/images/bannerLateral2.png') . '" alt="Banner" class="img-responsive"/>');
+            ?>
           </div>
           <?php
-                    }
-                    ?>
+          }
+          ?>
         </div>
       </div>
-
     </div>
 </section>
 <?php
- }
-?>
-<?php
-///include_once 'home/item_cursos.php';
+}
 include_once 'home/item_eventos.php';
 include_once 'home/item_galeria.php';
 
-//include_once 'home/item_porque_uniatenas.php';
 ?>

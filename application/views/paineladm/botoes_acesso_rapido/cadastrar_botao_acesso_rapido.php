@@ -43,7 +43,7 @@
             <label for="title">
               Cor do Botão
               <small> (A cor tem que ser em HEXADECIMAL), caso não saiba clique no <a
-                  href="https://erikasarti.com/html/tabela-cores/">CLIQUE AQUI</a><br />
+                  href="https://erikasarti.com/html/tabela-cores/" target="_blank">CLIQUE AQUI</a><br />
                 ou digite no Google: <i>"Tabela de cores HEXADECIMAL"</i>
               </small>
             </label>

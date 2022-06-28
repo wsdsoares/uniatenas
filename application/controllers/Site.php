@@ -23,7 +23,7 @@ class Site extends CI_Controller
 
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $cursos = $this->bancosite->getWhere('courses', array('modalidade' => 'presencial'), array('campo' => 'name', 'ordem' => 'asc'))->result();
@@ -203,10 +203,10 @@ class Site extends CI_Controller
 
         //$news = $this->Painelsite->where('*','news', '', array('campusid'=>$dataCampus->id), array('campo' => 'id', 'ordem' => 'desc'))->result(); //Table, orderm, campo, limit -Retorno do banco de dados
 
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $queryNews = 'select *
-                        from news
-                        where datestart <= "' . $date . '"
+                        from news 
+                        where datestart <= "'.$date.'"                       
                         and campusid = ' . $dataCampus->id . '
                         and status = 1
                         order by id desc';
@@ -247,7 +247,7 @@ class Site extends CI_Controller
 
         $photosNews = $this->bancosite->getWhere('news_image', array('newsid' => $news->id))->result();
 
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $queryNews = 'select *
                         from news
                         where datestart <= "' . $date . '"
