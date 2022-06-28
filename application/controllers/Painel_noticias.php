@@ -123,9 +123,10 @@ class Painel_noticias extends CI_Controller
 
             if($this->input->post('datestart')){
                 $dados_form['datestart'] = $this->input->post('datestart');
-            }else{
-                $dados_form['datestart'] = date('Y-m-d H:i:s');
             }
+            // else{
+            //     $dados_form['datestart'] = date('Y-m-d H:i:s');
+            // }
 
             $upload = $this->painelbd->uploadFiles('files', $path, $types = 'jpg|png|jpeg', 'capa_' . $name_tmp);
 
@@ -133,12 +134,12 @@ class Painel_noticias extends CI_Controller
                 //upload efetuado
 
                 $user = $this->session->userdata('codusuario');
-                $dados_form['usersid'] = $user;
+                $dados_form['user_id'] = $user;
 
                 $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
                 $dados_form['url_youtube'] = NULL;
                 $dados_form['campusid'] = $campus->id; 
-                $dados_form['campusid'] = $campus->id; 
+                
                 $dados_form['status'] = 1;
 
                 $dados_form['description'] = toBd($this->input->post('description'));
