@@ -16,7 +16,7 @@ class Painel_graduacao extends CI_Controller {
         date_default_timezone_set('America/Sao_Paulo');
     }
     public function todos_cursos() {
-        $page = 'Lista de Campus';
+        
         $uriModalidade = $this->uri->segment(3);
         $listagemDosCursos = $this->painelbd->where('*','courses',NULL,array('courses.modalidade'=>$uriModalidade))->result();
         $data = array(
@@ -24,9 +24,9 @@ class Painel_graduacao extends CI_Controller {
             'conteudo' => 'paineladm/cursos/todos_cursos',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'page' =>$page ,
+                'page' =>"Lista de Cursos da IES - <strong><i> (Grupo Atenas)</i></strong>",
                 'cursos'=> $listagemDosCursos,
-                'tipo'=> 'tabelaDatatable' 
+                'tipo'=> 'tabelaDatatable'
             )
         );
         
@@ -35,8 +35,6 @@ class Painel_graduacao extends CI_Controller {
     
     public function lista_campus_cursos() {
         verificaLogin();
-
-        
         $colunasResultadoCursos = 
             array('campus.id',
             'campus.name',
@@ -84,21 +82,23 @@ class Painel_graduacao extends CI_Controller {
                 'courses_pages.filesGrid',
 
         );
+        
         $joinCampus = array(
             'campus' => 'campus.id = campus_has_courses.campus_id',
             'courses' => 'courses.id = campus_has_courses.courses_id',
             'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
         );
-        $whereCursosPorCampus = array('campus.id'=>$campus->id,'courses.modalidade'=>$uriModalidade);
-        $listaCampusPorCursos = $this->painelbd->where($colunasResultadoCursos,'campus_has_courses',$joinCampus, $whereCursosPorCampus,array('campo' => 'courses.name', 'ordem' => 'asc'), NULL)->result();
 
+        $whereCursosPorCampus = array('campus.id'=>$campus->id,'courses.modalidade'=>$uriModalidade);
+        $listaInformacoesPorCursos = $this->painelbd->where($colunasResultadoCursos,'campus_has_courses',$joinCampus, $whereCursosPorCampus,array('campo' => 'courses.name', 'ordem' => 'asc'), NULL)->result();
+       
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/cursos/lista_cursos',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => "Gestão de Cursos - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'cursos' => $listaCampusPorCursos,
+                'cursos' => $listaInformacoesPorCursos,
                 'campus'=> $campus,
                 'tipo'=>'tabelaDatatable'
             )
@@ -107,13 +107,130 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
+    public function vincular_curso_campus($uriCampus=NULL) {
+
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $courses = $this->painelbd->where('*', 'courses',null, array('courses.status'=>1,'modalidade'=>'presencial'))->result();
+        
+        $this->form_validation->set_rules('courses_id', 'Curso', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        }else {
+
+            $dados_form['campus_id'] = $campus->id;
+            $dados_form['courses_id'] = $this->input->post('courses_id');
+            $status =  $dados_form['status'] = $this->input->post('status');
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+            if ($idCourseCampus = $this->painelbd->salvar('campus_has_courses', $dados_form,'exibirIdInsert')){
+                
+                 $dados_form_course_page['campus_has_courses_id'] = $idCourseCampus;
+                 $dados_form_course_page['userid'] = $this->session->userdata('codusuario');
+                 $dados_form_course_page['status'] = $status;
+                 
+                 $this->painelbd->salvar('courses_pages', $dados_form_course_page);
+
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect(base_url("Painel_graduacao/lista_cursos/$campus->id/presencial"));
+            }else{
+                setMsg('<p>Erro! Algo de errado na inserção dos dados.</p>', 'error');
+            }
+        }
+
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/cursos/informacoes/vincular_curso_campus',
+            'dados' => array(
+                'page' => "Vínculo de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'courses'=> $courses,
+                'campus'=> $campus,
+                'tipo'=>''
+            )
+        );
+
+
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function editar_vinculo_curso_campus($uriCampus=NULL,$idVinculo=NULL) {
+
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $courses = $this->painelbd->where('*', 'courses',null, array('courses.status'=>1,'modalidade'=>'presencial'))->result();
+        $vinculo_campus_has_courses = $this->painelbd->where('*','campus_has_courses', null, array('campus_has_courses.id'=>$idVinculo))->row();
+        
+        $this->form_validation->set_rules('courses_id', 'Curso', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        }else {
+
+            $dados_form['campus_id'] = $campus->id;
+            $dados_form['courses_id'] = $this->input->post('courses_id');
+            $status =  $dados_form['status'] = $this->input->post('status');
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['id'] =  $vinculo_campus_has_courses->id;
+
+            if ($idCourseCampus = $this->painelbd->salvar('campus_has_courses', $dados_form,'exibirIdInsert')){
+                
+                 $dados_form_course_page['campus_has_courses_id'] = $idCourseCampus;
+                 $dados_form_course_page['userid'] = $this->session->userdata('codusuario');
+                 $dados_form_course_page['status'] = $status;
+                 
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect(base_url("Painel_graduacao/lista_cursos/$campus->id/presencial"));
+            }else{
+                setMsg('<p>Erro! Algo de errado na inserção dos dados.</p>', 'error');
+            }
+        }
+
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/cursos/informacoes/editar_vinculo_curso_campus',
+            'dados' => array(
+                'page' => "Vínculo de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'courses'=> $courses,
+                'campus_has_courses'=> $vinculo_campus_has_courses,
+                'campus'=> $campus,
+                'tipo'=>''
+            )
+        );
+
+
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+    
+
+    public function deletar_vinculo_curso($uriCampus = null,$id = NULL)
+    {
+        verifica_login();
+        
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $item = $this->painelbd->where('*','campus_has_courses', NULL, array('campus_has_courses.id' => $id))->row();
+        
+        if ($this->painelbd->deletar('campus_has_courses', $item->id)) {
+            setMsg('<p>Vinculo de curso deletado com sucesso.</p>', 'success');
+            redirect("Painel_graduacao/lista_cursos/$campus->id/presencial");
+        } else {
+            setMsg('<p>Erro! O vinículo de curso não pode ser deletado.</p>', 'error');
+            redirect("Painel_graduacao/lista_cursos/$campus->id/presencial");
+        }
+
+    }
+
     public function cadastrar_informacoes_curso($courseCampusId=NULL){
         verificaLogin();
         $this->load->helper('file');
-
-        // if (empty($courseCampusId)) {
-        //     redirect('Paginas/editarSlideShow');
-        // }
 
         $colunasBuscaDadosCurso = 
         array(
@@ -150,16 +267,8 @@ class Painel_graduacao extends CI_Controller {
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$informacoesCurso->campusid))->row();
 
-
         //Validaçãoes via Form Validation
         $this->form_validation->set_rules('description', 'Descrição e informações do curso', 'required');
-
-
-        /*if (!isset($arquivos) and isset($arquivoAtual)) {
-            $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-            $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPG ou PNG.');
-        }*/
-
 
         if ($this->form_validation->run() == FALSE) {
             if (validation_errors()):
@@ -171,7 +280,6 @@ class Painel_graduacao extends CI_Controller {
             $arquivoReconhecimento = $_FILES["recognition"];
             $arquivoReconhecimentoAtual = $this->input->post('recognitionAtual');
             $arquivoCapa = $_FILES["capa"];
-            // $arquivoAtual = $this->input->post('fileatual');
 
             if ($informacoesCurso->description != $this->input->post('description')) {
                 $dados_form['description'] = $this->input->post('description');
@@ -190,7 +298,7 @@ class Painel_graduacao extends CI_Controller {
 
             if (isset($_FILES['filesGrid']) && !empty($_FILES['filesGrid']['name'])) {
                 
-                $path = "assets/files/cursos//$campus->id/$informacoesCurso->idCourse/$informacoesCurso->coursePageId";
+                $path = "assets/files/cursos/$campus->id/$informacoesCurso->idCourse/$informacoesCurso->coursePageId";
                 is_way($path);
                 $upload = $this->painelbd->uploadFiles('filesGrid', $path, $types = 'PDF|pdf', NULL);
 
@@ -291,10 +399,7 @@ class Painel_graduacao extends CI_Controller {
         verificaLogin();
         $this->load->helper('file');
 
-        // if (empty($courseCampusId)) {
-        //     redirect('Paginas/editarSlideShow');
-        // }
-
+    
         $colunasBuscaDadosCurso = 
         array(
             'courses.id as idCourse',
@@ -335,11 +440,6 @@ class Painel_graduacao extends CI_Controller {
         $this->form_validation->set_rules('description', 'Descrição e informações do curso', 'required');
 
 
-        /*if (!isset($arquivos) and isset($arquivoAtual)) {
-            $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-            $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPG ou PNG.');
-        }*/
-
 
         if ($this->form_validation->run() == FALSE) {
             if (validation_errors()):
@@ -351,7 +451,6 @@ class Painel_graduacao extends CI_Controller {
             $arquivoReconhecimento = $_FILES["recognition"];
             $arquivoReconhecimentoAtual = $this->input->post('recognitionAtual');
             $arquivoCapa = $_FILES["capa"];
-            // $arquivoAtual = $this->input->post('fileatual');
 
             if ($informacoesCurso->description != $this->input->post('description')) {
                 $dados_form['description'] = $this->input->post('description');
@@ -448,6 +547,181 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
+     /*************************************************************************
+     * Dados do curso
+     * Página: Página de gestão dos cursos
+    *************************************************************************/
+
+    public function cadastrar_curso(){
+        verificaLogin();
+        $this->load->helper('file');
+        
+        //Validaçãoes via Form Validation
+        $this->form_validation->set_rules('name', 'Nome do curso', 'required');
+        
+        $areasGraduacao = $this->painelbd->where('*','areas',NULL, array('status' => '1'))->result();
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        }else {
+
+            $dados_form['duration'] = $this->input->post('duration');
+            $dados_form['modalidade'] = 'presencial';
+            $dados_form['status'] = $this->input->post('status');
+            $dados_form['name'] = $this->input->post('name');
+            $dados_form['types'] = $this->input->post('types');
+            $dados_form['areas_id'] = $this->input->post('areas_id');
+    
+            if (isset($_FILES['icone']) && !empty($_FILES['icone']['name'])) {
+                
+                $path = 'assets/images/courses/icones';
+                is_way($path);
+                $upload = $this->painelbd->uploadFiles('icone', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
+
+                if ($upload){
+                    //upload efetuado
+                    $dados_form['icone'] = $path . '/' . $upload['file_name'];
+                }else{
+                    //erro no upload
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
+
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+            if ($this->painelbd->salvar('courses', $dados_form) == TRUE){
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect(base_url("Painel_graduacao/todos_cursos/presencial"));
+            }else{
+                setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+            }
+        }
+
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/cursos/dados_curso/cadastrar_curso',
+            'dados' => array(
+                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
+                'page' => "Cadastro de Curso - <strong><i>IES</i></strong>",
+                'tipo'=>'',
+                'areasGraduacao'=>$areasGraduacao,
+            )
+        );
+
+
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function editar_curso($idCurso=NULL){
+        verificaLogin();
+        $this->load->helper('file');
+        
+        //Validaçãoes via Form Validation
+        $this->form_validation->set_rules('name', 'Nome do curso', 'required');
+        $curso = $this->painelbd->where('*','courses',NULL, array('courses.id' => $idCurso))->row();
+
+        $areasGraduacao = $this->painelbd->where('*','areas',NULL, array('status' => '1'))->result();
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        }else {
+            if ($curso->name != $this->input->post('name')) {
+                $dados_form['name'] = $this->input->post('name');
+            }
+            if ($curso->modalidade != $this->input->post('modalidade')) {
+                $dados_form['modalidade'] = $this->input->post('modalidade');
+            }
+            if ($curso->status != $this->input->post('status')) {
+                $dados_form['status'] = $this->input->post('status');
+            }
+            if ($curso->types != $this->input->post('types')) {
+                $dados_form['types'] = $this->input->post('types');
+            }
+            if ($curso->areas_id != $this->input->post('areas_id')) {
+                $dados_form['areas_id'] = $this->input->post('areas_id');
+            }
+    
+            if (isset($_FILES['icone']) && !empty($_FILES['icone']['name'])) {
+
+                if (file_exists($curso->icone)) {
+                    unlink($curso->icone);
+                }
+                
+                $path = 'assets/images/courses/icones';
+                
+                is_way($path);
+                $upload = $this->painelbd->uploadFiles('icone', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
+
+                if ($upload){
+                    //upload efetuado
+                    $dados_form['icone'] = $path . '/' . $upload['file_name'];
+                }else{
+                    //erro no upload
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
+
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['modalidade'] = 'presencial';
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+            $dados_form['id'] = $curso->id;
+
+            if ($this->painelbd->salvar('courses', $dados_form) == TRUE){
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect(base_url("Painel_graduacao/todos_cursos/presencial"));
+            }else{
+                setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+            }
+        }
+
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/cursos/dados_curso/editar_curso',
+            'dados' => array(
+                'page' => "Edição de dados do curso - $curso->name <strong><i>IES</i></strong>",
+                'tipo'=>'',
+                'curso'=>$curso,
+                'areasGraduacao'=>$areasGraduacao,
+            )
+        );
+
+
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function deletar_curso($id = NULL)
+    {
+        verifica_login();
+    
+        $item = $this->painelbd->where('*','courses', NULL, array('courses.id' => $id))->row(); 
+
+        if (file_exists($item->icone)) {
+            unlink($item->icone);
+        }
+
+        if ($this->painelbd->deletar('courses', $item->id)) {
+            setMsg('<p>Curso deletado com sucesso.</p>', 'success');
+            redirect("Painel_graduacao/todos_cursos/presencial");
+        } else {
+            setMsg('<p>Erro! O curso não foi deletado.</p>', 'error');
+            redirect("Painel_graduacao/todos_cursos/presencial");
+        }
+
+    }
+
+ /*************************************************************************
+     * Fotos do curso
+     * Página: Página de fotos do curso que estão vinculado a um CAMPUS
+     * Ex.: Administração em Sete Lagoas
+    *************************************************************************/
     public function lista_fotos_curso($courseCampusId=NULL,$uriCampus=NULL)
     {
         $colunasCampus = array('campus.id','campus.name','campus.city');

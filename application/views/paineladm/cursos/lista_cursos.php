@@ -67,24 +67,13 @@
                 <td class="center">
                   <?php 
 
-                    echo '<a href=' . base_url("Painel_graduacao/cadastrar_informacoes_curso/$item->campus_coursesid") . '>'
+                    echo '<a href=' . base_url("Painel_graduacao/editar_vinculo_curso_campus/$campus->id/$item->campus_coursesid") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                  /*  echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name . '" data-id="' . $item->campus_coursesid . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-
-                    $redirect = 'Painel_home-slideshow';
-                    $table = 'banners';
-
-                    if ($item->status == 1) {
-                        echo  '<i class="material-icons">visibility</i>'
-                            . '</a>';
-                    } elseif ($item->status == 0) {
-                        echo  '<i class="material-icons">visibility_off</i>'
-                            . '</a>';
-                    }
-                    */ ?>
+                     ?>
                 </td>
                 <td><?php echo $item->campus_coursesid; ?></td>
                 <td>
@@ -92,10 +81,13 @@
 
                 </td>
                 <td>
+                  <?php 
+                  echo anchor("Painel_graduacao/cadastrar_informacoes_curso/$item->campus_coursesid",'
                   <i class="material-icons">menu_book</i><br />
                   <span>Dados Curso <br /><small>(Sobre o curso, informações sobre áreas de atuação, arquivos de
-                      autorização/reconhecimento, Grade/Matriz (PDF) e link vestibular)</smal></span>
-                  </a>
+                      autorização/reconhecimento, Grade/Matriz (PDF) e link vestibular)</smal>
+                  </span>');
+                  ?>
                 </td>
                 <td>
                   <div class="btn-opcoes-curso">
@@ -148,8 +140,8 @@
 
                 <td>
                   <?php 
-                    $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                   echo date("d/m/Y H:m:s",strtotime($dateModification)).' - '.$item->userid; 
+                    //$dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
+                   //echo date("d/m/Y H:m:s",strtotime($dateModification)).' - '.$item->userid; 
                     ?>
                 </td>
 
@@ -197,9 +189,8 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
-
-  console.log()
-
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_graduacao/deletar_vinculo_curso/$campus->id/"); ?>' +
+    id);
 });
 </script>

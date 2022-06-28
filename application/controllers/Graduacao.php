@@ -46,14 +46,14 @@ class Graduacao extends CI_Controller
         
         $listaItensMenuComoIngressar = $this->bancosite->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
 
-        echo '<pre>';
-        echo '<br>';
-        echo '<br>';
-        echo '<br>';
-        echo '<br>';
-        echo '<br>';
-        echo '<br>';
-        print_r($pages_content);
+        // echo '<pre>';
+        // echo '<br>';
+        // echo '<br>';
+        // echo '<br>';
+        // echo '<br>';
+        // echo '<br>';
+        // echo '<br>';
+        // print_r($pages_content);
         //print_r($listaItensMenuComoIngressar);
         
         echo '</pre>';
@@ -203,11 +203,15 @@ order by courses.name";
                             campus.name,
                             campus.city,
                             campus_has_courses.id as idCourseCampus,
-                            courses.id as courseId
+                            courses.id as courseId,
+                            courses_pages.link_vestibular
+                            
                         FROM
                             at_site.campus
                         inner join campus_has_courses on campus_has_courses.campus_id = campus.id
                         inner join courses on courses.id = campus_has_courses.courses_id
+                        INNER JOIN courses_pages on courses_pages.campus_has_courses_id = campus_has_courses.id
+                        
                         WHERE courses.id =' . $cursos[$i]->id . " 
                         order by campus.city";
 
@@ -251,17 +255,6 @@ order by courses.name";
         if ($idCourse == NULL) {
             redirect('graduacao/cursos');
         }
-
-        // if ($uricampus == 'paracatu') {
-        //     $city = "Paracatu";
-        // } elseif ($uricampus == 'passos') {
-        //     $city = "Passos";
-        // } elseif ($uricampus == 'setelagoas') {
-        //     $city = "Sete Lagoas";
-        // } elseif ($uricampus == 'valenca') {
-        //     $city = "Valenca";
-        // }
-
 
         $dataCampus = $this->bancosite->getWhere('campus', array('shurtName' => $uricampus))->row();
 

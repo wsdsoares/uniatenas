@@ -233,8 +233,7 @@
           <div class="col-sm-12">
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor('Painel_graduacao/lista_cursos/7/presencial', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-
+              echo anchor("Painel_graduacao/lista_cursos/$campus->id/presencial", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
               ?>
           </div>
         </div>

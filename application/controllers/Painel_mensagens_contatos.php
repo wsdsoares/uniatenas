@@ -72,7 +72,7 @@ class Painel_mensagens_contatos extends CI_Controller {
     public function lista_mensagens_contatos($uriCampus=NULL) {
         verificaLogin();
 
-        $colunasCampus = array('campus.id','campus.name','campus.city');
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.email');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
         
         $listaMensagensContato = $this->painelbd->where('*','campus_contacts',null, array('campus_contacts.campusid'=>$campus->id),array('campo' => 'datacreated', 'ordem' => 'DESC'))->result();
