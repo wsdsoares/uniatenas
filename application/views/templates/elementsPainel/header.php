@@ -50,6 +50,11 @@ function ativo() {
             </li>
             <li>
               <?php
+                echo anchor('Painel_geral/lista_campus_elementos_site', '<span>Itens do Site <small><strong>(Topo e rodapé página)</strong></small></span>');
+              ?>
+            </li>
+            <li>
+              <?php
                 echo anchor('Painel_galeria/lista_campus_galeria_fotos', '<span>Galeria <small> <strong>(Fotos diversas do Campus)</strong></small></span>');
               ?>
             </li>

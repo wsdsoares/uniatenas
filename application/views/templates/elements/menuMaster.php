@@ -13,6 +13,9 @@ $colunasTabelaCampus = array(
 
 $informacoesCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NULL, array('campus.shurtName' => $uricampus))->row();
 
+$wehreArrayLinkvestibular= array('gerais_elementos_site.tipo'=>'link_vestibular', 'gerais_elementos_site.id_campus'=>$informacoesCampus->id);
+$linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$wehreArrayLinkvestibular)->row();
+
 ?>
 <div data-container="menu" class="headermenu">
   <header class="header navbar-fixed-top">
@@ -95,12 +98,18 @@ $informacoesCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NUL
                                 }
                                         ?>
                                 </ -->
+                <?php 
+                if(isset($linkVetibularTopo)){
+                ?>
                 <div class="log-reg">
 
-                  <a href="http://177.69.195.21:8080/prova/entrar" class="mx-auto download-btn-top"">
-                                    <i class=" fa fa-graduation-cap" aria-hidden="true"></i>VESTIBULAR ONLINE
+                  <a href="<?php echo $linkVetibularTopo->link?>" class="mx-auto download-btn-top">
+                    <i class=" fa fa-graduation-cap" aria-hidden="true"></i><?php echo $linkVetibularTopo->nome?>
                   </a>
                 </div>
+                <?php
+                }
+                ?>
               </div>
             </div>
           </div>

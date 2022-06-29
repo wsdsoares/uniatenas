@@ -32,6 +32,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Cidade</th>
+                <th>lINK VESTIBULAR - TOPO SITE</th>
                 <th>Situação / Visivel</th>
                 <th>Tipo</th>
                 <th>Criado em:</th>
@@ -43,6 +44,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Cidade</th>
+                <th>lINK VESTIBULAR - TOPO SITE</th>
                 <th>Situação / Visível</th>
                 <th>Tipo</th>
                 <th>Criado em:</th>
@@ -78,6 +80,11 @@
                 </td>
                 <td><?php echo $campus->id; ?></td>
                 <td><?php echo $campus->city; ?></td>
+                <td>
+                  <?php 
+                  echo anchor('Painel_Campus/link_vestibular_topo_site', '<i class="material-icons">insert_link</i> Link Vestibular - TOPO', array('class' => "btn btn-info m-t-15 waves-effect"));
+                  ?>
+                </td>
                 <td>
                   <?php
                    if($campus->status =='1'){
