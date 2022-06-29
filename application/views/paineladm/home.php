@@ -73,6 +73,25 @@ if (in_array("regfotoscursos", $permissionsCampus['campus-1'])) {
       chamado.</span>.
   </div>
 </div>
+<style>
+.cardsDash {
+  background: #00FF7F;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+</style>
+<div class="col-md-4">
+  <div class="cardsDash">
+    <strong>Gestão de usuários!</strong> Cadastro de usuários e vinculo de usuários ao campus. <br>
+    <br>
+    <?php echo anchor(base_url("Painel_usuarios/lista_usuarios"),'
+      <div class="item btn btn-primary">
+        <span><i class="material-icons">face</i> <span>Cadastro de Usuários</span>
+      </div>');
+      ?>
+    </a>
+  </div>
+</div>
 <!-- <div class="modal fade" id="exemplomodal" tabindex="-1" role="dialog" aria- labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
