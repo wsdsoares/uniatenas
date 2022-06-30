@@ -60,12 +60,9 @@
               <tr>
                 <td class="center">
                   <?php
-                    //echo anchor('Noticias/editar/' . $foto->id, '<i class="material-icons">edit</i>');
-
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $foto->file . '" data-id="'.$news->id.'-'.$foto->id.'/'.'" >'
-                        . '<i class="material-icons">delete</i>'
-                        . '</a>';
-                                    ?>
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $foto->file . '" data-id="'.$foto->id.'/'.'" >'
+                      . '<i class="material-icons">delete</i><a>';
+                      ?>
                 </td>
                 <td><?php echo $foto->id; ?></td>
                 <td>

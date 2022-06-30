@@ -106,7 +106,10 @@
                     <a class="btn-opcoes-curso btn btn-success">Grade Curricular (Matriz)</a>
                   </div>
                   <div class="btn-opcoes-curso">
-                    <a class="btn-opcoes-curso btn btn-info">Infraestrutura do Curso</a>
+                    <?php 
+                    echo anchor("Painel_graduacao/cadastrar_coordenador_curso/$item->campus_coursesid/$campus->id",'
+                      <a class="btn-opcoes-curso btn btn-info">Coordenador de Curso</a>');
+                    ?>
                   </div>
                   <?php
                   ///echo anchor(base_url(verifyImg($item->icone)), '<img src="' . base_url(verifyImg($item->icone)) . '" class="thumbnail">', array('target' => '_blank'));

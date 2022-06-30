@@ -413,83 +413,29 @@ class Painel_noticias extends CI_Controller
 
     function deletarFoto($uriCampus = NULL,$id = NULL)
     {
+			
       verifica_login();
     
-      $uriCampus = $this->uri->segment(3);
       $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
       $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
       $item = $this->painelbd->getWhere('news_image', array('id' => $id))->row();
       
-      $origem = $item->img_destaque;
-      $nome = explode('/', $origem);
-      $nome = end($nome);
-
-      $destino = "assets/delete/images/news/campus$campus->id/n".$id;
-      is_way($destino);
-      $destino = $destino . $nome;
-
-      if(copy($origem,$destino)|| $nome == '<') {
-
-      }
+      $destino = $destino.$nome;
+      if (file_exists($item->file)) {
+        unlink($item->file);
+    	}    
+	
       if ($this->bd->deletar('news_image', $id)) {
-          setMsg('<p>A notícia foi deletada com sucesso.</p>', 'success');
-          redirect("Painel_noticias/verFotos/$campus->id");
+          setMsg('<p>Foto deletada com sucesso.</p>', 'success');
+          redirect("Painel_noticias/verFotos/$campus->id/$item->newsid");
       } else {
-          setMsg('<p>Erro! A notícia foi não deletada.</p>', 'error');
-          redirect("Painel_noticias/verFotos/$campus->id");
+          setMsg('<p>Erro! Foto não pode ser deletada.</p>', 'error');
+          redirect("Painel_noticias/verFotos/$campus->id/$item->newsid");
       }
     }
 
-    function deletarFotosss($uriCampus = NULL,$id = NULL)
-    {
-        $uriCampus = $this->uri->segment(3);
-        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        $id=$this->uri->segment(4);
-        
-        $table = 'news_image';
-        
-        $dados = $this->painelbd->getWhere($table, array('id' => $explodeId[1]))->row();
-        $arquivo = isset($dados->file) ? $dados->file : '';
-        if ($explodeId[1] != NULL && $dados) {
-
-            if ($this->painelbd->delete($table, array('id' => $explodeId[1])) == TRUE) {
-                $files = realpath($dados->file);
-                $fileDeleted = current(array_reverse(explode('/', $dados->file)));
-
-                if (is_dir(FCPATH . "/assets/images/old/news/n$explodeId[0]")) {
-                    $path = "assets/assets/images/old/news/n$explodeId[0]";
-                } else {
-                    mkdir(FCPATH . "/assets/images/old/news/n$explodeId[0]", 0777, true);
-                    $path = "assets/images/old/news/n$explodeId[0]";
-                }
-
-
-                if (copy($files, $path . '/' . date('d-m-y') . $fileDeleted)) {
-                    $msg = "";
-                } else {
-                    $msg = "não foi possível fazer a cópia de segurança para '$path'.";
-                }
-
-                if (!unlink($arquivo)) {
-                    setMsg('Não foi possível remover o arquivo de nome ' . $arquivo . " e  $msg", 'alert');
-                    redirect(current_url());
-                } else {
-                    setMsg('<p>Foto deletada com sucesso.</p>', 'success');
-                    // redirect("Painel_noticias/verFotos/$campus->id/$explodeId[0]");
-                    redirect("Painel_noticias/verFotos/$uriCampus/$explodeId[0]");
-                }
-            } else {
-                setMsg('<p>Erro! A foto não pode ser deletada.</p>', 'error');
-                // redirect("Painel_noticias/verFotos/$campus->id/$explodeId[0]");
-                redirect("Painel_noticias/verFotos/$uriCampus/$explodeId[0]");
-            }
-        } else {
-            setMsg('<p>Erro! A foto desejada não pode ser deletada.</p>', 'error');
-            redirect("Painel_noticias/verFotos/$uriCampus");
-        }
-    }
+    
 
 
 }

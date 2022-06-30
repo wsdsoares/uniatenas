@@ -208,7 +208,6 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
     
-
     public function deletar_vinculo_curso($uriCampus = null,$id = NULL)
     {
         verifica_login();
@@ -717,7 +716,7 @@ class Painel_graduacao extends CI_Controller {
 
     }
 
- /*************************************************************************
+    /*************************************************************************
      * Fotos do curso
      * Página: Página de fotos do curso que estão vinculado a um CAMPUS
      * Ex.: Administração em Sete Lagoas
@@ -976,4 +975,101 @@ class Painel_graduacao extends CI_Controller {
 
     }
 
+
+
+    public function cadastrar_coordenador_curso($courseCampusId=NULL, $uriCampusId = NULL){
+        verificaLogin();
+       
+        $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('cargo', 'Cargo', 'required');
+        $this->form_validation->set_rules('cargo2', 'Cargo 2', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+            $dados_form = elements(array('nome', 'email', 'status','cargo','cargo2'), $this->input->post());
+
+            $dados_form['userid'] = $this->session->userdata('codusuario');;
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+            $dados_form['perfil'] = 'diretor';
+
+            if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_dirigentes");
+            } else {
+                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+                redirect("Painel_Campus/lista_dirigentes");
+            }
+        }
+        $data = array(
+            'conteudo' => 'paineladm/campus/dirigentes/cadastrar_dirigentes',
+            'titulo' => 'Dirigentes - UniAtenas',
+            'dados' => array(
+                'tipo' => '',
+                'page'=> "<span>Cadastro de dirigente.</span>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function editar_coordenador_curso($dirigenteId=NULL){
+        verificaLogin();
+
+        $dirigente = $this->painelbd->where('*','dirigentes',NULL, array('dirigentes.id'=>$dirigenteId))->row();
+
+        $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('cargo', 'Cargo', 'required');
+        $this->form_validation->set_rules('cargo2', 'Cargo 2', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()):
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
+            if ($dirigente->nome != $this->input->post('nome')) {
+                $dados_form['nome'] = $this->input->post('nome');
+            }
+            if ($dirigente->status != $this->input->post('status')) {
+                $dados_form['status'] = $this->input->post('status');
+            }
+
+            if ($dirigente->email != $this->input->post('email')) {
+                $dados_form['email'] = $this->input->post('email');
+            }
+            if ($dirigente->cargo != $this->input->post('cargo')) {
+                $dados_form['cargo'] = $this->input->post('cargo');
+            }
+            if ($dirigente->cargo2 != $this->input->post('cargo2')) {
+                $dados_form['cargo2'] = $this->input->post('cargo2');
+            }
+            
+            $dados_form['userid'] = $this->session->userdata('codusuario');;
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
+            $dados_form['perfil'] = 'diretor';
+
+            $dados_form['id'] = $dirigenteId;
+
+            if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_dirigentes");
+            } else {
+                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+                redirect("Painel_Campus/lista_dirigentes");
+            }
+        }
+        $data = array(
+            'conteudo' => 'paineladm/campus/dirigentes/editar_dirigente',
+            'titulo' => 'Editar Dirigentes - UniAtenas',
+            'dados' => array(
+                'tipo' => '',
+                'dirigente' => $dirigente,
+                'page'=> "<span>Edição de dirigente.</span>",
+            )
+        );
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
 }
