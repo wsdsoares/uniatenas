@@ -11,6 +11,7 @@
 <body>
 
   <?php
+ 
     if (isset($menu) and $menu !== NULL and ! empty($menu)) {
         $this->load->view("$menu");
     } else {

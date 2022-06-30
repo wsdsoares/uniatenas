@@ -98,7 +98,22 @@
           customConfig: 'config.js'
         });
         </script>
-
+        <div class="row clearfix">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="status">Status <small>(1 -Visível, 0 - Oculto)</small></label>
+                <?php
+                    $optionSituation = array(
+                        '1' => 'Visível - Ativo',
+                        '0' => 'Oculto - Inativo'
+                    );
+                    echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                    ?>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row clearfix">
           <div class="col-md-12">
             <?php echo form_submit(array('name' => 'submit', 'class' => 'btn btn-lg btn-primary m-t-15 m-r-15 waves-effect'), 'SALVAR'); ?>

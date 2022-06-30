@@ -1575,7 +1575,9 @@ and revistas.id =$id;
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">
                                                             
-                                                                <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#31CB4B none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:7px;width:auto;"><a href="http://www.atenas.edu.br/uniatenas/site/inicio/paracatu" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto,    helvetica, arial, sans-serif;font-size:18px;color:#FFFFFF;border-style:solid;border-color:#2980D9;border-width:10px 25px 10px 25px;display:inline-block;background:#2980D9;border-radius:7px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;">Acessar nosso site.</a></span>
+                                                                <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#31CB4B none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:7px;width:auto;">
+                                                                
+                                                                </span>
 
                                                                 </td>
                                                                 

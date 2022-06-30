@@ -99,11 +99,12 @@ $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$w
                                         ?>
                                 </ -->
                 <?php 
+                 
                 if(isset($linkVetibularTopo)){
                 ?>
                 <div class="log-reg">
 
-                  <a href="<?php echo $linkVetibularTopo->link?>" class="mx-auto download-btn-top">
+                  <a href="<?php print($linkVetibularTopo->link)?>" class="mx-auto download-btn-top">
                     <i class=" fa fa-graduation-cap" aria-hidden="true"></i><?php echo $linkVetibularTopo->nome?>
                   </a>
                 </div>
@@ -344,6 +345,7 @@ $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$w
                   </li>
                   </li>
                   <li><?php echo anchor('site/contato/' . $informacoesCampus->shurtName, 'Contato'); ?></li>
+
                 </ul>
 
               </div>
@@ -356,3 +358,7 @@ $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$w
   </header>
 </div>
 <br />
+
+<?php
+
+?>

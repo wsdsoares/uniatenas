@@ -26,16 +26,17 @@ $uricampus = $this->uri->segment(3);
     <div class="carousel-inner" role="listbox">
       <?php
       foreach ($slideshow as $key=>$slider) {
-          if ($key == 0) {
-              $ativo = 'active';
-          } else {
-              $ativo = '';
-          }
-          ?>
+        if ($key == 0) {
+            $ativo = 'active';
+        } else {
+            $ativo = '';
+        }
+      
+        ?>
       <div class="item <?php echo $ativo; ?>">
-        <a class="sliderLink" href="<?php echo $slider->linkRedir; ?>" target="_blank">
+        <a class="sliderLink" href="<?php print($slider->linkRedir) ?>" target="_blank">
           <div class="slider-item">
-            <img src="<?php echo base_url() . $slider->files; ?>" alt="teste" class="img-responsive">
+            <img src="<?php echo base_url().$slider->files; ?>" class="img-responsive">
             <div class="slider-content-area">
               <div class="container">
                 <div class="row">
@@ -52,8 +53,8 @@ $uricampus = $this->uri->segment(3);
         </a>
       </div>
       <?php
-            }
-            ?>
+      }
+      ?>
     </div>
     <a class="left carousel-control" href="#slider" role="button" data-slide="prev">
       <span class="fa fa-angle-left" aria-hidden="true"></span>
@@ -64,6 +65,7 @@ $uricampus = $this->uri->segment(3);
 
   </div>
 </section>
+
 <section class="bg-scrool">
   <div class="container">
     <div class="row">
