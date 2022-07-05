@@ -40,8 +40,6 @@ class Painel extends CI_Controller
                 and $buscaUsuarioLogado->cod_user != FALSE 
                 and $buscaUsuarioLogado->cod_user == $dados_form['user']) 
             {
-                
-
                 $joinCampusVinculoUsuario = array(
                     'campus' => 'campus.id = users_has_campus.campus_id ',
                     'users' => 'users.id = users_has_campus.users_id'
@@ -56,7 +54,6 @@ class Painel extends CI_Controller
 
                 /** Verifica se o usuário, que foi encontrado no banco de dados está vinculado no mínimo a um campus **/
                 $verificaVinculoUsuarioCampus = $this->painelbd->where($colunasVinculoUsuarioCampus,'users_has_campus',$joinCampusVinculoUsuario, $whereVinculos, NULL, NULL, NULL)->result();
-
                              
                 if($verificaVinculoUsuarioCampus){
                     $arrayAcessosCampus = array();
@@ -75,7 +72,6 @@ class Painel extends CI_Controller
                     $wherePermissoesUsuario = array('permissoes_por_usuario.users_id'=>$buscaUsuarioLogado->id,'users.status'=>1);
                     $arrayPermissoesUsuario = $this->painelbd->where($colunasPemissoesUsuario,'permissoes_por_usuario', $joinPermissoesUsuario,$wherePermissoesUsuario)->result();
 
-                   
                     /* criando a seção do usuário**/                   
                     $this->session->set_userdata('logged', TRUE);
                     $this->session->set_userdata('codusuario', $buscaUsuarioLogado->cod_user);

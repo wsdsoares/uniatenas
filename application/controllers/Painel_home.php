@@ -267,8 +267,8 @@ class Painel_home extends CI_Controller
             if ($itens->status != $this->input->post('status')) {
                 $dados_form['status'] = $this->input->post('status');
             }
-            if ($itens->linkredir != $this->input->post('linkredir') and $this->input->post('linkredir') != '') {
-                $dados_form['linkredir'] = $this->input->post('linkredir');
+            if ($itens->linkRedir != $this->input->post('linkRedir') and $this->input->post('linkRedir') !='') {
+                $dados_form['linkRedir'] = $this->input->post('linkRedir');
             }
 
             if ($itens->user_id != $this->session->userdata('codusuario')) {
@@ -310,9 +310,6 @@ class Painel_home extends CI_Controller
             }else{
                 setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
             }
-                
-           
-
         }
 
         $locaisCampus = $this->bd->where('*', 'campus', null, array('visible' => 'SIM'))->result();
@@ -323,7 +320,7 @@ class Painel_home extends CI_Controller
             'conteudo' => 'paineladm/home/slideshow/editar_slideshow',
             'dados' => array(
                 'slideshow' => $itens,
-                'locaisCampus' => $locaisCampus,
+                // 'locaisCampus' => $locaisCampus,
                 'campus' => $campus,
                 'tipo' => 'slideshow',
                 'page' => "Edição Banners - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",

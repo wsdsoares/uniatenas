@@ -16,6 +16,10 @@
         if ($msg = getMsg()){
             echo $msg;
         }
+
+        echo '<pre>';
+        print_r($dados);
+        echo '</pre>';
         ?>
 
         <?php echo form_open_multipart('Painel_home/editarSlideshow/'.$campus->id.'/'. $slideshow->id) ?>
