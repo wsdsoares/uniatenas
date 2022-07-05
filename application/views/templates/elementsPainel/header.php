@@ -199,8 +199,21 @@ function ativo() {
               </ul>
             </li>
             <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Cursos Por Campus</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <?php echo anchor('Painel_graduacao/lista_campus_cursos/presencial', '<span>Presencial</span>');?>
+                </li>
+                <li>
+                  <?php echo anchor('Painel_graduacao/lista_campus_cursos/ead', '<span>EAD</span>');?>
+                </li>
+              </ul>
+            </li>
+            <li>
               <?php
-                echo anchor('Painel_graduacao/lista_campus_cursos', '<span>Cursos Por Campus</span>');
+                //echo anchor('Painel_graduacao/lista_campus_cursos', '<span>Cursos Por Campus</span>');
                 ?>
             </li>
           </ul>
@@ -229,13 +242,29 @@ function ativo() {
             </li>
           </ul>
         </li> -->
+        </li>
+        <?php //include_once('itens_header/item_h_financeiro.php');?>
+        <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
+        <?php //include_once('itens_header/item_h_vestibular.php');?>
+
         <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>Coodenação Secretaria</span>
+          </a>
 
-          <?php //include_once('itens_header/item_h_financeiro.php');?>
-          <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
-          <?php //include_once('itens_header/item_h_vestibular.php');?>
-
-          <?php //include_once('itens_header/item_h_secretaria.php');?>
+          <ul class="ml-menu">
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Calendários Semestre</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </li>
 
         <li>

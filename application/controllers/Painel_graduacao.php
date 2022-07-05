@@ -33,7 +33,7 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
     
-    public function lista_campus_cursos() {
+    public function lista_campus_cursos($modalidade=NULL) {
         verificaLogin();
         $colunasResultadoCursos = 
             array('campus.id',
@@ -48,8 +48,9 @@ class Painel_graduacao extends CI_Controller {
             'conteudo' => 'paineladm/cursos/lista_campus_cursos',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'page' => 'Lista de Cursos - <strong>Gestão Por Campus</strong>',
+                'page' => 'Lista de Cursos - '.$modalidade.' <strong>Gestão Por Campus</strong>',
                 'campus'=> $listagemDosCampus,
+                'modalidade'=> $modalidade,
                 'tipo'=> '' 
             )
         );
@@ -57,10 +58,8 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
     
-    public function lista_cursos($uriCampus,$uriModalidade) {
+    public function lista_cursos($uriCampus,$modalidade) {
         verificaLogin();
-        $uriCampus = $this->uri->segment(3);
-        $uriModalidade = $this->uri->segment(4);
 
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
@@ -89,7 +88,7 @@ class Painel_graduacao extends CI_Controller {
             'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
         );
 
-        $whereCursosPorCampus = array('campus.id'=>$campus->id,'courses.modalidade'=>$uriModalidade);
+        $whereCursosPorCampus = array('campus.id'=>$campus->id,'courses.modalidade'=>$modalidade);
         $listaInformacoesPorCursos = $this->painelbd->where($colunasResultadoCursos,'campus_has_courses',$joinCampus, $whereCursosPorCampus,array('campo' => 'courses.name', 'ordem' => 'asc'), NULL)->result();
        
         $data = array(
@@ -97,9 +96,10 @@ class Painel_graduacao extends CI_Controller {
             'conteudo' => 'paineladm/cursos/lista_cursos',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'page' => "Gestão de Cursos - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'page' => "Gestão de Cursos $modalidade - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
                 'cursos' => $listaInformacoesPorCursos,
                 'campus'=> $campus,
+                'modalidade'=> $modalidade,
                 'tipo'=>'tabelaDatatable'
             )
         );
@@ -975,44 +975,93 @@ class Painel_graduacao extends CI_Controller {
 
     }
 
+    public function cadastrar_coordenador_curso($courseCampusId=NULL, $uriCampus = NULL){
+      verificaLogin();
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
+      $colunasDadosCursoPorCampus = 
+      array(
+          'campus.id as campusid',
+          'campus.name as campusName',
+          'campus.city',
+          
+          'campus_has_courses.id as campus_coursesid',
+          'courses.name as nameCourse',
+      );
+  
+      $joinCampus = array(
+          'campus' => 'campus.id = campus_has_courses.campus_id',
+          'courses' => 'courses.id = campus_has_courses.courses_id',
+          'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
+      );
 
-    public function cadastrar_coordenador_curso($courseCampusId=NULL, $uriCampusId = NULL){
-        verificaLogin();
-       
-        $this->form_validation->set_rules('nome', 'Nome', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required');
-        $this->form_validation->set_rules('cargo', 'Cargo', 'required');
-        $this->form_validation->set_rules('cargo2', 'Cargo 2', 'required');
+      $cursoPorCampus = $this->painelbd->where($colunasDadosCursoPorCampus,'campus_has_courses',$joinCampus, array('campus_has_courses.id'=>$courseCampusId))->row(); 
 
-        if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
-                setMsg(validation_errors(), 'error');
-            endif;
-        } else {
-            $dados_form = elements(array('nome', 'email', 'status','cargo','cargo2'), $this->input->post());
+      $coordenador = $this->painelbd->where('*','dirigentes',null, array('dirigentes.id_course_campus'=>$cursoPorCampus->campus_coursesid))->row(); 
 
-            $dados_form['userid'] = $this->session->userdata('codusuario');;
-            $dados_form['updated_at'] = date('Y-m-d H:i:s');
-            $dados_form['perfil'] = 'diretor';
+      $this->form_validation->set_rules('nome', 'Nome', 'required');
+      $this->form_validation->set_rules('email', 'Email', 'required');
+      $this->form_validation->set_rules('cargo', 'Cargo', 'required');
 
-            if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
-                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect("Painel_Campus/lista_dirigentes");
-            } else {
-                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
-                redirect("Painel_Campus/lista_dirigentes");
-            }
+      if ($this->form_validation->run() == FALSE) {
+        if (validation_errors()){
+          setMsg(validation_errors(), 'error');
         }
-        $data = array(
-            'conteudo' => 'paineladm/campus/dirigentes/cadastrar_dirigentes',
-            'titulo' => 'Dirigentes - UniAtenas',
-            'dados' => array(
-                'tipo' => '',
-                'page'=> "<span>Cadastro de dirigente.</span>",
-            )
-        );
-        $this->load->view('templates/layoutPainelAdm', $data);
+      }else{
+        if(empty($coordenador)){
+          $dados_form = elements(array('nome', 'email', 'status','cargo'), $this->input->post());
+        
+          $dados_form['user_id'] = $this->session->userdata('codusuario');
+          $dados_form['updated_at'] = date('Y-m-d H:i:s');
+          $dados_form['perfil'] = 'coordenador';
+
+          if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
+            setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+            redirect("Painel_graduacao/lista_cursos/$campus->id/presencial");
+          } else {
+            setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+            redirect("Painel_graduacao/lista_cursos/$campus->id/presencial");
+          }
+        }else{
+
+          if($coordenador->nome != $this->input->post('nome')){
+            $dados_form['nome'] = $this->input->post('nome');
+          }
+          if($coordenador->email != $this->input->post('email')){
+            $dados_form['email'] = $this->input->post('email');
+          }
+          if($coordenador->cargo != $this->input->post('cargo')){
+            $dados_form['cargo'] = $this->input->post('cargo');
+          }
+          
+          $dados_form['user_id'] = $this->session->userdata('codusuario');
+          $dados_form['updated_at'] = date('Y-m-d H:i:s');
+          $dados_form['perfil'] = 'coordenador';
+          $dados_form['id'] = $coordenador->id;
+  
+          if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
+            setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+            redirect("Painel_graduacao/lista_cursos/$campus->id/presencial");
+          } else {
+            setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+            redirect("Painel_graduacao/lista_cursos/$campus->id/presencial");
+          }
+        }
+      }
+
+      $data = array(
+        'conteudo' => 'paineladm/cursos/coordenador/cadastrar_coordenador_curso',
+        'titulo' => 'Coordenador do curso',
+        'dados' => array(
+            'tipo' => '',
+            'coordenador' => $coordenador = !empty ($coordenador) ? $coordenador :'',
+            'campus' => $campus,
+            'cursoPorCampus' => $cursoPorCampus->campus_coursesid,
+            'page'=> "<span>Cadastro de coordenador(a) do curso de $cursoPorCampus->nameCourse $campus->city</span>",
+        )
+      );
+      $this->load->view('templates/layoutPainelAdm', $data);
     }
 
     public function editar_coordenador_curso($dirigenteId=NULL){
@@ -1026,41 +1075,42 @@ class Painel_graduacao extends CI_Controller {
         $this->form_validation->set_rules('cargo2', 'Cargo 2', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
-                setMsg(validation_errors(), 'error');
-            endif;
+          if (validation_errors()):
+            setMsg(validation_errors(), 'error');
+          endif;
         } else {
-            if ($dirigente->nome != $this->input->post('nome')) {
-                $dados_form['nome'] = $this->input->post('nome');
-            }
-            if ($dirigente->status != $this->input->post('status')) {
-                $dados_form['status'] = $this->input->post('status');
-            }
 
-            if ($dirigente->email != $this->input->post('email')) {
-                $dados_form['email'] = $this->input->post('email');
-            }
-            if ($dirigente->cargo != $this->input->post('cargo')) {
-                $dados_form['cargo'] = $this->input->post('cargo');
-            }
-            if ($dirigente->cargo2 != $this->input->post('cargo2')) {
-                $dados_form['cargo2'] = $this->input->post('cargo2');
-            }
-            
-            $dados_form['userid'] = $this->session->userdata('codusuario');;
-            $dados_form['updated_at'] = date('Y-m-d H:i:s');
-            $dados_form['perfil'] = 'diretor';
+          if ($dirigente->nome != $this->input->post('nome')) {
+            $dados_form['nome'] = $this->input->post('nome');
+          }
+          if ($dirigente->status != $this->input->post('status')) {
+            $dados_form['status'] = $this->input->post('status');
+          }
+          if ($dirigente->email != $this->input->post('email')) {
+            $dados_form['email'] = $this->input->post('email');
+          }
+          if ($dirigente->cargo != $this->input->post('cargo')) {
+            $dados_form['cargo'] = $this->input->post('cargo');
+          }
+          if ($dirigente->cargo2 != $this->input->post('cargo2')) {
+            $dados_form['cargo2'] = $this->input->post('cargo2');
+          }
+          
+          $dados_form['userid'] = $this->session->userdata('codusuario');;
+          $dados_form['updated_at'] = date('Y-m-d H:i:s');
+          $dados_form['perfil'] = 'diretor';
 
-            $dados_form['id'] = $dirigenteId;
+          $dados_form['id'] = $dirigenteId;
 
-            if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
-                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect("Painel_Campus/lista_dirigentes");
-            } else {
-                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
-                redirect("Painel_Campus/lista_dirigentes");
-            }
+          if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
+            setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+            redirect("Painel_Campus/lista_dirigentes");
+          } else {
+            setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+            redirect("Painel_Campus/lista_dirigentes");
+          }
         }
+        
         $data = array(
             'conteudo' => 'paineladm/campus/dirigentes/editar_dirigente',
             'titulo' => 'Editar Dirigentes - UniAtenas',

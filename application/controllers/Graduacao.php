@@ -525,16 +525,9 @@ order by courses.name";
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }elseif($uricampus == 'valenca'){
-          $city = "Valenca";
-        }
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+
+        $colunasTabelaCampus = array('campus.name', 'campus.id','campus.city', 'campus.shurtName');
+        $dataCampus = $this->bancosite->where($colunasTabelaCampus,'campus', NULL,array('shurtName' => $uricampus))->row();
 
         $queryCursos = "SELECT * FROM courses where modalidade = 'ead' and types = 'ead' order by areas_id, name";
 
@@ -564,14 +557,9 @@ order by courses.name";
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $colunasTabelaCampus = array('campus.name', 'campus.id','campus.city', 'campus.shurtName','campus.phone');
+        $dataCampus = $this->bancosite->where($colunasTabelaCampus,'campus', NULL,array('shurtName' => $uricampus))->row();
+
 
         if ($idCourse == '') {
             redirect('graduacao/ead');
@@ -598,6 +586,7 @@ order by courses.name";
                     dirigentes.nome,
                     dirigentes.email,
                     courses_pages.description,
+                    courses_pages.link_vestibular,
                     courses_pages.filesGrid,
                     courses_pages.actuation,
                     courses_pages.autorization,

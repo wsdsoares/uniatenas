@@ -107,8 +107,7 @@
                   </div>
                   <div class="btn-opcoes-curso">
                     <?php 
-                    echo anchor("Painel_graduacao/cadastrar_coordenador_curso/$item->campus_coursesid/$campus->id",'
-                      <a class="btn-opcoes-curso btn btn-info">Coordenador de Curso</a>');
+                    echo anchor("Painel_graduacao/cadastrar_coordenador_curso/$item->campus_coursesid/$campus->id/$modalidade",'Coordenador de Curso',array('class'=>"btn-opcoes-curso btn btn-info"));
                     ?>
                   </div>
                   <?php

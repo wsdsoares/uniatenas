@@ -11,14 +11,14 @@
       </a>
       <ul class="ml-menu">
         <li>
-          <?php echo anchor('Painel_secretaria/calendarios_semestre/1', '<span>Paracatu</span>'); ?>
+          <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
+        </li>
+        <!-- <li>
+          <?php //echo anchor('Painel_secretaria/calendarios_semestre/3', '<span>Passos</span>'); ?>
         </li>
         <li>
-          <?php echo anchor('Painel_secretaria/calendarios_semestre/3', '<span>Passos</span>'); ?>
-        </li>
-        <li>
-          <?php echo anchor('Painel_secretaria/calendarios_semestre/2', '<span>Sete Logoas</span>'); ?>
-        </li>
+          <?php //echo anchor('Painel_secretaria/calendarios_semestre/2', '<span>Sete Logoas</span>'); ?>
+        </li> -->
       </ul>
     </li>
 
