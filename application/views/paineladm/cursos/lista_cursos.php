@@ -1,5 +1,5 @@
 <div class="block-header">
-  <h2></h2>
+  <h2>PAINEL ADMINISTRATIVO</h2>
 </div>
 
 <!-- Exportable Table -->
@@ -20,12 +20,12 @@
         <div class="container">
           <div class="col-xs-6">
             <?php
-            echo anchor("Painel_graduacao/vincular_curso_campus/$campus->id", "<i class='material-icons'>add_box</i> Cadastro do Curso <small> (Vincular ao Campus)</small> ", array('class' => 'btn btn-primary m-t-15 waves-effect'));
+            echo anchor("Painel_graduacao/vincular_curso_campus/$campus->id/$modalidade", "<i class='material-icons'>add_box</i> Cadastro do Curso $modalidade <small> (Vincular ao Campus)</small> ", array('class' => 'btn btn-primary m-t-15 waves-effect'));
             ?>
           </div>
           <div class="col-xs-6">
             <?php 
-          echo anchor('Painel_graduacao/lista_campus_cursos', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+          echo anchor("Painel_graduacao/lista_campus_cursos/$modalidade", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
           ?>
           </div>
         </div>
@@ -67,10 +67,10 @@
                 <td class="center">
                   <?php 
 
-                    echo '<a href=' . base_url("Painel_graduacao/editar_vinculo_curso_campus/$campus->id/$item->campus_coursesid") . '>'
+                    echo '<a href=' . base_url("Painel_graduacao/editar_vinculo_curso_campus/$campus->id/$item->campus_coursesid/$modalidade") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name . '" data-id="' . $item->campus_coursesid . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name .'('.$modalidade.')" data-id="' . $item->campus_coursesid . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
                      ?>

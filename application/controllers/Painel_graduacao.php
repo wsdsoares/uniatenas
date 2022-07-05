@@ -58,7 +58,7 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
     
-    public function lista_cursos($uriCampus,$modalidade) {
+    public function lista_cursos($uriCampus,$uriModalidade) {
         verificaLogin();
 
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
@@ -88,7 +88,7 @@ class Painel_graduacao extends CI_Controller {
             'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
         );
 
-        $whereCursosPorCampus = array('campus.id'=>$campus->id,'courses.modalidade'=>$modalidade);
+        $whereCursosPorCampus = array('campus.id'=>$campus->id,'courses.modalidade'=>$uriModalidade);
         $listaInformacoesPorCursos = $this->painelbd->where($colunasResultadoCursos,'campus_has_courses',$joinCampus, $whereCursosPorCampus,array('campo' => 'courses.name', 'ordem' => 'asc'), NULL)->result();
        
         $data = array(
@@ -96,10 +96,10 @@ class Painel_graduacao extends CI_Controller {
             'conteudo' => 'paineladm/cursos/lista_cursos',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'page' => "Gestão de Cursos $modalidade - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'page' => "Gestão de Cursos $uriModalidade - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
                 'cursos' => $listaInformacoesPorCursos,
                 'campus'=> $campus,
-                'modalidade'=> $modalidade,
+                'modalidade'=> $uriModalidade,
                 'tipo'=>'tabelaDatatable'
             )
         );
@@ -107,12 +107,12 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function vincular_curso_campus($uriCampus=NULL) {
+    public function vincular_curso_campus($uriCampus=NULL,$uriModalidade=NULL) {
 
         $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-        $courses = $this->painelbd->where('*', 'courses',null, array('courses.status'=>1,'modalidade'=>'presencial'))->result();
+        $courses = $this->painelbd->where('*', 'courses',null, array('courses.status'=>1,'modalidade'=>$uriModalidade))->result();
         
         $this->form_validation->set_rules('courses_id', 'Curso', 'required');
 
@@ -136,7 +136,7 @@ class Painel_graduacao extends CI_Controller {
                  $this->painelbd->salvar('courses_pages', $dados_form_course_page);
 
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect(base_url("Painel_graduacao/lista_cursos/$campus->id/presencial"));
+                redirect(base_url("Painel_graduacao/lista_cursos/$campus->id/$uriModalidade"));
             }else{
                 setMsg('<p>Erro! Algo de errado na inserção dos dados.</p>', 'error');
             }

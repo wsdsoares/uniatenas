@@ -12,7 +12,7 @@
         ?>
       <div class="header">
         <h2>
-          <?php echo ($page); ?>
+          <?php echo ($page) ?>
         </h2>
 
       </div>
