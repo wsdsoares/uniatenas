@@ -247,24 +247,24 @@ function ativo() {
         <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
         <?php //include_once('itens_header/item_h_vestibular.php');?>
 
-        <li>
-          <a href="javascript:void(0);" class="menu-toggle">
-            <i class="material-icons">assignment</i>
-            <span>Coodenação Secretaria</span>
-          </a>
+        <li class="header">Secretaria</li>
+        <a href="javascript:void(0);" class="menu-toggle">
+          <i class="material-icons">assignment</i>
+          <span>Coodenação Secretaria</span>
+        </a>
 
-          <ul class="ml-menu">
-            <li>
-              <a href="javascript:void(0);" class="menu-toggle">
-                <span>Calendários Semestre</span>
-              </a>
-              <ul class="ml-menu">
-                <li>
-                  <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
-                </li>
-              </ul>
-            </li>
-          </ul>
+        <ul class="ml-menu">
+          <li>
+            <a href="javascript:void(0);" class="menu-toggle">
+              <span>Calendários Semestre</span>
+            </a>
+            <ul class="ml-menu">
+              <li>
+                <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
+              </li>
+            </ul>
+          </li>
+        </ul>
         </li>
 
         <li>
