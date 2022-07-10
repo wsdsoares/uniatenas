@@ -1265,27 +1265,25 @@ and revistas.id =$id;
 
     public function dirigentes($uricampus = NULL)
     {
+      if ($uricampus == null) {
+          redirect("");
+      }
 
+      $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
-        if ($uricampus == null) {
-            redirect("");
-        }
+      $dirigentes = $this->bancosite->getQuery("SELECT * FROM dirigentes WHERE cargo NOT LIKE '%coordenador%' ")->result();
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-
-        $dirigentes = $this->bancosite->getQuery("SELECT * FROM dirigentes WHERE cargo NOT LIKE '%coordenador%' ")->result();
-
-        $data = array(
-            'head' => array(
-                'title' => 'Dirigentes ' . $dataCampus->city,
-            ),
-            'conteudo' => 'uniatenas/dirigentes',
-            'dados' => array(
-                'campus' => $dataCampus,
-                'dirigentes' => $dirigentes
-            ),
-            'js' => null,
-            'footer' => ''
+      $data = array(
+          'head' => array(
+              'title' => 'Dirigentes ' . $dataCampus->city,
+          ),
+          'conteudo' => 'uniatenas/dirigentes',
+          'dados' => array(
+              'campus' => $dataCampus,
+              'dirigentes' => $dirigentes
+          ),
+          'js' => null,
+          'footer' => ''
         );
         $this->output->cache(14.400);
         $this->load->view('templates/master', $data);
