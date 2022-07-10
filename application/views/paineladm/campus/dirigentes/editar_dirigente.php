@@ -78,7 +78,29 @@
               </div>
             </div>
           </div>
-
+        </div>
+        <h2 class="card-inside-title">Foto do dirigente</h2>
+        <div class="row clearfix" style="background:#f1f1f1">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="title">Foto do dirigente
+                </label>
+                <?php echo form_input(array('name' => 'photo', 'type' => 'file', 'class' => 'form-control'), set_value('photo')); ?>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="informacoes-cadastradas">
+              <?php
+              if($dirigente->photo!='' and !empty($dirigente->photo)){
+                echo anchor(base_url(verifyImg($dirigente->photo)), '<img src="' . base_url(verifyImg($dirigente->photo)) . '" class="thumbnail">', array('target' => '_blank'));
+                }else{
+                  echo '<span> Sem imagem cadastrada. <span>';
+                }
+              ?>
+            </div>
+          </div>
         </div>
 
         <div class="separacao-forms"></div>

@@ -1077,25 +1077,41 @@ class Painel_campus extends CI_Controller {
             endif;
         } else {
             $dados_form = elements(array('nome', 'email', 'status','cargo','cargo2'), $this->input->post());
+            
+            $path = "assets/images/dirigentes";
+            is_way($path);
 
-            $dados_form['userid'] = $this->session->userdata('codusuario');;
+            if (!empty($_FILES['photo']['name'])) {
+              $upload = $this->painelbd->uploadFiles('photo', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
+
+              if($upload){
+                $dados_form['photo'] = $path.'/'.$upload['file_name'];
+              }else{
+                $msg = $this->upload->display_errors();
+                $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                setMsg($msg, 'erro');
+              }
+            }
+
+            $dados_form['user_id'] = $this->session->userdata('codusuario');;
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['perfil'] = 'diretor';
 
+           
             if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
-                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect("Painel_Campus/lista_dirigentes");
+              setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+              redirect("Painel_Campus/lista_dirigentes");
             } else {
-                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
-                redirect("Painel_Campus/lista_dirigentes");
+              setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+              redirect("Painel_Campus/lista_dirigentes");
             }
         }
         $data = array(
             'conteudo' => 'paineladm/campus/dirigentes/cadastrar_dirigentes',
             'titulo' => 'Dirigentes - UniAtenas',
             'dados' => array(
-                'tipo' => '',
-                'page'=> "<span>Cadastro de dirigente.</span>",
+              'tipo' => '',
+              'page'=> "<span>Cadastro de dirigente.</span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
@@ -1116,6 +1132,7 @@ class Painel_campus extends CI_Controller {
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
+
             if ($dirigente->nome != $this->input->post('nome')) {
                 $dados_form['nome'] = $this->input->post('nome');
             }
@@ -1133,7 +1150,21 @@ class Painel_campus extends CI_Controller {
                 $dados_form['cargo2'] = $this->input->post('cargo2');
             }
             
-            $dados_form['userid'] = $this->session->userdata('codusuario');;
+            $path = "assets/images/dirigentes";
+            is_way($path);
+            if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
+              $upload = $this->painelbd->uploadFiles('backgroundPrincipal', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
+
+              if($upload){
+                $dados_form['photo'] = $path.'/'.$upload['file_name'];
+              }else{
+                $msg = $this->upload->display_errors();
+                $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                setMsg($msg, 'erro');
+              }
+            }
+            
+            $dados_form['user_id'] = $this->session->userdata('codusuario');;
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['perfil'] = 'diretor';
 

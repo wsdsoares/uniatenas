@@ -78,7 +78,19 @@
               </div>
             </div>
           </div>
+        </div>
 
+        <h2 class="card-inside-title">Foto do dirigente</h2>
+        <div class="row clearfix" style="background:#f1f1f1">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="title">Foto do dirigente
+                </label>
+                <?php echo form_input(array('name' => 'photo', 'type' => 'file', 'class' => 'form-control'), set_value('photo')); ?>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="separacao-forms"></div>
@@ -116,46 +128,3 @@
     </div>
   </div>
 </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function() {
-  $("#idcampus").change(function() {
-    var campus_id = $('#idcampus').val();
-    if (campus_id != '') {
-      $.ajax({
-        url: "<?php echo base_url();?>Painel_home/getBannerPositionbyCampus",
-        method: "POST",
-        data: {
-          campus_id: campus_id
-        },
-        success: function(data) {
-          var opts = $.parseJSON(data);
-          $('#selectOrder').empty();
-          $.each(opts, function(i, position) {
-            $('#selectOrder').append($('<option>', {
-              value: position.priority,
-              text: position.priority
-            }));
-
-            if (opts.length == i + 1) {
-              $('#selectOrder').append($('<option>', {
-                value: (+(position.priority) + +(1)),
-                text: (+(position.priority) + +(1))
-              }));
-            }
-            $('#selectOrder').selectpicker('refresh');
-          })
-        }
-      })
-    }
-    if ('select') {
-      $('#selectOrder').empty();
-      $('#selectOrder').append($('<option>', {
-        text: 'Selecione o campus'
-      }));
-      $('#selectOrder').selectpicker('refresh');
-    }
-  });
-
-})
-</script>

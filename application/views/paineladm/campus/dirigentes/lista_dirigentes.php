@@ -32,6 +32,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Nome</th>
+                <th>Foto</th>
                 <th>Cargo/ Cargo 2</th>
                 <th>Situação</th>
                 <th>Modificado em, por:</th>
@@ -42,6 +43,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Nome</th>
+                <th>Foto</th>
                 <th>Cargo/ Cargo 2</th>
                 <th>Situação</th>
                 <th>Modificado em, por:</th>
@@ -76,6 +78,14 @@
                 </td>
                 <td><?php echo $diretor->id; ?></td>
                 <td><?php echo $diretor->nome; ?></td>
+                <td>
+
+                  <?php 
+                  if(!empty ($diretor->photo)){ 
+                    echo anchor(base_url(verifyImg($diretor->photo)), '<img src="' . base_url(verifyImg($diretor->photo)) . '" class="thumbnail">', array('target' => '_blank'));
+                  }
+                  ?>
+                </td>
                 <td><?php echo $diretor->cargo.'/ <br/>'.$diretor->cargo2; ?></td>
                 <td>
                   <?php
@@ -86,15 +96,12 @@
                     }
                     ?>
                 </td>
-
                 <td>
                   <?php 
                     $dateModification = empty($diretor->updated_at) ? $diretor->created_at : $diretor->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).'.'.$diretor->userid; 
+                    echo date("d/m/Y H:m:s",strtotime($dateModification)).'.'.$diretor->user_id; 
                     ?>
                 </td>
-
-
               </tr>
               <?php
                 }
