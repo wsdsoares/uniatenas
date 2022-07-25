@@ -152,18 +152,18 @@ h4.titleCourse {
 </style>
 <?php
 $uriLocal = $this->uri->segment(3);
-$urlVestibular= '';
-if($dados['campus']->id == 1) {
-    $urlVestibular = 'http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=72#/es/informacoes';
-}
-else if($dados['campus']->id == 2){
-    $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=74#/es/informacoes';
-}
-else if($dados['campus']->id == 3){
-    $urlVestibular = 'http://www.atenas.edu.br/uniatenas/graduacao/presencial/passos/14';
-}else if($dados['campus']->id == 6){
-  $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=73#/es/informacoes';
-}
+// $urlVestibular= '';
+// if($dados['campus']->id == 1) {
+//     $urlVestibular = 'http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=72#/es/informacoes';
+// }
+// else if($dados['campus']->id == 2){
+//     $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=74#/es/informacoes';
+// }
+// else if($dados['campus']->id == 3){
+//     $urlVestibular = 'http://www.atenas.edu.br/uniatenas/graduacao/presencial/passos/14';
+// }else if($dados['campus']->id == 6){
+//   $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=73#/es/informacoes';
+// }
 ?>
 <section class="course-content">
   <div class="container">
@@ -195,22 +195,22 @@ else if($dados['campus']->id == 3){
         <div class="course-items">
           <?php
                     
-                    $cat = '';
-                    foreach ($campusCursos as $row) {
+          $cat = '';
+          foreach ($campusCursos as $row) {
+            if ($row['areas_id'] == 1) {
+                $cat = 'cat-1';
+            } elseif ($row['areas_id'] == 2) {
+                $cat = 'cat-2';
+            } elseif ($row['areas_id'] == 3) {
+                $cat = 'cat-3';
+            } elseif ($row['areas_id'] == 4) {
+                $cat = 'cat-4';
+            }
 
-                      
-                        if ($row['areas_id'] == 1) {
-                            $cat = 'cat-1';
-                        } elseif ($row['areas_id'] == 2) {
-                            $cat = 'cat-2';
-                        } elseif ($row['areas_id'] == 3) {
-                            $cat = 'cat-3';
-                        } elseif ($row['areas_id'] == 4) {
-                            $cat = 'cat-4';
-                        }
+            $idEfeito = mb_substr($row['name'], 0, 3);
 
-                        $idEfeito = mb_substr($row['name'], 0, 3);
-                        ?>
+           
+            ?>
           <div class="item <?php echo $cat; ?>" data-category="transition">
             <ul class="grid cs-style-3">
               <div class="col-sm-6">
@@ -223,97 +223,31 @@ else if($dados['campus']->id == 3){
 
                       <h4 class="titleCourse"><?php echo $row['name']; ?></h4>
                       <?php
-                      
-                            foreach ($row['campus'] as $courseCampus) {
-
-                                if($campus->city == $courseCampus->city){
-                                    $ClasseAtivaCampusDestaque = 'class="campus_ativo"';
-                                }else{
-                                    $ClasseAtivaCampusDestaque='';
-                                }
-                                /*if ($uriLocal == 'paracatu') {
-                                    if ($courseCampus->idCourseCampus == 14 or $courseCampus->idCourseCampus == 13) {
-                                        //decisão para verificar se é medicina de passos ou sete lagoas, caso seja redireciona para o site do vestibular
-                                        if($courseCampus->idCourseCampus == 14){
-                                            //passos
-                                            echo anchor('http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=74#/es/informacoes', $courseCampus->city);
-                                        }else{
-                                            //sete lagoas
-                                            echo anchor('http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=73#/es/informacoes', $courseCampus->city);
-                                        }
-                                    } else {
-                                        echo anchor('graduacao/presencial/' . $uriLocal . '/' . $courseCampus->idCourseCampus, $courseCampus->city);
-                                    }
-                                } elseif ($uriLocal == 'passos') {
-                                    if ($courseCampus->idCourseCampus == 8 or $courseCampus->idCourseCampus == 13) {
-                                        //decisão para verificar se é medicina de passos ou sete lagoas, caso seja redireciona para o site do vestibular
-                                        if($courseCampus->idCourseCampus == 13){
-                                            //sete lagoas
-                                            echo anchor('http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=73#/es/informacoes', $courseCampus->city);
-                                        }else{
-                                            //paracatu
-                                            echo anchor('http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=72#/es/informacoes', $courseCampus->city);
-                                        }
-                                    } else {
-                                        echo anchor('graduacao/presencial/' . $uriLocal . '/' . $courseCampus->idCourseCampus, $courseCampus->city);
-                                    }
-                                } elseif ($uriLocal == 'setelagoas') {
-                                    if ($courseCampus->idCourseCampus == 8 or $courseCampus->idCourseCampus == 14) {
-                                        //decisaão para verificar se é medicina de passos ou sete lagoas, caso seja redireciona para o site do vestibular
-                                        if($courseCampus->idCourseCampus == 14){
-                                            //passos
-                                            echo anchor('http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=74#/es/informacoes', $courseCampus->city);
-                                        }else{
-                                            //paracatu
-                                            echo anchor('http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=72#/es/informacoes', $courseCampus->city);
-                                        }
-                                    } else {
-                                        echo anchor('graduacao/presencial/' . $uriLocal . '/' . $courseCampus->idCourseCampus, $courseCampus->city);
-                                    }
-                                }*/
-                                echo anchor('graduacao/presencial/' . $uriLocal . '/' . $courseCampus->idCourseCampus, $courseCampus->city,$ClasseAtivaCampusDestaque);
-                            }
-                            ?>
+                      foreach ($row['campus'] as $courseCampus) {
+                        if($campus->city == $courseCampus->city){
+                            $ClasseAtivaCampusDestaque = 'class="campus_ativo"';
+                        }else{
+                            $ClasseAtivaCampusDestaque='';
+                        }
+                        echo anchor('graduacao/presencial/' . $uriLocal . '/' . $courseCampus->idCourseCampus, $courseCampus->city,$ClasseAtivaCampusDestaque);
+                      }
+                      ?>
                     </figcaption>
                   </figure>
-                  <?php if ($courseCampus->courseId == 8) {
-                                               
-                                            ?>
-                  <?php if($dados['campus']->id == 3){
-
-                                         ?>
-                  <div class="col-sm-12 col-md-12 text-center">
-                    <?php echo anchor($urlVestibular, 'Saiba Mais!', array('class' => "btn btns btn-lg")); ?>
-
-                  </div>
-                  <?php 
-                                            }else {
-                                          ?>
-                  <div class="col-sm-12 col-md-12 text-center">
-                    <?php echo anchor($urlVestibular, 'INSCREVA-SE AGORA!', array('class' => "btn btns btn-lg")); ?>
-
-                  </div>
-                  <?php }  ?>
-
-                  <?php 
-                                        } else {
-                                            ?>
                   <div class="col-sm-12 col-md-12 text-center">
                     <!--?php echo anchor('graduacao/inscricao/' . $uriLocal . '/' . $courseCampus->courseId, 'Inscreva-se agora!', array('class' => "btn btns btn-lg")); ?-->
-                    <a href="http://177.69.195.21:8080/prova/entrar" class="btn btns btn-lg">
+                    <a href="<?php echo $courseCampus->link_vestibular ?>" class="btn btns btn-lg">
                       VESTIBULAR ONLINE
                     </a>
                   </div>
-                  <?php
-                                        }
-                                        ?>
+
                 </li>
               </div>
             </ul>
           </div>
           <?php
-                    }
-                    ?>
+          }
+          ?>
         </div>
         <?php if ($uriLocal == 'paracatu') {
                     ?>
@@ -362,6 +296,10 @@ else if($dados['campus']->id == 3){
       </div>
       <?php
             }
+
+            // echo '<pre>';
+            // print_r($dados);
+            // echo '</pre>';
             ?>
   </div>
   </div>

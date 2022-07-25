@@ -71,8 +71,8 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
           </a>
         </div>
         <?php 
-                    if(!empty($dadosCurso['cursoPeriodos'])){
-                ?>
+        if(!empty($dadosCurso['cursoPeriodos'])){
+        ?>
         <div class="btn-group" role="group">
           <a type="button" href="#services" class="btn btn-default-course" data-toggle="tab">
             <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
@@ -80,8 +80,8 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
           </a>
         </div>
         <?php 
-                    }
-                ?>
+        }
+        ?>
         <div class="btn-group" role="group">
           <a type="button" href="#portfolio" class="btn btn-default-course" data-toggle="tab">
             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
@@ -103,11 +103,9 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
 <link href="<?php echo base_url('assets/Regna/'); ?>css/style.css" rel="stylesheet">
 <div class="container">
   <?php
-    if ($dadosCurso['informacoesCurso']->id == 8) {
-    echo anchor($link, '<img src="' . base_url('assets/images/financing/inscreva-se-geral.jpg') . '" class="img-fluid">');
-    } else {
-    ?>
-  <a href="http://177.69.195.21:8080/prova/entrar" class="">
+  if(isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular !='' ){
+  ?>
+  <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="">
     <img src="<?=base_url('assets/images/financing/inscreva-se-geral.jpg')?>" class="img-fluid">
   </a>
   <?php
@@ -123,22 +121,6 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
                 echo to_html(substr($dadosCurso['informacoesCurso']->description, 0));
                 ?>
       </div>
-      <!-- <?php
-            // if (!empty($dadosCurso['informacoesCurso']->video)) {
-            //     if (isset($dadosCurso['informacoesCurso']->video) and $dadosCurso['informacoesCurso'] != NULL) {
-            //         ?>
-      <div class="col-xs-5 ">
-        <div class="embed-responsive embed-responsive-4by3">
-          <iframe class="embed-responsive-item"
-            src="//www.youtube.com/embed/<?php echo $dadosCurso['informacoesCurso']->video; ?>" frameborder="0"
-            allowfullscreen></iframe>
-        </div>
-      </div>
-      <?php
-        //     }
-        // }
-        ?> -->
-
       <div class="col-sm-12">
         <style>
         ul li {
@@ -181,7 +163,8 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
         if(isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular !='' ){
         ?>
         <div class="col-sm-12 col-md-12 text-center">
-          <a href="<?php $dadosCurso['informacoesCurso']->link_vestibular?>" class="btn btns btn-lg">
+          <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular?>" target="_blank"
+            class="btn btns btn-lg">
             VESTIBULAR ONLINE
           </a>
         </div>
@@ -268,7 +251,8 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
             if(isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular !='' ){
             ?>
             <div class="col-sm-12 col-md-12 text-center">
-              <a href="<?php $dadosCurso['informacoesCurso']->link_vestibular?>" class="btn btns btn-lg">
+              <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular?>" target="_blank"
+                class="btn btns btn-lg">
                 VESTIBULAR ONLINE
               </a>
             </div>
@@ -328,67 +312,73 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
                 }
                 ?>
         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-          <div class="boxcoordenador boxitens" />
-          <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank"></a>
-          <div class="icon">
-            <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank"><i
-                class="fas fa-gavel"></i></a>
+          <div class="boxcoordenador boxitens">
+            <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank"></a>
+            <div class="icon">
+              <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank"><i
+                  class="fas fa-gavel"></i></a>
+            </div>
+            <h4 class="title">
+              <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">Ato de
+                Autorização / Reconhecimento</a>
+            </h4>
+            <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">
+              <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+            </a>
           </div>
-          <h4 class="title">
-            <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">Ato de
-              Autorização / Reconhecimento</a>
-          </h4>
-          <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">
-            <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
-          </a>
         </div>
-      </div>
-      <?php
+        <?php
+        // echo '<pre>';
+        // //print_r($dados['dadosCurso']['dirigentes']);
+        // echo '</pre>';
             foreach ($dados['dadosCurso']['dirigentes'] as $row) {
+              
                 ?>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-        <div class="boxcoordenador boxitens">
-          <div class="icon"><a><i class="fas fa-graduation-cap"></i></a></div>
+        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+          <div class="boxcoordenador boxitens">
+            <div class="icon"><a><i class="fas fa-graduation-cap"></i></a></div>
 
-          <h4 class="title"><?php echo $row->cargo; ?></h4>
-          <h4>
-            <?php
-                            echo $row->nome;
-                            ?>
+            <h4 class="title"><?php echo $row->cargo; ?></h4>
+            <h4>
+              <?php
+              echo $row->nome;
+              ?>
 
-            <?php
-                            echo $row->email;
-                            ?>
-            <?php if (!empty($dados['dadosCurso']['contatos']->phone)): ?>
-            <br>
-            Celular: <?php echo $dados['dadosCurso']['contatos']->phone; ?>
-            <?php endif; ?>
-            <br>
-            Telefone: <?php echo $campus->phone; ?>
-            <?php if (!empty($dados['dadosCurso']['contatos']->ramal)): ?>
-            <br>
-            Ramal: <?php echo $dados['dadosCurso']['contatos']->ramal; ?>
-            <?php endif; ?>
-          </h4>
+              <?php
+              echo $row->email;
+              ?>
 
+              <?php if (!empty($dados['dadosCurso']['contatos']->phone)): ?>
+              <br>
+              Celular: <?php echo $dados['dadosCurso']['contatos']->phone; ?>
+              <?php endif; ?>
+              <br>
+              Telefone: <?php echo $campus->phone; ?>
+              <?php if (!empty($dados['dadosCurso']['contatos']->ramal)): ?>
+              <br>
+              Ramal: <?php echo $dados['dadosCurso']['contatos']->ramal; ?>
+              <?php endif; ?>
+            </h4>
+
+          </div>
         </div>
-      </div>
-      <?php
+        <?php
             }
             ?>
-      <?php  
+        <?php  
       if(isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular !='' ){
       ?>
-      <div class="col-sm-12 col-md-12 text-center">
-        <a href="<?php $dadosCurso['informacoesCurso']->link_vestibular?>" class="btn btns btn-lg">
-          VESTIBULAR ONLINE
-        </a>
-      </div>
-      <?php  
+        <div class="col-sm-12 col-md-12 text-center">
+          <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular?>" target="_blank"
+            class="btn btns btn-lg">
+            VESTIBULAR ONLINE
+          </a>
+        </div>
+        <?php  
       }
       ?>
+      </div>
     </div>
-  </div>
 </section>
 
 <style>
@@ -532,7 +522,7 @@ if (!empty($dadosCurso['fotosCurso'])) {
       if(isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular !='' ){
       ?>
       <div class="col-sm-12 col-md-12 text-center">
-        <a href="<?php $dadosCurso['informacoesCurso']->link_vestibular?>" class="btn btns btn-lg">
+        <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular?>" target="_blank" class="btn btns btn-lg">
           VESTIBULAR ONLINE
         </a>
       </div>
@@ -666,7 +656,7 @@ https://bootsnipp.com/snippets/40Z3Q
       if(isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular !='' ){
       ?>
     <div class="col-sm-12 col-md-12 text-center">
-      <a href="<?php $dadosCurso['informacoesCurso']->link_vestibular?>" class="btn btns btn-lg">
+      <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular?>" target="_blank" class="btn btns btn-lg">
         VESTIBULAR ONLINE
       </a>
     </div>
@@ -674,7 +664,6 @@ https://bootsnipp.com/snippets/40Z3Q
       }
       ?>
     <div class="copyright">
-
       <i class="fas fa-at"></i> Siga-nos em nossas redes sociais <strong>UniAtenas</strong>.
     </div>
 

@@ -24,7 +24,7 @@
               echo $msg;
           }
           ?>
-        <?php echo form_open_multipart("Painel_graduacao/cadastrar_informacoes_curso/$informacoesCurso->campus_coursesid") ?>
+        <?php echo form_open_multipart("Painel_graduacao/cadastrar_informacoes_curso/$informacoesCurso->campus_coursesid/$modalidade") ?>
 
         <h2 class="card-inside-title">Informações do Curso <i><u><?php echo $informacoesCurso->nameCourse;?></u></i>
         </h2>
@@ -233,7 +233,7 @@
           <div class="col-sm-12">
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_graduacao/lista_cursos/$campus->id/presencial", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+              echo anchor("Painel_graduacao/lista_cursos/$campus->id/$modalidade", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
               ?>
           </div>
         </div>

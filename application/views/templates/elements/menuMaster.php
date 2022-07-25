@@ -171,12 +171,14 @@ $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$w
                         <?php echo anchor('graduacao/cursos/' . $informacoesCampus->shurtName, 'Presencial'); ?>
                       </li>
                       <?php
-                                            if ($informacoesCampus->id == '1' or $informacoesCampus->id == '2' or $informacoesCampus->id == '3') {
-                                            ?>
+                      if ($informacoesCampus->id == '1'
+                        or $informacoesCampus->id == '2' 
+                        or $informacoesCampus->id == '3') {
+                      ?>
                       <li><?php echo anchor('graduacao/ead/' . $informacoesCampus->shurtName, 'EaD'); ?></li>
                       <?php
-                                            }
-                                            ?>
+                      }
+                      ?>
                     </ul>
                   </li>
 

@@ -564,18 +564,11 @@ order by courses.name";
         if ($idCourse == '') {
             redirect('graduacao/ead');
         }
-        
-
-        $querySqlConteudosCurso = "SELECT 
+        $querySql = "SELECT 
                     courses_pages.description,
                     courses_pages.actuation,
-                    courses.duration,
-                    courses_pages.capa,
-                    courses_pages.link_vestibular  ,
-                    courses_pages.filesGrid,
-                    courses_pages.actuation,
-                    courses_pages.autorization,
-                    courses_pages.recognition                 
+                    courses.duration
+                    
                     FROM courses_pages
                     INNER JOIN campus_has_courses ON campus_has_courses.id = courses_pages.campus_has_courses_id
                     INNER JOIN campus ON campus.id = campus_has_courses.campus_id
@@ -586,8 +579,33 @@ order by courses.name";
 
         $idCoursecampus = $this->bancosite->getwhere('campus_has_courses', array('courses_id' => $idCourse))->row();
         $idCoursecampus = $idCoursecampus->id;
-        
-        
+        $queryInformacoesCurso = 
+          "SELECT 
+                    courses.id, 
+                    courses.name, 
+                    campus_has_courses.id as idCourseCampus,
+                    courses_pages.capa,
+                    dirigentes.nome,
+                    dirigentes.email,
+                    courses_pages.description,
+                    courses_pages.link_vestibular,
+                    courses_pages.filesGrid,
+                    courses_pages.actuation,
+                    courses_pages.autorization,
+                    courses_pages.recognition
+                /*FROM
+                    at_site.courses_pages
+                inner join campus_has_courses on campus_has_courses.id = courses_pages.campus_has_courses_id
+                inner join courses on courses.id = campus_has_courses.courses_id */
+                FROM
+                    at_site.courses_pages
+                        INNER JOIN campus_has_courses ON campus_has_courses.id = courses_pages.campus_has_courses_id
+                        INNER JOIN courses ON courses.id = campus_has_courses.courses_id
+                        inner join courses_pages_has_dirigentes on courses_pages_has_dirigentes.courses_pagesid = courses_pages.id
+                        inner join dirigentes on dirigentes.id = courses_pages_has_dirigentes.dirigentesid
+                
+                where campus_has_courses.id=$idCoursecampus";
+
         $queryGrid = "SELECT 
                            courses_curricular_grid.id, 
                            courses_curricular_grid.discipline,
@@ -623,14 +641,12 @@ order by courses.name";
 
         $dirigetesCourse = $this->bancosite->getQuery($queryDirigentes)->result();
 
-        $conteudosCurso = $this->bancosite->getQuery($querySqlConteudosCurso)->row();
 
-        $colunasDadosCurso = array(
-          'courses.name',
-          'courses.id'
-        );
-        $cursos = $this->bancosite->where($colunasDadosCurso,'courses', null,array('modalidade' => 'ead', 'types' => 'ead', 'id' => $idCourse))->row();
+        $contends = $this->bancosite->getQuery($querySql)->row();
+
+        $cursos = $this->bancosite->getWhere('courses', array('modalidade' => 'ead', 'types' => 'ead', 'id' => $idCourse))->row();
         
+        $informacoesCurso = $this->bancosite->getQuery($queryInformacoesCurso)->row();
 
         $coursePeriod = $this->bancosite->getQuery($queryPeriod)->result();
         $curricularGrid = $this->bancosite->getQuery($queryGrid)->result();
@@ -651,8 +667,9 @@ order by courses.name";
             'dados' => array(
                 'curso' => $cursos,
                 'campus' => $dataCampus,
-                'conteudosCurso' => $conteudosCurso,
+                'conteudoPag' => $contends,
                 'dirigentes' => $dirigetesCourse,
+                //'informacoesCurso' => $informacoesCurso,
                 'gradeCurricular' => $curricularGrid,
                 'cursoPeriodos' => $coursePeriod
             )

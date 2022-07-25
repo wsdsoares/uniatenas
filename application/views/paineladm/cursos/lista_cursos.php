@@ -2,7 +2,11 @@
   <h2>PAINEL ADMINISTRATIVO</h2>
 </div>
 
-<!-- Exportable Table -->
+<?php 
+echo '<pre>';
+print_r($dados);
+echo '</pre>';
+?>
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
@@ -82,7 +86,7 @@
                 </td>
                 <td>
                   <?php 
-                  echo anchor("Painel_graduacao/cadastrar_informacoes_curso/$item->campus_coursesid",'
+                  echo anchor("Painel_graduacao/cadastrar_informacoes_curso/$item->campus_coursesid/$modalidade",'
                   <i class="material-icons">edit</i><br /> EDITAR Dados Curso <br/>
                   <i class="material-icons">menu_book</i><br />
                   <span> <small>(Sobre o curso, informações sobre áreas de atuação, arquivos de
@@ -193,7 +197,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
 
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_graduacao/deletar_vinculo_curso/$campus->id/"); ?>' +
+    '<?php echo base_url("Painel_graduacao/deletar_vinculo_curso/$campus->id/$modalidade/"); ?>' +
     id);
 });
 </script>

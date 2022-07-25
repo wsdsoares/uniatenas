@@ -79,16 +79,16 @@ $(document).ready(function() {
           <div class="col-md-12 contendeBu">
             <?php
             $classe = '';
-            foreach ($pages_content as $iitem):
-              if ($iitem->order == 'serviceA'):
+            foreach ($pages_content as $item):
+              if ($item->order == 'serviceA'):
                   $classe = 'active';
               else:
                   $classe = '';
               endif;
               ?>
-            <button href="#<?php echo $iitem->order; ?>" class="btn quadro <?php echo $classe; ?>"
-              aria-controls="<?php echo $iitem->order; ?>" role="tab" data-toggle="tab">
-              <p><?php echo $iitem->title; ?></p>
+            <button href="#<?php echo $item->order; ?>" class="btn quadro <?php echo $classe; ?>"
+              aria-controls="<?php echo $item->order; ?>" role="tab" data-toggle="tab">
+              <p><?php echo $item->title; ?></p>
             </button>
 
             <?php
@@ -101,6 +101,7 @@ $(document).ready(function() {
           <div class="col-md-12">
             <div class="tab-content">
               <?php
+              
             $i = 0;
             foreach ($pages_content as $textos):
                 if ($textos->order == 'serviceA'):

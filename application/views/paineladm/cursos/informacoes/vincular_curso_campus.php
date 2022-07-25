@@ -16,10 +16,10 @@
       <div class="body">
         <?php
           if ($msg = getMsg()){
-              echo $msg;
+            echo $msg;
           }
           ?>
-        <?php echo form_open("Painel_graduacao/vincular_curso_campus/$campus->id") ?>
+        <?php echo form_open("Painel_graduacao/vincular_curso_campus/$campus->id/$modalidade") ?>
 
         <h2 class="card-inside-title">Informações do Curso
         </h2>
