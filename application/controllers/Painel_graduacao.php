@@ -978,6 +978,8 @@ class Painel_graduacao extends CI_Controller {
 
     }
 
+
+  
     public function cadastrar_coordenador_curso($courseCampusId=NULL, $uriCampus = NULL,$modalidade = null){
       verificaLogin();
       $colunasCampus = array('campus.id','campus.name','campus.city');
@@ -1013,7 +1015,7 @@ class Painel_graduacao extends CI_Controller {
         }
       }else{
         if(empty($coordenador)){
-          $dados_form = elements(array('nome', 'email', 'status','cargo'), $this->input->post());
+          $dados_form = elements(array('nome', 'email', 'status','cargo','telefone'), $this->input->post());
         
           $dados_form['user_id'] = $this->session->userdata('codusuario');
           $dados_form['updated_at'] = date('Y-m-d H:i:s');
@@ -1035,6 +1037,9 @@ class Painel_graduacao extends CI_Controller {
           if($coordenador->email != $this->input->post('email')){
             $dados_form['email'] = $this->input->post('email');
           }
+          if($coordenador->telefone != $this->input->post('telefone')){
+            $dados_form['telefone'] = $this->input->post('telefone');
+          }
           if($coordenador->cargo != $this->input->post('cargo')){
             $dados_form['cargo'] = $this->input->post('cargo');
           }
@@ -1043,17 +1048,6 @@ class Painel_graduacao extends CI_Controller {
           $dados_form['updated_at'] = date('Y-m-d H:i:s');
           $dados_form['perfil'] = 'coordenador';
           $dados_form['id'] = $coordenador->id;
-  
-          echo '<br>';
-          echo '<br>';
-          echo '<br>';
-          echo '<br>';
-          echo '<pre>';
-          print_r($dados_form);
-          echo '</pre>';
-
-          echo '<script>alert("'.$modalidade.'")</script>';
-
           
           if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
             setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');

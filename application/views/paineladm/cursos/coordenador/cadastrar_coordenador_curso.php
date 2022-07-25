@@ -3,6 +3,7 @@ $coordenadorName = !empty($coordenador->nome) ? $coordenador->nome : '';
 $coordenadorEmail = !empty($coordenador->email) ? $coordenador->email : '';
 $coordenadorCargo = !empty($coordenador->cargo) ? $coordenador->cargo : '';
 $coordenadorStatus = !empty($coordenador->status) ? $coordenador->status : '';
+$coordenadorTelefone = !empty($coordenador->telefone) ? $coordenador->telefone : '';
 ?>
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
@@ -56,6 +57,19 @@ $coordenadorStatus = !empty($coordenador->status) ? $coordenador->status : '';
           </div>
         </div>
         <div class="row clearfix">
+          <div class="col-md-6">
+            <label for="title">Telefone(s)</label>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="material-icons">phone</i>
+              </span>
+              <div class="form-line">
+                <?php
+                  echo form_input(array('name' => 'telefone', 'class' => 'form-control', 'placeholder' => 'Ex.: 38 9.9999-7799/ 38 9878-7878'), set_value('telefone',$coordenadorTelefone));
+                ?>
+              </div>
+            </div>
+          </div>
           <div class="col-md-6">
             <label for="title">Cargo</label>
             <div class="input-group">
