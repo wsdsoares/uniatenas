@@ -4,7 +4,6 @@ $coordenadorEmail = !empty($coordenador->email) ? $coordenador->email : '';
 $coordenadorCargo = !empty($coordenador->cargo) ? $coordenador->cargo : '';
 $coordenadorStatus = !empty($coordenador->status) ? $coordenador->status : '';
 ?>
-
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
 </div>
@@ -19,11 +18,12 @@ $coordenadorStatus = !empty($coordenador->status) ? $coordenador->status : '';
       </div>
       <div class="body">
         <?php
+     
         if ($msg = getMsg()){
             echo $msg;
         }
         ?>
-        <?php echo form_open("Painel_graduacao/cadastrar_coordenador_curso/$cursoPorCampus/$campus->id") ?>
+        <?php echo form_open("Painel_graduacao/cadastrar_coordenador_curso/$cursoPorCampus/$campus->id/$modalidade") ?>
 
         <h2 class="card-inside-title">Informações do Dirigentes</h2>
         <div class="row clearfix">
@@ -89,13 +89,27 @@ $coordenadorStatus = !empty($coordenador->status) ? $coordenador->status : '';
             </div>
           </div>
         </div>
+        <style>
+
+        </style>
         <div class="row clearfix">
-          <div class="col-sm-12">
+          <div class="col-sm-6">
             <?php
             echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-            echo anchor("Painel_graduacao/lista_cursos/$campus->id/presencial", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo anchor("Painel_graduacao/lista_cursos/$campus->id/$modalidade", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            
             ?>
           </div>
+          <div class="col-sm-6">
+            <?php
+              if (!empty($coordenadorName)){
+                echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $coordenadorName . '" data-id="' . $coordenador->id . '" class="btn btn-danger">'
+                  . '<i class="material-icons">delete_sweep</i> Deletar'
+                  . '</a>';
+             }
+            ?>
+          </div>
+
         </div>
 
         <?php
@@ -105,46 +119,41 @@ $coordenadorStatus = !empty($coordenador->status) ? $coordenador->status : '';
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Você tem certeza?</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Você tem certeza que deseja realizar essa ação de deletar o item abaixo?</p>
+        <p>Essa ação é <span class="text-danger" style="font-weight: bold">IRREVERSÍVEL</span> e todos os dados
+          ligados a esse item serão removidos <span class="text-danger"
+            style="font-weight: bold">PERMANENTEMENTE</span>.
+        </p>
+        <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        <a id="btnCerteza" class="btn btn-danger" href="">Sim, tenho certeza!</a>
+      </div>
+    </div>
+  </div>
 </div>
+<?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
+
 <script type="text/javascript">
-$(document).ready(function() {
-  $("#idcampus").change(function() {
-    var campus_id = $('#idcampus').val();
-    if (campus_id != '') {
-      $.ajax({
-        url: "<?php echo base_url();?>Painel_home/getBannerPositionbyCampus",
-        method: "POST",
-        data: {
-          campus_id: campus_id
-        },
-        success: function(data) {
-          var opts = $.parseJSON(data);
-          $('#selectOrder').empty();
-          $.each(opts, function(i, position) {
-            $('#selectOrder').append($('<option>', {
-              value: position.priority,
-              text: position.priority
-            }));
+$('#modalDelete').on('show.bs.modal', function(e) {
+  var nomeItem = $(e.relatedTarget).attr('data-nome');
+  var id = $(e.relatedTarget).attr('data-id');
 
-            if (opts.length == i + 1) {
-              $('#selectOrder').append($('<option>', {
-                value: (+(position.priority) + +(1)),
-                text: (+(position.priority) + +(1))
-              }));
-            }
-            $('#selectOrder').selectpicker('refresh');
-          })
-        }
-      })
-    }
-    if ('select') {
-      $('#selectOrder').empty();
-      $('#selectOrder').append($('<option>', {
-        text: 'Selecione o campus'
-      }));
-      $('#selectOrder').selectpicker('refresh');
-    }
-  });
+  $(this).find('.nomeItem').text(nomeItem);
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_graduacao/deletar_coordenador_curso/$campus->id/$modalidade/"); ?>' + id);
 
-})
+});
 </script>
