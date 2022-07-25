@@ -45,7 +45,7 @@ p {
 }
 
 .row.itensGradeCurricular {
-  margin-bottom: 10rem;
+  margin-bottom: 3rem;
 }
 </style>
 
@@ -267,8 +267,9 @@ p {
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
                   <div class="boxcoordenador boxitens" style="height: 100px;">
                     <div class="icon">
-                      <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank"><i
-                          class="fas fa-file-alt"></i></a>
+                      <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">
+                        <i class="fas fa-file-alt"></i>
+                      </a>
                     </div>
                     <h4 class="title">
                       <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">Arquivo
@@ -286,8 +287,8 @@ p {
             if (!empty($dados['informacoesCurso']->recognition)) {
             ?>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-                  <div class="boxcoordenador boxitens" <a
-                    href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"></a>
+                  <div class="boxcoordenador boxitens">
+                    <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"></a>
                     <div class="icon">
                       <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"><i
                           class="fas fa-gavel"></i></a>
