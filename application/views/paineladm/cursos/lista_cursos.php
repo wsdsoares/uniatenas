@@ -2,11 +2,6 @@
   <h2>PAINEL ADMINISTRATIVO</h2>
 </div>
 
-<?php 
-echo '<pre>';
-print_r($dados);
-echo '</pre>';
-?>
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
@@ -105,9 +100,8 @@ echo '</pre>';
                   </div>
                   <div class="btn-opcoes-curso">
                     <?php
-                      //echo anchor();
+                      echo anchor("Painel_graduacao/lista_dados_matriz/$item->campus_coursesid/$campus->id/$modalidade",'Grade Curricular (Matriz)',array('class'=>"btn-opcoes-curso btn btn-success")); 
                     ?>
-                    <a class="btn-opcoes-curso btn btn-success">Grade Curricular (Matriz)</a>
                   </div>
                   <div class="btn-opcoes-curso">
                     <?php 

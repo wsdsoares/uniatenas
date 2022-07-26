@@ -978,8 +978,14 @@ class Painel_graduacao extends CI_Controller {
 
     }
 
+    /*************************************************************************
+     * Coordenador do Curso
+     * Página: Página do curso, onde mostra o coordenador que estão vinculado a um ou mais Cursos
+     * Ex.: 
+     * Administração EaD e Presencial - Cooordenadora Viviane 
+     * Contabilidade EaD Cooordenadora Viviane
+    *************************************************************************/
 
-  
     public function cadastrar_coordenador_curso($courseCampusId=NULL, $uriCampus = NULL,$modalidade = null){
       verificaLogin();
       $colunasCampus = array('campus.id','campus.name','campus.city');
@@ -1087,6 +1093,192 @@ class Painel_graduacao extends CI_Controller {
           setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
           redirect(base_url("Painel_graduacao/lista_cursos/$uriCampus/$modalidade"));
       }
-  }
+    }
 
+    /*************************************************************************
+     * Grade/ Matriz Curricular
+     * Página: Página da lista das disciplinas da matriz curricular dos cursos - Presenciais e EAD
+     *  Períodos e Disciplinas
+     * Exemplo: 1 º Periodo: (Pensamento cinetífico, TCC, etc..)
+    *************************************************************************/
+
+    public function lista_dados_matriz($courseCampusId=NULL, $uriCampus = NULL,$modalidade = null){
+      verificaLogin();
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $colunasDadosCursoPorCampus = 
+      array(
+          'campus.id as campusid',
+          'campus.name as campusName',
+          'campus.city',
+          
+          'campus_has_courses.id as campus_coursesid',
+          'courses.name as nameCourse',
+      );
+  
+      $joinCampus = array(
+          'campus' => 'campus.id = campus_has_courses.campus_id',
+          'courses' => 'courses.id = campus_has_courses.courses_id',
+          'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
+      );
+
+      $cursoPorCampus = $this->painelbd->where($colunasDadosCursoPorCampus,'campus_has_courses',$joinCampus, array('campus_has_courses.id'=>$courseCampusId))->row(); 
+
+      $gradeCurricular = $this->painelbd->where('*','courses_curricular_grid',null, array('courses_curricular_grid.campus_has_courses_id'=>$cursoPorCampus->campus_coursesid),array('campo' => 'period', 'ordem' => 'asc'))->result(); 
+
+      $data = array(
+        'conteudo' => 'paineladm/cursos/matriz/lista_dados_matriz',
+        'titulo' => 'Matriz/Grade Curricular do curso',
+        'dados' => array(
+            'tipo' => 'tabelaDatatable',
+            'gradeCurricular' => $gradeCurricular = !empty ($gradeCurricular) ? $gradeCurricular :'',
+            'campus' => $campus,
+            'modalidade' => $modalidade,
+            'cursoPorCampus' => $cursoPorCampus,
+            'page'=> "<span>de matriz/ grade curricular do curso de <strong> $cursoPorCampus->nameCourse $campus->city</strong></span>",
+        )
+      );
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function cadastrar_disciplina_por_periodo($courseCampusId=NULL, $uriCampus = NULL,$modalidade = null){
+      verificaLogin();
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $colunasDadosCursoPorCampus = 
+      array(
+          'campus.id as campusid',
+          'campus.name as campusName',
+          'campus.city',
+          
+          'campus_has_courses.id as campus_coursesid',
+          'courses.name as nameCourse',
+      );
+  
+      $joinCampus = array(
+          'campus' => 'campus.id = campus_has_courses.campus_id',
+          'courses' => 'courses.id = campus_has_courses.courses_id',
+          'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
+      );
+
+      $cursoPorCampus = $this->painelbd->where($colunasDadosCursoPorCampus,'campus_has_courses',$joinCampus, array('campus_has_courses.id'=>$courseCampusId))->row(); 
+
+      $this->form_validation->set_rules('discipline', 'Nome da Disciplina', 'required');
+      $this->form_validation->set_rules('period', 'Periodo', 'required');
+
+      if ($this->form_validation->run() == FALSE) {
+        if (validation_errors()){
+          setMsg(validation_errors(), 'error');
+        }
+      }else{
+        $dados_form = elements(array('discipline', 'period', 'status'), $this->input->post());
+      
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+        //$dados_form['updated_at'] = date('Y-m-d H:i:s');
+        $dados_form['campus_has_courses_id'] = $cursoPorCampus->campus_coursesid;
+
+        if ($this->painelbd->salvar('courses_curricular_grid', $dados_form)== TRUE ) {
+          setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+          redirect("Painel_graduacao/lista_dados_matriz/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade");
+        } else {
+          setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+          redirect("Painel_graduacao/lista_dados_matriz/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade");
+        }
+      }
+
+      $data = array(
+        'conteudo' => 'paineladm/cursos/matriz/cadastrar_disciplina_por_periodo',
+        'titulo' => 'Matriz/Grade Curricular do curso',
+        'dados' => array(
+            'tipo' => '',
+            'campus' => $campus,
+            'modalidade' => $modalidade,
+            'cursoPorCampus' => $cursoPorCampus,
+            'page'=> "<span>Cadastro de disciplina do curso de <strong> $cursoPorCampus->nameCourse ($modalidade) $campus->city</strong></span>",
+        )
+      );
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+    
+    public function editar_disciplina_por_periodo($idDisciplina=null,$courseCampusId=NULL, $uriCampus = NULL,$modalidade = null){
+      verificaLogin();
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $colunasDadosCursoPorCampus = 
+      array(
+          'campus.id as campusid',
+          'campus.name as campusName',
+          'campus.city',
+          
+          'campus_has_courses.id as campus_coursesid',
+          'courses.name as nameCourse',
+      );
+  
+      $joinCampus = array(
+          'campus' => 'campus.id = campus_has_courses.campus_id',
+          'courses' => 'courses.id = campus_has_courses.courses_id',
+          'courses_pages'=>'courses_pages.campus_has_courses_id = campus_has_courses.id',
+      );
+
+      $cursoPorCampus = $this->painelbd->where($colunasDadosCursoPorCampus,'campus_has_courses',$joinCampus, array('campus_has_courses.id'=>$courseCampusId))->row(); 
+      $colunasDadosDisciplina = array('courses_curricular_grid.id','courses_curricular_grid.discipline','courses_curricular_grid.period','courses_curricular_grid.status');
+      
+      $disciplinaCurso = $this->painelbd->where($colunasDadosDisciplina,'courses_curricular_grid',null, array('courses_curricular_grid.id'=>$idDisciplina))->row(); 
+
+      $this->form_validation->set_rules('discipline', 'Nome da Disciplina', 'required');
+      $this->form_validation->set_rules('period', 'Periodo', 'required');
+
+      if ($this->form_validation->run() == FALSE) {
+        if (validation_errors()){
+          setMsg(validation_errors(), 'error');
+        }
+      }else{
+        $dados_form = elements(array('discipline', 'period', 'status'), $this->input->post());
+      
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+        //$dados_form['updated_at'] = date('Y-m-d H:i:s');
+        $dados_form['campus_has_courses_id'] = $cursoPorCampus->campus_coursesid;
+        $dados_form['id'] = $disciplinaCurso->id;
+
+        if ($this->painelbd->salvar('courses_curricular_grid', $dados_form)== TRUE ) {
+          setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+          redirect("Painel_graduacao/lista_dados_matriz/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade");
+        } else {
+          setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+          redirect("Painel_graduacao/lista_dados_matriz/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade");
+        }
+      }
+
+      $data = array(
+        'conteudo' => 'paineladm/cursos/matriz/editar_disciplina_por_periodo',
+        'titulo' => 'Matriz/Grade Curricular do curso',
+        'dados' => array(
+            'tipo' => '',
+            'campus' => $campus,
+            'disciplinaCurso' => $disciplinaCurso,
+            'modalidade' => $modalidade,
+            'cursoPorCampus' => $cursoPorCampus,
+            'page'=> "<span>Edição de dados de disciplina do curso de <strong> $cursoPorCampus->nameCourse ($modalidade) $campus->city</strong></span>",
+        )
+      );
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function deletar_disciplina_por_periodo($courseCampusId=NULL, $uriCampus = NULL,$modalidade = null,$id = NULL)
+    {
+      verifica_login();
+  
+      $item = $this->painelbd->where('*','courses_curricular_grid', NULL, array('courses_curricular_grid.id' => $id))->row(); 
+
+      if ($this->painelbd->deletar('courses_curricular_grid', $item->id)) {
+          setMsg('<p>Disciplina deletada com sucesso.</p>', 'success');
+          redirect("Painel_graduacao/lista_dados_matriz/$courseCampusId/$uriCampus/$modalidade");
+      } else {
+          setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+          redirect("Painel_graduacao/lista_dados_matriz/$courseCampusId/$uriCampus/$modalidade");
+      }
+  }
 }

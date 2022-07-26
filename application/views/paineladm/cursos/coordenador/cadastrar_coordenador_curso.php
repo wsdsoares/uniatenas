@@ -103,9 +103,7 @@ $coordenadorTelefone = !empty($coordenador->telefone) ? $coordenador->telefone :
             </div>
           </div>
         </div>
-        <style>
 
-        </style>
         <div class="row clearfix">
           <div class="col-sm-6">
             <?php

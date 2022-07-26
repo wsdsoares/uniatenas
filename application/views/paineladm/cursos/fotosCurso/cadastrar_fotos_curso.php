@@ -13,9 +13,9 @@
       <div class="body">
         <?php
 
-        echo '<pre>';
-        print_r($dados['cursoPorCampus']);  
-        echo '</pre>';
+        // echo '<pre>';
+        // print_r($dados['cursoPorCampus']);  
+        // echo '</pre>';
         if ($msg = get_msg()){
             echo $msg;
         }

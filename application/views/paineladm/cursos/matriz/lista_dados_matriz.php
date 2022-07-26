@@ -16,8 +16,20 @@
         <div class="container">
           <div class="col-xs-6">
             <?php
-            echo anchor("Painel_campus/cadastrar_dirigente", '<i class="material-icons">add_box</i> CADASTRAR Dirigente', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+            echo anchor("Painel_graduacao/cadastrar_disciplina_por_periodo/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade", '<i class="material-icons">add_box</i> CADASTRAR Disciplina', array('class' => 'btn btn-primary m-t-15 waves-effect'));
             ?>
+          </div>
+          <div class="col-xs-6">
+            <?php 
+            echo anchor("Painel_graduacao/lista_cursos/$campus->id/$modalidade", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            ?>
+          </div>
+        </div>
+      </div>
+      <div class="botoes-acoes-formularios">
+        <div class="container">
+          <div class="col-xs-6">
+
           </div>
 
         </div>
@@ -31,8 +43,8 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Nome</th>
-                <th>Cargo/ Cargo 2</th>
+                <th>Período</th>
+                <th>Disciplina</th>
                 <th>Situação</th>
                 <th>Modificado em, por:</th>
               </tr>
@@ -41,45 +53,34 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Nome</th>
-                <th>Cargo/ Cargo 2</th>
+                <th>Período</th>
+                <th>Disciplina</th>
                 <th>Situação</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['dirigentes'] as $diretor){
+              foreach ($dados['gradeCurricular'] as $grade){
               ?>
               <tr>
                 <td class="center">
                   <?php 
 
-                  echo '<a href=' . base_url("Painel_campus/editar_dirigente/$diretor->id") . '>'
+                  echo '<a href=' . base_url("Painel_graduacao/editar_disciplina_por_periodo/$grade->id/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade") . '>'
                       . '<i class="material-icons">edit</i>'
                       . '</a> ';
-                  // echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
-                  //     . '<i class="material-icons">delete</i>'
-                  //     . '</a>';
-
-                  // $redirect = 'Painel_home-slideshow';
-                  // $table = 'banners';
-
-                  // if ($campus->status == 1) {
-                  //     echo  '<i class="material-icons">visibility</i>'
-                  //         . '</a>';
-                  // } elseif ($campus->status == 0) {
-                  //     echo  '<i class="material-icons">visibility_off</i>'
-                  //         . '</a>';
-                  // }
+                  echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $grade->discipline . '" data-id="' . $grade->id . '" >'
+                      . '<i class="material-icons">delete</i>'
+                      . '</a>';
                   ?>
                 </td>
-                <td><?php echo $diretor->id; ?></td>
-                <td><?php echo $diretor->nome; ?></td>
-                <td><?php echo $diretor->cargo.'/ <br/>'.$diretor->cargo2; ?></td>
+                <td><?php echo $grade->id; ?></td>
+                <td><?php echo $grade->period; ?></td>
+                <td><?php echo $grade->discipline; ?></td>
                 <td>
                   <?php
-                    if($diretor->status =='0'){
+                    if($grade->status =='0'){
                       echo 'Inativo';
                     }else{
                       echo 'Ativo';
@@ -89,12 +90,10 @@
 
                 <td>
                   <?php 
-                    $dateModification = empty($diretor->updated_at) ? $diretor->created_at : $diretor->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).'.'.$diretor->userid; 
+                    $dateModification = empty($grade->updated_at) ? $$grade->created_at : $grade->updated_at;
+                    echo date("d/m/Y H:m:s",strtotime($dateModification)).'.'.$grade->user_id; 
                     ?>
                 </td>
-
-
               </tr>
               <?php
                 }
@@ -138,9 +137,9 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
-
-  console.log()
-
+  $(this).find('#btnCerteza').attr('href',
+    '<?php 
+    echo base_url("Painel_graduacao/deletar_disciplina_por_periodo/$cursoPorCampus->campus_coursesid/$cursoPorCampus->campusid/$modalidade/"); ?>' +
+    id);
 });
 </script>
