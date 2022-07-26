@@ -234,12 +234,18 @@ $uriLocal = $this->uri->segment(3);
                       ?>
                     </figcaption>
                   </figure>
+                  <?php
+                  if(isset($courseCampus->link_vestibular) and $courseCampus->link_vestibular != ''){
+                  ?>
                   <div class="col-sm-12 col-md-12 text-center">
                     <!--?php echo anchor('graduacao/inscricao/' . $uriLocal . '/' . $courseCampus->courseId, 'Inscreva-se agora!', array('class' => "btn btns btn-lg")); ?-->
                     <a href="<?php echo $courseCampus->link_vestibular ?>" class="btn btns btn-lg">
                       VESTIBULAR ONLINE
                     </a>
                   </div>
+                  <?php
+                  }
+                  ?>
 
                 </li>
               </div>

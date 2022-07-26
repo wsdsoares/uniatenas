@@ -533,6 +533,30 @@ order by courses.name";
 
         $cursos = $this->bancosite->getQuery($queryCursos)->result();
         $polosEad = $this->bancosite->getWhere('polos')->result();
+         
+        $colunasInformacoesCurso = array(
+          'courses.id',
+          'courses.name',
+          'courses.areas_id',
+          'courses_pages.capa',
+
+          'courses_pages.link_vestibular',
+
+          'campus_has_courses.id as id_campus_has_course'  
+        );
+
+        $joinInformacoesCursos = array(
+          'campus_has_courses' => 'campus_has_courses.id = courses_pages.campus_has_courses_id',
+          'campus'=> 'campus.id = campus_has_courses.campus_id',
+          'courses' => 'courses.id = campus_has_courses.courses_id'
+        );
+
+        $whereInformacoesCurso = array(
+          'modalidade'=>'ead',
+          'campus.id'=>$dataCampus->id
+        );
+        
+        $campusCursos = $this->bancosite->where($colunasInformacoesCurso,'courses_pages',$joinInformacoesCursos,$whereInformacoesCurso,array('campo' => 'courses.name', 'ordem' => 'asc'))->result();
 
         $data = array(
             'head' => array(
@@ -543,7 +567,7 @@ order by courses.name";
             'js' => NULL,
             'footer' => '',
             'dados' => array(
-                'cursos' => $cursos,
+                'campusCursos' => $campusCursos,
                 'campus' => $dataCampus,
                 'polos' => $polosEad
             )
