@@ -26,6 +26,7 @@ class Painel_graduacao extends CI_Controller {
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' =>"Lista de Cursos da IES - <strong><i> (Grupo Atenas)</i></strong>",
                 'cursos'=> $listagemDosCursos,
+                'modalidade' =>$uriModalidade,
                 'tipo'=> 'tabelaDatatable'
             )
         );
@@ -122,7 +123,6 @@ class Painel_graduacao extends CI_Controller {
             endif;
         }else {
 
-            echo '<script>alert("'.$uriModalidade.'")</script>';
             $dados_form['campus_id'] = $campus->id;
             $dados_form['courses_id'] = $this->input->post('courses_id');
             $status =  $dados_form['status'] = $this->input->post('status');
@@ -554,7 +554,7 @@ class Painel_graduacao extends CI_Controller {
      * Página: Página de gestão dos cursos
     *************************************************************************/
 
-    public function cadastrar_curso(){
+    public function cadastrar_curso($modalidade = null){
         verificaLogin();
         $this->load->helper('file');
         
@@ -570,7 +570,7 @@ class Painel_graduacao extends CI_Controller {
         }else {
 
             $dados_form['duration'] = $this->input->post('duration');
-            $dados_form['modalidade'] = 'presencial';
+            $dados_form['modalidade'] = $modalidade;
             $dados_form['status'] = $this->input->post('status');
             $dados_form['name'] = $this->input->post('name');
             $dados_form['types'] = $this->input->post('types');
@@ -597,7 +597,7 @@ class Painel_graduacao extends CI_Controller {
 
             if ($this->painelbd->salvar('courses', $dados_form) == TRUE){
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect(base_url("Painel_graduacao/todos_cursos/presencial"));
+                redirect(base_url("Painel_graduacao/todos_cursos/$modalidade"));
             }else{
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
@@ -608,8 +608,9 @@ class Painel_graduacao extends CI_Controller {
             'conteudo' => 'paineladm/cursos/dados_curso/cadastrar_curso',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'page' => "Cadastro de Curso - <strong><i>IES</i></strong>",
+                'page' => "Cadastro de Curso - <strong><i>IES</i> ($modalidade)</strong>",
                 'tipo'=>'',
+                'modalidade'=>$modalidade,
                 'areasGraduacao'=>$areasGraduacao,
             )
         );
@@ -618,7 +619,7 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_curso($idCurso=NULL){
+    public function editar_curso($idCurso=NULL,$modalidade=null){
         verificaLogin();
         $this->load->helper('file');
         
@@ -636,9 +637,9 @@ class Painel_graduacao extends CI_Controller {
             if ($curso->name != $this->input->post('name')) {
                 $dados_form['name'] = $this->input->post('name');
             }
-            if ($curso->modalidade != $this->input->post('modalidade')) {
-                $dados_form['modalidade'] = $this->input->post('modalidade');
-            }
+            // if ($curso->modalidade != $this->input->post('modalidade')) {
+            //     $dados_form['modalidade'] = $this->input->post('modalidade');
+            // }
             if ($curso->status != $this->input->post('status')) {
                 $dados_form['status'] = $this->input->post('status');
             }
@@ -672,13 +673,13 @@ class Painel_graduacao extends CI_Controller {
             }
 
             $dados_form['user_id'] = $this->session->userdata('codusuario');
-            $dados_form['modalidade'] = 'presencial';
+            $dados_form['modalidade'] = $modalidade;
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['id'] = $curso->id;
 
             if ($this->painelbd->salvar('courses', $dados_form) == TRUE){
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-                redirect(base_url("Painel_graduacao/todos_cursos/presencial"));
+                redirect(base_url("Painel_graduacao/todos_cursos/$modalidade"));
             }else{
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
@@ -690,6 +691,7 @@ class Painel_graduacao extends CI_Controller {
             'dados' => array(
                 'page' => "Edição de dados do curso - $curso->name <strong><i>IES</i></strong>",
                 'tipo'=>'',
+                'modalidade'=>$modalidade,
                 'curso'=>$curso,
                 'areasGraduacao'=>$areasGraduacao,
             )
@@ -699,7 +701,7 @@ class Painel_graduacao extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function deletar_curso($id = NULL)
+    public function deletar_curso($modalidade=null,$id = NULL)
     {
         verifica_login();
     
@@ -711,10 +713,10 @@ class Painel_graduacao extends CI_Controller {
 
         if ($this->painelbd->deletar('courses', $item->id)) {
             setMsg('<p>Curso deletado com sucesso.</p>', 'success');
-            redirect("Painel_graduacao/todos_cursos/presencial");
+            redirect("Painel_graduacao/todos_cursos/$modalidade");
         } else {
             setMsg('<p>Erro! O curso não foi deletado.</p>', 'error');
-            redirect("Painel_graduacao/todos_cursos/presencial");
+            redirect("Painel_graduacao/todos_cursos/$modalidade");
         }
 
     }

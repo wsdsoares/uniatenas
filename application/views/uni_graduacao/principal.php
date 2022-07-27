@@ -289,25 +289,7 @@ $uriLocal = $this->uri->segment(3);
                 }
                 ?>
       </div>
-      <?php if ($uriLocal == 'paracatu') {
-                ?>
-      <!--div class="col-sm-12 col-md-12 m-t-30 text-center">
-                    <a class="btnEdital" href="<?php echo base_url('graduacao/inscricao/' . $uriLocal); ?>">Inscreva-se
-                        agora!</a>
-                </div-->
-      <div class="col-sm-12 col-md-12 m-t-30 text-center">
-        <a href="http://177.69.195.21:8080/prova/entrar" class="btnEdital">
-          VESTIBULAR ONLINE!
-        </a>
-      </div>
-      <?php
-            }
 
-            // echo '<pre>';
-            // print_r($dados);
-            // echo '</pre>';
-            ?>
-  </div>
   </div>
 </section>
 <style>

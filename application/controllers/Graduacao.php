@@ -46,17 +46,7 @@ class Graduacao extends CI_Controller
         
         $listaItensMenuComoIngressar = $this->bancosite->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
 
-        // echo '<pre>';
-        // echo '<br>';
-        // echo '<br>';
-        // echo '<br>';
-        // echo '<br>';
-        // echo '<br>';
-        // echo '<br>';
-        // print_r($pages_content);
-        //print_r($listaItensMenuComoIngressar);
-        
-        echo '</pre>';
+      
         if ($type == 'vestibulartradicional') {
             $vestibular = "Vestibular Tradicional";
         } elseif ($type == 'vestibularagendado') {
@@ -343,10 +333,19 @@ order by courses.name";
                 inner join courses on courses.id = campus_has_courses.courses_id 
                where campus_has_courses.id = $idCourse ";
 
+        $colunasDirigentes = array(
+          'dirigentes.nome','dirigentes.cargo','dirigentes.email','dirigentes.telefone','dirigentes.id_course_campus'
+        );
 
-        $courseCampus = $this->bancosite->getQuery($queryCourseCampus)->row();
-        $dirigetesCourse = $this->bancosite->getQuery($queryDirigentes)->result();
+       
+
         $pageCourse = $this->bancosite->getQuery($query)->row();
+        $whereCoordenador = array('dirigentes.id_course_campus'=>$pageCourse->idCourseCampus);
+
+        $coordenadorCurso = $this->bancosite->where($colunasDirigentes,'dirigentes',null,$whereCoordenador)->result();
+        
+        $courseCampus = $this->bancosite->getQuery($queryCourseCampus)->row();
+        //$dirigetesCourse = $this->bancosite->getQuery($queryDirigentes)->result();
         $categoria = $this->bancosite->getQuery($categoryPhotos)->result();
         $curricularGrid = $this->bancosite->getQuery($queryGrid)->result();
         $coursePeriod = $this->bancosite->getQuery($queryPeriod)->result();
@@ -386,7 +385,7 @@ order by courses.name";
             'dados' => array(
                 'dadosCurso' => array(
                     'curso' => $courseCampus,
-                    'dirigentes' => $dirigetesCourse,
+                    'dirigentes' => $coordenadorCurso,
                     'informacoesCurso' => $pageCourse,
                     'gradeCurricular' => $curricularGrid,
                     'cursoPeriodos' => $coursePeriod,

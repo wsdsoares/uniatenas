@@ -16,7 +16,7 @@
         </h2>
         <div class="col-sm-4">
           <?php
-          echo anchor("Painel_graduacao/cadastrar_curso", '<i class="material-icons">add_box</i> CADASTRAR - NOVO CURSO', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+          echo anchor("Painel_graduacao/cadastrar_curso/$modalidade", '<i class="material-icons">add_box</i> CADASTRAR - NOVO CURSO '.$modalidade, array('class' => 'btn btn-primary m-t-15 waves-effect'));
           ?>
         </div>
 
@@ -56,24 +56,13 @@
                 <td class="center">
                   <?php 
 
-                      echo '<a href=' . base_url("Painel_graduacao/editar_curso/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_graduacao/editar_curso/$item->id/$modalidade") . '>'
                           . '<i class="material-icons">edit</i>'
                           . '</a> ';
                       echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name . '" data-id="' . $item->id . '" >'
                           . '<i class="material-icons">delete</i>'
                           . '</a>';
-
-                     /* $redirect = 'Painel_home-slideshow';
-                      $table = 'banners';
-
-                      if ($item->status == 1) {
-                          echo  '<i class="material-icons">visibility</i>'
-                              . '</a>';
-                      } elseif ($item->status == 0) {
-                          echo  '<i class="material-icons">visibility_off</i>'
-                              . '</a>';
-                      }
-                      */ ?>
+                    ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->name;?></td>
@@ -144,6 +133,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_graduacao/deletar_curso/"); ?>' + id);
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_graduacao/deletar_curso/$modalidade/"); ?>' + id);
 });
 </script>

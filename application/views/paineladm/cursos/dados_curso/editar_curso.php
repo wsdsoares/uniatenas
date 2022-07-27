@@ -24,7 +24,7 @@
               echo $msg;
           }
           ?>
-        <?php echo form_open_multipart("Painel_graduacao/editar_curso/$curso->id") ?>
+        <?php echo form_open_multipart("Painel_graduacao/editar_curso/$curso->id/$modalidade") ?>
 
         <h2 class="card-inside-title">Informações do Curso</h2>
 

@@ -218,9 +218,9 @@ p {
               <div class="col-sm-12">
                 <div class="row">
                   <?php
-              $i = 0;
-              foreach ($dados['cursoPeriodos'] as $periodos) {
-              ?>
+                  $i = 0;
+                  foreach ($dados['cursoPeriodos'] as $periodos) {
+                  ?>
 
                   <div class="col-sm-3 wow fadeInUp" data-wow-delay="0.<?php echo $i; ?>s">
                     <div class="box" style="background:rgba(211,211,211,0.3);min-height:280px">

@@ -1,28 +1,6 @@
 <?php
 $uricampus = $this->uri->segment(3);
 ?>
-<?php
-$urlVestibular= '';
-//ALTERAR LINK DE VESTIBULAR
-if($dados['campus']->id == 1) {
-    $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=72#/es/informacoes';
-}
-else if($dados['campus']->id == 2){
-    $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=73#/es/informacoes';
-}
-else if($dados['campus']->id == 3){
-    $urlVestibular ='http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=74#/es/informacoes';
-}else if($dados['campus']->id == 7){
-  $urlVestibular = 'http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=89#/es/informacoes';
-  $urlVestibularEnem = "http://177.69.195.4/FrameHTML/web/app/Edu/PortalProcessoSeletivo/?c=1&f=1&ps=90#/es/informacoes";
-}
-
-if ($dadosCurso['informacoesCurso']->id == 8) {
-    $link = $urlVestibular;
-} else {
-    $link = 'graduacao/inscricao/' . $uricampus . '/' . $dadosCurso['informacoesCurso']->id;
-}
-?>
 
 <div class="single_banner">
   <div class="container">
@@ -56,6 +34,10 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
   border-radius: 0;
   font-weight: 700;
   letter-spacing: 1.4px;
+}
+
+.row.itensGradeCurricular {
+  margin-bottom: 3rem;
 }
 </style>
 
@@ -183,68 +165,63 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
 <section id="services">
   <div class="container wow fadeIn">
     <?php 
-            if(!empty($dadosCurso['cursoPeriodos'])){
-        ?>
-
+    if(!empty($dadosCurso['cursoPeriodos'])){
+    ?>
     <div class="section-header">
-
       <h3 class="section-title">Grade Curricular</h3>
       <p class="section-description">Visualize abaixo, os conteúdos que serão estudados no curso.</p>
-
     </div>
     <?php
-            }else{
-                ?>
+    }else{
+    ?>
 
     <div class="section-header">
-
       <h3 class="section-title"></h3>
       <p class="section-description"></p>
-
     </div>
     <?php
-            }
-        ?>
+    }
+    ?>
 
-    <div class="row">
+    <div class="row itensGradeCurricular">
       <div class="col-sm-12">
         <?php
-                $i = 0;
-                foreach ($dadosCurso['cursoPeriodos'] as $periodos) {
-                    ?>
+        $i = 0;
+        foreach ($dadosCurso['cursoPeriodos'] as $periodos) {
+        ?>
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.<?php echo $i; ?>s">
-          <div class="box">
-            <div class="icon"><a><i class="fa fa-book"></i></a></div>
-            <h4 class="title"><?php
-                                if ($dadosCurso['informacoesCurso']->id == 8) {
-                                    if ($periodos->period == 9 or $periodos->period == 11) {
+          <div class="box" style="background:rgba(211,211,211,0.3);min-height:280px;margin-bottom:3rem;">
 
-                                        if ($periodos->period == 9) {
-                                            echo "9º e 10";
-                                        } elseif ($periodos->period == 11) {
-                                            echo "11º e 12";
-                                        }
-                                    } else {
-                                        echo $periodos->period;
-                                    }
-                                } else {
-                                    echo $periodos->period;
-                                }
-                                ?>º Período</h4>
+            <h4 class="title"><i class="fa fa-book"></i>
+              <?php
+              if ($dadosCurso['informacoesCurso']->id == 8) {
+                if ($periodos->period == 9 or $periodos->period == 11) {
+                  if ($periodos->period == 9) {
+                    echo "9º e 10";
+                  } elseif ($periodos->period == 11) {
+                    echo "11º e 12";
+                  }
+                  } else {
+                    echo $periodos->period;
+                  }
+                }else {
+                  echo $periodos->period;
+                }
+                ?>º Período</h4>
             <p>
               <?php
-                                foreach ($dadosCurso['gradeCurricular'] as $disciplina)
-                                if ($periodos->period == $disciplina->period) {
-                                ?>
+              foreach ($dadosCurso['gradeCurricular'] as $disciplina)
+              if ($periodos->period == $disciplina->period) {
+              ?>
             <p>
               <i class="fas fa-caret-right"></i>
               <?php
-                                echo $disciplina->discipline;
-                                ?>
+              echo $disciplina->discipline;
+              ?>
             </p>
             <?php
-                            }
-                            ?>
+            }
+            ?>
 
             </p>
             <?php  
@@ -344,20 +321,20 @@ if ($dadosCurso['informacoesCurso']->id == 8) {
               echo $row->nome;
               ?>
 
-              <?php
-              echo $row->email;
-              ?>
-
-              <?php if (!empty($dados['dadosCurso']['contatos']->phone)): ?>
-              <br>
-              Celular: <?php echo $dados['dadosCurso']['contatos']->phone; ?>
-              <?php endif; ?>
-              <br>
-              Telefone: <?php echo $campus->phone; ?>
-              <?php if (!empty($dados['dadosCurso']['contatos']->ramal)): ?>
-              <br>
-              Ramal: <?php echo $dados['dadosCurso']['contatos']->ramal; ?>
-              <?php endif; ?>
+              <h4>
+                <?php
+                if(!empty($row->email) and $row->email != null){
+                  echo 'Email: '.$row->email;
+                }
+                ?>
+              </h4>
+              <h4>
+                <?php
+                if(!empty($row->telefone) and $row->telefone != null){
+                  echo 'Telefone(s): '.$row->telefone;
+                }
+                ?>
+              </h4>
             </h4>
 
           </div>

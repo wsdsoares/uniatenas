@@ -24,7 +24,7 @@
               echo $msg;
           }
           ?>
-        <?php echo form_open_multipart("Painel_graduacao/cadastrar_curso") ?>
+        <?php echo form_open_multipart("Painel_graduacao/cadastrar_curso/$modalidade") ?>
 
         <h2 class="card-inside-title">Informações do Curso</h2>
 
@@ -128,59 +128,16 @@
           <div class="col-sm-12">
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor('Painel_graduacao/todos_cursos/presencial', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+              echo anchor("Painel_graduacao/todos_cursos/$modalidade", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
               ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>
 </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function() {
-  $("#idcampus").change(function() {
-    var campus_id = $('#idcampus').val();
-    if (campus_id != '') {
-      $.ajax({
-        url: "<?php echo base_url();?>Painel_home/getBannerPositionbyCampus",
-        method: "POST",
-        data: {
-          campus_id: campus_id
-        },
-        success: function(data) {
-          var opts = $.parseJSON(data);
-          $('#selectOrder').empty();
-          $.each(opts, function(i, position) {
-            $('#selectOrder').append($('<option>', {
-              value: position.priority,
-              text: position.priority
-            }));
-
-            if (opts.length == i + 1) {
-              $('#selectOrder').append($('<option>', {
-                value: (+(position.priority) + +(1)),
-                text: (+(position.priority) + +(1))
-              }));
-            }
-            $('#selectOrder').selectpicker('refresh');
-          })
-        }
-      })
-    }
-    if ('select') {
-      $('#selectOrder').empty();
-      $('#selectOrder').append($('<option>', {
-        text: 'Selecione o campus'
-      }));
-      $('#selectOrder').selectpicker('refresh');
-    }
-  });
-
-})
-</script>
