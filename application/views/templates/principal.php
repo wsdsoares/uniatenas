@@ -55,14 +55,16 @@
     <div class="row justify-content-md-center">
 
       <?php
-
-
       foreach ($dados['informacoesTodosCampus'] as $local) {
-
         $localCampus = noAccentuation(mb_strtolower(removerAcentos($local->city)));
       ?>
+      <style>
+      .bg- <?php echo $local->$localCampus?> {
+        background:
+      }
+      </style>
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <div class="dados <?php echo 'bg-' . $localCampus; ?>">
+        <div class="dados" style="background:rgba(<?php echo $local->cor_fundo_lista_campusRGBA?>,0.3);">
           <div class="col-xs-12">
             <div class="dadosCampus">
               <?php echo anchor('atenas/inicio/' . $localCampus, '

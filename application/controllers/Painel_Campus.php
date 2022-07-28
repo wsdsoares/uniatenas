@@ -116,6 +116,7 @@ class Painel_campus extends CI_Controller {
             //os nomes - names dos inputs devem ser iguais aos do BD.
             $dados_form['name'] =$this->input->post('name');
             $dados_form['phone'] =$this->input->post('phone');
+            $dados_form['cor_fundo_lista_campusRGBA'] =$this->input->post('cor_fundo_lista_campusRGBA');
             $dados_form['email'] =$this->input->post('email');
             $dados_form['facebook'] =$this->input->post('facebook');
             $dados_form['instagram'] =$this->input->post('instagram');
@@ -204,6 +205,10 @@ class Painel_campus extends CI_Controller {
             }
             if ($campus->email != $this->input->post('email')) {
                 $dados_form['email'] = $this->input->post('email');
+            }
+            
+            if ($campus->cor_fundo_lista_campusRGBA != $this->input->post('cor_fundo_lista_campusRGBA')) {
+                $dados_form['cor_fundo_lista_campusRGBA'] = $this->input->post('cor_fundo_lista_campusRGBA');
             }
             if ($campus->facebook != $this->input->post('facebook')) {
                 $dados_form['facebook'] = $this->input->post('facebook');

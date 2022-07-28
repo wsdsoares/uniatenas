@@ -265,6 +265,27 @@
         <div class="separacao-forms"></div>
 
         <h2 class="card-inside-title">Imagens do Campus - Destaques e logotipos</h2>
+        <div class="row clearfix">
+          <div class="col-md-8">
+            <label for="title">
+              Cor de fundo - Exibida na lista dos campus
+              <small> (A cor tem que ser em RGB) <br />Exemplo: cor vermelha rgb(255,0,0), caso não saiba clique no <a
+                  href="https://erikasarti.com/html/tabela-cores/" target="_blank">CLIQUE AQUI</a><br />
+                ou digite no Google: <i>"Tabela de cores RGB"</i>
+              </small>
+            </label>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="material-icons">format_color_fill</i>
+              </span>
+              <div class="form-line">
+                <?php
+                  echo form_input(array('name' => 'cor_fundo_lista_campusRGBA', 'class' => 'form-control', 'placeholder' => 'Ex.: 201,201,204'), set_value('cor_fundo_lista_campusRGBA',$campus->cor_fundo_lista_campusRGBA));
+                ?>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row clearfix" style="background:#f1f1f1">
           <div class="col-sm-6">
             <div class="form-group">

@@ -60,14 +60,6 @@ body {
     color: #f05f22;
 }
 
-:root {
-    --cor-bg-paracatu: #6f8ec8;
-    --cor-bg-passos: #65933e;
-    --cor-bg-setelagoas: #f8a419;
-    --cor-bg-valenca: #c42a1f;
-    --cor-bg-sorriso: #7FFFD4;
-}
-
 .btn-default,
 .btn-default:hover,
 .btn-default:focus {
@@ -232,37 +224,6 @@ body {
     padding-top: 20px;
     font-size: 15px;
 }
-
-.bg-paracatu{
-    background: rgba(111,142,200,0.3);
-}
-
-.bg-passos{
-    background: rgba(101,147,62,0.3);
-}
-.bg-setelagoas{
-    background: rgba(248,164,25,0.3);
-}
-.bg-valenca{
-    background: rgba(236, 202, 9, 0.329);
-}
-.bg-sorriso{
-    background: rgba(127, 255, 212, 0.329);
-}
-
-
-
-/*#facebooks img {
-    background: #2372a3;
-}
-
-#instagrams img {
-    background: #f58529;
-}
-
-#youtubes img {
-    background: #b00;
-}*/
 
 @media screen and (min-width: 768px) and (max-width: 1194px) {
     .socialMedia div {
