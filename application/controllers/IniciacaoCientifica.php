@@ -26,12 +26,12 @@ class IniciacaoCientifica extends CI_Controller {
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and pages_id = $page->idpages
+                        and pages_id = $page->id
                                 ";
 
         $pages_content = $this->bancosite->getQuery($consulta)->result();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'page_contents.order' => 'description'))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->row();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -73,10 +73,10 @@ class IniciacaoCientifica extends CI_Controller {
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and page_contents.pages_id = $page->idpages";
+                        and page_contents.pages_id = $page->id";
 
         $pages_content = $this->bancosite->getQuery($consulta)->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -151,7 +151,7 @@ class IniciacaoCientifica extends CI_Controller {
         $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'revistas','campusid'=>$dataCampus->id))->row();
-        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
+        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
 
 		$revistas = $this->bancosite->getQuery("SELECT * FROM revistas where capa<>'null' and status =1 and campus_id=$dataCampus->id")->result();
 
@@ -183,8 +183,8 @@ class IniciacaoCientifica extends CI_Controller {
         $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
         
         $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao','campusid'=>$dataCampus->id))->row();
-        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->row();
+        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
         $dataJoinPhones = array("contatos_setores" =>"contatos_setores.setoresidcamp = campus_has_setores.id");

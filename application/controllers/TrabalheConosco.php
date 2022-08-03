@@ -51,7 +51,7 @@ class trabalheConosco extends CI_Controller {
         FROM
             at_site.page_contents
 
-            inner join pages on pages.idpages = page_contents.pages_id
+            inner join pages on pages.id = page_contents.pages_id
          WHERE pages.title='trabalheconosco'";
         $pages_content = $this->painelbd->getQuery($query)->result();
         $itens = $this->painelbd->getWhere('midias')->result();

@@ -23,12 +23,12 @@ class Graduacao extends CI_Controller
         }
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $pages_content = $this->bancosite->where(array('pages.idpages','pages.title'),'pages', null,array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
+        $pages_content = $this->bancosite->where(array('pages.id','pages.title'),'pages', null,array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
         
         // $pages_content = $this->bancosite->getWhere('pages', array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.idpages = page_contents.pages_id',
+            'pages'=>'pages.id = page_contents.pages_id',
             'campus' => 'campus.id= pages.campusid'
             
         );
@@ -41,7 +41,7 @@ class Graduacao extends CI_Controller
 
         $wherePagina = array(
             'campus.id'=>$dataCampus->id, 
-            'page_contents.pages_id'=>$pages_content->idpages,
+            'page_contents.pages_id'=>$pages_content->id,
             'page_contents.status'=>1);
         
         $listaItensMenuComoIngressar = $this->bancosite->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
@@ -68,7 +68,7 @@ class Graduacao extends CI_Controller
         FROM
             page_contents
         where page_contents.title like '%$vestibular%'
-        and pages_id =  $pages_content->idpages
+        and pages_id =  $pages_content->id
         ";
 
         $conteudoPrincipal = $this->bancosite->getQuery($queryHowToJoin)->row();
@@ -124,7 +124,7 @@ class Graduacao extends CI_Controller
     //     FROM
     //         page_contents
     //     where page_contents.title like '%$vestibular%'
-    //     and pages_id =  $pages_content->idpages
+    //     and pages_id =  $pages_content->id
     //     ";
 
     //     $conteudoPrincipal = $this->bancosite->getQuery($queryHowToJoin)->row();

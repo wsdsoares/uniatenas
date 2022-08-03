@@ -37,7 +37,7 @@ class EstagiosConvenios extends CI_Controller {
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and pages_id = $page->idpages
+                        and pages_id = $page->id
                                 ";
 
 
@@ -54,7 +54,7 @@ class EstagiosConvenios extends CI_Controller {
             inner join internship_city on internship_city.id = internship_companies.cityid";
         $empresasEstagio = $this->bancosite->getQuery($sql)->result();
 
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'page_contents.order' => 'description'))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
 
         $filedPhones = array("contacts.phone", "contacts.ramal","contacts.visiblepage","contacts.email","contacts.phonesetor");
         $tablePhones = "campus_has_setores";

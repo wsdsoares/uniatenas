@@ -396,7 +396,7 @@ class Painel_home extends CI_Controller
     {
 
         $page = $this->painelbd->getWhere('pages', array('title' => 'financeiro', 'campusid' => 1))->row();
-        $listagem = $this->painelbd->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
+        $listagem = $this->painelbd->getWhere('page_contents', array('pages_id' => $page->id))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             // 'conteudo' => 'paineladm/itens_paginas/dirigentes/lista',
@@ -414,7 +414,7 @@ class Painel_home extends CI_Controller
     {
 
         $page = $this->painelbd->getWhere('pages', array('title' => 'financeiro', 'campusid' => 1))->row();
-        $condition = array('status' => 1, 'pages_id' => $page->idpages);
+        $condition = array('status' => 1, 'pages_id' => $page->id);
         $dados = $this->painelbd->getWhere('page_contents', $condition)->result();
         $data = array(
             'titulo' => 'Início - Slides',

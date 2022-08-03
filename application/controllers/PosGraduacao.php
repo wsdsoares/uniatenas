@@ -38,7 +38,7 @@ class Posgraduacao extends CI_Controller
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and pages_id = $page->idpages
+                        and pages_id = $page->id
                                 ";
 
         $conteudoPrincipal = $this->bancosite->getQuery($consulta)->result();

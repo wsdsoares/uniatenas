@@ -36,7 +36,7 @@ class Huna extends CI_Controller
         $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
 
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'huna','campusid'=> $dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages),array('campo'=>'order','ordem'=>'ASC'))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id),array('campo'=>'order','ordem'=>'ASC'))->result();
 
         if ($uricamous == 'paracatu') {
             $categoriafotos = $pages_content->Fk_photosCat;

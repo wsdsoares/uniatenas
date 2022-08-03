@@ -83,8 +83,8 @@
           <div class="col-sm-3">
             <div class="form-group">
               <?php
-                            echo anchor(base_url(verifyImg($slideshow->files)), '<img src="' . base_url(verifyImg($slideshow->files)) . '" class="thumbnail">', array('target' => '_blank'));
-                            ?>
+                echo anchor(base_url(verifyImg($slideshow->files)), '<img src="' . base_url(verifyImg($slideshow->files)) . '" class="thumbnail">', array('target' => '_blank'));
+                ?>
             </div>
           </div>
           <div class="col-sm-offset-6 col-sm-3">

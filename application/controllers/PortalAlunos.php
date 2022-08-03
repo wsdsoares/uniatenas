@@ -71,13 +71,13 @@ class PortalAlunos extends CI_Controller {
                     (select campus.city from campus where campus.id = files.campusid) as cidadecampus,
                     files.name, 
                     files.files,
-                    pages.idpages,
+                    pages.id,
                     pages.title
 
                 FROM
                     files_has_pages
                     inner join files on files.id = files_has_pages.filesid
-                    inner join pages on pages.idpages = files_has_pages.pagesid
+                    inner join pages on pages.id = files_has_pages.pagesid
                 WHERE pages.title='portalinterno'
                     AND files.typesfile='cartilha'";
 

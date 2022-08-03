@@ -137,8 +137,8 @@ class Site extends CI_Controller
         $dataCampus = $this->bancosite->where($colunaCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages, 'order' => 'contatos'))->row();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id, 'order' => 'contatos'))->row();
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -292,7 +292,7 @@ class Site extends CI_Controller
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
         
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'espacoeventos', 'campusid' => $dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
         $eventSpace = $this->bancosite->getWhere('event_space', array('campusid' => $dataCampus->id))->result();
 
         $spacePhotosArray = array();
@@ -335,7 +335,7 @@ class Site extends CI_Controller
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'espacoeventos', 'campusid' => $dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
         $eventSpace = $this->bancosite->getWhere('event_space', array('id' => $idspace, 'campusid' => $dataCampus->id))->result();
 
         $spacePhotosArray = array();
@@ -598,7 +598,7 @@ class Site extends CI_Controller
                             at_site.page_contents
                         where page_contents.order like 'texto%'
                         and status=1
-                        and pages_id = $page->idpages";
+                        and pages_id = $page->id";
 
 
         $banner = null;
@@ -608,7 +608,7 @@ class Site extends CI_Controller
         }
 
         $pages_content = $this->bancosite->getQuery($consulta)->result();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'page_contents.order' => 'description'))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -652,8 +652,8 @@ class Site extends CI_Controller
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
         
         $page = $this->bancosite->getWhere('pages', array('title' => 'napp', 'campusid' => $dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->result();
 
 
         $data = array(
@@ -695,10 +695,10 @@ class Site extends CI_Controller
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and pages_id = $page->idpages
+                        and pages_id = $page->id
                                 ";
 
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
         $data = array(
             'head' => array(
                 'title' => 'NPA - ' . $dataCampus->city,
@@ -737,10 +737,10 @@ class Site extends CI_Controller
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and pages_id = $page->idpages
+                        and pages_id = $page->id
                                 ";
 
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
         $data = array(
             'head' => array(
                 'title' => 'NPAS - ' . $dataCampus->city,
@@ -779,11 +779,11 @@ class Site extends CI_Controller
                         FROM
                             at_site.page_contents
                         where page_contents.order like 'texto%'
-                        and pages_id = $page->idpages
+                        and pages_id = $page->id
                                 ";
         $pages_content = $this->bancosite->getQuery($consulta)->result();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'page_contents.order' => 'description'))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->result();
 
         $data = array(
             'head' => array(
@@ -1137,7 +1137,7 @@ and revistas.id =$id;
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $dataCampus->id))->row();
         
-        $pages_content = $this->bancosite->where('*','page_contents',NULL,array('pages_id'=>$page->idpages,'status'=>1),array('campo'=>'order','ordem'=>'asc'))->result();
+        $pages_content = $this->bancosite->where('*','page_contents',NULL,array('pages_id'=>$page->id,'status'=>1),array('campo'=>'order','ordem'=>'asc'))->result();
         $photosConted = array();
 
         // $datajoin = array(
@@ -1196,7 +1196,7 @@ and revistas.id =$id;
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'nossaHistoria', 'campusid' => $dataCampus->id))->row();
-        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'status' => 1))->result();
+        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'status' => 1))->result();
 
         $data = array(
             'head' => array(
@@ -1228,14 +1228,14 @@ and revistas.id =$id;
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'secretariaacademica', 'campusid' => $dataCampus->id))->row();
 
-        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'status' => 1))->result();
+        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'status' => 1))->result();
 
         $calendars = $this->bancosite->getWhere('campus_calendars', array('campusid' => $dataCampus->id, 'status' => 1, 'type' => 'demais_cursos'), array('campo' => 'semester', 'ordem' => 'desc'))->result();
         $calendarsMedicine = $this->bancosite->getWhere('campus_calendars', array('campusid' => $dataCampus->id, 'status' => 1, 'type' => 'medicina'), array('campo' => 'semester', 'ordem' => 'desc'))->result();
 
         $horasComplementares = $this->bancosite->getWhere('files', array('campusid' => $dataCampus->id, 'typesfile' => 'cartilha'))->row();
 
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages, 'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -1306,7 +1306,7 @@ and revistas.id =$id;
 
         $localidades = $this->bancosite->getAll('campus')->result();
 
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->idpages))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
 
         $areasAtuacao = $this->bancosite->getWhere('areas')->result();
         $vagasAbertas = $this->bancosite->getWhere('resume_job_vacancy', array('status' => '1'))->result();

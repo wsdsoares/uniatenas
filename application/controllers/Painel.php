@@ -105,14 +105,14 @@ class Painel extends CI_Controller
         //$page = 'sdf';
         //$itens = $this->painelbd->getWhere('page_contents', array('title_short' => 'biblioteca'))->result();
         $sqlcontents = 'SELECT 
-                            pages.idpages as idpages,
+                            pages.id as id,
                             page_contents.id as idcontent,
                             page_contents.title as titulo,
                             page_contents.description as descriptionpage,
                             campus.city as campus,
                             page_contents.data_modify as last_change
                             FROM page_contents
-                            INNER JOIN pages on pages.idpages = page_contents.pages_id
+                            INNER JOIN pages on pages.id = page_contents.pages_id
                             INNER JOIN campus on pages.campusid = campus.id
                             where page_contents.title_short = \'biblioteca\';';
 
@@ -134,14 +134,14 @@ class Painel extends CI_Controller
     {
         verificaLogin();
         $sqlcontents = 'SELECT 
-                            pages.idpages as idpages,
+                            pages.id as id,
                             page_contents.id as idcontent,
                             page_contents.title as titulo,
                             page_contents.description as descriptionpage,
                             campus.city as campus,
                             page_contents.data_modify as last_change
                             FROM page_contents
-                            INNER JOIN pages on pages.idpages = page_contents.pages_id
+                            INNER JOIN pages on pages.id = page_contents.pages_id
                             INNER JOIN campus on pages.campusid = campus.id
                             where page_contents.title_short = \'biblioteca\';';
 
@@ -356,7 +356,7 @@ class Painel extends CI_Controller
       $title_page = $this->uri->segment(2);
       $page = $this->painelbd->get_pages('', $title_page, 'pages')->row();
 
-      $pages_content = $this->painelbd->get_contents($page->idpages, '1')->result();
+      $pages_content = $this->painelbd->get_contents($page->id, '1')->result();
       $dados['tela'] = 'infraestrutura';
       $dados['modulo'] = 'pagina_painel';
       $dados['diretorio_view'] = 'painel';
@@ -373,7 +373,7 @@ class Painel extends CI_Controller
       $title_page = $this->uri->segment(2);
       $page = $this->painelbd->get_pages('', $title_page, 'pages')->row();
 
-      $pages_content = $this->painelbd->get_contents($page->idpages, '1')->result();
+      $pages_content = $this->painelbd->get_contents($page->id, '1')->result();
       $dados['tela'] = 'publicacoes';
       $dados['modulo'] = 'pagina_painel';
       $dados['diretorio_view'] = 'painel';
@@ -425,7 +425,7 @@ class Painel extends CI_Controller
 
 
 
-      $pages_content = $this->painelbd->get_contents($page->idpages, '1')->result();
+      $pages_content = $this->painelbd->get_contents($page->id, '1')->result();
       $dados['tela'] = 'infraestrutura';
       $dados['modulo'] = 'pagina_painel';
       $dados['diretorio_view'] = 'painel';

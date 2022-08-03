@@ -619,7 +619,7 @@ class Painel_campus extends CI_Controller {
         $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.idpages = page_contents.pages_id',
+            'pages'=>'pages.id = page_contents.pages_id',
             'campus' => 'campus.id= pages.campusid'
             
         );
@@ -664,7 +664,7 @@ class Painel_campus extends CI_Controller {
         $pagina = 'nossaHistoria';
         $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
-        $colunasTabelaPages = array('pages.idpages','pages.title');
+        $colunasTabelaPages = array('pages.id','pages.title');
         $joinConteudoPagina = array(
             'campus' => 'campus.id= pages.campusid'
             
@@ -683,7 +683,7 @@ class Painel_campus extends CI_Controller {
             $dados_form['description'] = $this->input->post('description');
             $dados_form['title'] = $this->input->post('title');
             $dados_form['status'] = $this->input->post('status');
-            $dados_form['pages_id'] = $listaItemPages->idpages;
+            $dados_form['pages_id'] = $listaItemPages->id;
 
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
@@ -724,7 +724,7 @@ class Painel_campus extends CI_Controller {
        
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.idpages = page_contents.pages_id',
+            'pages'=>'pages.id = page_contents.pages_id',
             'campus' => 'campus.id = pages.campusid',
         );
 
@@ -1237,7 +1237,7 @@ class Painel_campus extends CI_Controller {
         
         $joinCategoriasInfraestruturaCampus = array(
             'campus' => 'campus.id = pages.campusid',
-            'page_contents' => "page_contents.pages_id = $page->idpages",
+            'page_contents' => "page_contents.pages_id = $page->id",
         );
         $colunasResultadoInfraestrutura = array(
             'page_contents.id',
@@ -1252,7 +1252,7 @@ class Painel_campus extends CI_Controller {
 
         );
         $whereCategoriasInfraestrutura= array(
-            'pages.idpages'=>$page->idpages,
+            'pages.id'=>$page->id,
         );
         
         $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'pages',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null)->result();     
@@ -1291,7 +1291,7 @@ class Painel_campus extends CI_Controller {
             $dados_form['title'] = $this->input->post('title');
             $dados_form['description'] = $this->input->post('description');
             $dados_form['status'] = $this->input->post('status');
-            $dados_form['pages_id'] = $page->idpages;
+            $dados_form['pages_id'] = $page->id;
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['order'] = 'service';
@@ -1409,7 +1409,7 @@ class Painel_campus extends CI_Controller {
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-        $colunaPagina = array('pages.idpages');
+        $colunaPagina = array('pages.id');
 
         $pagina = $this->painelbd->where($colunaPagina,'pages',Null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
 

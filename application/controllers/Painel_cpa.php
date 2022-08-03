@@ -45,7 +45,7 @@ class Painel_cpa extends CI_Controller {
         $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.idpages = page_contents.pages_id',
+            'pages'=>'pages.id = page_contents.pages_id',
             'campus' => 'campus.id= pages.campusid'
             
         );
@@ -89,7 +89,7 @@ class Painel_cpa extends CI_Controller {
         $pagina = 'cpa';
         $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
-        $colunasTabelaPages = array('pages.idpages','pages.title');
+        $colunasTabelaPages = array('pages.id','pages.title');
         $joinConteudoPagina = array(
             'campus' => 'campus.id= pages.campusid'
             
@@ -109,7 +109,7 @@ class Painel_cpa extends CI_Controller {
             $dados_form['description'] = $this->input->post('description');
             $dados_form['title'] = $this->input->post('title');
             $dados_form['status'] = $this->input->post('status');
-            $dados_form['pages_id'] = $listaItemPages->idpages;
+            $dados_form['pages_id'] = $listaItemPages->id;
 
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['order'] = 'texto';
@@ -147,7 +147,7 @@ class Painel_cpa extends CI_Controller {
         $wherePagina = array('page_contents.id'=>$paginaId);
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.idpages = page_contents.pages_id',
+            'pages'=>'pages.id = page_contents.pages_id',
             'campus' => 'campus.id = pages.campusid',
         );
 
