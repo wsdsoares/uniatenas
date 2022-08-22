@@ -48,6 +48,12 @@ and open the template in the editor.
     background: #fff3cd;
 }
 
+.btn-blue1 {
+    color:#4169E1;
+    background: #F0FFFF;
+}
+
+
 .card .header {
     height:80px;
 }

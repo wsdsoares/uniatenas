@@ -31,7 +31,7 @@ class Financiamentos extends CI_Controller
 
         $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'financiamentos'))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages),array('campo'=>'order','ordem'=>'ASC'))->result();
+        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id),array('campo'=>'order','ordem'=>'ASC'))->result();
 
         $data = array(
             'head' => array(

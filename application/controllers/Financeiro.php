@@ -19,24 +19,21 @@ class Financeiro extends CI_Controller
 
     }
 
-    public function inicio($campus)
+    public function inicio($uricampus)
     {
-        if($campus == null){
+        if ($uricampus == null) {
             redirect("");
         }
 
-        if ($campus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($campus == 'passos') {
-            $city = "Passos";
-        } elseif ($campus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf','campus.shurtName');
+        $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('campus.shurtName'=>$uricampus))->row();
 
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
-        $pages_content = $this->bancosite->getWhere('pages', array('title' => 'financeiro','campusid'=>$dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->idpages),array('campo'=>'order','ordem'=>'ASC'))->result();
+        $pages_content = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$dataCampus->id))->row();
+        // $conteudoPrincipal = $this->bancosite->where("*",'page_contents', null, array('pages_id' => $pages_content->id),array('campo'=>'order','ordem'=>'ASC'))->result();
+        $conteudoPrincipal =  $this->bancosite->getQuery("SELECT * FROM page_contents where page_contents.pages_id = $pages_content->id and page_contents.order <>'contatos' and page_contents.status=1 order by page_contents.order ASC")->result();
 
+        //$conteudoContato = $this->bancosite->where("*",'page_contents', null, array('pages_id' => $pages_content->id,'order'=>'contatos'),array('campo'=>'order','ordem'=>'ASC'))->result();
+        $conteudoContato = $this->bancosite->getQuery("SELECT * FROM page_contents where page_contents.pages_id = $pages_content->id and page_contents.order ='contatos' and page_contents.status=1")->result();
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -46,20 +43,18 @@ class Financeiro extends CI_Controller
 
         $data = array(
             'head' => array(
-                'title' => 'Financeiro - UniAtenas '.$city,
-                
+                'title' => "Financeiro $dataCampus->name $dataCampus->city ($dataCampus->uf)",
             ),
             'conteudo' => "uniatenas/financeiro/index",
             'js' => NULL,
-            'footer' => array(
-                
-            ),
+            'footer' => array(),
 
             'dados' => array(
-                'city'=>$city,
+                'city'=>$dataCampus->city,
                 'campus' => $dataCampus,
-                'camp' => $this->bancosite->getWhere('campus', array('city' => $city))->row(),
+                'camp' => $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row(),
                 'conteudoPag' => $conteudoPrincipal,
+                'contatosPagina' => $conteudoContato,
                 'contatos' => $phones,
             )
         );

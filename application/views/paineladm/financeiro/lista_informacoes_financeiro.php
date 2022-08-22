@@ -5,9 +5,48 @@
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
+      <div class="header">
+        <h2>
+          <?php echo "Página financeiro - Menu FINANCEIRO DO SITE"; ?>
+
+        </h2>
+        <div>
+          <span>
+            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu financeiro no site principal"; ?></i>
+          </span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-6">
+              <?php 
+                if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
+                  $tituloBotao = "EDITAR";
+                }else{
+                  $tituloBotao = "CADASTRAR";
+                }
+                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu financeiro)', array('class' => 'btn alerts_info'));
+              ?>
+            </div>
+            <div class="col-xs-6">
+              <?php
+              echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaFinanceiro->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (financeiro)', array('class' => 'btn btn-blue1'));
+              ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
       <?php
       if ($msg = getMsg()){
-          echo $msg;
+        echo $msg;
       }
       ?>
       <div class="header">
@@ -19,11 +58,11 @@
       <div class="botoes-acoes-formularios">
         <div class="container">
           <div class="col-xs-6">
-            <?php echo anchor("Painel_campus/cadastrar_botoes_acesso_rapido/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR Botões de Acesso Rápido', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
           </div>
           <div class="col-xs-6">
             <?php 
-          echo anchor('Painel_campus/lista_campus_botoes_acessos', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+          echo anchor('Painel_financeiro/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
           ?>
           </div>
         </div>
@@ -36,12 +75,10 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Título Botão</th>
-                <th>Link</th>
-                <th>Cor (HEXADECIMAL)</th>
+                <th>Título página</th>
+                <th>Imagem</th>
                 <th>Situação</th>
-                <th>Cidade</th>
-                <th>Criado em:</th>
+                <th>Filial</th>
                 <th>Modificado em, por:</th>
               </tr>
             </thead>
@@ -49,12 +86,10 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Título Botão</th>
-                <th>Link</th>
-                <th>Cor (HEXADECIMAL)</th>
+                <th>Título página</th>
+                <th>Imagem</th>
                 <th>Situação</th>
-                <th>Cidade</th>
-                <th>Criado em:</th>
+                <th>Filial</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
@@ -66,38 +101,25 @@
                 <td class="center">
                   <?php 
 
-                    echo '<a href=' . base_url("Painel_Campus/editar_botoes_acesso_rapido/$campus->id/$item->id") . '>'
+                    echo '<a href=' . base_url("Painel_financeiro/editar_informacoes_financeiro/$campus->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    /*echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-
-                      $redirect = 'Painel_home-slideshow';
-                      $table = 'banners';
-
-                      if ($campus->status == 1) {
-                          echo  '<i class="material-icons">visibility</i>'
-                              . '</a>';
-                      } elseif ($campus->status == 0) {
-                          echo  '<i class="material-icons">visibility_off</i>'
-                              . '</a>';
-                      }
-                      */
                   ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->title;?></td>
                 <td>
-                  <?php 
-                  // if($item->link_redirecionamento !=''){
-                  //   echo anchor($item->link_redirecionamento,'ACESSAR LINK',array('target'=>'_blank')).' - '.$item->link_redirecionamento;
-                  // }elseif($item->arquivo !=''){
-                  //   echo anchor(base_url($item->arquivo),'<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
-                  // }
+
+                  <?php
+                  if($item->order==0){
+                    echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
+                  }else{
+                    echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
+                  }
                   ?>
-                <td>
-                  <?php //echo $item->cor_hexadecimal;?>
                 </td>
                 </td>
                 <td>
@@ -114,7 +136,6 @@
 
                 <td><?php echo $item->city;?></td>
 
-                <td> <?php echo date("d/m/Y",strtotime($item->created_at)); ?></td>
                 <td>
                   <?php 
                     $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
@@ -166,9 +187,8 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
-
-  console.log()
-
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_financeiro/deletar_item_financeiro/$campus->id/"); ?>' +
+    id);
 });
 </script>
