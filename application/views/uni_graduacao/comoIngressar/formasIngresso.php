@@ -17,7 +17,7 @@ $link = $dados['conteudoPag']->link_redir != '' ? $dados['conteudoPag']->link_re
         <?php 
 				if($dados['conteudoPag']->link_redir != ''){
 				?>
-        <a href="<?php echo $dados['conteudoPag']->link_redir ?>" class="btn btns btn-lg">
+        <a href="<?php echo $dados['conteudoPag']->link_redir ?>" class="btn btns btn-lg" target="_blank">
           ACESSAR
         </a>
         <?php 
@@ -27,14 +27,10 @@ $link = $dados['conteudoPag']->link_redir != '' ? $dados['conteudoPag']->link_re
     </div>
     <div class="col-md-8 imageFinanciamento">
 
-      <a href="<?php echo  $link ?>">
+      <a href="<?php echo  $link ?>" class="btn btns btn-lg" target="_blank">
         <img src="<?php echo base_url($dados['conteudoPag']->img_destaque)?>" alt="" />
       </a>
-      <?php 
-				if($dados['conteudoPag']->link_redir != ''){
-					echo $dados['conteudoPag']->link_redir;
-				}
-      ?>
+
     </div>
   </div>
 </div>

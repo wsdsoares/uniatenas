@@ -203,13 +203,7 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
                     }
                     ?>
                   </li>
-                  <?php
-                    if ($informacoesCampus->id == '1') {
-                    ?>
-                  <!--li><?php echo anchor('posgraduacao/inicio/' . $informacoesCampus->shurtName, 'Pós-Graduação'); ?></li-->
-                  <?php
-                                    }
-                                    ?>
+
                   <li class="dropdown mega-dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serviços <span class="caret"></span></a>
                     <ul class="dropdown-menu mega-dropdown-menu ">
