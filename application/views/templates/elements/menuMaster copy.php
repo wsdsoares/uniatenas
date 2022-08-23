@@ -17,34 +17,37 @@ $wehreArrayLinkvestibular= array('gerais_elementos_site.tipo'=>'link_vestibular'
 $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$wehreArrayLinkvestibular)->row();
 
 $verificaPaginaFinanceiro = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$informacoesCampus->id))->row();
-$verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id','pages.title'),'pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id))->row();
+if(isset($verificaPaginaFinanceiro) and $verificaPaginaFinanceiro != '') {
 
-if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
-
-  $listaMenuItensComoIngressar =  $this->bancosite->getQuery(
+  $listaMenuItensFinanceiro =  $this->bancosite->getQuery(
     "SELECT 
       page_contents.id,
-      page_contents.title,
-      page_contents.title_short
-
+      page_contents.title
     FROM 
       page_contents
     INNER JOIN pages ON pages.id = page_contents.pages_id
     INNER JOIN campus ON campus.id= pages.campusid
     WHERE 
-        pages.title = 'comoingressar'AND 
+        pages.title = 'financeiro'AND 
         pages.campusid = $informacoesCampus->id AND 
-        page_contents.status=1
+        page_contents.order <>'contatos' AND 
+        page_contents.status=1 and
+        page_contents.order >= 1
     ORDER BY page_contents.order ASC")->result();
 
-  // echo '<pre>';
-  // echo '<br/>';
-  // echo '<br/>';
-  // echo '<br/>';
-  // echo '<br/>';
-  // print_r($listaMenuItensComoIngressar);
-  // echo '</pre>';
+  echo '<pre>';
+  echo '<br/>';
+  echo '<br/>';
+  echo '<br/>';
+  echo '<br/>';
+  print_r($listaMenuItensFinanceiro);
+  echo '</pre>';
 }
+$verificaPaginaComoIngressar = $this->bancosite->where('*','pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id))->row();
+
+
+
+
 ?>
 <div data-container="menu" class="headermenu">
   <header class="header navbar-fixed-top">
@@ -172,30 +175,52 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
                       ?>
                     </ul>
                   </li>
-                  <?php 
-                  if(isset($verificaPaginaComoIngressar)){
-                  ?>
+
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                       Como ingressar<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu menu-simpes" role="menu">
-                      <?php
-                      if($listaMenuItensComoIngressar){
-                        foreach ($listaMenuItensComoIngressar as $itemIngressar){
-                        ?>
+
+                      <?php 
+                      
+                      if ($informacoesCampus->shurtName == "paracatu") { ?>
                       <li>
-                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/$itemIngressar->title_short", "$itemIngressar->title"); ?>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/vestibularagendado", 'Vestibular Agendado'); ?>
                       </li>
                       <?php 
-                        }
                       }
+                        if ($informacoesCampus->id != 3) {
+                        ?>
+                      <li>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/notaenem", 'Nota do Enem'); ?>
+                      </li>
+
+                      <?php
+                      }
+                      if ($informacoesCampus->id == '1') {
                       ?>
+                      <li>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/segundagraduacao", 'Segunda Graduação'); ?>
+                      </li>
+                      <li>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/transferencia", 'Transferência'); ?>
+                      </li>
+                      <li>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/reingresso", 'Reingresso'); ?>
+                      </li>
+                      <li>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/reopcaodecurso", 'Reopção de Curso '); ?>
+                      </li>
+                      <?php
+                                            }
+                                            ?>
+                      <li>
+                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/vestibulartradicional", 'Vestibular Tradicional'); ?>
+                      </li>
                     </ul>
                   </li>
-                  <?php 
-                  }
-                  ?>
+
                   <li>
                     <?php 
                     if(isset($verificaPaginaFinanceiro)){
@@ -220,19 +245,20 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
                             <ul>
                               <li class="itensMenu">
                                 <?php
-                                echo anchor('site/biblioteca/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Biblioteca');
-                                ?>
+                                                                echo anchor('site/biblioteca/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Biblioteca');
+                                                                ?>
+
                               </li>
                               <?php
-                              if ($informacoesCampus->id == '2' || $informacoesCampus->id == '1') {
-                              ?>
+                                                            if ($informacoesCampus->id == '2' || $informacoesCampus->id == '1') {
+                                                            ?>
                               <li class="itensMenu">
                                 <?php echo anchor('EstagiosConvenios/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Estágios e convênios'); ?>
                               </li>
                               <?php
-                              }
-                              if ($informacoesCampus->id == '1') {
-                              ?>
+                                                            }
+                                                            if ($informacoesCampus->id == '1') {
+                                                            ?>
                               <li class="itensMenu">
                                 <?php echo anchor('Huna/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> HUNA
                                                                         -

@@ -7,12 +7,12 @@
     <div class="card">
       <div class="header">
         <h2>
-          <?php echo "Página financeiro - Menu FINANCEIRO DO SITE"; ?>
+          <?php echo "Página Como Ingressar - Menu <strong>COMO INGRESSAR</strong> DO SITE"; ?>
 
         </h2>
         <div>
           <span>
-            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu financeiro no site principal"; ?></i>
+            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu 'Como Ingressar' no site principal"; ?></i>
           </span>
         </div>
       </div>
@@ -21,21 +21,15 @@
           <div class="row">
             <div class="col-xs-6">
               <?php 
-                if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
+                if(isset($paginaComoIngressar) and $paginaComoIngressar != '' ){
                   $tituloBotao = "EDITAR";
                 }else{
                   $tituloBotao = "CADASTRAR";
                 }
-                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu financeiro)', array('class' => 'btn alerts_info'));
+                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu como ingressar)', array('class' => 'btn alerts_info'));
               ?>
             </div>
-            <div class="col-xs-6">
-              <?php
-              if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
-                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaFinanceiro->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (financeiro)', array('class' => 'btn btn-blue1'));
-              }
-              ?>
-            </div>
+
           </div>
         </div>
       </div>
@@ -60,22 +54,22 @@
       <div class="botoes-acoes-formularios">
         <div class="container">
           <?php
-          if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
+          if(isset($paginaComoIngressar) and $paginaComoIngressar != '' ){
           ?>
           <div class="col-xs-6">
-            <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_como_ingressar/cadastrar_informacoes_como_ingressar/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Como Ingressar', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
           </div>
           <?php 
           }
           ?>
           <div class="col-xs-6">
-            <?php echo anchor('Painel_financeiro/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
+            <?php echo anchor('Painel_como_ingressar/lista_campus_como_ingressar', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
           </div>
         </div>
       </div>
       <br />
       <?php
-      if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
+      if(isset($paginaComoIngressar) and $paginaComoIngressar != '' ){
       ?>
       <div class="body">
         <div class="table-responsive">
@@ -104,13 +98,13 @@
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['conteudosPagina'] as $item):
+              foreach ($dados['conteudosPagina'] as $item){
                   ?>
               <tr>
                 <td class="center">
                   <?php 
 
-                    echo '<a href=' . base_url("Painel_financeiro/editar_informacoes_financeiro/$campus->id/$item->id") . '>'
+                    echo '<a href=' . base_url("Painel_como_ingressar/editar_informacoes_como_ingressar/$campus->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
                     echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
@@ -123,11 +117,7 @@
                 <td>
 
                   <?php
-                  if($item->order==0){
-                    echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
-                  }else{
                     echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
-                  }
                   ?>
                 </td>
                 </td>
@@ -152,10 +142,9 @@
                     ?>
                 </td>
 
-
               </tr>
               <?php
-                endforeach;
+                }
                 ?>
             </tbody>
           </table>
@@ -200,7 +189,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
 
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_financeiro/deletar_item_financeiro/$campus->id/"); ?>' +
+    '<?php echo base_url("Painel_como_ingressar/deletar_item_como_ingressar/$campus->id/"); ?>' +
     id);
 });
 </script>

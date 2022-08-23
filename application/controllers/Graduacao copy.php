@@ -25,11 +25,51 @@ class Graduacao extends CI_Controller
 
       $pages_content = $this->bancosite->where(array('pages.id','pages.title'),'pages', null,array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
       
-      $colunaItenResultadPagina = array('page_contents.id','page_contents.title','page_contents.title_short');
-      $wherePagina = array('campus.id'=>$dataCampus->id, 'page_contents.pages_id'=>$pages_content->id,'page_contents.status'=>1);
-      $joinConteudoPagina = array('pages'=>'pages.id = page_contents.pages_id','campus' => 'campus.id= pages.campusid');
-      $listaItensMenuComoIngressar = $this->bancosite->where($colunaItenResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
+      // $pages_content = $this->bancosite->getWhere('pages', array('title' => 'comoingressar', 'campusid' => $dataCampus->id))->row();
+
+      $joinConteudoPagina = array(
+          'pages'=>'pages.id = page_contents.pages_id',
+          'campus' => 'campus.id= pages.campusid'
+      );
+
+      $colunaResultadPagina = array(
+          'page_contents.id',
+          'page_contents.title',
+          'page_contents.title_short',
+      );
+
+      $wherePagina = array(
+          'campus.id'=>$dataCampus->id, 
+          'page_contents.pages_id'=>$pages_content->id,
+          'page_contents.status'=>1);
+      
+      $listaItensMenuComoIngressar = $this->bancosite->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
     
+      // if ($modalidadeIngresso == 'vestibulartradicional') {
+      //     $vestibular = "Vestibular Tradicional";
+      // } elseif ($modalidadeIngresso == 'vestibularagendado') {
+      //     $vestibular = "Agendado";
+      // } elseif ($modalidadeIngresso == 'notaenem') {
+      //     $vestibular = "ENEM";
+      // } elseif ($modalidadeIngresso == 'segundagraduacao') {
+      //     $vestibular = "SEGUNDA";
+      // } elseif ($modalidadeIngresso == 'transferencia') {
+      //     $vestibular = "TRANSF";
+      // } elseif ($modalidadeIngresso == 'reingresso') {
+      //     $vestibular = "REING";
+      // } elseif ($modalidadeIngresso == 'reopcaodecurso') {
+      //     $vestibular = "REOPC";
+      // }
+
+      // $queryHowToJoin = "
+      // SELECT 
+      //   *
+      // FROM
+      //   page_contents
+      // where page_contents.title_short ='$modalidadeIngresso'
+      // and pages_id =  $pages_content->id";
+
+      // $conteudoPrincipal = $this->bancosite->getQuery($queryHowToJoin)->row();
       $whereModalidadeIngresso = array('page_contents.title_short'=>$modalidadeIngresso,'pages_id' => $pages_content->id);
       $conteudoPrincipal = $this->bancosite->where("*",'page_contents',null,$whereModalidadeIngresso)->row();
 

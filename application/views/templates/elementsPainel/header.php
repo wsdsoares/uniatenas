@@ -160,6 +160,20 @@ function ativo() {
         <!-----------------------------------------------------------------------
           Menu para gestão dos contatos recebidos no site
         ------------------------------------------------------------------------->
+        <li class="header">Menu - Como Ingressar</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">view_list</i>
+            <span>Formas de Ingresso</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+                echo anchor('Painel_como_ingressar/lista_campus_como_ingressar', '<span>Páginas por Campus</span>');
+                ?>
+            </li>
+          </ul>
+        </li>
         <li class="header">Menu - Financeiro</li>
         <li>
           <a href="javascript:void(0);" class="menu-toggle">
