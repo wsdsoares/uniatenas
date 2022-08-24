@@ -234,6 +234,27 @@ function ativo() {
         </li>
 
         <!-----------------------------------------------------------------------
+          Menu para gestão dos menus de serviços - Todos os campus CPA, NAPP, NPA, NPAS
+        ------------------------------------------------------------------------
+        <li class="header">Menu - Serviços</li>
+        <a href="javascript:void(0);" class="menu-toggle">
+          <i class="material-icons">assignment</i>
+          <span>Coodenação Secretaria</span>
+        </a>
+
+        <ul class="ml-menu">
+          <li>
+            <a href="javascript:void(0);" class="menu-toggle">
+              <span>Calendários Semestre</span>
+            </a>
+            <ul class="ml-menu">
+              <li>
+                <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <!-----------------------------------------------------------------------
           Menu para gestão dos itens curriculo - Todos os campus Trabalhe conosco
         ------------------------------------------------------------------------->
         <li class="header">Gestão - Trabalhe Conosco</li>
@@ -279,8 +300,6 @@ function ativo() {
             </ul>
           </li>
         </ul>
-        </li>
-
         <li>
           <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
         </li>

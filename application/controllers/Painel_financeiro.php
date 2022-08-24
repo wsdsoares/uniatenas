@@ -38,18 +38,16 @@ class Painel_financeiro extends CI_Controller {
     public function lista_informacoes_financeiro($uriCampus=NULL) {
     verificaLogin();
 
-      $pagina = 'financeiro';
-      $verificaExistePaginaFinanceiro = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
-    
-      $colunasCampus = array('campus.id','campus.name','campus.city');
-      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-      
-      // $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
+    $pagina = 'financeiro';
+    $verificaExistePaginaFinanceiro = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+  
+    $colunasCampus = array('campus.id','campus.name','campus.city');
+    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-      $joinContatoPagina = array(
-        'pages'=>'pages.id = page_contents.pages_id',
-        'campus' => 'campus.id= pages.campusid'
-      );
+    $joinContatoPagina = array(
+      'pages'=>'pages.id = page_contents.pages_id',
+      'campus' => 'campus.id= pages.campusid'
+    );
 
       $colunaResultadoContatoPagina = array(
         'page_contents.id',
@@ -63,8 +61,6 @@ class Painel_financeiro extends CI_Controller {
         'campus.city'
       );
       
-      //$listaInformmacoesPaginasFinanceiro = $this->painelbd->where($colunaResultadPagina,'page_contents',$joinContatoPagina, $wherePagina,null)->result();
-
       $listaInformmacoesPaginasFinanceiro =  $this->painelbd->getQuery(
         "SELECT 
           page_contents.id,
@@ -107,6 +103,7 @@ class Painel_financeiro extends CI_Controller {
 
       $this->load->view('templates/layoutPainelAdm', $data);
     }
+    
     public function cadastrar_contato_pagina_financeiro($uriCampus=NULL,$pageId = null)
     {
       verifica_login();
