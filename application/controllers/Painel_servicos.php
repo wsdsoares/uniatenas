@@ -3,44 +3,44 @@
 if (!defined("BASEPATH"))
     exit("No direct script access allowed");
 
-class Painel_financeiro extends CI_Controller {
+class Painel_servicos extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
         $this->load->model('painel_model', 'painelbd');
         date_default_timezone_set('America/Sao_Paulo');
     }
+
+    public function lista_campus_servicos($tipoPagina) {
+      verificaLogin();
+
+      $colunasResultadoCursos = 
+          array('campus.id',
+          'campus.name',
+          'campus.city',
+          'campus.uf'
+      );
+  
+      $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+      $data = array(
+          'titulo' => 'UniAtenas',
+          'conteudo' => 'paineladm/servicos/lista_campus_servicos',
+          'dados' => array(
+              'page' => "Informações Menu Serviços ($tipoPagina)",
+              'tipoPagina' => $tipoPagina,
+              'campus'=> $listagemDosCampus,
+              'tipo'=>''
+          )
+      );
+
+      $this->load->view('templates/layoutPainelAdm', $data);
+  }
     
-    public function lista_campus_financeiro() {
-        verificaLogin();
+  
 
-        $colunasCampus = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where($colunasCampus,'campus',NULL, array('visible' => 'SIM'))->result();
-        $data = array(
-            'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/financeiro/lista_campus_financeiro',
-            'dados' => array(
-                'page' => "Informações Financeiro",
-                'campus'=> $listagemDosCampus,
-                'tipo'=>''
-            )
-        );
-
-        $this->load->view('templates/layoutPainelAdm', $data);
-    }
-
-    public function lista_informacoes_financeiro($uriCampus=NULL) {
+    public function lista_informacoes_servicos($uriCampus=NULL,$tipoPagina=null) {
     verificaLogin();
 
-    $pagina = 'financeiro';
-    $verificaExistePaginaFinanceiro = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
-  
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
@@ -52,6 +52,7 @@ class Painel_financeiro extends CI_Controller {
       $colunaResultadoContatoPagina = array(
         'page_contents.id',
         'page_contents.title',
+        'page_contents.tipo_pagina',
         'page_contents.status',
         'page_contents.description', 
         'page_contents.order', 
@@ -61,42 +62,18 @@ class Painel_financeiro extends CI_Controller {
         'campus.city'
       );
       
-      $listaInformmacoesPaginasFinanceiro =  $this->painelbd->getQuery(
-        "SELECT 
-          page_contents.id,
-          page_contents.title,
-          page_contents.img_destaque,
-          page_contents.status,
-          page_contents.title_short,
-          page_contents.description, 
-          page_contents.order, 
-          page_contents.created_at, 
-          page_contents.updated_at, 
-          page_contents.user_id, 
-          campus.city
-        FROM 
-          page_contents
-        INNER JOIN pages ON pages.id = page_contents.pages_id
-        INNER JOIN campus ON campus.id= pages.campusid
-        WHERE 
-            pages.title = '$pagina'AND 
-            pages.campusid = $campus->id AND 
-            page_contents.order <>'contatos' AND 
-            page_contents.status=1 
-        ORDER BY page_contents.order ASC")->result();
-      
-      $whereContatosPagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
-      $contatosPaginaFinanceiro = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
+      $listaInformmacoesPaginaServicos =  $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.tipo_pagina'=> $tipoPagina))->result();
+    
+      //$contatosPaginaFinanceiro = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/financeiro/lista_informacoes_financeiro',
+        'conteudo' => 'paineladm/servicos/lista_informacoes_servicos',
         'dados' => array(
-          'conteudosPagina'=>$listaInformmacoesPaginasFinanceiro,
-          'contatosPaginaFinanceiro'=>$contatosPaginaFinanceiro,
-          'page' => "Cadastro de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'conteudosPaginaServicos'=>$listaInformmacoesPaginaServicos,
+          'page' => "Informações do menu Serviço ($tipoPagina) - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
-          'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
+          //'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
           'tipo'=>''
         )
       );

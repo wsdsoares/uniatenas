@@ -38,24 +38,30 @@ div input {
         </li>
         <?php
             if (!empty($fileListaAprovados) and $situacaoVestibular->idSituation ==5) {
-                ?>
+            foreach($fileListaAprovados as $listaAprovados)
+              {?>
 
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="<?php echo $fileListaAprovados->files; ?>" target="_blank">Lista
-            aprovados</a>
+          <a class="nav-link js-scroll-trigger" href="<?php echo  $listaAprovados->files; ?>" target="_blank">
+            <?php echo $listaAprovados->name;?>
+          </a>
         </li>
         <?php
+              }
             }
             if (!empty($fileListaEspera) and $situacaoVestibular->idSituation ==5) {
+              foreach($fileListaEspera as $listaEspera)
+              {
                 ?>
         <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="<?php echo $fileListaEspera->files; ?>" target="_blank">Lista
-            Espera</a>
+          <a class="nav-link js-scroll-trigger" href="<?php echo $listaEspera->files; ?>" target="_blank">
+            <?php echo $listaEspera->name;?>
+          </a>
         </li>
         <?php
             }
+            }
             ?>
-
         <li class="nav-item">
           <?php
                 echo anchor('http://www.atenas.edu.br/uniatenas/', 'Site UniAtenas', array('class' => "nav-link js-scroll-trigger"));
@@ -82,6 +88,9 @@ if ($idCampus == 1) {
 }elseif ($idCampus == 7) {
     $fundo = 'fundosorriso';
     $campusBuscaBanco = 'sorriso';  
+}elseif ($idCampus == 8) {
+  $fundo = 'fundoportoseguro';
+  $campusBuscaBanco = 'sorriso';  
 } else {
     $fundo = '';
 }

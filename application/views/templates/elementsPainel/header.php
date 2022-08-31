@@ -307,11 +307,8 @@ function ativo() {
           <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
         </li>
 
-
-
-
         <li class="header">Biblioteca</li>
-        <!-- <li>
+        <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>Gestão Biblioteca</span>
@@ -332,13 +329,39 @@ function ativo() {
             </li>
             <li>
               <?php
-                echo anchor('Painel_graduacao/lista_campus_cursos', '<span>Cursos Por Campus</span>');
+                echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<span>Item biblioteca</span>');
                 ?>
             </li>
           </ul>
 
         </li>
--->
+
+
+        <li class="header">Menu Serviços</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>Serviços</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+                echo anchor('Painel_servicos/lista_campus_servicos/gerais', '<span>Itens Gerais</span>');
+                ?>
+            </li>
+            <li>
+              <?php
+                echo anchor('Painel_servicos/lista_campus_servicos/nucleos', '<span>Núcleos</span>');
+                ?>
+            </li>
+            <li>
+              <?php
+                echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
+                ?>
+            </li>
+          </ul>
+
+        </li>
 
 
         <!--li>

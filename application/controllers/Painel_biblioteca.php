@@ -3,7 +3,7 @@
 if (!defined("BASEPATH"))
     exit("No direct script access allowed");
 
-class Painel_financeiro extends CI_Controller {
+class Painel_biblioteca extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -11,22 +11,22 @@ class Painel_financeiro extends CI_Controller {
         date_default_timezone_set('America/Sao_Paulo');
     }
     
-    public function lista_campus_financeiro() {
+    public function lista_campus_biblioteca() {
         verificaLogin();
 
-        $colunasCampus = 
+        $colunasResultadoCursos = 
             array('campus.id',
             'campus.name',
             'campus.city',
             'campus.uf'
         );
     
-        $listagemDosCampus = $this->painelbd->where($colunasCampus,'campus',NULL, array('visible' => 'SIM'))->result();
+        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/financeiro/lista_campus_financeiro',
+            'conteudo' => 'paineladm/biblioteca/lista_campus_biblioteca',
             'dados' => array(
-                'page' => "Informações Financeiro",
+                'page' => "Informações Biblioteca",
                 'campus'=> $listagemDosCampus,
                 'tipo'=>''
             )
@@ -35,11 +35,11 @@ class Painel_financeiro extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_informacoes_financeiro($uriCampus=NULL) {
+    public function lista_informacoes_biblioteca($uriCampus=NULL) {
     verificaLogin();
 
-    $pagina = 'financeiro';
-    $verificaExistePaginaFinanceiro = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+    $pagina = 'biblioteca';
+    $verificaExistePaginaBiblioteca = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
   
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
@@ -61,7 +61,7 @@ class Painel_financeiro extends CI_Controller {
         'campus.city'
       );
       
-      $listaInformmacoesPaginasFinanceiro =  $this->painelbd->getQuery(
+      $listaInformmacoesPaginasBiblioteca =  $this->painelbd->getQuery(
         "SELECT 
           page_contents.id,
           page_contents.title,
@@ -86,25 +86,27 @@ class Painel_financeiro extends CI_Controller {
         ORDER BY page_contents.order ASC")->result();
       
       $whereContatosPagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
-      $contatosPaginaFinanceiro = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
+      $contatosPaginaBiblioteca = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/financeiro/lista_informacoes_financeiro',
+        'conteudo' => 'paineladm/biblioteca/lista_informacoes_biblioteca',
         'dados' => array(
-          'conteudosPagina'=>$listaInformmacoesPaginasFinanceiro,
-          'contatosPaginaFinanceiro'=>$contatosPaginaFinanceiro,
-          'page' => "Cadastro de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'conteudosPagina'=>$listaInformmacoesPaginasBiblioteca,
+          'contatosPaginaBiblioteca'=>$contatosPaginaBiblioteca,
+          'page' => "Cadastro de informações do Biblioteca - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
-          'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
+          'paginaBiblioteca'=> $verificaExistePaginaBiblioteca = isset($verificaExistePaginaBiblioteca) ? $verificaExistePaginaBiblioteca : '',
           'tipo'=>''
         )
       );
 
       $this->load->view('templates/layoutPainelAdm', $data);
     }
+
     
-    public function cadastrar_contato_pagina_financeiro($uriCampus=NULL,$pageId = null)
+    
+    public function cadastrar_contato_pagina_Biblioteca($uriCampus=NULL,$pageId = null)
     {
       verifica_login();
   
@@ -158,14 +160,14 @@ class Painel_financeiro extends CI_Controller {
           $dados_form['id'] = $contatoPaginaFinanceiro->id;
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados da página (menu) financeiro atualizado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
+            redirect(base_url("Painel_biblioteca/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
         }else{
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados de contato cadastrado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
+            redirect(base_url("Painel_biblioteca/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
@@ -187,14 +189,14 @@ class Painel_financeiro extends CI_Controller {
       $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_pagina_financeiro($uriCampus=NULL)
+    public function cadastrar_pagina_biblioteca($uriCampus=NULL)
     {
       verifica_login();
   
       $colunasCampus = array('campus.id','campus.name','campus.city');
       $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'financeiro','pages.campusid'=>$campus->id))->row();
+      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'biblioteca','pages.campusid'=>$campus->id))->row();
 
       $this->form_validation->set_rules('status', 'Situação', 'required'); 
 
@@ -213,15 +215,15 @@ class Painel_financeiro extends CI_Controller {
         if(isset($verificaExistePagina)){
           $dados_form['id'] = $verificaExistePagina->id;
           if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) financeiro atualizado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id"));
+            setMsg('<p>Dados da página (menu) Biblioteca atualizado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_biblioteca/cadastrar_pagina_biblioteca/$campus->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
         }else{
           if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) financeiro cadastra com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id"));
+            setMsg('<p>Dados da página (menu) Biblioteca cadastrada com sucesso.</p>', 'success');
+            redirect(base_url("Painel_biblioteca/cadastrar_pagina_biblioteca/$campus->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
@@ -230,10 +232,10 @@ class Painel_financeiro extends CI_Controller {
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/financeiro/pagina_menu_financeiro/cadastrar_pagina_financeiro',
+        'conteudo' => 'paineladm/biblioteca/pagina_menu_biblioteca/cadastrar_pagina_biblioteca',
         'dados' => array(
-          'paginaFinanceiro'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
-          'page' => "Cadastro de pagina (menu do site) do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'paginaBiblioteca'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
+          'page' => "Cadastro de pagina (menu do site) do Biblioteca - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
           'tipo'=>''
         )
@@ -257,7 +259,7 @@ class Painel_financeiro extends CI_Controller {
         $listaItemPages = $this->painelbd->where($colunasTabelaPages,'pages',$joinConteudoPagina, $wherePagina,null)->row();
 
         if(!isset($listaItemPages)){
-          redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+          redirect(base_url("Painel_biblioteca/lista_informacoes_financeiro/$campus->id"));
         }
 
         //Validaçãoes via Form Validation
@@ -288,7 +290,7 @@ class Painel_financeiro extends CI_Controller {
   
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
               setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-              redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+              redirect(base_url("Painel_biblioteca/lista_informacoes_financeiro/$campus->id"));
           }else{
               setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
@@ -381,7 +383,7 @@ class Painel_financeiro extends CI_Controller {
         echo '</pre>';
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+            redirect(base_url("Painel_biblioteca/lista_informacoes_financeiro/$campus->id"));
         }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
@@ -409,10 +411,10 @@ class Painel_financeiro extends CI_Controller {
 
         if ($this->painelbd->deletar('page_contents', $item->id)) {
             setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-            redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+            redirect("Painel_biblioteca/lista_informacoes_financeiro/$uriCampus");
         } else {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-            redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+            redirect("Painel_biblioteca/lista_informacoes_financeiro/$uriCampus");
         }
     }
 }

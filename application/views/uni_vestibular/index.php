@@ -23,7 +23,7 @@
       <?php
        /**TO DO - fazer uma programação para mostrar apenas os vestibulares que estiverem com status 5  */
         foreach ($dados['campus'] as $rows) {
-            if($rows->idCampus ==7){
+            if($rows->idCampus ==8){
             ?>
       <div class="card mb-4 box-shadow">
         <div class="card-header">

@@ -58,8 +58,6 @@ class Acesso extends CI_Controller {
     }
 
 
-
-
     public function logoff() {
         $this->session->unset_userdata(array(NULL));
         $this->session->sess_destroy();

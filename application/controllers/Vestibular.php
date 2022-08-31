@@ -137,6 +137,9 @@ class Vestibular extends CI_Controller
         }elseif ($idCampus == 7) {
             $tabela = 'sorriso_2022_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
+        }elseif ($idCampus == 8) {
+            $tabela = 'porto_seguro_2022_resultados';
+            $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         }
         
 
@@ -171,8 +174,8 @@ class Vestibular extends CI_Controller
 
 
     
-        $filesListaAprovados = $this->bancosite->where($fieldsResult, 'vestibular', $dataJoinResult, $whereFilesResult)->row();
-        $filesListaEspera = $this->bancosite->where($fieldsResult, 'vestibular', $dataJoinResult, $whereFilesResultEspera)->row();
+        $filesListaAprovados = $this->bancosite->where($fieldsResult, 'vestibular', $dataJoinResult, $whereFilesResult)->result();
+        $filesListaEspera = $this->bancosite->where($fieldsResult, 'vestibular', $dataJoinResult, $whereFilesResultEspera)->result();
 
 
         // echo '<pre>';
@@ -273,6 +276,8 @@ class Vestibular extends CI_Controller
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/VALENCA.png';
             }elseif ($idCampus == '7') {
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/sorriso.png';
+            }elseif ($idCampus == '8') {
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022PortoSeguro.png';
             }
             $infoCandidato = 'Nota de redação: ' . $dadosCandidato->notaRedacao . '';
         } elseif ($actionVestibular == 'consultaClassificacaoFinal') {
@@ -286,6 +291,13 @@ class Vestibular extends CI_Controller
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/VALENCA-resultNotaRedacao.png';
             }elseif ($idCampus == '7') {
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/sorriso.png';
+            }elseif ($idCampus == '8') {
+                if($dadosCandidato->posicao > 30 and $dadosCandidato->posicao <60){
+                    
+                    $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022-porto-seguro-nota-enem.png';
+                }else{
+                    $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022PortoSeguro.png';
+                }
             }
             $infoCandidato = $dadosCandidato->posicao . 'º';
         }
@@ -302,6 +314,7 @@ class Vestibular extends CI_Controller
                 'posicaoInscricaoCpf' => $hash,
             )
         );
+
         $arrayLog = array('candidato' => $dadosCandidato->nome, 'posicao' => $dadosCandidato->posicao, 'cod_autentication' => $hash, 'hash' => base64_encode($hash), 'vestibular_id' => $vestibular->id, 'ip' => $ip, 'tipo_consulta' => $actionVestibular);
         $this->bancoVestibular->salvar('logs_vestibular_consulta', $arrayLog);
 

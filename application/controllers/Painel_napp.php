@@ -3,7 +3,7 @@
 if (!defined("BASEPATH"))
     exit("No direct script access allowed");
 
-class Painel_financeiro extends CI_Controller {
+class Painel_napp extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -11,7 +11,7 @@ class Painel_financeiro extends CI_Controller {
         date_default_timezone_set('America/Sao_Paulo');
     }
     
-    public function lista_campus_financeiro() {
+    public function lista_campus_napp() {
         verificaLogin();
 
         $colunasCampus = 

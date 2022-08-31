@@ -24,7 +24,6 @@ $(document).ready(function() {
     //$('.carousel-control').selectpicker('refresh');
   });
 
-
 });
 </script>
 <style>
@@ -71,6 +70,7 @@ $(document).ready(function() {
   width: 100%;
 }
 </style>
+
 <section class="bg-single-services">
   <div class="container">
     <div class="row">
@@ -94,8 +94,6 @@ $(document).ready(function() {
             <?php
             endforeach;
             ?>
-
-
           </div>
           <hr>
           <div class="col-md-12">
