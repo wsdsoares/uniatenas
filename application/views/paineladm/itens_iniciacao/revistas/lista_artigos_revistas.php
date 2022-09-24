@@ -3,19 +3,19 @@
     <div class="card">
       <div class="header">
         <h2>
-          Publicações - <?php echo $pagina; ?>
+          <?php echo $page; ?>
         </h2>
       </div>
 
       <div class="register">
         <?php
-                echo anchor("Painel_publicacoes/salvar/$pagina_id", '
+                echo anchor("Painel_publicacoes/cadastrar_artigo_revista/$campus->id/$revista->id", '
                     <i class = "material-icons">
                     add
                     </i> <span>Cadastrar</span>', array('class' => 'btn btn-primary m-t-15 waves-effect'));
                 ?>
         <?php
-                echo anchor("Painel_publicacoes/revistas/$campus->id", '
+                echo anchor("Painel_publicacoes/lista_revistas/$campus->id", '
                     <i class = "material-icons">
                     arrow_back
                     </i> <span>Voltar</span>', array('class' => 'btn btn-danger btn-system m-t-15 btn-viewer'));
@@ -73,16 +73,16 @@
                                 ?>>
                 <td class="center">
                   <?php
-                                            echo anchor($row->files, '
-                                                <i class="material-icons">picture_as_pdf</i>', array("target" => 'blank')
-                                            );
-                                            echo '<a href=' . base_url("publicacoes/editarMagazine/$row->paginas_id/$row->id") . '>'
-                                            . '<i class="material-icons">edit</i>'
-                                            . '</a> '
-                                            . '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $row->title . '" data-id="' . $row->id . '" >'
-                                            . '<i class="material-icons">delete</i>'
-                                            . '</a>';
-                                            ?>
+                    echo anchor($row->files, '
+                        <i class="material-icons">picture_as_pdf</i>', array("target" => 'blank')
+                    );
+                    echo '<a href=' . base_url("Painel_publicacoes/editar_artigo_revista/$campus->id/$row->paginas_id/$row->id") . '>'
+                    . '<i class="material-icons">edit</i>'
+                    . '</a> '
+                    . '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $row->title . '" data-id="' . $row->id . '" >'
+                    . '<i class="material-icons">delete</i>'
+                    . '</a>';
+                    ?>
                 </td>
 
 
@@ -91,16 +91,17 @@
                   <?php echo $row->types . "- VOL.:" . $row->volume . " - N" . $row->number_vol ?>
                 </td>
                 <td><?php
-                                    echo date('d/m/Y H:i:s', strtotime($row->created));
-                                        ?></td>
+                  echo date('d/m/Y H:i:s', strtotime($row->created));
+                      ?>
+                </td>
                 <td>
                   <?php
-                                        if ($row->status == 1) {
-                                            echo 'Ativo';
-                                        } else {
-                                            echo 'Inativo';
-                                        }
-                                        ?>
+                    if ($row->status == 1) {
+                        echo 'Ativo';
+                    } else {
+                        echo 'Inativo';
+                    }
+                    ?>
                 </td>
                 <td><?php echo $row->courses; ?></td>
                 <td><?php echo $row->year; ?></td>
@@ -148,8 +149,9 @@
 $('#modalDelete').on('show.bs.modal', function(e) {
   var nomeItem = $(e.relatedTarget).attr('data-nome');
   var id = $(e.relatedTarget).attr('data-id');
-  console.log(id);
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("publicacoes/deletarMagazine/"); ?>' + id);
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_publicacoes/deletarMagazine/$campus->id/"); ?>' +
+    id);
 });
 </script>

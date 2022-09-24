@@ -359,6 +359,11 @@ function ativo() {
                 echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
                 ?>
             </li>
+            <li>
+              <?php
+                echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
+                ?>
+            </li>
           </ul>
 
         </li>
@@ -428,7 +433,37 @@ function ativo() {
         </li> -->
         <li class="header">Gestão - Pesquisa e Iniciação</li>
         <li>
-          <?php // include_once('itens_header/item_h_iniciacao.php');?>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>PESQUISA</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Publicações</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <?php
+                    echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
+                  ?>
+                </li>
+                <li>
+                  <?php
+                    //echo anchor('Painel_publicacoes/cursosMonografia', '<span>Monografias</span>');
+                  ?>
+                </li>
+                <li>
+                  <?php
+                    //comentado até a definição correta do processo
+                    /*echo anchor('publicacoes/anaisMonografia', '
+                                                <span>Anais</span>');*/
+                    ?>
+                </li>
+
+              </ul>
+            </li>
+          </ul>
         </li>
         <li class="header">Gestão - Vestibular Medicina</li>
         <!-- <li>

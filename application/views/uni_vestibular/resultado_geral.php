@@ -100,7 +100,7 @@ if ($idCampus == 1) {
 
     <section class="resume-section p-3 p-lg-5 d-flex flex-column vestibular" id="consulta">
       <div class="my-auto">
-        <h3 class="mb-5">Vestibular Tradicional Medicina 2022 <br />
+        <h3 class="mb-5">Vestibular Tradicional e Nota do ENEM - Medicina 2022 <br />
           <?php echo $campus->name . ' - ' . $campus->city;
                 ?></h3>
         <?php

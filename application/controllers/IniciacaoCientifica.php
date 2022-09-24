@@ -104,13 +104,13 @@ class IniciacaoCientifica extends CI_Controller {
     }
 
     public function revista_cientifica($uricampus = NULL, $idRevista) {
-        if($uricampus == null){
-            redirect("");
-        }
+      if($uricampus == null){
+        redirect("");
+      }
 
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+      $dataCampus = $this->bancosite->where(array('campus.id','campus.name','campus.shurtName','campus.instagram','campus.city','campus.uf','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $sql = "SELECT * FROM at_site.publicacoes
+      $sql = "SELECT * FROM at_site.publicacoes
             where revistas_id =$idRevista
             order by year desc";
 
@@ -148,7 +148,7 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("");
         }
         
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.name','campus.shurtName','campus.instagram','campus.city','campus.uf','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'revistas','campusid'=>$dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
@@ -180,7 +180,7 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.shurtName','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
         
         $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao','campusid'=>$dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
@@ -224,7 +224,7 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("iniciacaoCientifica/revistas/$uricampus");
         }
         
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.name','campus.shurtName','campus.instagram','campus.city','campus.uf','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
         $sql = "SELECT * FROM at_site.publicacoes
             where revistas_id =$idRevista

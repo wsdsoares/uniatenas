@@ -64,10 +64,8 @@ and open the template in the editor.
     background-color: rgb(38, 166, 154);
     box-sizing:border-box;
     color:rgb(255, 255, 255);
-    
     font-size:14px;
     font-weight:400;
-
     text-decoration-color:rgb(255, 255, 255);
     text-decoration-line:none;
     text-decoration-style:solid;
@@ -78,14 +76,10 @@ and open the template in the editor.
     transition-timing-function:ease-out;
     user-select:none;
     vertical-align:middle;
-
     height:37px;
-    
-   
-    
     width:107.594px;
-
 }
+
 .btn-system:hover , .btn-primary:hover {
     color:#000;
 }

@@ -3,7 +3,7 @@
 
 $permissionCampusArray = '';
 echo '<pre>';
-//print_r($_SESSION);
+print_r($_SESSION);
 //print_r($_SESSION['arrayPermissoes']);
 echo '</pre>';
  $cadastrarCampus = in_array('incluirCampus',$_SESSION['arrayPermissoes']) ? 'Cadastrar' : '';
