@@ -34,6 +34,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Nome</th>
+                <th>Usuário</th>
                 <th>Email</th>
                 <th>Vinculo Campus</th>
                 <th>Situação</th>
@@ -45,6 +46,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Nome</th>
+                <th>Usuário</th>
                 <th>Email</th>
                 <th>Vinculo Campus</th>
 
@@ -82,6 +84,7 @@
                 </td>
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->name;?></td>
+                <td><?php echo $item->cod_user;?></td>
                 <td><?php echo $item->email;?></td>
                 <td>
                   <?php

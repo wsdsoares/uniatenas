@@ -47,7 +47,7 @@ class Painel_usuarios extends CI_Controller {
       }else {
           $dados_form = elements(array('name','cod_user','email','status'), $this->input->post());
           $dados_form['user_id'] = $this->session->userdata('codusuario');
-          $dados_form['password'] = hash('sha256',$this->session->userdata('codusuario'));
+          $dados_form['password'] = hash('sha256',$this->session->userdata('password'));
 
           if ($this->painelbd->salvar('users', $dados_form) == TRUE){
               setMsg('<p>Usuário cadastrado com sucesso.</p>', 'success');
