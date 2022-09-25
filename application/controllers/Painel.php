@@ -6,97 +6,97 @@ if (!defined("BASEPATH"))
 class Painel extends CI_Controller
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->load->model('users_model', 'users');
-        $this->load->model('inicio_model', 'inicio');
-        $this->load->model('painel_model', 'painelbd');
-        date_default_timezone_set('America/Sao_Paulo');
-    }
+  public function __construct()
+  {
+    parent::__construct();
+    $this->load->model('users_model', 'users');
+    $this->load->model('inicio_model', 'inicio');
+    $this->load->model('painel_model', 'painelbd');
+    date_default_timezone_set('America/Sao_Paulo');
+  }
     
     /** LOGIN DO */
 
-    public function login()
-    {
-        $this->form_validation->set_rules('user', 'USUÁRIO', 'required');
-        $this->form_validation->set_rules('passwd', 'SENHA', 'required');
+  public function login()
+  {
+    $this->form_validation->set_rules('user', 'USUÁRIO', 'required');
+    $this->form_validation->set_rules('passwd', 'SENHA', 'required');
 
-        if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
-                set_msg(validation_errors(), 'erro');
-            endif;
-        } else {
+      if ($this->form_validation->run() == FALSE) {
+          if (validation_errors()):
+              set_msg(validation_errors(), 'erro');
+          endif;
+      } else {
 
-            $dados_form = $this->input->post();
-            
-            /**BUSCA DADOS DO USUÁRIO NO BANCO DE DADOS */
-            $buscaUsuarioLogado = $this->users->login(array('user' => $dados_form['user'], 'password' => hash('sha256', $dados_form['passwd'])))->row();
-            
-            /** Primeira validação - verificar se os usuário que está tentando logar coincide com as informações 
-             * vindas do banco de dados e também com o formulário * 
-            */
-            if (isset($buscaUsuarioLogado->cod_user) 
-                and $buscaUsuarioLogado->cod_user != FALSE 
-                and $buscaUsuarioLogado->cod_user == $dados_form['user']) 
-            {
-                $joinCampusVinculoUsuario = array(
-                    'campus' => 'campus.id = users_has_campus.campus_id ',
-                    'users' => 'users.id = users_has_campus.users_id'
-                );
-                
-                $colunasVinculoUsuarioCampus = array(
-                    'users_has_campus.campus_id',
-                    'campus.city',
-                    'campus.shurtName'
-                );
-                $whereVinculos = array('users_has_campus.users_id'=>$buscaUsuarioLogado->id);
+          $dados_form = $this->input->post();
+          
+          /**BUSCA DADOS DO USUÁRIO NO BANCO DE DADOS */
+          $buscaUsuarioLogado = $this->users->login(array('user' => $dados_form['user'], 'password' => hash('sha256', $dados_form['passwd'])))->row();
+          
+          /** Primeira validação - verificar se os usuário que está tentando logar coincide com as informações 
+           * vindas do banco de dados e também com o formulário * 
+          */
+          if (isset($buscaUsuarioLogado->cod_user) 
+              and $buscaUsuarioLogado->cod_user != FALSE 
+              and $buscaUsuarioLogado->cod_user == $dados_form['user']) 
+          {
+              $joinCampusVinculoUsuario = array(
+                  'campus' => 'campus.id = users_has_campus.campus_id ',
+                  'users' => 'users.id = users_has_campus.users_id'
+              );
+              
+              $colunasVinculoUsuarioCampus = array(
+                  'users_has_campus.campus_id',
+                  'campus.city',
+                  'campus.shurtName'
+              );
+              $whereVinculos = array('users_has_campus.users_id'=>$buscaUsuarioLogado->id);
 
-                /** Verifica se o usuário, que foi encontrado no banco de dados está vinculado no mínimo a um campus **/
-                $verificaVinculoUsuarioCampus = $this->painelbd->where($colunasVinculoUsuarioCampus,'users_has_campus',$joinCampusVinculoUsuario, $whereVinculos, NULL, NULL, NULL)->result();
-                             
-                if($verificaVinculoUsuarioCampus){
-                    $arrayAcessosCampus = array();
+              /** Verifica se o usuário, que foi encontrado no banco de dados está vinculado no mínimo a um campus **/
+              $verificaVinculoUsuarioCampus = $this->painelbd->where($colunasVinculoUsuarioCampus,'users_has_campus',$joinCampusVinculoUsuario, $whereVinculos, NULL, NULL, NULL)->result();
+                            
+              if($verificaVinculoUsuarioCampus){
+                  $arrayAcessosCampus = array();
 
-                    /** Criando-se um array de com os campus ao qual o usuário tem acesso **/
-                    for($i=0;$i < count($verificaVinculoUsuarioCampus); $i++){
-                        $arrayAcessosCampus[$i] = $verificaVinculoUsuarioCampus[$i]->campus_id; 
-                    }
+                  /** Criando-se um array de com os campus ao qual o usuário tem acesso **/
+                  for($i=0;$i < count($verificaVinculoUsuarioCampus); $i++){
+                      $arrayAcessosCampus[$i] = $verificaVinculoUsuarioCampus[$i]->campus_id; 
+                  }
 
-                    //busca todos as permissões do usuário no BANCO DE DADOS
-                    $colunasPemissoesUsuario = array('permission.id','permission.title');
-                    $joinPermissoesUsuario = array(
-                        'permission' => 'permission.id = permissoes_por_usuario.permission_id',
-                        'users' => 'users.id = permissoes_por_usuario.users_id'
-                    );
-                    $wherePermissoesUsuario = array('permissoes_por_usuario.users_id'=>$buscaUsuarioLogado->id,'users.status'=>1);
-                    $arrayPermissoesUsuario = $this->painelbd->where($colunasPemissoesUsuario,'permissoes_por_usuario', $joinPermissoesUsuario,$wherePermissoesUsuario)->result();
+                  //busca todos as permissões do usuário no BANCO DE DADOS
+                  $colunasPemissoesUsuario = array('permission.id','permission.title');
+                  $joinPermissoesUsuario = array(
+                      'permission' => 'permission.id = permissoes_por_usuario.permission_id',
+                      'users' => 'users.id = permissoes_por_usuario.users_id'
+                  );
+                  $wherePermissoesUsuario = array('permissoes_por_usuario.users_id'=>$buscaUsuarioLogado->id,'users.status'=>1);
+                  $arrayPermissoesUsuario = $this->painelbd->where($colunasPemissoesUsuario,'permissoes_por_usuario', $joinPermissoesUsuario,$wherePermissoesUsuario)->result();
 
-                    /* criando a seção do usuário**/                   
-                    $this->session->set_userdata('logged', TRUE);
-                    $this->session->set_userdata('codusuario', $buscaUsuarioLogado->cod_user);
-                    $this->session->set_userdata('name', $buscaUsuarioLogado->name);
-                    $this->session->set_userdata('email', $buscaUsuarioLogado->email);
-                    $this->session->set_userdata('arrayPermissoes', $arrayPermissoesUsuario);
-                    $this->session->set_userdata('arrayCampusVinculadosUsuario', $verificaVinculoUsuarioCampus);
-                    
-                    redirect('painel');
-                    
-                } else {
-                    set_msg('<br>Informações de Usuário e/ou senha não conferem. <br/> Ou seu usuário não está vinculado a nenhum campus.<br/> Entre em contato com um Admistrador!', 'erro');
-                    redirect(current_url());
-                }
-            }
-            else{
-                set_msg('<br>Informações de Usuário e/ou senha não conferem.', 'erro');
-                redirect(current_url());
-            }
-        }
-        $data = array(
-            'titulo' => 'UniAtenas',
-        );
-        $this->load->view('templates/layoutLogin', $data);
-    }
+                  /* criando a seção do usuário**/                   
+                  $this->session->set_userdata('logged', TRUE);
+                  $this->session->set_userdata('codusuario', $buscaUsuarioLogado->cod_user);
+                  $this->session->set_userdata('name', $buscaUsuarioLogado->name);
+                  $this->session->set_userdata('email', $buscaUsuarioLogado->email);
+                  $this->session->set_userdata('arrayPermissoes', $arrayPermissoesUsuario);
+                  $this->session->set_userdata('arrayCampusVinculadosUsuario', $verificaVinculoUsuarioCampus);
+                  
+                  redirect('painel');
+                  
+              } else {
+                  set_msg('<br>Informações de Usuário e/ou senha não conferem. <br/> Ou seu usuário não está vinculado a nenhum campus.<br/> Entre em contato com um Admistrador!', 'erro');
+                  redirect(current_url());
+              }
+          }
+          else{
+              set_msg('<br>Informações de Usuário e/ou senha não conferem.', 'erro');
+              redirect(current_url());
+          }
+      }
+      $data = array(
+          'titulo' => 'UniAtenas',
+      );
+      $this->load->view('templates/layoutLogin', $data);
+  }
 
     public function biblioteca()
     {

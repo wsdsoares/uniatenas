@@ -3,8 +3,9 @@
 
 $permissionCampusArray = '';
 echo '<pre>';
-print_r($_SESSION);
+//print_r($_SESSION);
 //print_r($_SESSION['arrayPermissoes']);
+//echo hash('sha256', '123456');
 echo '</pre>';
  $cadastrarCampus = in_array('incluirCampus',$_SESSION['arrayPermissoes']) ? 'Cadastrar' : '';
  $editarCampus = in_array('editarCampus',$_SESSION['arrayPermissoes']) ? 'Editar' : '';
