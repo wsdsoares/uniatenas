@@ -108,7 +108,7 @@
                   'SP'=>'SP',
                   'SE'=>'SE',
                   'TO'=>'TO');
-              echo form_dropdown('uf', $ufs, set_value('uf'), array('class' => 'form-control show-tick'));
+              echo form_dropdown('uf', $ufs, set_value('uf',$campus->uf), array('class' => 'form-control show-tick'));
                   // echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Nome da Cidade'), set_value('city'));
                 ?>
               </div>
