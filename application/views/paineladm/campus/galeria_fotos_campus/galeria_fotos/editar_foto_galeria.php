@@ -18,7 +18,7 @@
         }
         ?>
         <?php
-        echo form_open_multipart("Painel_Campus/editar_foto_infraestrutura/$categoriaInfraestrutura->id/$campus->id/$fotoInfraestrutura->id");
+        echo form_open_multipart("Painel_galeria/editar_foto_galeria/$campus->id/$categoriaFoto->id/$foto->id");
         ?>
         <div class="row clearfix">
         </div>
@@ -28,7 +28,7 @@
               <div class="form-line">
                 <label for="title">Título da Foto</label>
                 <?php
-                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title',$fotoInfraestrutura->title));
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title',$foto->title));
                 ?>
               </div>
             </div>
@@ -48,8 +48,8 @@
             <div class="form-group">
               <label for="title">Imagem Atual </label>
               <?php
-              if($fotoInfraestrutura->file!='' and !empty($fotoInfraestrutura->file)){
-                echo anchor(base_url(verifyImg($fotoInfraestrutura->file)), '<img src="' . base_url(verifyImg($fotoInfraestrutura->file)) . '" class="thumbnail">', array('target' => '_blank'));
+              if($foto->file!='' and !empty($foto->file)){
+                echo anchor(base_url(verifyImg($foto->file)), '<img src="' . base_url(verifyImg($foto->file)) . '" class="thumbnail">', array('target' => '_blank'));
                 }else{
                   echo '<span> Sem imagem cadastrada. <span>';
                 }
@@ -69,7 +69,7 @@
                         '1' => 'Visível - Ativo',
                         '0' => 'Oculto - Inativo'
                     );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$fotoInfraestrutura->status), array('class' => 'form-control show-tick'));
+                    echo form_dropdown('status', $optionSituation, set_value('status',$foto->status), array('class' => 'form-control show-tick'));
                     ?>
               </div>
             </div>
@@ -82,7 +82,7 @@
               echo form_submit(array('name' => 'submit', 'class' => 'btn btn-lg btn-primary m-t-15 m-r-15 waves-effect'), 'SALVAR');
               ?>
             <?php
-            echo anchor("Painel_Campus/lista_fotos_infraestrutura/$categoriaInfraestrutura->id/$campus->id", '
+            echo anchor("Painel_galeria/lista_fotos_categoria/$campus->id/$foto->id", '
                 <i class = "material-icons">
                 assignment_return
                 </i> <span>Voltar</span>', array('class' => 'btn btn-warning m-t-15 waves-effect'));

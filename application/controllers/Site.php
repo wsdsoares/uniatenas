@@ -427,23 +427,11 @@ class Site extends CI_Controller
         $i = 0;
         $catArray[] = array();
 
-        // echo '<pre>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // echo '<br/>';
-        // print_r(count($listaFotosInfraestrutura));
-        // print_r(count($categoria));
-        // echo '</pre>';
         foreach ($categoria as $item) {
             $catArray[$i]['id'] = $item->id;
             $catArray[$i]['title'] = $item->title;
             $catArray[$i]['categoria'] = $item->categoria;
-            $catArray[$i]['fotos'] = $this->bancosite->getWhere('photos_gallery', array('photoscategoryid' => $item->id), null, 3)->result();
+            $catArray[$i]['fotos'] = $this->bancosite->where('*','photos_gallery', null, array('photos_gallery.photoscategoryid' => $item->id), null, 3)->result();
             $i = $i + 1;
         }
 
@@ -489,7 +477,8 @@ class Site extends CI_Controller
         $Category = $this->bancosite->getWhere('photos_category', array('id' => $idCategory))->row();
         $catArray['id'] = $Category->id;
         $catArray['title'] = $Category->title;
-        $catArray['fotos'] = $this->bancosite->getWhere('photos_gallery', array('photoscategoryid' => $Category->id), null)->result();
+        $catArray['fotos'] = $this->bancosite->where('*','photos_gallery', null, array('photos_gallery.photoscategoryid' => $Category->id,'photos_gallery.status'=>1))->result();
+        //  $catArray['fotos'] = $this->bancosite->getWhere('photos_gallery', array('photoscategoryid' => $Category->id), null)->result();
         $data = array(
             'head' => array(
                 'title' => 'Galeira - UniAtenas ' . $dataCampus->city,

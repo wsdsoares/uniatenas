@@ -10,7 +10,7 @@
           <div class="container">
             <div class="col-xs-6">
               <?php
-              echo anchor("Painel_galeria/cadastrar_fotos_categoria/$campus->id/$categoriaFoto->id", "<i class='material-icons'>add_box</i> Cadastro de fotos da infraestrutura", array('class' => 'btn btn-primary m-t-15 waves-effect'));
+              echo anchor("Painel_galeria/cadastrar_fotos_galeria/$campus->id/$categoriaFoto->id", "<i class='material-icons'>add_box</i> Cadastro de fotos: <strong>$categoriaFoto->title</strong>", array('class' => 'btn btn-primary m-t-15 waves-effect'));
               ?>
             </div>
             <div class="col-xs-6">
@@ -56,11 +56,11 @@
                 <tr>
                   <td class="center">
                     <?php
-                    echo '<a href=' . base_url("Painel_Campus/editar_foto_infraestrutura/$foto->photoscategoryid/$campus->id/$foto->id") . '>'
+                    echo '<a href=' . base_url("Painel_galeria/editar_foto_galeria/$campus->id/$foto->photoscategoryid/$foto->id") . '>'
                      . '<i class="material-icons">edit</i>'
                      . '</a> ';
                      
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $foto->file . '" data-id="' .$foto->id . '/' . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="'.$foto->title.'" data-id="'.$foto->id. '/' . '" >'
                       . '<i class="material-icons">delete</i>'
                       . '</a>';
                   ?>
@@ -117,7 +117,7 @@
           </p>
           <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold">
               <?php 
-              echo $foto->file;
+              echo $foto->title;
               ?>
             </span>
           </p>
@@ -138,7 +138,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
     '<?php 
-    echo base_url("Painel_Campus/deletar_foto_infra/$categoriaInfraestrutura->id/$campus->id/"); 
+    echo base_url("Painel_galeria/deletar_foto_galeria/$campus->id/$foto->photoscategoryid/"); 
     ?>' + id);
 });
   </script>

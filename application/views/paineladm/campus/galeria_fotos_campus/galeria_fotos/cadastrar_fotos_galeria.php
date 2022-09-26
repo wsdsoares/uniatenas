@@ -17,7 +17,7 @@
         }
         ?>
         <?php
-        echo form_open_multipart("Painel_Campus/cadastrar_fotos_infraestrutura/$categoriaFoto->id/$campus->id");
+        echo form_open_multipart("Painel_galeria/cadastrar_fotos_galeria/$campus->id/$categoriaFoto->id");
         ?>
         <div class="row clearfix">
         </div>
