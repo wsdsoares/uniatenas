@@ -21,25 +21,20 @@ $uricampus = $this->uri->segment(3);
         <div class="panelResume">
           <div class="panel-heading">
             <div class="text-center">
-              <span>Enviar Curriculo</span>
+              <span></span>
             </div>
           </div>
           <div class="col-xs-12 panelsite">
-            <p>Você pode fazer o cadastro do seu currículo em nosso banco de talentos.</p>
+            <p>Você pode fazer o cadastro do seu curriculum em nosso banco de talentos.</p>
             <p class="text-center">
-              <!-- <?php
-    
-                echo anchor("site/envioCurriculo/$uricampus/$curriculoAvulso", 'Enviar Currículo', array('class' => 'btnEdital'));
-            
-                ?> -->
 
             <div class="">
 
               <body onselectstart='return false' ondragstart='return false' oncontextmenu='return false'>
                 <div class="container">
                   <div class="text-center">
-                    <button type="button" class="btnEdital" data-toggle="modal" data-target="#myModal">Enviar
-                      Currículo</button>
+                    <button type="button" class="btnEdital" data-toggle="modal" data-target="#myModal">Cadastrar
+                      curriculum</button>
                   </div>
                   <div id="myModal" class="modal fade" role="dialog">
                     <div class="modal-dialog modal-lg">
