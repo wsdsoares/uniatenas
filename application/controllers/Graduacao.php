@@ -163,6 +163,7 @@ order by courses.name";
                    
                     courses_pages.description,
                     courses_pages.filesGrid,
+                    courses_pages.matriz_visivel,
                     courses_pages.actuation,
                     courses_pages.autorization,
                     courses_pages.recognition

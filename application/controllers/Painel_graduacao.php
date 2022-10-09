@@ -250,6 +250,7 @@ class Painel_graduacao extends CI_Controller {
             'courses_pages.capa',
             'courses_pages.link_vestibular',
             'courses_pages.filesGrid',
+            'courses_pages.matriz_visivel',
             'courses_pages.actuation',
             'courses_pages.autorization',
             'courses_pages.recognition',
@@ -296,7 +297,6 @@ class Painel_graduacao extends CI_Controller {
                 $dados_form['link_vestibular'] = $this->input->post('link_vestibular');
             }
             
-
             if (isset($_FILES['filesGrid']) && !empty($_FILES['filesGrid']['name'])) {
                 
                 $path = "assets/files/cursos/$campus->id/$informacoesCurso->idCourse/$informacoesCurso->coursePageId";
@@ -369,9 +369,10 @@ class Painel_graduacao extends CI_Controller {
 
             $dados_form['id'] = $informacoesCurso->coursePageId;
             $dados_form['userid'] = $this->session->userdata('codusuario');
+            $dados_form['matriz_visivel'] = $this->input->post('matriz_visivel');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
+
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
-            
             if ($this->painelbd->salvar('courses_pages', $dados_form) == TRUE){
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_graduacao/lista_cursos/$campus->id/$modalidade"));

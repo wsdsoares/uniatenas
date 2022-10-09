@@ -268,7 +268,11 @@ $uricampus = $this->uri->segment(3);
                 }
             ?>
         <?php
-                if (!empty($dados['dadosCurso']['informacoesCurso']->filesGrid)) {
+                if (
+                  !empty($dados['dadosCurso']['informacoesCurso']->filesGrid) 
+                  and  $dados['dadosCurso']['informacoesCurso']->matriz_visivel != NULL 
+                  and $dados['dadosCurso']['informacoesCurso']->matriz_visivel != '' 
+                ) {
                     ?>
         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
           <div class="boxcoordenador boxitens" style="height: 100px;">

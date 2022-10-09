@@ -26,9 +26,9 @@ class Painel_biblioteca extends CI_Controller {
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/biblioteca/lista_campus_biblioteca',
             'dados' => array(
-                'page' => "Informações Biblioteca",
-                'campus'=> $listagemDosCampus,
-                'tipo'=>''
+              'page' => "Informações Biblioteca",
+              'campus'=> $listagemDosCampus,
+              'tipo'=>''
             )
         );
 

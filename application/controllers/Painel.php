@@ -64,7 +64,7 @@ class Painel extends CI_Controller
                   }
 
                   //busca todos as permissões do usuário no BANCO DE DADOS
-                  $colunasPemissoesUsuario = array('permission.id','permission.title');
+                  $colunasPemissoesUsuario = array('permission.id','permission.titulo');
                   $joinPermissoesUsuario = array(
                       'permission' => 'permission.id = permissoes_por_usuario.permission_id',
                       'users' => 'users.id = permissoes_por_usuario.users_id'

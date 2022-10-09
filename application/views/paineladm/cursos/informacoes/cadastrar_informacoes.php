@@ -120,8 +120,30 @@
             <div class="input-group">
               <?php
               if($informacoesCurso->filesGrid!='' and !empty($informacoesCurso->filesGrid)){
-                echo '<i class="material-icons">archive</i>"';
-                echo anchor($informacoesCurso->filesGrid,'<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
+                ?>
+              <div class="row">
+                <div class="col-xs-6">
+                  <?php
+                  echo '<i class="material-icons">archive</i>"';
+                  echo anchor($informacoesCurso->filesGrid,'<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
+                  ?>
+                </div>
+                <div class="col-xs-6">
+                  <?php
+                   echo '<script>alert("'.$informacoesCurso->matriz_visivel.'")</script>';
+                   $valorMatrizVisivel = false;
+
+                   if(isset($informacoesCurso->matriz_visivel) and !empty($informacoesCurso->matriz_visivel)){
+                    $valorMatrizVisivel = true;
+                   }
+                  echo '<spam>Exibir arquivo PDF -</spam>';
+                  echo form_checkbox('matriz_visivel', 'S', set_checkbox('matriz_visivel', $informacoesCurso->matriz_visivel,$valorMatrizVisivel));
+                  ?>
+
+                </div>
+
+              </div>
+              <?php
                 }else{
                   echo '<span> Não há arquivo cadastrado. <span>';
                 }
