@@ -37,6 +37,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Título Botão</th>
+                <th>Ordem</th>
                 <th>Link</th>
                 <th>Cor (HEXADECIMAL)</th>
                 <th>Situação</th>
@@ -50,6 +51,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Título Botão</th>
+                <th>Ordem</th>
                 <th>Link</th>
                 <th>Cor (HEXADECIMAL)</th>
                 <th>Situação</th>
@@ -88,6 +90,7 @@
                 </td>
                 <td><?php echo $item->idBotao; ?></td>
                 <td><?php echo $item->title;?></td>
+                <td><?php echo $item->priority;?></td>
                 <td>
                   <?php 
                   if($item->link_redirecionamento !=''){

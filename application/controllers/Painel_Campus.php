@@ -426,6 +426,7 @@ class Painel_campus extends CI_Controller {
             'acessos_rapidos.link_redirecionamento',
             'acessos_rapidos.cor_hexadecimal',
             'acessos_rapidos.status',
+            'acessos_rapidos.priority',
             'acessos_rapidos.arquivo',
             'acessos_rapidos.created_at',
             'acessos_rapidos.updated_at',
@@ -471,6 +472,7 @@ class Painel_campus extends CI_Controller {
 
             $dados_form = elements(array('title','cor_hexadecimal','status'), $this->input->post());
             $dados_form['link_redirecionamento'] = $this->input->post('link_redirecionamento');
+            $dados_form['priority'] = $this->input->post('priority');
 
             if (isset($_FILES['arquivo']) && !empty($_FILES['arquivo']['name'])) {
                 
@@ -559,7 +561,7 @@ class Painel_campus extends CI_Controller {
                     setMsg($msg, 'erro');
                 }
             }
-
+            $dados_form['priority'] = $this->input->post('priority');
             $dados_form['id'] = $botaoAcessoRapido->id;
             $dados_form['userid'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');

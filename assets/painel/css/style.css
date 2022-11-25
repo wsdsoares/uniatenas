@@ -3428,7 +3428,7 @@ section.content {
 
 /* Checkbox & Radio ============================ */
 [type="checkbox"] + label {
-  padding-left: 26px;
+  /*padding-left: 26px;*/
   height: 25px;
   line-height: 21px;
   font-size: 13px;

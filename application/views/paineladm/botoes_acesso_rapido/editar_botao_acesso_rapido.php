@@ -58,6 +58,17 @@
               </div>
             </div>
           </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="priority">Ordem <small> (Exibido na página inicial)</small>
+                  <br /><small>A ordem será sequencial. Ex.:1 (primeiro), 2 (segundo), etc... </small></label>
+                <?php 
+                echo form_input(array('name' => 'priority', 'type' => 'number', 'class' => 'form-control'), set_value('priority',$botaoAcessoRapido->priority)); 
+                ?>
+              </div>
+            </div>
+          </div>
 
         </div>
 
