@@ -1,5 +1,5 @@
 <?php 
-$paginaFinanceiroStatus = $dados['paginaFinanceiro'] !="" ? $dados['paginaFinanceiro'] : '';
+$paginaFinanceiroStatus = $dados['paginaComoIngressar'] !="" ? $dados['paginaComoIngressar'] : '';
 ?>
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
@@ -21,7 +21,7 @@ $paginaFinanceiroStatus = $dados['paginaFinanceiro'] !="" ? $dados['paginaFinanc
             echo $msg;
           }
           ?>
-        <?php echo form_open("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id") ?>
+        <?php echo form_open("Painel_como_ingressar/cadastrar_pagina_como_ingressar/$campus->id") ?>
 
         <h2 class="card-inside-title">Informações do Página
         </h2>
@@ -35,7 +35,7 @@ $paginaFinanceiroStatus = $dados['paginaFinanceiro'] !="" ? $dados['paginaFinanc
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'title', 'class' => 'form-control','readonly'=>"readonly"), set_value('title','MENU - Financeiro'));
+                  echo form_input(array('name' => 'title', 'class' => 'form-control','readonly'=>"readonly"), set_value('title','Menu - Como Ingressar'));
                 ?>
               </div>
             </div>
@@ -49,7 +49,9 @@ $paginaFinanceiroStatus = $dados['paginaFinanceiro'] !="" ? $dados['paginaFinanc
                         '1' => 'Visível - Ativo',
                         '0' => 'Oculto - Inativo'
                     );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$dados['paginaFinanceiro']->status), array('class' => 'form-control show-tick'));
+                    $status = isset($dados['paginaComoIngressar']->status) ? $dados['paginaComoIngressar']->status : 'SELECIONE STATUS';
+                    
+                    echo form_dropdown('status', $optionSituation, set_value('status',$status), array('class' => 'form-control show-tick'));
                     ?>
               </div>
             </div>
@@ -59,7 +61,7 @@ $paginaFinanceiroStatus = $dados['paginaFinanceiro'] !="" ? $dados['paginaFinanc
           <div class="col-sm-12">
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_financeiro/lista_informacoes_financeiro/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+              echo anchor("Painel_como_ingressar/lista_informacoes_como_ingressar/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
               ?>
           </div>
         </div>

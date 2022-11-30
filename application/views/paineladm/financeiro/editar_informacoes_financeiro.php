@@ -1,4 +1,3 @@
-
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
 </div>
@@ -59,7 +58,7 @@
             </div>
           </div>
         </div>
-        <div class="row clearfix"> 
+        <div class="row clearfix">
           <div class="col-sm-6">
             <div class="form-group">
               <label for="title">Imagem da página</label>
@@ -76,8 +75,23 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="separacao-forms"></div>
+          <div class="col-xs-12">
+            <div class="alert alert-warning">
+              <strong>Atenção!</strong> Se o campo abaixo (DESCRIÇÃO) não for preenchido, ou seja, estiver vazio,<br />
+              o item correspondente irá usar o <strong> Link de Redirecionamento</strong> e não terá página
+              intermediária.
+            </div>
+          </div>
+          <div class="separacao-forms"></div>
+        </div>
         <div class="row clearfix">
-          <div class="col-sm-">
+
+          <div class="col-sm-12">
+            <label for="title">Descrição do item do financeiro
+              <small> (Explicação e inforamções pertinentes ao item do financeiro)</small>
+            </label>
             <?php
               echo form_textarea('description', to_html(set_value('description',$paginaFinanceiro->description)));
             ?>
@@ -121,5 +135,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>

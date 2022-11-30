@@ -262,7 +262,6 @@ class Painel_financeiro extends CI_Controller {
 
         //Validaçãoes via Form Validation
         $this->form_validation->set_rules('title', 'Titulo', 'required');
-        $this->form_validation->set_rules('description', 'Descrição', 'required');
         $this->form_validation->set_rules('status', 'Situação', 'required');
         $this->form_validation->set_rules('order', 'Ordem', 'required');
 
@@ -280,7 +279,7 @@ class Painel_financeiro extends CI_Controller {
           $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
           $dados_form['description'] = $this->input->post('description');
           $dados_form['link_redir'] = $this->input->post('link_redir');
-          $dados_form['title'] = $this->input->post('title');
+          $dados_form['title'] = $this->input->post('title')
           $dados_form['status'] = $this->input->post('status');
           $dados_form['order'] = $this->input->post('order');
           $dados_form['pages_id'] = $listaItemPages->id;
@@ -324,7 +323,7 @@ class Painel_financeiro extends CI_Controller {
       $paginaFinanceiro = $this->painelbd->where($colunasTabelaPagesFinanceiro,'page_contents',$joinConteudoPagina, $wherePaginaFinanceiro,null)->row();
       
       $this->form_validation->set_rules('title', 'Titulo', 'required');
-      $this->form_validation->set_rules('description', 'Descrição', 'required');
+      
       $this->form_validation->set_rules('status', 'Situação', 'required');
       $this->form_validation->set_rules('order', 'Ordem', 'required');
 
@@ -371,14 +370,6 @@ class Painel_financeiro extends CI_Controller {
         $dados_form['id'] = $paginaFinanceiro->id;
         $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-
-
-        echo '<br>';
-      
-        echo '</br>';
-        echo '<pre>';
-        print_r($dados_form);
-        echo '</pre>';
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
             redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));

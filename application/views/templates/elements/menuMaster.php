@@ -16,8 +16,8 @@ $informacoesCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NUL
 $wehreArrayLinkvestibular= array('gerais_elementos_site.tipo'=>'link_vestibular', 'gerais_elementos_site.id_campus'=>$informacoesCampus->id);
 $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$wehreArrayLinkvestibular)->row();
 
-$verificaPaginaFinanceiro = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$informacoesCampus->id))->row();
-$verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id','pages.title'),'pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id))->row();
+$verificaPaginaFinanceiro = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$informacoesCampus->id,'status'=>1))->row();
+$verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id','pages.title'),'pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id,'status'=>1))->row();
 
 if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
 

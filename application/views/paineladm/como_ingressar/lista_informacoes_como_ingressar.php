@@ -26,7 +26,7 @@
                 }else{
                   $tituloBotao = "CADASTRAR";
                 }
-                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu como ingressar)', array('class' => 'btn alerts_info'));
+                echo anchor("Painel_como_ingressar/cadastrar_pagina_como_ingressar/$campus->id", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu como ingressar)', array('class' => 'btn alerts_info'));
               ?>
             </div>
 

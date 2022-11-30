@@ -34,6 +34,7 @@
 .imageFinanciamento,
 .textFinanciamento {
   max-height: 260px;
+  margin-bottom: 2em;
 }
 
 .descriptionFinanciamentos {
@@ -42,6 +43,7 @@
 
 .sectionFinanciamentos a.linksFinanceiro {
   margin-top: 10px;
+  width: 100%;
 }
 </style>
 
@@ -62,11 +64,12 @@
       <div class="descriptionFinanciamentos">
         <span><?php echo $conteudoPag[0]->description; ?> </span>
       </div>
-      <?php
+      <div class="row">
+        <?php
       for ($i = 1; $i < count($dados['conteudoPag']); $i++) {
       ?>
-      <div class="row">
-        <div class="col-md-6 textFinanciamento text-justify">
+
+        <!--div class="col-md-6 textFinanciamento text-justify">
           <h3>
             <?php echo $dados['conteudoPag'][$i]->title; ?>
           </h3>
@@ -82,15 +85,31 @@
           <div class="text-right">
             <?php echo anchor('financeiro/pagina/' . $campus->shurtName . '/' . $dados['conteudoPag'][$i]->id, '<i class="fa fa-plus"></i> Informações', array('class' => 'btn btn-success linksFinanceiro')); ?>
           </div>
-        </div>
-        <div class="col-md-5 imageFinanciamento">
-          <?php echo anchor('financeiro/pagina/' . $campus->shurtName . '/' . $dados['conteudoPag'][$i]->id, "
+        </div-->
+        <?php        
+        if($dados['conteudoPag'][$i]->description == ''){
+          $linkRedir = $dados['conteudoPag'][$i]->link_redir;
+          if($linkRedir==''){
+            $linkRedir= base_url("financeiro/inicio/$campus->shurtName");
+          }
+        }else{
+          $linkRedir = 'financeiro/pagina/' . $campus->shurtName . '/' . $dados['conteudoPag'][$i]->id;
+        }
+        
+        ?>
+        <div class="col-xs-4 imageFinanciamento">
+          <?php echo anchor($linkRedir, "
               <img src='" . base_url($dados['conteudoPag'][$i]->img_destaque) . "'/>");
             ?>
+          <div class="text-right">
+            <?php echo anchor($linkRedir, '<i class="fa fa-plus"></i> Informações', array('class' => 'btn btn-success linksFinanceiro')); ?>
+          </div>
         </div>
-      </div>
-      <?php
+
+        <?php
+        
       } ?>
+      </div>
     </div>
 
     <div class="col-md-3">

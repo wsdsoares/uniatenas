@@ -24,7 +24,7 @@ class Painel_como_ingressar extends CI_Controller {
         $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/comoIngressar/lista_campus_como_ingressar',
+            'conteudo' => 'paineladm/como_ingressar/lista_campus_como_ingressar',
             'dados' => array(
                 'page' => "Informações Formas de Ingresso - Como ingressar",
                 'campus'=> $listagemDosCampus,
@@ -67,7 +67,7 @@ class Painel_como_ingressar extends CI_Controller {
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/comoIngressar/lista_informacoes_como_ingressar',
+        'conteudo' => 'paineladm/como_ingressar/lista_informacoes_como_ingressar',
         'dados' => array(
           'conteudosPagina'=>$listaInformmacoesPaginaComoIngressar,
           'page' => "Cadastro de informações: Formas de ingresso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
@@ -97,7 +97,7 @@ class Painel_como_ingressar extends CI_Controller {
           endif;
       }else {
         
-        $dados_form['title'] = $this->input->post('title');
+        $dados_form['title'] = 'comoingressar';
         $dados_form['status'] = $this->input->post('status');
         $dados_form['campusid'] = $campus->id;
 
@@ -125,7 +125,7 @@ class Painel_como_ingressar extends CI_Controller {
         'titulo' => 'UniAtenas',
         'conteudo' => 'paineladm/como_ingressar/pagina_menu_como_ingressar/cadastrar_pagina_como_ingressar',
         'dados' => array(
-          'paginacomo_ingressar'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
+          'paginaComoIngressar'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
           'page' => "Cadastro de pagina (menu do site) do como_ingressar - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
           'tipo'=>''
@@ -178,7 +178,7 @@ class Painel_como_ingressar extends CI_Controller {
           $dados_form['order'] = $this->input->post('order');
           $dados_form['pages_id'] = $listaItemPages->id;
           $dados_form['user_id'] = $this->session->userdata('codusuario');
-          $dados_form['title_short'] = noAccentuation(strtolower($dados_form['title']));
+          $dados_form['title_short'] = strtolower(noAccentuation($dados_form['title']));
 
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados de "como ingressar" cadastrado com sucesso.</p>', 'success');
@@ -190,7 +190,7 @@ class Painel_como_ingressar extends CI_Controller {
 
         $data = array(
             'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/comoIngressar/cadastrar_informacoes_como_ingressar',
+            'conteudo' => 'paineladm/como_ingressar/cadastrar_informacoes_como_ingressar',
             'dados' => array(
                 'conteudosPagina'=>'',
                 'page' => "Cadastro de informações do como ingressar - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
@@ -247,8 +247,8 @@ class Painel_como_ingressar extends CI_Controller {
         if ($paginacomo_ingressar->order != $this->input->post('order')) {
           $dados_form['order'] = $this->input->post('order');
         }
-        if ($paginacomo_ingressar->title_short != noAccentuation(strtolower($dados_form['title']))){
-          $dados_form['title_short'] = noAccentuation(strtolower($dados_form['title']));
+        if ($paginacomo_ingressar->title_short != strtolower(noAccentuation($dados_form['title']))){
+          $dados_form['title_short'] = strtolower(noAccentuation($dados_form['title']));
         }
 
         if (isset($_FILES['img_destaque']) && !empty($_FILES['img_destaque']['name'])) {
@@ -278,7 +278,7 @@ class Painel_como_ingressar extends CI_Controller {
 
       $data = array(
           'titulo' => 'UniAtenas',
-          'conteudo' => 'paineladm/comoIngressar/editar_informacoes_como_ingressar',
+          'conteudo' => 'paineladm/como_ingressar/editar_informacoes_como_ingressar',
           'dados' => array(
               'paginacomo_ingressar'=>$paginacomo_ingressar,
               'page' => "Edição de informações do como_ingressar - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
