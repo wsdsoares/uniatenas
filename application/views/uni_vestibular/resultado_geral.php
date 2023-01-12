@@ -95,12 +95,16 @@ if ($idCampus == 1) {
     $fundo = '';
 }
 
+// echo '<pre>';
+// print_r($dados);
+// echo '</pre>';
+
 ?>
   <div class="container-fluid p-0 <?php echo $fundo; ?>">
 
     <section class="resume-section p-3 p-lg-5 d-flex flex-column vestibular" id="consulta">
       <div class="my-auto">
-        <h3 class="mb-5">Vestibular Tradicional e Nota do ENEM - Medicina 2022 <br />
+        <h3 class="mb-5">Vestibular Tradicional - Medicina 2023 <br />
           <?php echo $campus->name . ' - ' . $campus->city;
                 ?></h3>
         <?php

@@ -277,6 +277,7 @@ order by courses.name";
             $tema = "Aqui Começa Uma Nova História";
         }
         
+        
         $data = array(
             'head' => array(
                 'title' => 'Graduação - UniAtenas',

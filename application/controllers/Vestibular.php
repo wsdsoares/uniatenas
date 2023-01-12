@@ -24,8 +24,7 @@ class Vestibular extends CI_Controller
             'head' => array(
                 'title' => 'Vestibular 2022 - UniAtenas - NOTAS DE REDAÇÃO',
             ),
-            //'conteudo' => 'uni_vestibular/resultado',
-            'conteudo' => 'uni_vestibular/resultado_geral',
+             'conteudo' => 'uni_vestibular/resultado_geral',
             'js' => 'js_result',
             'footer' => '',
             'menu' => NULL,
@@ -63,6 +62,30 @@ class Vestibular extends CI_Controller
             $fieldsBdCampus = array('campus.city as cityCampus',
             'campus.name as nameCampus',
             'campus.id as idCampus');
+
+            $colunasCampus = array('campus.name','campus.city','campus.id');
+            $joinCampusVestibular = array(
+                'vestibular' => 'vestibular.campusid = campus.id',
+            );
+            //$whereCampusVestibularStatus = array('campus.status'=>1,'vestibular');
+            $whereCampusVestibularStatus = array('vestibular.vestibular_situationid' => 5, 'campus.status'=>1,'visible'=>'SIM');
+            
+            $consultaResultadosVestibular = '
+                SELECT vestibular.id as idVestibular, campus.name,campus.city,campus.id
+                FROM campus 
+                JOIN vestibular on vestibular.campusid = campus.id
+                WHERE vestibular.vestibular_situationid = 5 
+                    AND campus.status = 1 
+                    AND vestibular.status = 1
+                    AND visible = "SIM"
+                GROUP BY campus.city
+            ';
+
+            $dadosCampus = $this->bancosite->getQuery($consultaResultadosVestibular)->result();
+
+            // echo '<pre>';
+            // print_r($dadosCampus);
+            // echo '</pre>';
             
             $data = array(
                 'head' => array(
@@ -70,7 +93,8 @@ class Vestibular extends CI_Controller
                 ),
                 'conteudo' => 'uni_vestibular/index',
                 'dados' => array(
-                    'campus'=>$this->bancosite->where($fieldsBdCampus,'campus',null,array('visible'=>'SIM'), array('campo'=>'id','ordem'=>'asc'))->result(),
+                    //'campus'=>$this->bancosite->where($fieldsBdCampus,'campus',null,array('visible'=>'SIM'), array('campo'=>'id','ordem'=>'asc'))->result(),
+                    'campus'=>$dadosCampus,
             
                     'situacaoVestibular'=>$vestibularSituation
                 ),
@@ -84,28 +108,15 @@ class Vestibular extends CI_Controller
 
     public function resultado_geral(){
 
-        $dados_formInicio = elements(array('idCampus'), $this->input->post());
+        $dados_formInicio = elements(array('idCampus','idVestibular'), $this->input->post());
 
-      
-        
         $idCampus = $dados_formInicio['idCampus'];
+        $idVestibular = $dados_formInicio['idVestibular'];
         $actionVestibular = 'consultaClassificacaoFinal';
 //        $actionVestibular = $this->input->post('typeSearch');
         $infCandidato = $this->input->post('inputDataVest');
 
-
         $dados = $this->input->post('actionQuery');
-
-        
-
-        // echo '<pre>';
-        // print_r($filesListaAprovados);
-        // print_r($filesListaEspera);
-        // echo '<pre>';
-
-    //    echo '<script>alert("'.$idCampus.'")</script>';
-
-
 
         if (!empty($dados)) {
             $actionBtnQuery = $this->input->post('actionQuery');
@@ -120,34 +131,31 @@ class Vestibular extends CI_Controller
             $fieldQuery = 'inscricao';
         }
 
-
-
         if ($idCampus == 1) {
-            $tabela = 'paracatu_2022_resultados';
+            $tabela = 'paracatu_2022_12_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         } elseif ($idCampus == 2) {
-            $tabela = 'setelagoas_2022_resultados';
+            $tabela = 'setelagoas_2022_12_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         } elseif ($idCampus == 3) {
-            $tabela = 'passos_2022_resultados';
+            $tabela = 'passos_2022_12_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         }elseif ($idCampus == 6) {
-            $tabela = 'valenca_2022_resultados';
+            $tabela = 'valenca_2022_12_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         }elseif ($idCampus == 7) {
-            $tabela = 'sorriso_2022_resultados';
+            $tabela = 'sorriso_2022_12_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         }elseif ($idCampus == 8) {
-            $tabela = 'porto_seguro_2022_resultados';
+            $tabela = 'porto_seguro_2022_12_resultados';
             $resultadosOficiais = count($this->bancoVestibular->getWhere($tabela)->result());
         }
-        
-
-
-         /*
-             * Informações da consulta do vestibular, passadas por variáveis, campo, join e where
-             * */
-            $fieldsBd = array('vestibular.name as nameVestibular',
+    
+        /** 
+        * Informações da consulta do vestibular, passadas por variáveis, campo, join e where
+        **/
+        $fieldsBd = array('vestibular.name as nameVestibular',
+            'vestibular.id as idVestibular',
             'campus.name as nameCampus',
             'campus.id as idCampus',
             'campus.city as cityCampus',
@@ -156,9 +164,8 @@ class Vestibular extends CI_Controller
             'vestibular' => 'vestibular.campusid = campus.id',
             'vestibular_situation' => 'vestibular_situation.id = vestibular.vestibular_situationid'
         );
-        $whereBd = array('vestibular.status' => 1, 'vestibular.campusid' => $idCampus);
+        $whereBd = array('vestibular.status' => 1, 'vestibular.id' => $idVestibular);
         /*fim consulta*/
-
 
         /** Consulta de arquivos do resultado final do vestibular - LISTA APROVADOS **/
         $fieldsResult = array('vestibular_files.name', 'vestibular_files.files', 'vestibular_exams_types.title as tipo_prova');
@@ -166,30 +173,20 @@ class Vestibular extends CI_Controller
             'vestibular_files' => 'vestibular_files.vestibularid = vestibular.id',
             'vestibular_exams_types' => 'vestibular_exams_types.id = vestibular_files.typesid'
         );
-        $whereFilesResult = array('vestibular.campusid' => $idCampus, 'vestibular_exams_types.id' => '11', 'vestibular_files.status' => 1);
-        $whereFilesResultEspera = array('vestibular.campusid' => $idCampus, 'vestibular_exams_types.id' => '12', 'vestibular_files.status' => 1);
+        $whereFilesResult = array('vestibular.campusid' => $idCampus, 'vestibular_exams_types.id' => '11', 'vestibular_files.status' => 1,'vestibular_situationid'=>5);
+        $whereFilesResultEspera = array('vestibular.campusid' => $idCampus, 'vestibular_exams_types.id' => '12', 'vestibular_files.status' => 1,'vestibular_situationid'=>5);
         /** fim da consulta* */
 
         $vestibularSituation = $this->bancosite->where($fieldsBd, 'campus', $dataJoin, $whereBd)->row();
 
-
-    
         $filesListaAprovados = $this->bancosite->where($fieldsResult, 'vestibular', $dataJoinResult, $whereFilesResult)->result();
         $filesListaEspera = $this->bancosite->where($fieldsResult, 'vestibular', $dataJoinResult, $whereFilesResultEspera)->result();
 
 
-        // echo '<pre>';
-        // print_r($filesListaAprovados);
-        // print_r($filesListaEspera);
-        // echo '</pre>';
-
         //$whereEssay = array($tabela, $tabela . 'ano' => '2022', $tabela . '.' . $fieldQuery => $infCandidato);
-        $whereEssay = array($tabela, $tabela . '.ano' => '2022', $tabela . '.' . $fieldQuery => $infCandidato);
-
+        $whereEssay = array($tabela, $tabela . '.ano' => '2023', $tabela . '.' . $fieldQuery => $infCandidato);
 
         $essay = $this->bancoVestibular->where('*', $tabela, null, $whereEssay)->row();
-
-       
 
         if (!empty($essay) and $essay->status == 2) {
 
@@ -217,27 +214,16 @@ class Vestibular extends CI_Controller
                     endif;
                 } else {
                     
-
-                    // echo '<pre>';
-                    // print_r($essay->cpf);
-                    // echo '<br/>';
-                    // print_r($idCampus);
-                    // echo '<br/>';
-                    // print_r($tabela);
-                    // echo '<br/>';
-                    // print_r($actionVestibular);
-                    // echo '</pre>';
-                    
                     $this->resultFinal($essay->cpf, $idCampus, $tabela, $actionVestibular);
                 }
             }
         }
 
-        $dadosCampus = $this->bancosite->where('*', 'campus', null, array('id' => $idCampus))->row();
+        $dadosCampus = $this->bancosite->where(array('campus.name','campus.id','campus.city'), 'campus', null, array('id' => $idCampus))->row();
 
         $data = array(
             'head' => array(
-                'title' => 'Vestibular 2021 - Medicina',
+                'title' => 'Vestibular 2023 - Medicina',
             ),
             'conteudo' => 'uni_vestibular/resultado_geral',
             'js' => 'js_result',
@@ -251,7 +237,6 @@ class Vestibular extends CI_Controller
                 'fileListaAprovados' => $filesListaAprovados,
                 'fileListaEspera' => $filesListaEspera,
                 'resultadosOficiais' => $resultadosOficiais
-
             )
         );
 
@@ -262,11 +247,11 @@ class Vestibular extends CI_Controller
     {
         $this->load->library('M_pdf');
         $dadosCandidato = $this->bancoVestibular->getWhere($tabela, array('cpf' => $cpfCandidato))->row();
-        $hash = $dadosCandidato->posicao . '-' . $dadosCandidato->inscricao . '-2019-09-12' . $dadosCandidato->cpf;
+        $hash = $dadosCandidato->posicao . '-' . $dadosCandidato->inscricao . '-2022-13-12' . $dadosCandidato->cpf;
         $vestibular = $this->bancosite->getWhere('vestibular', array('campusid' => $idCampus))->row();
         $ip = $_SERVER['REMOTE_ADDR'];
         if ($actionVestibular == 'consultaNotaRedacao') {
-            if ($idCampus == '1') {
+           /* if ($idCampus == '1') {
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/PARACATU-resultNotaRedacao.png';
             } elseif ($idCampus == '2') {
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/SETELAGOAS-resultNotaRedacao.png';
@@ -279,25 +264,20 @@ class Vestibular extends CI_Controller
             }elseif ($idCampus == '8') {
                 $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022PortoSeguro.png';
             }
-            $infoCandidato = 'Nota de redação: ' . $dadosCandidato->notaRedacao . '';
+            $infoCandidato = 'Nota de redação: ' . $dadosCandidato->notaRedacao . '';*/
         } elseif ($actionVestibular == 'consultaClassificacaoFinal') {
             if ($idCampus == '1') {
-                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022PARACATU-resultFinal.png';
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022-2/ConsultadeClassificacaoParacatu.jpg';
             } elseif ($idCampus == '2') {
-                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022SETELAGOAS-resultFinal.png';
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022-2/ConsultadeClassificacaoSete.jpg';
             } elseif ($idCampus == '3') {
-                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022PASSOS-resultFinal.png';
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022-2/ConsultadeClassificacaoPassos.jpg';
             }elseif ($idCampus == '6') {
-                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/VALENCA-resultNotaRedacao.png';
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022-2/ConsultadeClassificacaoValenca.jpg';
             }elseif ($idCampus == '7') {
-                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/sorriso.png';
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022-2/ConsultadeClassificacaoSorriso.jpg';
             }elseif ($idCampus == '8') {
-                if($dadosCandidato->posicao > 30 and $dadosCandidato->posicao <60){
-                    
-                    $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022-porto-seguro-nota-enem.png';
-                }else{
-                    $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022/2022PortoSeguro.png';
-                }
+                $img_fundo = 'http://www.atenas.edu.br/uniatenas/assets/images/vestibular/2022-2/ConsultadeClassificacaoPorto.jpg';
             }
             $infoCandidato = $dadosCandidato->posicao . 'º';
         }

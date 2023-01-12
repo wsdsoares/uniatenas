@@ -137,22 +137,19 @@ if($news)
         </div>
       </div>
       <div class="col-md-offset-1 col-md-3 col-xs-12 text-center">
-        <h4>Informações</h4>
+        <h4>E-MEC</h4>
         <div class="bannerRigth">
           <div class="col-md-12">
-            <img src="<?php echo base_url('assets/images/bannerLateral.png') ?>" alt="Banner" class="img-responsive" />
+            <img src="<?php echo base_url('assets/images/institucional-qrcodes/Emec-Uniatenas.png') ?>" alt="Banner"
+              class="img-responsive" />
           </div>
-          <?php
-          if ($dados['campus']->id == 1) {
-          ?>
           <div class="col-md-12">
-            <?php 
-            echo anchor('graduacao/inscricao/' . $campus->shurtName, ' <img src="' . base_url('assets/images/bannerLateral2.png') . '" alt="Banner" class="img-responsive"/>');
-            ?>
+            <style>
+            .e-mec-texto {}
+            </style>
+            <span class="e-mec-texto" style="color: #00619d;font-weight: bold;">Consulte aqui o cadastro da Instituição
+              no Sistema E-MEC.</span>
           </div>
-          <?php
-          }
-          ?>
         </div>
       </div>
     </div>

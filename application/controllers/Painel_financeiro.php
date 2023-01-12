@@ -279,7 +279,7 @@ class Painel_financeiro extends CI_Controller {
           $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
           $dados_form['description'] = $this->input->post('description');
           $dados_form['link_redir'] = $this->input->post('link_redir');
-          $dados_form['title'] = $this->input->post('title')
+          $dados_form['title'] = $this->input->post('title');
           $dados_form['status'] = $this->input->post('status');
           $dados_form['order'] = $this->input->post('order');
           $dados_form['pages_id'] = $listaItemPages->id;

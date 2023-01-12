@@ -79,7 +79,7 @@
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->name;?></td>
                 <td>
-                  <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$item->id", '<i class="material-icons">art_track</i> Permissões', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+                  <?php echo anchor("Painel_permissoes/lista_permissoes_perfis/$item->id", '<i class="material-icons">art_track</i> Permissões', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
                 </td>
                 <td><?php echo $item->city;?></td>
 

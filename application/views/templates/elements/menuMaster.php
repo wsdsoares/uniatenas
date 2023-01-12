@@ -19,6 +19,13 @@ $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$w
 $verificaPaginaFinanceiro = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$informacoesCampus->id,'status'=>1))->row();
 $verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id','pages.title'),'pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id,'status'=>1))->row();
 
+$joinCountCursosEad = array(
+  'courses' => 'courses.id = campus_has_courses.courses_id',
+  'campus' =>'campus.id = campus_has_courses.campus_id'
+);
+$verificaCursosEaD = $this->bancosite->where(array('courses.id'),'campus_has_courses', $joinCountCursosEad, array('campus_has_courses.campus_id'=>$informacoesCampus->id))->num_rows();
+
+
 if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
 
   $listaMenuItensComoIngressar =  $this->bancosite->getQuery(
@@ -37,13 +44,7 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
         page_contents.status=1
     ORDER BY page_contents.order ASC")->result();
 
-  // echo '<pre>';
-  // echo '<br/>';
-  // echo '<br/>';
-  // echo '<br/>';
-  // echo '<br/>';
-  // print_r($listaMenuItensComoIngressar);
-  // echo '</pre>';
+
 }
 ?>
 <div data-container="menu" class="headermenu">
@@ -159,12 +160,12 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
                       aria-expanded="false">Graduação<span class="caret"></span></a>
                     <ul class="dropdown-menu menu-simpes" role="menu">
                       <li>
-                        <?php echo anchor('graduacao/cursos/' . $informacoesCampus->shurtName, 'Presencial'); ?>
+                        <?php 
+                        echo anchor('graduacao/cursos/' . $informacoesCampus->shurtName, 'Presencial'); 
+                        ?>
                       </li>
                       <?php
-                      if ($informacoesCampus->id == '1'
-                        or $informacoesCampus->id == '2' 
-                        or $informacoesCampus->id == '3') {
+                      if ($verificaCursosEaD >0) {
                       ?>
                       <li><?php echo anchor('graduacao/ead/' . $informacoesCampus->shurtName, 'EaD'); ?></li>
                       <?php

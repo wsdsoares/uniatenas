@@ -5,35 +5,35 @@ if (!defined("BASEPATH"))
 
 class Painel_permissoes extends CI_Controller {
 
-    public function __construct() {
-        parent::__construct();
-        $this->load->model('painel_model', 'painelbd');
-        date_default_timezone_set('America/Sao_Paulo');
-    }
-    
-    public function index() {
-        verificaLogin();
+  public function __construct() {
+      parent::__construct();
+      $this->load->model('painel_model', 'painelbd');
+      date_default_timezone_set('America/Sao_Paulo');
+  }
+  
+  public function index() {
+    verificaLogin();
 
-        $colunasCampus = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where($colunasCampus,'campus',NULL, array('visible' => 'SIM'))->result();
-        $data = array(
-            'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/permissoes/index',
-            'dados' => array(
-                'page' => "perfis para usuários",
-                'campus'=> $listagemDosCampus,
-                'tipo'=>''
-            )
-        );
+    $colunasCampus = 
+        array('campus.id',
+        'campus.name',
+        'campus.city',
+        'campus.uf'
+    );
 
-        $this->load->view('templates/layoutPainelAdm', $data);
-    }
+    $listagemDosCampus = $this->painelbd->where($colunasCampus,'campus',NULL, array('visible' => 'SIM'))->result();
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/permissoes/index',
+      'dados' => array(
+          'page' => "perfis para usuários",
+          'campus'=> $listagemDosCampus,
+          'tipo'=>''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
 
   public function lista_perfis() {
     verificaLogin();
@@ -57,21 +57,59 @@ class Painel_permissoes extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function lista_areas_permissoes() {
+  public function lista_permissoes_perfis($idPerfil=null) {
     verificaLogin();
 
-    $colunasResultadoPerfis = array('campus.city','profile.name','profile.id','profile.status','profile.created_at','profile.updated_at','profile.user_id');
-    $joinPerfisCampus = array(
+    $colunasResultadoPerfil = array('campus.city','profile.name','profile.id','profile.status','profile.created_at','profile.updated_at','profile.user_id');
+    $joinPerfilCampus = array(
       'campus'=>'campus.id = profile.campusid'
     );
-    $perfis = $this->painelbd->where($colunasResultadoPerfis,'profile',$joinPerfisCampus, null,null)->result();
+    $perfil = $this->painelbd->where($colunasResultadoPerfil,'profile',$joinPerfilCampus, array('profile.id'=>$idPerfil),null)->row();
+
+    $colunasResultadoPermissoes = array(
+      'permission.id', 'permission.titulo','permission.titulo_curto','permission.status','permission.inserir',
+      'permission.visualizar','permission.atualizar','permission.deletar'
+    );
+    $permissoes = $this->painelbd->where($colunasResultadoPermissoes,'permission',null, null,null)->result();
+
+    $countPermissoes = count($permissoes);
+
+    $this->form_validation->set_rules('perfil', 'Perfil', 'required'); 
+
+      if ($this->form_validation->run() == FALSE) {
+          if (validation_errors()):
+              setMsg(validation_errors(), 'error');
+          endif;
+      }else {
+        $dados_form = elements(array('perfil'), $this->input->post());
+        $array_permissoes= $this->input->post('permissoes[]');
+
+        //$newArray = [];
+        foreach($array_permissoes as $permissao){
+          $parts = explode("-", $permissao);
+          $newArray[$parts[0]][] = $permissao;
+      }
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        echo '<br>';
+        echo '<pre>';
+        print_r($newArray);
+        print_r($dados_form);
+        echo '</pre>';
+        // $dados_form['title'] = $this->input->post('title');
+        // $dados_form['status'] = $this->input->post('status');
+        // $dados_form['campusid'] = $campus->id;
+      }
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/permissoes/lista_informacoes_perfis',
+      'conteudo' => 'paineladm/permissoes/lista_permissoes_perfis',
       'dados' => array(
-        'page' => "Perfis - <strong><i> registrados no sistema </i></strong>",
-        'perfis'=> $perfis = isset($perfis) ? $perfis : '',
+        'page' => "Opções de permissão para o perfil <strong><i>  </i></strong>",
+        'perfil'=> $perfil = isset($perfil) ? $perfil : '',
+        'permissoes'=>$permissoes,
         'tipo'=>''
       )
     );

@@ -309,7 +309,7 @@ if($dadosIntegracaoWhatsapp!=''){
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <footer class="footer-distributed">
   <div class="container">
-    <div class="col-md-3">
+    <div class="col-md-1">
 
       <?php echo anchor('atenas/inicio/' . $informacoesCampus->shurtName, '<img src="' . base_url($informacoesCampus->logoBranca) . '" alt="logo" class="img-responsive logoPrincipal" />', array('class' => 'logooficial')); ?>
       <br />
@@ -371,7 +371,7 @@ if($dadosIntegracaoWhatsapp!=''){
     <?php
     if ($indicadores) {
     ?>
-    <div class="col-md-6">
+    <div class="col-md-8">
       <h4 class="text-center">Indicadores</h4>
       <div class="indicadores">
         <?php
@@ -383,6 +383,7 @@ if($dadosIntegracaoWhatsapp!=''){
             <img src="<?php echo base_url($indicadores[$i]->arquivo); ?>" class="partnerimg"
               alt="<?php echo $indicadores[$i]->nome  ?>">
           </div>
+
         </div>
         <?php
           }

@@ -22,24 +22,26 @@
     <div class="card-deck mb-3 text-center" style="background: #f2f2f2;">
       <?php
        /**TO DO - fazer uma programação para mostrar apenas os vestibulares que estiverem com status 5  */
+
         foreach ($dados['campus'] as $rows) {
-            if($rows->idCampus ==8){
+            //if($rows->idCampus ==8){
             ?>
       <div class="card mb-4 box-shadow">
         <div class="card-header">
-          <h4 class="my-0 font-weight-normal"><?php echo $rows->nameCampus;?></h4>
+          <h4 class="my-0 font-weight-normal" style="font-size:20px"><?php echo $rows->name;?></h4>
 
-          <h4 class="my-0 font-weight-normal"><?php echo $rows->cityCampus;?></h4>
+          <h4 class="my-0 font-weight-normal" style="font-size:20px"><?php echo $rows->city;?></h4>
         </div>
         <div class="card-body">
 
           <?php
-                    echo form_open('Vestibular/resultado_geral');
+                    echo form_open("Vestibular/resultado_geral/");
                     
                     
                     
                     echo form_hidden('actionQuery', 'actionQuery');
-                    echo form_hidden('idCampus', $rows->idCampus);
+                    echo form_hidden('idCampus', $rows->id);
+                    echo form_hidden('idVestibular', $rows->idVestibular);
                     echo form_submit(array('class' => 'btn btn-info btn-lg', 'value' => 'Resultados', 'target="_blank"'));
                     echo form_close();
                     
@@ -48,7 +50,7 @@
         </div>
       </div>
       <?php
-            }
+            //}
         }
         
         ?>

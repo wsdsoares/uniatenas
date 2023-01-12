@@ -42,7 +42,7 @@ class Painel_vestibular Extends CI_Controller
             'titulo' => 'Informações do Vestibular',
             'conteudo' => 'paineladm/vestibular/informacoesVestibular/lista',
             'dados' => array(
-                'permissionCampusArray' => $_SESSION['permissionCampus'],
+                //'permissionCampusArray' => '',
                 'listagem' => $vestibularSituation,
                 'tipo' => 'provaGab'
             )
@@ -125,7 +125,7 @@ class Painel_vestibular Extends CI_Controller
             'titulo' => 'Informações do Vestibular',
             'conteudo' => 'paineladm/vestibular/informacoesVestibular/editar',
             'dados' => array(
-                'permissionCampusArray' => $_SESSION['permissionCampus'],
+                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'listagem' => $vestibularSituation,
                 'tipo' => 'provaGab',
                 'locaisCampus'=>$this->bd->where('*','campus',NULL,array('visible'=>'SIM'))->result(),
@@ -211,7 +211,7 @@ class Painel_vestibular Extends CI_Controller
             'titulo' => 'Informações do Vestibular',
             'conteudo' => 'paineladm/vestibular/informacoesVestibular/editar',
             'dados' => array(
-                'permissionCampusArray' => $_SESSION['permissionCampus'],
+                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'listagem' => $vestibularSituation,
                 'tipo' => 'provaGab',
                 'locaisCampus'=>$this->bd->where('*','campus',NULL,array('visible'=>'SIM'))->result(),
@@ -242,11 +242,9 @@ class Painel_vestibular Extends CI_Controller
             $table = 'vestibular_exams';
             $dataJoin = array('vestibular'=>'vestibular_exams.vestibularid = vestibular.id ',
                 'vestibular_exams_types' => 'vestibular_exams.typeid= vestibular_exams_types.id');
-            if (!in_array("admTempsArgs", $_SESSION['permissionCampus']['campus-1'])) {
+            
                 $whereBD = "vestibular_exams.status = 1 ";
-            }else{
-                $whereBD = null;
-            }
+            
             $order['campo'] = 'vestibular_exams.id';
             $order['ordem'] = 'DESC';
             //view
@@ -276,7 +274,7 @@ class Painel_vestibular Extends CI_Controller
             'titulo' => $titulo,
             'conteudo' => 'paineladm/vestibular/vestfiles/lista',
             'dados' => array(
-                'permissionCampusArray' => $_SESSION['permissionCampus'],
+                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'listagem' => $listagem,
                 'tipo' => $tipo,
                 'titulo' => $titulo
@@ -378,7 +376,7 @@ class Painel_vestibular Extends CI_Controller
             'titulo' => 'Cadastro -'.$titulo,
             'conteudo' => 'paineladm/vestibular/vestfiles/cadastrar',
             'dados' => array(
-                'permissionCampusArray' => $_SESSION['permissionCampus'],
+                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'temps' => $dados,
                 'tipos' => $tiposems,
                 'vestibular' => $vestibular,

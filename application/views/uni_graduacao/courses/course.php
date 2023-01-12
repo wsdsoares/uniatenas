@@ -246,8 +246,8 @@ $uricampus = $this->uri->segment(3);
       </div>
       <div class="col-sm-12">
         <?php
-                if($dados['dadosCurso']['curso']->idCourseCampus == 51){
-                    ?>
+        if($dados['dadosCurso']['curso']->idCourseCampus == 51){
+          ?>
         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
           <div class="boxcoordenador boxitens" style="height: 100px;">
             <div class="icon">
@@ -265,15 +265,15 @@ $uricampus = $this->uri->segment(3);
           </div>
         </div>
         <?php 
-                }
-            ?>
+            }
+          ?>
         <?php
-                if (
-                  !empty($dados['dadosCurso']['informacoesCurso']->filesGrid) 
-                  and  $dados['dadosCurso']['informacoesCurso']->matriz_visivel != NULL 
-                  and $dados['dadosCurso']['informacoesCurso']->matriz_visivel != '' 
-                ) {
-                    ?>
+          if (
+            !empty($dados['dadosCurso']['informacoesCurso']->filesGrid) 
+            and  $dados['dadosCurso']['informacoesCurso']->matriz_visivel != NULL 
+            and $dados['dadosCurso']['informacoesCurso']->matriz_visivel != '' 
+          ) {
+              ?>
         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
           <div class="boxcoordenador boxitens" style="height: 100px;">
             <div class="icon">
@@ -292,29 +292,43 @@ $uricampus = $this->uri->segment(3);
         <?php
                 }
                 ?>
-        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+        <div class="col-lg-3 col-md-6 wow fadeInUp text-center" data-wow-delay="0.6s">
           <div class="boxcoordenador boxitens">
-            <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank"></a>
-            <div class="icon">
-              <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank"><i
-                  class="fas fa-gavel"></i></a>
+            <div class="icon text-center">
+              <i class="fas fa-gavel"></i>
             </div>
+
             <h4 class="title">
-              <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">Ato de
-                Autorização / Reconhecimento</a>
+              Ato de Autorização / Reconhecimento</a>
+
             </h4>
+            <?php 
+            if(isset($dados['dadosCurso']['informacoesCurso']->autorization) ){
+            ?>
+            <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->autorization); ?>" target="_blank">
+              <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+            </a>
+            <?php
+            }
+            ?>
+            <?php 
+            if(isset($dados['dadosCurso']['informacoesCurso']->recognition)){
+            ?>
             <a href="<?php echo($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">
               <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
             </a>
+            <?php
+            }
+            ?>
           </div>
         </div>
         <?php
         // echo '<pre>';
         // //print_r($dados['dadosCurso']['dirigentes']);
         // echo '</pre>';
-            foreach ($dados['dadosCurso']['dirigentes'] as $row) {
-              
-                ?>
+        foreach ($dados['dadosCurso']['dirigentes'] as $row) {
+          
+            ?>
         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
           <div class="boxcoordenador boxitens">
             <div class="icon"><a><i class="fas fa-graduation-cap"></i></a></div>
@@ -553,8 +567,8 @@ if (!empty($dadosCurso['fotosCurso'])) {
       <div class="col-xs-offset-4 col-xs-4" style="margin-bottom: 10px;">
         <div class="carbox-read-more">
           <?php
-                        echo anchor("graduacao/galeria_fotos_curso/$uricampus/" . $dadosCurso['curso']->idCourseCampus, ' Ver todas as fotos', array("class" => "btn btn-link btn-block"));
-                        ?>
+          echo anchor("graduacao/galeria_fotos_curso/$uricampus/" . $dadosCurso['curso']->idCourseCampus, ' Ver todas as fotos', array("class" => "btn btn-link btn-block"));
+          ?>
         </div>
       </div>
 
