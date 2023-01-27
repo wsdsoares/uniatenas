@@ -36,6 +36,7 @@ class Painel_usuarios extends CI_Controller {
       $this->form_validation->set_rules('name', 'Nome', 'trim|required');
       $this->form_validation->set_rules('cod_user', 'Código Usuário', 'required|trim|is_unique[users.cod_user]');
       $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[users.email]');
+      $this->form_validation->set_message('is_unique','O Email informado já está cadastrado para outro usuário.');
       $this->form_validation->set_rules('password', 'Senha', 'required');
       $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
       $this->form_validation->set_rules('status', 'Status', 'trim|required');
@@ -47,7 +48,7 @@ class Painel_usuarios extends CI_Controller {
       }else {
           $dados_form = elements(array('name','cod_user','email','status'), $this->input->post());
           $dados_form['user_id'] = $this->session->userdata('codusuario');
-          $dados_form['password'] = hash('sha256',$this->session->userdata('password'));
+          $dados_form['password'] = hash('sha256',$this->input->post('password'));
 
           if ($this->painelbd->salvar('users', $dados_form) == TRUE){
               setMsg('<p>Usuário cadastrado com sucesso.</p>', 'success');
