@@ -31,7 +31,7 @@ function mostrarOcultarSenha() {
         <h2 class="card-inside-title">Informações do usuário</h2>
         <div class="row clearfix">
           <div class="col-md-12">
-            <label for="title">Titulo Breve do Botão</label>
+            <label for="title">Nome completo do usuário</label>
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="material-icons">account_circle</i>
@@ -46,7 +46,7 @@ function mostrarOcultarSenha() {
         </div>
         <div class="row clearfix">
           <div class="col-md-6">
-            <label for="title">Usuario (Código usuário)</label>
+            <label for="title">Usuario (Código usuário <small>(recomenda-se: nome.sobrenome)</small></label>
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="material-icons">account_circle</i>
