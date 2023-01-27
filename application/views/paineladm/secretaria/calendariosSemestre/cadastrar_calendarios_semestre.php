@@ -46,7 +46,7 @@
               <div class="form-line">
                 <label for="title">Ano</label>
                 <?php
-                echo form_input(array('name' => 'year', 'type' => 'number', 'min' => '2000', 'max' => $ano, 'class' => 'form-control', 'placeholder' => 'Ano'), set_value('year'));
+                echo form_input(array('name' => 'year', 'type' => 'number', 'min' => '2000', 'max' => $ano+5, 'class' => 'form-control', 'placeholder' => 'Ano'), set_value('year'));
                 ?>
               </div>
             </div>

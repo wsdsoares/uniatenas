@@ -101,12 +101,17 @@ $(document).ready(function() {
               <?php
               
             $i = 0;
-            foreach ($pages_content as $textos):
-                if ($textos->order == 'serviceA'):
-                    $classe = 'active';
-                else:
-                    $classe = '';
-                endif;
+            echo '<pre>';
+            //print_r(array_keys($pages_content));
+            //print_r($pages_content);
+
+            echo '</pre>';
+            foreach ($pages_content as $textos){
+              if (array_keys($pages_content)[0]==0 ){
+                $classe = 'active';
+              }else{
+                $classe = '';
+              }
 
                 ?>
               <div role="tabpanel" class="tab-pane <?php echo $classe; ?>" id="<?php echo $textos->order; ?>">
@@ -122,15 +127,16 @@ $(document).ready(function() {
                         <div class="carousel-inner">
                           <?php
                         $ifotos = 0;
+              
                         foreach ($textos->array_fotos["photo"] as $photo) {
-                            if ($ifotos == 0):
+                            if ($ifotos == 0){
                                 $classephoto = 'active';
 
-                            else:
+                            }else{
                                 $classephoto = '';
-                            endif;
+                            }
                             ?>
-                          <div class="<?php echo $classephoto; ?> item" data-slide-number="<?= $ifotos; ?>">
+                          <div class="<?php echo $classephoto; ?> item" data-slide-number="<?php echo $ifotos; ?>">
                             <img src="<?php echo base_url() . $photo->file; ?>" class="img-responsive fotosCarroc">
                           </div>
                           <?php
@@ -171,9 +177,9 @@ $(document).ready(function() {
                                     endif; ?>
               </div>
               <?php
-                                $i = +1;
-                            endforeach;
-                            ?>
+                $i = +1;
+              }
+              ?>
             </div>
           </div>
         </div>

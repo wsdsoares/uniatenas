@@ -10,10 +10,41 @@
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
+      <div class="header">
+        <h2>
+          <?php echo "Página Infraestrutura - Fotos da IES (infraestrutura)"; ?>
+
+        </h2>
+        <div>
+          <span>
+            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu infraestrutura no site principal"; ?></i>
+          </span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-6">
+              <?php 
+                if(isset($paginaInfraestrutura) and $paginaInfraestrutura != '' ){
+                  $tituloBotao = "EDITAR";
+                }else{
+                  $tituloBotao = "CADASTRAR";
+                }
+                echo anchor("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu infraestrutura)', array('class' => 'btn alerts_info'));
+              ?>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
       <?php
-        echo '<pre>';
-        //print_r($dados);
-        echo '</pre>';
         if ($msg = getMsg()){
             echo $msg;
         }
@@ -39,6 +70,9 @@
         </div>
       </div>
       <br />
+      <?php
+      if(isset($paginaInfraestrutura) and $paginaInfraestrutura != '' ){
+      ?>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
@@ -83,18 +117,7 @@
                           data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                           . '<i class="material-icons">delete</i>'
                           . '</a>';
-/*
-                                    $redirect = 'Painel_home-slideshow';
-                                    $table = 'banners';
-
-                                    if ($campus->status == 1) {
-                                        echo  '<i class="material-icons">visibility</i>'
-                                            . '</a>';
-                                    } elseif ($campus->status == 0) {
-                                        echo  '<i class="material-icons">visibility_off</i>'
-                                            . '</a>';
-                                    }
-                                   */ ?>
+?>
                 </td>
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->title;?></td>
@@ -137,6 +160,9 @@
           </table>
         </div>
       </div>
+      <?php
+      }
+      ?>
     </div>
   </div>
 </div>

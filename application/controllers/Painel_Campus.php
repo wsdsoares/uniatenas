@@ -1246,41 +1246,103 @@ class Painel_campus extends CI_Controller {
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
         $page = $this->painelbd->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
-        
-        $joinCategoriasInfraestruturaCampus = array(
-            'campus' => 'campus.id = pages.campusid',
-            'page_contents' => "page_contents.pages_id = $page->id",
-        );
-        $colunasResultadoInfraestrutura = array(
-            'page_contents.id',
-            'page_contents.title',
-            'page_contents.description', 
-            'page_contents.img_destaque', 
-            'page_contents.pages_id', 
-            'page_contents.status', 
-            'page_contents.created_at', 
-            'page_contents.updated_at', 
-            'page_contents.user_id', 
 
-        );
-        $whereCategoriasInfraestrutura= array(
-            'pages.id'=>$page->id,
-        );
+        $pagina = 'infraestrutura';
+        $verificaExistePaginaInfraestrutura = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+    
+        if($page !=null){
+            $joinCategoriasInfraestruturaCampus = array(
+                'campus' => 'campus.id = pages.campusid',
+                'page_contents' => "page_contents.pages_id = $page->id",
+            );
+            $colunasResultadoInfraestrutura = array(
+                'page_contents.id',
+                'page_contents.title',
+                'page_contents.description', 
+                'page_contents.img_destaque', 
+                'page_contents.pages_id', 
+                'page_contents.status', 
+                'page_contents.created_at', 
+                'page_contents.updated_at', 
+                'page_contents.user_id', 
+
+            );
+            $whereCategoriasInfraestrutura= array(
+                'pages.id'=>$page->id,
+            );
+            
+            $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'pages',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null)->result();     
+        }
         
-        $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'pages',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null)->result();     
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/infraestrutura/lista_infraestrutura',
             'dados' => array(
-                'listaInfraestrutura'=>$listaInfraestrutura,
+                'listaInfraestrutura'=>$listaInfraestrutura  = isset($listaInfraestrutura) ? $listaInfraestrutura : '',
                 'campus'=>$campus,
                 'page' => "itens da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'paginaInfraestrutura'=> $verificaExistePaginaInfraestrutura = isset($verificaExistePaginaInfraestrutura) ? $verificaExistePaginaInfraestrutura : '',
                 'tipo'=>'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function cadastrar_pagina_infraestrutura($uriCampus=NULL)
+    {
+      verifica_login();
+  
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'infraestrutura','pages.campusid'=>$campus->id))->row();
+
+      $this->form_validation->set_rules('status', 'Situação', 'required'); 
+
+      if ($this->form_validation->run() == FALSE) {
+          if (validation_errors()):
+              setMsg(validation_errors(), 'error');
+          endif;
+      }else {
+        
+        $dados_form['title'] = 'infraestrutura';
+        $dados_form['status'] = $this->input->post('status');
+        $dados_form['campusid'] = $campus->id;
+
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+        if(isset($verificaExistePagina)){
+          $dados_form['id'] = $verificaExistePagina->id;
+          if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
+            setMsg('<p>Dados da página (menu) infraestrutura atualizado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id"));
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }else{
+          if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
+            setMsg('<p>Dados da página (menu) infraestrutura cadastrada com sucesso.</p>', 'success');
+            redirect(base_url("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id"));
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }
+      }
+
+      $data = array(
+        'titulo' => 'UniAtenas',
+        'conteudo' => 'paineladm/campus/infraestrutura/pagina_menu_infraestrutura/cadastrar_pagina_infraestrutura',
+        'dados' => array(
+          'verificaExistePagina'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
+          'page' => "Cadastro de pagina (menu do site) do infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'campus'=>$campus,
+          'tipo'=>''
+        )
+      );
+
+      $this->load->view('templates/layoutPainelAdm', $data);
     }
 
 
@@ -1306,7 +1368,7 @@ class Painel_campus extends CI_Controller {
             $dados_form['pages_id'] = $page->id;
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
-            $dados_form['order'] = 'service';
+            $dados_form['order'] = $this->input->post('order');
 
 
             if ($id=$this->painelbd->salvar('page_contents', $dados_form)) {
@@ -1339,6 +1401,7 @@ class Painel_campus extends CI_Controller {
         $colunasPaginaInfraestrutura = array(
             'page_contents.id',
             'page_contents.title',
+            'page_contents.order',
             'page_contents.description', 
             'page_contents.title_short', 
             'page_contents.img_destaque', 
@@ -1369,6 +1432,9 @@ class Painel_campus extends CI_Controller {
             }
             if ($dadosInfraestrutura->description != $this->input->post('description')) {
                 $dados_form['description'] = $this->input->post('description');
+            }
+            if ($dadosInfraestrutura->order != $this->input->post('order')) {
+                $dados_form['order'] = $this->input->post('order');
             }
 
             if ($dadosInfraestrutura->status != $this->input->post('status')) {

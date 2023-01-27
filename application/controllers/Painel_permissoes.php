@@ -84,7 +84,12 @@ class Painel_permissoes extends CI_Controller {
         $dados_form = elements(array('perfil'), $this->input->post());
         $array_permissoes= $this->input->post('permissoes[]');
 
-        //$newArray = [];
+        $newArray = [];
+
+        echo '<pre>';
+        print_r($newArray);
+        echo '</pre>';
+
         foreach($array_permissoes as $permissao){
           $parts = explode("-", $permissao);
           $newArray[$parts[0]][] = $permissao;

@@ -101,6 +101,17 @@
               </div>
             </div>
           </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="campusid">Ordem <small>(Ordem exibição dos itens - Lista de começar em 0 primeiro item da
+                    lista)</small></label>
+                <?php
+                   echo form_input(array('name' => 'order', 'type'=>'number','class' => 'form-control', 'placeholder' => 'Ex: 1'), set_value('order',$dadosInfraestrutura->order));
+                    ?>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="row clearfix">
           <div class="col-sm-12">

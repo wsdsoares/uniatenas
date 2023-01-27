@@ -49,7 +49,9 @@ $paginaFinanceiroStatus = $dados['paginaFinanceiro'] !="" ? $dados['paginaFinanc
                         '1' => 'Visível - Ativo',
                         '0' => 'Oculto - Inativo'
                     );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$dados['paginaFinanceiro']->status), array('class' => 'form-control show-tick'));
+
+                    $status = isset($dados['paginaFinanceiro']->status) ? $dados['paginaFinanceiro']->status : '0';
+                    echo form_dropdown('status', $optionSituation, set_value('status',$status), array('class' => 'form-control show-tick'));
                     ?>
               </div>
             </div>
