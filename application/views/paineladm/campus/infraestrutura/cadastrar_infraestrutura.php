@@ -78,7 +78,7 @@
                 <label for="campusid">Ordem <small>(Ordem exibição dos itens - Lista de começar em 0 primeiro item da
                     lista)</small></label>
                 <?php
-                   echo form_input(array('name' => 'order', 'type'=>'number','class' => 'form-control', 'placeholder' => 'Ex: 1'), set_value('order'));
+                   echo form_input(array('name' => 'order', 'type'=>'number','min'=>'0','class' => 'form-control', 'placeholder' => 'Ex: 0'), set_value('order'));
                     ?>
               </div>
             </div>

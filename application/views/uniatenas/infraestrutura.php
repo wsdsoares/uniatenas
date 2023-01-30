@@ -99,20 +99,13 @@ $(document).ready(function() {
           <div class="col-md-12">
             <div class="tab-content">
               <?php
-              
-            $i = 0;
-            echo '<pre>';
-            //print_r(array_keys($pages_content));
-            //print_r($pages_content);
-
-            echo '</pre>';
-            foreach ($pages_content as $textos){
-              if (array_keys($pages_content)[0]==0 ){
-                $classe = 'active';
-              }else{
-                $classe = '';
-              }
-
+              $i = 0;
+              foreach ($pages_content as $textos){
+                if ($textos->order =='serviceA' or $textos->order == $i ){
+                  $classe = 'active';
+                }else{
+                  $classe = '';
+                }
                 ?>
               <div role="tabpanel" class="tab-pane <?php echo $classe; ?>" id="<?php echo $textos->order; ?>">
                 <div class="single-services-content">
