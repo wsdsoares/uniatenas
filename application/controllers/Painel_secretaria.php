@@ -102,7 +102,7 @@ class Painel_secretaria Extends CI_Controller
                 setMsg(validation_errors(), 'erro');
             endif;
         } else {
-            $path = "assets/secretaria/calendariosSemestre/$campus->id";
+            $path = "assets/secretaria/calendariosSemestre/$campus->id/";
             is_way($path);
             if (unique_name_args(noAccentuation($this->input->post('title'), 'Calendar'), $path)) {
                 $name_tmp = null;
