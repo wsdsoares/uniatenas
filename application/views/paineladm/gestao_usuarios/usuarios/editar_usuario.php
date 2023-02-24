@@ -1,3 +1,8 @@
+<style>
+.disabled {
+  background: #f1f1f1;
+}
+</style>
 <script>
 function mostrarOcultarSenha() {
   var senha = document.getElementById("senha");
@@ -56,8 +61,8 @@ function mostrarOcultarSenhaAtual() {
             </div>
           </div>
         </div>
-        <div class="row clearfix">
-          <div class="col-md-6">
+        <div class="row clearfix disabled ">
+          <div class="col-md-4">
             <label for="title">Usuario (Código usuário)</label>
             <div class="input-group">
               <span class="input-group-addon">
@@ -65,7 +70,7 @@ function mostrarOcultarSenhaAtual() {
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'cod_user', 'class' => 'form-control', 'placeholder' => 'Usuário. Ex.: mateus.silva'), set_value('cod_user',$listaUsuario->cod_user));
+                  echo form_input(array('name' => 'cod_user', 'class' => 'form-control','readonly'=>'readonly','disabled'=>'disabled' ,'placeholder' => 'Usuário. Ex.: mateus.silva'), set_value('cod_user',$listaUsuario->cod_user));
                 ?>
               </div>
             </div>
@@ -96,7 +101,7 @@ function mostrarOcultarSenhaAtual() {
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'senhaAtual', 'class' => 'form-control', 'type'=>'password','id'=>'senhaAtual'), set_value('senhaAtual',$listaUsuario->password));
+                  echo form_input(array('name' => 'senhaAtual', 'class' => 'form-control', 'type'=>'password','id'=>'senhaAtual'), set_value('senhaAtual',hash('sha256',$$listaUsuario->password)));
                 ?>
               </div>
               <input type="checkbox" onClick="mostrarOcultarSenhaAtual()">Mostrar senha atual</input>

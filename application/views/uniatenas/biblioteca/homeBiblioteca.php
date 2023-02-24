@@ -173,7 +173,7 @@ if ($campus->id == 1) {
 
 
     
-$linkBibliotecaVirtual = 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=ns263130&groupid=main&profile=ehost&user=ns263130main&password=oxlb22@TsXb';    
+$linkBibliotecaVirtual = 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=ns263130&groupid=main&profile=ehost&user=atenasacesso&password=faculdade23!';    
 $linkBookReenew = "http://177.69.195.4/Corpore.Net/Main.aspx?ActionID=BibEmprestimosPendentesActionWeb&SelectedMenuIDKey=ItemEmprestimosRenovacao";
 $linkFichaBook = "http://177.69.195.4:8000/web/app/edu/PortalEducacional/";
 ?>
@@ -479,8 +479,7 @@ $linkFichaBook = "http://177.69.195.4:8000/web/app/edu/PortalEducacional/";
         </a>
       </div>
       <div class="col-lg-4 mbr-col-md-10">
-        <a target="_blank"
-          href="https://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=ns263130&groupid=main&profile=ehost&user=ns263130main&password=oxlb22@TsXb">
+        <a target="_blank" href="<?php echo $linkBibliotecaVirtual ?>">
           <div class="wrap">
             <div class="ico-wrap">
               <span class="mbr-iconfont fa-pager fa"></span>

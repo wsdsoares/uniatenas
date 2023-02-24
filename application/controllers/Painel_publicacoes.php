@@ -250,22 +250,21 @@ class Painel_publicacoes extends CI_Controller {
   }
 
   public function deletar_item_revista($uriCampus=NULL,$id = NULL)
-    {
-        verifica_login();
-    
-        $item = $this->painelbd->where('*','page_contents', NULL, array('page_contents.id' => $id))->row(); 
+  {
+      verifica_login();
+  
+      $item = $this->painelbd->where('*','page_contents', NULL, array('page_contents.id' => $id))->row(); 
 
-        if ($this->painelbd->deletar('page_contents', $item->id)) {
-            setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-            redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
-        } else {
-            setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-            redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
-        }
-    }
+      if ($this->painelbd->deletar('page_contents', $item->id)) {
+          setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+          redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+      } else {
+          setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+          redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+      }
+  }
 
- 
-    public function revistas($uriCampus=NULL) {
+  public function revistas($uriCampus=NULL) {
   
       $colunasResultadoRevistas = array(
         'revistas.id',

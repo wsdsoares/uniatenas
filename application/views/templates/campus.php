@@ -112,7 +112,6 @@ div.homeInicio a:hover {
       </div>
     </div>
 
-
     <div class="container">
       <div class="socialMediaCampus">
         <div class="box" style=" text-align: center">
@@ -153,116 +152,17 @@ div.homeInicio a:hover {
       width: 140px;
     }
     </style>
-    <?php 
-    if($dados['campus']->id==7 or $dados['campus']->id ==8 ){
-     
-      
-    ?>
+
     <div class="container">
-      <?php 
-    if($dados['campus']->id==8) {
-      ?>
-      <div class="mec-qrcode">
-        <div class="row">
-          <?php ?>
-          <div class="col-xs-12">
-            <span>
-              Consulte o cadastro da Instituição no sistema E-MEC
-            </span>
-          </div>
-        </div>
-      </div>
-      <?php 
-    }
-       if($dados['campus']->id==7){
-        $link1 = "https://emec.mec.gov.br/emec/consulta-cadastro/detalhamento/d96957f455f6405d14c6542552b0f6eb/MjUyMjM=";
-        $link2 = "https://emec.mec.gov.br/emec/consulta-cadastro/detalhamento/d96957f455f6405d14c6542552b0f6eb/MjU2MzQ=";
-      ?>
-      <style>
-      .dados-mec {
-        margin-top: 10px;
-      }
-
-      .div-1 {
-        float: left;
-        width: 40%;
-      }
-
-      .div-1 img,
-      .div-3 img {
-        width: 170px;
-        float: left;
-      }
-
-      .div-1 img {
-        float: right;
-      }
-
-      .div-centro {
-
-        padding: 10px;
-        float: left;
-        width: 10%;
-
-      }
-
-      .div-3 {
-
-        float: left;
-        width: 40%;
-
-      }
-      </style>
-      <div class="mec-qrcode">
-        <div class="dados-mec">
-          <div class="div-1">
-            <a href="<?php echo $link1?>" target="_blank">
-              <img src="<?php echo base_url('assets/images/institucional-qrcodes/mec/7/SeloSorriso.png');?>" alt="E-MEC"
-                class="s">
-            </a>
-          </div>
-          <div class="div-centro">
-            <span>
-              Consulte o cadastro da Instituição no sistema E-MEC
-            </span>
-          </div>
-          <div class="div-3">
-            <a href="<?php echo $link2?>" target="_blank">
-              <img src="<?php echo base_url('assets/images/institucional-qrcodes/mec/7/SeloSorrisoCentroMT.png');?>"
-                alt="E-MEC" class="selo-s">
-            </a>
-          </div>
-        </div>
-      </div>
-      <?php
-      }elseif($dados['campus']->id==8){
-        $link3 ="https://emec.mec.gov.br/emec/consulta-cadastro/detalhamento/d96957f455f6405d14c6542552b0f6eb/MjUyMjI=";
-        ?>
-      <div class="mec-qrcode">
-        <div class="row">
-          <div class="col-xs-12">
-            <a href="<?php echo $link3 ?>" target="_blank">
-              <img src="<?php echo base_url('assets/images/institucional-qrcodes/mec/8/SeloPortoSeguro.png');?>"
-                alt="E-MEC" class="selo-campus" style="width: 170px;">
-            </a>
-
-          </div>
-        </div>
-        <?php
-      
-      }
-    }
-    ?>
-
-        <div class="container" style="display:block; position: absolute;  bottom: 0; margin-left: auto;
+      <div class="container" style="display:block; position: absolute;  bottom: 0; margin-left: auto;
       margin-right: auto;
       text-align: center;">
-          <footer>
-            www.atenas.edu.br<br>
-            <?php echo $dados['campus']->phone; ?>
-          </footer>
-        </div>
+        <footer>
+          www.atenas.edu.br<br>
+          <?php echo $dados['campus']->phone; ?>
+        </footer>
       </div>
+    </div>
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

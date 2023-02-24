@@ -53,27 +53,24 @@ text.Orange-label {
             ?>
             </ul>
           </div>
-          <?php
-
-          if(!empty($dados['conteudo'])){
-            ?>
           <div class="col-sm-9">
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="tab0">
                 <div class="row">
                   <?php
                   if (!empty($dados['conteudo'][0]->title_short)) {
-                  ?>
+                    ?>
                   <h4 class="text-center">
-                    <?php echo $dados['conteudo'][0]->title_short;?>
+                    <?php
+                    echo $dados['conteudo'][0]->title_short;
+                    ?>
                   </h4>
                   <?php
-                    } 
-                  ?>
+                  } ?>
                   <div class="col-md-12">
                     <?php
-                      echo $dados['conteudo'][0]->description;
-                      ?>
+                    echo $dados['conteudo'][0]->description;
+                    ?>
                   </div>
 
                 </div>
@@ -81,27 +78,60 @@ text.Orange-label {
               <div role="tabpanel" class="tab-pane" id="tab1">
                 <div class="row">
                   <?php
-                    if (!empty($dados['conteudo'][1]->title_short)) {
-                    ?>
+                  if (!empty($dados['conteudo'][1]->title_short)) {
+                  ?>
                   <h4 class="text-center">
                     <?php
-                      echo $dados['conteudo'][1]->title_short;
-                      ?>
+                    echo $dados['conteudo'][1]->title_short;
+                    ?>
                   </h4>
                   <?php
-                    } ?>
+                  } ?>
                   <div class="col-md-12">
+                    <?php if($dados['conteudo'][1]->order != 'Texto2'):?>
+                    <div class="col-sm-5 col-xs-6">
+                      <h4 class="text-center titleSPIC">Portaria Normativa e Manual para
+                        elaboração de TCC no UniAtenas</h4>
+                      <div class="card text-center boxSite">
+                        <a href="<?php echo base_url('assets/files/spic/MANUAL-DE-ELABORACAO-DE-TCC-I-E-TCC-II-2018.pdf') ?>"
+                          class="iconSPIC" target="_blank">
+
+                          <i class="fas fa-file-pdf fa-3x" aria-hidden="true"></i>
+                          <p>Visualizar</p>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-sm-5 col-xs-6">
+                      <h4 class="text-center titleSPIC">Acesso às monografias desenvolvidas no
+                        UniAtenas</h4>
+                      <div class="card text-center boxSite">
+                        <a href="http://177.69.195.6:8080/portalatenas/usuarios/login" class="iconSPIC">
+                          <i class="fas fa-lock fa-3x" aria-hidden="true"></i>
+                          <p>Acessar</p>
+                        </a>
+                      </div>
+                    </div>
+                    <?php endif;?>
                     <?php
-                      echo $dados['conteudo'][1]->description;
-                      ?>
+                                        echo $dados['conteudo'][1]->description;
+                                        ?>
+                    <!--div class="col-sm-5 col-xs-6">
+                                            <h4 class="text-center titleSPIC">Manual Aba Alterar Meus Dados</h4>
+                                            <div class="card text-center boxSite">
+                                                <a href="<?php echo base_url('assets/files/spic/MANUAL-DE-ELABORACAO-DE-TCC-I-E-TCC-II-2019.pdf') ?>"
+                                                   class="iconSPIC">
+                                                    <i class="fas fa-lock fa-3x" aria-hidden="true"></i>
+                                                    <p>Acessar</p>
+                                                </a>
+                                            </div>
+                                        </div-->
+
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
-          <?php
-            }
-          ?>
         </div>
       </div>
     </div>
@@ -173,10 +203,21 @@ text.Orange-label {
         foreach ($dados['conteudoLinksUteis'] as $linksUteis){
         ?>
         <div class="last-post-aluno">
-          <a target="_blank" href="<?php echo $linksUteis->link_redir;?>"
-            class="accordionAluno"><?php echo $linksUteis->title;?></a>
+          <a target="_blank" href="http://www.periodicos.capes.gov.br/" class="accordionAluno">Periódicos Capes</a>
         </div>
         <hr>
+
+        <div class="last-post-aluno">
+          <a target="_blank" href="https://scholar.google.com/" class="accordionAluno">Google Acadêmico</a>
+        </div>
+        <hr>
+        <div class="last-post-aluno">
+          <a target="_blank" href="https://scielo.org/" class="accordionAluno">Scielo</a>
+        </div>
+        <hr>
+        <div class="last-post-aluno">
+          <a target="_blank" href="https://www.redalyc.org/" class="accordionAluno">Redalyc</a>
+        </div>
         <?php 
         }
       ?>

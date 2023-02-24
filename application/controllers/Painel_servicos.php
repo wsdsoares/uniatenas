@@ -348,14 +348,6 @@ class Painel_servicos extends CI_Controller {
         $dados_form['id'] = $paginaFinanceiro->id;
         $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-
-
-        echo '<br>';
-      
-        echo '</br>';
-        echo '<pre>';
-        print_r($dados_form);
-        echo '</pre>';
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
             redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));

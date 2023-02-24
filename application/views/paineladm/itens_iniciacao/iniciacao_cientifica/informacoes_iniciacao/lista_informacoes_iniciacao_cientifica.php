@@ -1,31 +1,40 @@
 <div class="block-header">
-  <h2>PAINEL ADMINISTRATIVO</h2>
+  <h2>Painel Administrativo</h2>
 </div>
-<!-- Exportable Table -->
+
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      
       if ($msg = getMsg()){
-          echo $msg;
+        echo $msg;
       }
       ?>
       <div class="header">
         <h2>
-          <?php echo $page; ?>
+          <?php echo "Página INICIAÇÃO CIENTÍFICA - Informações "; ?>
+
         </h2>
 
+        <br />
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
+
           <div class="col-xs-6">
-            <?php echo anchor("Painel_usuarios/cadastrar_usuario", '<i class="material-icons">add_box</i> CADASTRAR Usuário', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_iniciacao_cientifica/cadastrar_informacoes_iniciacao_cientifica/$campus->id/$pagina->id", '<i class="material-icons">add_box</i> CADASTRAR Item', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
           </div>
 
+          <div class="col-xs-6">
+            <?php echo anchor("Painel_iniciacao_cientifica/lista_informacoes_iniciacao/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
+          </div>
         </div>
       </div>
       <br />
+      <?php
+      
+      if(isset($listaInformacoesPaginaIniciacaoCientifica) and $listaInformacoesPaginaIniciacaoCientifica != '' ){
+      ?>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
@@ -33,11 +42,11 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Nome</th>
-                <th>Usuário</th>
-                <th>Email</th>
-                <th>Vinculo Campus</th>
+                <th>Título</th>
+                <th>Sub Título</th>
+                <th>Ordem</th>
                 <th>Situação</th>
+                <th>Descrição...</th>
                 <th>Modificado em, por:</th>
               </tr>
             </thead>
@@ -45,66 +54,53 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Nome</th>
-                <th>Usuário</th>
-                <th>Email</th>
-                <th>Vinculo Campus</th>
-
+                <th>Título</th>
+                <th>Sub Título</th>
+                <th>Ordem</th>
                 <th>Situação</th>
+                <th>Descrição...</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['listaUsuarios'] as $item):
-              ?>
+              foreach ($dados['listaInformacoesPaginaIniciacaoCientifica'] as $item):
+                  ?>
               <tr>
                 <td class="center">
                   <?php 
 
-                     echo '<a href=' . base_url("Painel_usuarios/editar_usuario/$item->id") . '>'
-                      . '<i class="material-icons">edit</i>'
-                      . '</a> ';
-                    /*echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                    echo '<a href=' . base_url("Painel_iniciacao_cientifica/editar_informacoes_iniciacao_cientifica/$campus->id/$pagina->id/$item->id") . '>'
+                        . '<i class="material-icons">edit</i>'
+                        . '</a> ';
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-
-                      $redirect = 'Painel_home-slideshow';
-                      $table = 'banners';
-
-                      if ($campus->status == 1) {
-                          echo  '<i class="material-icons">visibility</i>'
-                              . '</a>';
-                      } elseif ($campus->status == 0) {
-                          echo  '<i class="material-icons">visibility_off</i>'
-                              . '</a>';
-                      }
-                      */
                   ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->name;?></td>
-                <td><?php echo $item->cod_user;?></td>
-                <td><?php echo $item->email;?></td>
-                <td>
-                  <?php
-                     echo anchor("Painel_usuarios/lista_vinculo_campus_usuario/$item->id",'Vincular Campus',array('class'=>"btn-opcoes-curso btn btn-primary")); 
-                     ?>
-                </td>
+                <td><?php echo $item->title;?></td>
+                <td><?php echo $item->title_short;?></td>
+                <td><?php echo $item->order;?></td>
+
                 <td>
                   <?php
                     if($item->status =='0'){
-                      echo 'Inativo';
+                        $situacao = 'Inativo';
                     }else{
-                      echo 'Ativo';
+                        $situacao = 'Ativo';
                     }
+
+                    echo $situacao;
                     ?>
                 </td>
+                <td><?php echo substr($item->description, 0, 150).'...';?></td>
+
 
                 <td>
                   <?php 
                     $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).' - '.$item->user_id; 
+                    echo $dateModification . ' - ' . $item->user_id;
                     ?>
                 </td>
 
@@ -117,6 +113,9 @@
           </table>
         </div>
       </div>
+      <?php
+      }
+      ?>
     </div>
   </div>
 </div>
@@ -152,9 +151,8 @@ $('#modalDelete').on('show.bs.modal', function(e) {
   var id = $(e.relatedTarget).attr('data-id');
 
   $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
-
-  console.log()
-
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_iniciacao_cientifica/deletar_item_iniciacao/$campus->id/$pagina->id/"); ?>' +
+    id);
 });
 </script>

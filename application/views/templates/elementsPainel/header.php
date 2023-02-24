@@ -448,6 +448,7 @@ function ativo() {
                     echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
                   ?>
                 </li>
+
                 <li>
                   <?php
                     //echo anchor('Painel_publicacoes/cursosMonografia', '<span>Monografias</span>');
@@ -462,11 +463,20 @@ function ativo() {
                 </li>
 
               </ul>
+
+              <?php
+                echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
+              ?>
+              <?php
+                echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>CEP - Comitê de Ética em Pesquisa</span>');
+              ?>
             </li>
           </ul>
         </li>
-        <li class="header">Gestão - Vestibular Medicina</li>
+        <li class="header"></li>
+
         <!-- <li>
+          <li class="header">Gestão - Vestibular Medicina</li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>PROCESSO SELETIVO</span>

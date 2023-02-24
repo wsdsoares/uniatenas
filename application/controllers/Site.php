@@ -158,8 +158,9 @@ class Site extends CI_Controller
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
                 //'fragmtext' => $texbibl,
-                'conteudoContato' => $pages_content_contato,
-                'contatos' => $phones,
+                // 'conteudoContato' => $pages_content_contato,
+                'conteudoContato' => '',
+                'contatos' => '',
             ),
             'js' => null,
             'footer' => ''
@@ -642,7 +643,7 @@ class Site extends CI_Controller
         
         $page = $this->bancosite->getWhere('pages', array('title' => 'napp', 'campusid' => $dataCampus->id))->row();
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->result();
+       //$pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->result();
 
 
         $data = array(
@@ -657,7 +658,7 @@ class Site extends CI_Controller
                 'city' => $dataCampus->city,
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
-                'conteudoContatos' => $pages_content_contato,
+                //'conteudoContatos' => $pages_content_contato,
             )
         );
         $this->output->cache(14400);
