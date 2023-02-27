@@ -468,7 +468,7 @@ function ativo() {
                 echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
               ?>
               <?php
-                echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>CEP - Comitê de Ética em Pesquisa</span>');
+                echo anchor('Painel_pesquisa_comite/lista_campus_comite', '<span>CEP - Comitê de Ética em Pesquisa</span>');
               ?>
             </li>
           </ul>

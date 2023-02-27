@@ -59,44 +59,36 @@ text.Orange-label {
             ?>
           <div class="col-sm-9">
             <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="tab0">
+              <?php
+              for ($i = 0; $i < count($conteudo); $i++) {
+                if ($i == 0) {
+                  $active = "active";
+                } else {
+                  $active = "";
+                }
+              ?>
+              <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="tab<?php echo $i; ?>">
                 <div class="row">
                   <?php
-                  if (!empty($dados['conteudo'][0]->title_short)) {
+                  if (!empty($dados['conteudo'][$i]->title_short)) {
                   ?>
                   <h4 class="text-center">
-                    <?php echo $dados['conteudo'][0]->title_short;?>
+                    <?php echo $dados['conteudo'][$i]->title_short;?>
                   </h4>
                   <?php
                     } 
                   ?>
                   <div class="col-md-12">
                     <?php
-                      echo $dados['conteudo'][0]->description;
+                      echo $dados['conteudo'][$i]->description;
                       ?>
                   </div>
 
                 </div>
               </div>
-              <div role="tabpanel" class="tab-pane" id="tab1">
-                <div class="row">
-                  <?php
-                    if (!empty($dados['conteudo'][1]->title_short)) {
-                    ?>
-                  <h4 class="text-center">
-                    <?php
-                      echo $dados['conteudo'][1]->title_short;
-                      ?>
-                  </h4>
-                  <?php
-                    } ?>
-                  <div class="col-md-12">
-                    <?php
-                      echo $dados['conteudo'][1]->description;
-                      ?>
-                  </div>
-                </div>
-              </div>
+              <?php
+              }
+            ?>
             </div>
           </div>
           <?php

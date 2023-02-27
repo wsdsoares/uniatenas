@@ -19,41 +19,61 @@ class IniciacaoCientifica extends CI_Controller {
 
         $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $page = $this->bancosite->getWhere('pages', array('title' => 'cep','campusid'=>$dataCampus->id))->row();
+        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaComiteEticaPesquisa', 'campusid'=>$dataCampus->id))->row();
 
-        $consulta = "SELECT 
-                            *
-                        FROM
-                            at_site.page_contents
-                        where page_contents.order like 'texto%'
-                        and pages_id = $page->id
-                                ";
 
-        $pages_content = $this->bancosite->getQuery($consulta)->result();
+        //$page = $this->bancosite->getWhere('pages', array('title' => 'cep','campusid'=>$dataCampus->id))->row();
+
+        // $consulta = "SELECT 
+        //                     *
+        //                 FROM
+        //                     at_site.page_contents
+        //                 where page_contents.order like 'texto%'
+        //                 and pages_id = $page->id
+        //                         ";
+
+        //$pages_content = $this->bancosite->getQuery($consulta)->result();
+
+        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina' );
+        $pages_content = $this->bancosite->where('*','page_contents',null, $whereConteudoPagina )->result();
+        // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+
+        $colunasResultadoAtendimento = array('page_contents.id','page_contents.title','page_contents.description','page_contents.status','page_contents.pages_id');
+        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento,'page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'atendimento'))->row();
+
+        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis'))->result();
+
+
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+        //$pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
-        $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
-        $tablePhones = "campus_has_setores";
-        $dataJoinPhones = array("contatos_setores" =>"contatos_setores.setoresidcamp = campus_has_setores.id");
-        $wherePhones = array("campus_has_setores.id"=> $page->setorcampid,"contatos_setores.visiblepage" => 1);
-        $phones = $this->sitebank->where($filedPhones,$tablePhones,$dataJoinPhones,$wherePhones)->result();
+        // $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
+        // $tablePhones = "campus_has_setores";
+        // $dataJoinPhones = array("contatos_setores" =>"contatos_setores.setoresidcamp = campus_has_setores.id");
+        // $wherePhones = array("campus_has_setores.id"=> $page->setorcampid,"contatos_setores.visiblepage" => 1);
+        // $phones = $this->sitebank->where($filedPhones,$tablePhones,$dataJoinPhones,$wherePhones)->result();
 
 
         $data = array(
             'head' => array(
                 'title' => 'Comitê de Ética em Pesquisa ' . $dataCampus->name . ' ' . $dataCampus->city,
             ),
-            'conteudo' => 'uniatenas/cep/homeComiteEtica.php',
+            'conteudo' => 'uniatenas/cep/homeComiteEtica',
             'footer' => '',
             'menu' => '',
             'js' => null,
             'dados' => array(
+                // 'conteudo' => $pages_content,
+                // 'conteudoContato' => $pages_content_contato,
+                // 'campus' => $dataCampus,
+                // 'conteudoPag' => $conteudoPrincipal,
+                // 'contatos' => $phones
                 'conteudo' => $pages_content,
                 'conteudoContato' => $pages_content_contato,
-                'campus' => $dataCampus,
-                'conteudoPag' => $conteudoPrincipal,
-                'contatos' => $phones
+                'conteudoAtendimento' => $conteudoAtendimento = isset($conteudoAtendimento) ? $conteudoAtendimento : '',
+                'conteudoLinksUteis' => $conteudoLinksUteis = isset($conteudoLinksUteis) ? $conteudoLinksUteis : '',
             )
         );
         $this->output->cache(14400);
