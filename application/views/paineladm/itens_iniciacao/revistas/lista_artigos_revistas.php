@@ -86,7 +86,11 @@
                 </td>
 
 
-                <td><?php echo $row->title; ?></td>
+                <td><?php echo $row->title; 
+                   if (!file_exists($row->files)){
+                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
+                   }
+                ?></td>
                 <td>
                   <?php echo $row->types . "- VOL.:" . $row->volume . " - N" . $row->number_vol ?>
                 </td>

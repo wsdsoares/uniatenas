@@ -1,7 +1,7 @@
 <div class="block-header">
   <h2>Painel Administrativo</h2>
 </div>
-<!-- Exportable Table -->
+
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
@@ -12,29 +12,28 @@
       ?>
       <div class="header">
         <h2>
-          <?php echo $page; ?>
+          <?php echo "Página TRABALHO DE CONCLUSÃO DE CURSO - Informações "; ?>
+
         </h2>
 
+        <br />
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
-          <?php
-         
-          ?>
+
           <div class="col-xs-6">
-            <?php echo anchor("Painel_publicacoes/registro_revistas/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR Revista', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_pesquisa_tcc/cadastrar_itens_tcc/$campus->id/$pagina->id", '<i class="material-icons">add_box</i> CADASTRAR Item', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
           </div>
-          <?php 
-         
-          ?>
+
           <div class="col-xs-6">
-            <?php echo anchor('Painel_publicacoes/lista_campus_revistas', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_pesquisa_tcc/lista_informacoes_tcc/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
           </div>
         </div>
       </div>
       <br />
       <?php
-      //if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
+      
+      if(isset($listaInformacoesPaginaTcc) and $listaInformacoesPaginaTcc != '' ){
       ?>
       <div class="body">
         <div class="table-responsive">
@@ -43,10 +42,11 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Título </th>
-                <th>CAPA</th>
+                <th>Título</th>
+                <th>Sub Título</th>
+                <th>Ordem</th>
                 <th>Situação</th>
-                <th>Lista de Artigos</th>
+                <th>Descrição...</th>
                 <th>Modificado em, por:</th>
               </tr>
             </thead>
@@ -54,41 +54,35 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Título </th>
-                <th>CAPA</th>
+                <th>Título</th>
+                <th>Sub Título</th>
+                <th>Ordem</th>
                 <th>Situação</th>
-                <th>Lista de Artigos</th>
+                <th>Descrição...</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['revistas'] as $item):
-              ?>
+              foreach ($dados['listaInformacoesPaginaTcc'] as $item):
+                  ?>
               <tr>
                 <td class="center">
                   <?php 
-                    echo '<a href=' . base_url("Painel_publicacoes/editar_registro_revistas/$campus->id/$item->id") . '>'
+
+                    echo '<a href=' . base_url("Painel_pesquisa_tcc/editar_itens_tcc/$campus->id/$pagina->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->titulo . '" data-id="' . $item->id . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
                   ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->titulo;?></td>
-                <td>
+                <td><?php echo $item->title;?></td>
+                <td><?php echo $item->title_short;?></td>
+                <td><?php echo $item->order;?></td>
 
-                  <?php
-                  if (file_exists($item->capa)){
-                    echo anchor(base_url(verifyImg($item->capa)), '<img src="' . base_url(verifyImg($item->capa)) . '" class="thumbnail">', array('target' => '_blank'));
-                  }else{
-                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - ARQUIVO INEXISTENTE OU CORROMPIDO</span>';
-                  }
-                  ?>
-                </td>
-                </td>
                 <td>
                   <?php
                     if($item->status =='0'){
@@ -100,14 +94,8 @@
                     echo $situacao;
                     ?>
                 </td>
+                <td><?php echo substr($item->description, 0, 150).'...';?></td>
 
-                <td>
-                  <div class="btn-opcoes-curso">
-                    <?php
-                     echo anchor("Painel_publicacoes/lista_artigos_revistas/$campus->id/$item->id",'Artigos da revista',array('class'=>"btn-opcoes-curso btn btn-primary")); 
-                     ?>
-                  </div>
-                </td>
 
                 <td>
                   <?php 
@@ -126,7 +114,7 @@
         </div>
       </div>
       <?php
-      //}
+      }
       ?>
     </div>
   </div>
@@ -164,7 +152,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
 
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_financeiro/deletar_item_financeiro/$campus->id/"); ?>' +
+    '<?php echo base_url("Painel_pesquisa_tcc/deletar_item_tcc/$campus->id/$pagina->id/"); ?>' +
     id);
 });
 </script>

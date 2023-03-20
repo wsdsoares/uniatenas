@@ -107,7 +107,11 @@
                 </td>
                 <td>
                   <?php
-                  echo anchor(base_url(verifyImg($item->files)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
+                  if (file_exists($item->files)){
+                    echo anchor(base_url(verifyImg($item->files)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
+                  }else{
+                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - ARQUIVO INEXISTENTE OU CORROMPIDO</span>';
+                  }  
                   ?>
                 </td>
                 <td>
