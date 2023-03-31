@@ -29,13 +29,6 @@
                 echo anchor("Painel_biblioteca/cadastrar_pagina_biblioteca/$campus->id", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu biblioteca)', array('class' => 'btn alerts_info'));
               ?>
             </div>
-            <div class="col-xs-6">
-              <?php
-              if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
-                echo anchor("Painel_biblioteca/cadastrar_contato_pagina_biblioteca/$campus->id/$paginaFinanceiro->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (financeiro)', array('class' => 'btn btn-blue1'));
-              }
-              ?>
-            </div>
           </div>
         </div>
       </div>
@@ -57,108 +50,75 @@
         </h2>
 
       </div>
-      <div class="botoes-acoes-formularios">
-        <div class="container">
-          <?php
-          if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
-          ?>
-          <div class="col-xs-6">
-            <?php echo anchor("Painel_biblioteca/cadastrar_informacoes_biblioteca/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
-          </div>
-          <?php 
-          }
-          ?>
-          <div class="col-xs-6">
-            <?php echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
-          </div>
-        </div>
-      </div>
+
       <br />
       <?php
-      if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
+      if(isset($paginaBiblioteca) and $paginaBiblioteca != '' ){
       ?>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-            <thead>
-              <tr>
-                <th>Ações</th>
-                <th>#</th>
-                <th>Título página</th>
-                <th>Imagem</th>
-                <th>Situação</th>
-                <th>Filial</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>Ações</th>
-                <th>#</th>
-                <th>Título página</th>
-                <th>Imagem</th>
-                <th>Situação</th>
-                <th>Filial</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <?php
-              foreach ($dados['conteudosPagina'] as $item):
+      <div class="botoes-acoes-formularios">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Informações Biblioteca</h5>
+                  <p class="card-text"><small>(Apresentação, descrição, comutação, etc)</small></p>
+                  <?php
+                    echo anchor("Painel_biblioteca/lista_itens_biblioteca/$campus->id/$paginaBiblioteca->id", 'Ver Itens', array('class' => 'btn btn-primary'));
                   ?>
-              <tr>
-                <td class="center">
-                  <?php 
 
-                    echo '<a href=' . base_url("Painel_biblioteca/editar_informacoes_biblioteca/$campus->id/$item->id") . '>'
-                        . '<i class="material-icons">edit</i>'
-                        . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
-                        . '<i class="material-icons">delete</i>'
-                        . '</a>';
-                  ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->title;?></td>
-                <td>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Links ùteis/ Acesso Rápido</h5>
+                  <p class="card-text"><small>(Links importantes)</small></p>
 
                   <?php
-                  if($item->order==0){
-                    echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
-                  }else{
-                    echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
-                  }
+                    echo anchor("Painel_biblioteca/lista_links_uteis_biblioteca/$campus->id/$paginaBiblioteca->id", 'Ver links', array('class' => 'btn btn-primary'));
                   ?>
-                </td>
-                </td>
-                <td>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Comutação Bibliográfica</h5>
+                  <p class="card-text"><small>(Links + acesseos)</small></p>
                   <?php
-                    if($item->status =='0'){
-                        $situacao = 'Inativo';
-                    }else{
-                        $situacao = 'Ativo';
-                    }
-
-                    echo $situacao;
-                    ?>
-                </td>
-
-                <td><?php echo $item->city;?></td>
-
-                <td>
-                  <?php 
-                    $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo $dateModification . ' - ' . $item->user_id;
-                    ?>
-                </td>
-
-
-              </tr>
-              <?php
-                endforeach;
-                ?>
-            </tbody>
-          </table>
+                    echo anchor("Painel_biblioteca/lista_itens_comutacao_biblioteca/$campus->id/$paginaBiblioteca->id", 'Ver informações', array('class' => 'btn btn-primary'));
+                  ?>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Foto do Slide</h5>
+                  <p class="card-text"><small>(Fotos biblioteca)</small></p>
+                  <?php
+                    echo anchor("Painel_biblioteca/lista_fotos_slides_biblioteca/$campus->id/$paginaBiblioteca->id", 'Ver informações', array('class' => 'btn btn-primary'));
+                  ?>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Revistas e Periódicos</h5>
+                  <p class="card-text"><small>(Links externos)</small></p>
+                  <?php
+                  // Painel_biblioteca_revistas_periodicos/lista_areas_cursos/1/16
+                    // echo anchor("Painel_biblioteca_revistas_periodicos/lista_itens_revista_periodicos/$campus->id/$paginaBiblioteca->id", 'Ver links', array('class' => 'btn btn-primary'));
+                    echo anchor("Painel_biblioteca_revistas_periodicos/lista_areas_cursos/$campus->id/$paginaBiblioteca->id", 'Ver links', array('class' => 'btn btn-primary'));
+                  ?>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <?php
@@ -167,40 +127,3 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Você tem certeza?</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Você tem certeza que deseja realizar essa ação de deletar o item abaixo?</p>
-        <p>Essa ação é <span class="text-danger" style="font-weight: bold">IRREVERSÍVEL</span> e todos os dados
-          ligados a esse item serão removidos <span class="text-danger"
-            style="font-weight: bold">PERMANENTEMENTE</span>.
-        </p>
-        <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-        <a id="btnCerteza" class="btn btn-danger" href="">Sim, tenho certeza!</a>
-      </div>
-    </div>
-  </div>
-</div>
-<?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
-
-<script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
-
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_biblioteca/deletar_item_biblioteca/$campus->id/"); ?>' +
-    id);
-});
-</script>

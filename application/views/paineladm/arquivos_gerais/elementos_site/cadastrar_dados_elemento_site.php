@@ -59,7 +59,7 @@
                         'topo_site' => 'Topo - Site',
                         'rodape' => 'Rodapé - Site',
                         'link_vestibular' => 'Link vestibular - Top Site',
-                        'link_biblioteca' => 'Link Biblioteca - Top Site',
+                        'link_biblioteca' => 'Link Biblioteca - Topo Site',
                     );
                     echo form_dropdown('tipo', $optionTipo, set_value('tipo'), array('class' => 'form-control show-tick'));
                     ?>

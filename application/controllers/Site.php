@@ -136,18 +136,86 @@ class Site extends CI_Controller
         $colunaCampus = array('campus.name','campus.id','campus.city','campus.uf');
         $dataCampus = $this->bancosite->where($colunaCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $pages_content = $this->bancosite->getWhere('pages', array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id, 'order' => 'contatos'))->row();
+        // $pages_content = $this->bancosite->getWhere('pages', array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
+        
+        $page = $this->bancosite->where('*','pages', NULL, array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
 
-        $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
-        $tablePhones = "campus_has_setores";
-        $dataJoinPhones = array("contatos_setores" => "contatos_setores.setoresidcamp = campus_has_setores.id");
-        $wherePhones = array("contatos_setores.visiblepage" => 1,
-                            "campus_has_setores.campus_id"=>$dataCampus->id);
-        $phones = $this->Painelsite->where($filedPhones, $tablePhones, $dataJoinPhones, $wherePhones)->result();
+        //$whereConteudoPrincipal = array('page_contents.pages_id' => $page->id,'page_contents.status'=>1,'page_contents.tipo'=> 'informacoesPagina');
 
+        $queryItensBiblioteca = "
+        SELECT 
+          page_contents.id,
+          page_contents.title,
+          page_contents.title_short,
+          page_contents.status,
+          page_contents.tipo,
+          page_contents.order,
+          page_contents.description
+        FROM
+          page_contents
+          JOIN pages ON pages.id = page_contents.pages_id
+          JOIN campus ON campus.id = pages.campusid
+        WHERE
+          page_contents.pages_id = $page->id AND 
+          page_contents.status = 1 AND 
+          page_contents.tipo = 'informacoesPagina' AND
+          page_contents.order NOT IN ('linkComutacao','comutacao')
+        ORDER BY page_contents.title ASC
+        ";
+
+        //$conteudoPrincipal = $this->bancosite->where('*','page_contents', null,$whereConteudoPrincipal, array('campo' => 'page_contents.order', 'ordem' => 'asc'))->result();
+        $conteudoPrincipal = $this->bancosite->getQuery($queryItensBiblioteca)->result();
+
+        // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+
+        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
+        $whereLinksUteis = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis','page_contents.tipo'=>'linksUteis');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, $whereLinksUteis)->result();
+
+        $colunasResultadoAcessoRapido = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
+        $whereAcessoRapido = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis','page_contents.tipo'=>'acessoRapido');
+        $conteudoAcessoRapido = $this->bancosite->where($colunasResultadoAcessoRapido,'page_contents',null, $whereAcessoRapido)->result();
+
+        $colunasResultadoComutacao = array('page_contents.title','page_contents.description');
+        $whereComutacao = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.tipo' => 'informacoesPagina','page_contents.order '=>'comutacao');
+        $conteudoComutacao = $this->bancosite->where($colunasResultadoComutacao,'page_contents',null, $whereComutacao)->row();
+        
+        $colunasResultadoLinkComutacao = array('page_contents.title','page_contents.description','page_contents.link_redir');
+        $whereLinkComutacao = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.tipo' => 'informacoesPagina','page_contents.order '=>'linkComutacao');
+        $conteudoLinkComutacao = $this->bancosite->where($colunasResultadoLinkComutacao,'page_contents',null, $whereLinkComutacao, array('campo'=>'title','ordem'=>'ASC'))->result();
+
+        $colunaFotosBiblioteca = array(
+          'photos_gallery.id',
+          'photos_gallery.id_page_contents',
+          'photos_gallery.campusid',
+          'photos_gallery.title',
+          'photos_gallery.file',
+          'photos_gallery.status', 
+        );
+        $joinFotosSlideBiblioteca  = array(
+          'page_contents'=>'page_contents.id = photos_gallery.id_page_contents',
+          'pages'=>'pages.id = page_contents.pages_id',
+        );
     
+        $whereFotosSlideBiblioteca = array(
+          'page_contents.pages_id'=>$page->id,
+        );
+        
+        $conteudoFotosSlideBiblioteca = $this->bancosite->where($colunaFotosBiblioteca,'photos_gallery',$joinFotosSlideBiblioteca, $whereFotosSlideBiblioteca)->result();
+
+        $colunasResultadoLinkComutacao = array('page_contents.title','page_contents.description','page_contents.link_redir');
+        $joinLinksRevistaPeriodicos  = array(
+            'magazines_area'=>'magazines_area.id = magazines_links.magazines_areaid',
+            'campus'=>'campus.id = magazines_area.campus_id',
+          );
+        $whereLinksRevistaPeriodicos = array('magazines_area.status' => 1,'magazines_area.campus_id'=>$dataCampus->id);
+        
+        $conteudoLinksRevistaPeriodicos = $this->bancosite->where(array('magazines_links.id'),'magazines_links',$joinLinksRevistaPeriodicos, $whereLinksRevistaPeriodicos)->result();
+        
+        $existeLinkRevistasPeriodicos = count($conteudoLinksRevistaPeriodicos);
+        
+        $pages_content_contato = $this->bancosite->where('*','page_contents', NULL, array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         $data = array(
             'head' => array(
@@ -159,7 +227,14 @@ class Site extends CI_Controller
                 'conteudoPag' => $conteudoPrincipal,
                 //'fragmtext' => $texbibl,
                 // 'conteudoContato' => $pages_content_contato,
+                'conteudoAcessoRapido' => $conteudoAcessoRapido = isset($conteudoAcessoRapido) ? $conteudoAcessoRapido : '',
+                'conteudoLinksUteis' => $conteudoLinksUteis = isset($conteudoLinksUteis) ? $conteudoLinksUteis : '',
+                'conteudoComutacao' => $conteudoComutacao = isset($conteudoComutacao) ? $conteudoComutacao : '',
+                'conteudoLinkComutacao' => $conteudoLinkComutacao = isset($conteudoLinkComutacao) ? $conteudoLinkComutacao : '',
+                'conteudoFotosSlideBiblioteca' => $conteudoFotosSlideBiblioteca = isset($conteudoFotosSlideBiblioteca) ? $conteudoFotosSlideBiblioteca : '',
+                'existeLinkRevistasPeriodicos' => $existeLinkRevistasPeriodicos = $existeLinkRevistasPeriodicos > 0 ? $existeLinkRevistasPeriodicos : '',
                 'conteudoContato' => '',
+                
                 'contatos' => '',
             ),
             'js' => null,
@@ -512,7 +587,7 @@ class Site extends CI_Controller
 
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $areasLinks = $this->bancosite->getWhere('magazines_area', array('status' => 1))->result();
+        $areasLinks = $this->bancosite->where('*','magazines_area', null,  array('status' => 1,'magazines_area.campus_id'=>$dataCampus->id))->result();
 
         $data = array(
             'head' => array(
@@ -544,8 +619,35 @@ class Site extends CI_Controller
         }
         $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $areasLinks = $this->bancosite->getWhere('magazines_links', array('status' => 1, 'magazines_areaid' => $cursoid))->result();
-        $areas = $this->bancosite->getWhere('magazines_area', array('id' => $cursoid))->row();
+        //$areasLinks = $this->bancosite->where('magazines_links', array('status' => 1, ))->result();
+        $joinAreaRevistaPeriodico = array(
+            'magazines_area'=> 'magazines_area.id = magazines_links.magazines_areaid',
+        );
+        $whereAreaRevistaPeriodico = array(
+            'magazines_links.magazines_areaid' => $cursoid,
+            'magazines_links.status' => 1,
+            'magazines_links.campus_id'=>$dataCampus->id,
+            'magazines_area.status'=>1
+        );
+        $colunasLinksRevistasPeriodicos = array(
+            'magazines_links.id',
+            'magazines_links.title',
+            'magazines_links.magazines_areaid',
+            'magazines_links.link',
+            'magazines_links.classification',
+            'magazines_links.status',
+            'magazines_area.status',
+            'magazines_area.title as magazinesarea',
+
+        );
+
+        $areasLinks = $this->bancosite->where($colunasLinksRevistasPeriodicos,'magazines_links', $joinAreaRevistaPeriodico,  $whereAreaRevistaPeriodico, array('campo'=>'magazines_links.title','ordem'=>'ASC'))->result();
+        
+        // echo '<pre>';
+        // print_r($areasLinks);
+        // echo '</pre>';
+        //trocar função getWhere - TODO
+        $areas = $this->bancosite->getWhere('magazines_area', array('magazines_area.id' => $cursoid))->row();
 
         $data = array(
             'head' => array(
@@ -558,7 +660,8 @@ class Site extends CI_Controller
             'dados' => array(
                 'areaslinks' => $areasLinks,
                 'idArea' => $cursoid,
-                'area' => $areas,
+                 'area' => $areas,
+                // 'area' => '',
                 'campus' => $dataCampus,
             )
         );
