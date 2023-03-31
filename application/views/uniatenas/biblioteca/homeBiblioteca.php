@@ -146,38 +146,9 @@ text.Orange-label {
 }
 </style>
 
-
 <?php
 $uricampus = $this->uri->segment(3);
-
-
-if ($campus->id == 1) {
-    $potho = 'assets/images/gallery/library/fotoptu1.png';
-    $potho2 = 'assets/images/gallery/library/fotoptu2.png';
-    $potho3 = 'assets/images/gallery/library/fotoptu3.png';
-} elseif ($campus->id == 2) {
-    $potho = 'assets/images/gallery/library/2/fotosete1.png';
-    $potho2 = 'assets/images/gallery/library/2/fotosete2.png';
-    $potho3 = 'assets/images/gallery/library/2/fotosete3.png';
-} elseif ($campus->id == 3) {
-    $potho = 'assets/images/gallery/library/3/fotopassos1.png';
-    $potho2 = 'assets/images/gallery/library/3/fotopassos2.png';
-    $potho3 = 'assets/images/gallery/library/3/fotopassos3.png';  
-
-} elseif ($campus->id == 7) {
-    $potho = 'assets/imagessorriso/galeriasorriso/biblioteca/1.jpeg';
-    $potho2 = 'assets/imagessorriso/galeriasorriso/biblioteca/3.jpeg';
-    $potho3 = 'assets/imagessorriso/galeriasorriso/biblioteca/5.jpeg';
-}
-
-
-
-    
-$linkBibliotecaVirtual = 'https://search.ebscohost.com/login.aspx?authtype=ip,uid&custid=ns263130&groupid=main&profile=ehost&user=atenasacesso&password=faculdade23!';    
-$linkBookReenew = "http://177.69.195.4/Corpore.Net/Main.aspx?ActionID=BibEmprestimosPendentesActionWeb&SelectedMenuIDKey=ItemEmprestimosRenovacao";
-$linkFichaBook = "http://177.69.195.4:8000/web/app/edu/PortalEducacional/";
 ?>
-
 
 <div class="container">
   <div class="row">
@@ -185,375 +156,257 @@ $linkFichaBook = "http://177.69.195.4:8000/web/app/edu/PortalEducacional/";
       <h3>Biblioteca <?php echo $campus->name . ' - ' . $campus->city . ' (' . $campus->uf . ')'; ?></h3>
     </div>
   </div>
-
+</div>
+<?php
+if(count($conteudoFotosSlideBiblioteca)>0){
+?>
+<div class="container">
   <div class="row">
-    <!-- The carousel -->
     <div id="transition-timer-carousel" class="carousel slide transition-timer-carousel" data-ride="carousel">
-      <!-- Indicators -->
       <ol class="carousel-indicators">
-
-        <li data-target="#transition-timer-carousel" data-slide-to="0" class="active"></li>
-        <li data-target="#transition-timer-carousel" data-slide-to="1"></li>
-        <li data-target="#transition-timer-carousel" data-slide-to="1"></li>
-        <li data-target="#transition-timer-carousel" data-slide-to="2"></li>
+        <?php 
+        for($i=0; $i < count($conteudoFotosSlideBiblioteca);$i++){
+          if($i==0){
+            $ativo = "active";
+          }else{
+            $ativo='';
+          }
+        ?>
+        <li data-target="#transition-timer-carousel" data-slide-to="<?php echo $i; ?>" class="<?php echo $ativo;?>""></li>
+        <?php
+        }
+        ?>
       </ol>
 
-      <!-- Wrapper for slides -->
-      <div class="carousel-inner">
-        <div class="item active">
-          <img src="<?php echo base_url($potho); ?>" style="background-size: cover;  " />
-          <div class="carousel-caption">
-            <h1 class="carousel-caption-header">Fotos da biblioteca
-              - <?php echo $campus->name . ' - ' . $campus->city . ' (' . $campus->uf . ')'; ?></h1>
+      <div class=" carousel-inner">
+          <?php 
+        for($i=0; $i < count($conteudoFotosSlideBiblioteca);$i++){
+          if($i==0){
+            $ativo = "active";
+          }else{
+            $ativo='';
+          }
+        ?>
+          <div class="item <?php echo $ativo;?>">
+            <img src="<?php echo base_url($conteudoFotosSlideBiblioteca[$i]->file); ?>"
+              style="background-size: cover; width:1440px; height: 400px;" />
+            <div class="carousel-caption">
+              <h1 class="carousel-caption-header">Fotos da biblioteca
+                - <?php echo $campus->name . ' - ' . $campus->city . ' (' . $campus->uf . ')'; ?>
+              </h1>
 
+            </div>
           </div>
-        </div>
-
-        <div class="item">
-          <img src="<?php echo base_url($potho2); ?>" style="background-size: cover;  " />
-          <div class="carousel-caption">
-            <h1 class="carousel-caption-header">Fotos da biblioteca
-              - <?php echo $campus->name . ' - ' . $campus->city . ' (' . $campus->uf . ')'; ?></h1>
-
-          </div>
-        </div>
-
-        <div class="item">
-          <img src="<?php echo base_url($potho3); ?>" style="background-size: cover;  " />
-          <div class="carousel-caption">
-            <h1 class="carousel-caption-header">Fotos da biblioteca
-              - <?php echo $campus->name . ' - ' . $campus->city . ' (' . $campus->uf . ')'; ?></h1>
-
-          </div>
-        </div>
-      </div>
-
-      <a class="left carousel-control" href="#transition-timer-carousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-      </a>
-      <a class="right carousel-control" href="#transition-timer-carousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-      </a>
-      <hr class="transition-timer-carousel-progress-bar animate" />
+          <?php
+        }
+        ?>
     </div>
+
+    <a class="left carousel-control" href="#transition-timer-carousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#transition-timer-carousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+    <hr class="transition-timer-carousel-progress-bar animate" />
   </div>
 </div>
-
+</div>
+<?php
+}
+?>
 <div class="container">
   <div class="row">
     <div class="container">
-      <div class="section-header text-center">
-        <h3>Sobre a Biblioteca</h3>
-      </div>
-    </div>
-    <div class="container">
+
       <div class="row">
         <div class="col-md-8">
+          <?php
+          for ($i=0; $i < count($dados['conteudoPag']);$i++){
+          ?>
+          <div class="section-header text-center">
+            <!-- <h3>Sobre a Biblioteca</h3> -->
+            <h3> <?php echo $dados['conteudoPag'][$i]->title; ?></h3>
+          </div>
           <div class="row">
             <div class="col-xs-12">
               <div class="information-library-campus text-justify">
                 <p>
-                  <?php echo $dados['conteudoPag'][0]->description; ?>
+                  <?php echo $dados['conteudoPag'][$i]->description; ?>
                 </p>
               </div>
             </div>
             <hr>
-            <div class="col-xs-12">
-              <div class="row">
-                <div class="col-xs-12 text-center">
-                  <div class="boxLibrary">
-                    <h3 class="text-center">Revistas / Periódicos</h3>
-                    <div class="boxLibrary-content">
-                      <hr />
-                      <!-- Achar a informação antiga que estava na pagina-->
-                      <!--p><?php echo $dados['conteudoPag'][1]->description; ?></p-->
-                      <br />
-                      <div class="btnAcessMagazinesLinks">
-                        <?php echo anchor('site/revistas_periodicos/' . $uricampus, 'Acessar', array('class' => "btn btn-primary")); ?>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
+          <?php
+          }
+          ?>
         </div>
-        <!-- <?php
-        echo '<pre>';
-        print_r($conteudoPag);
-        print_r($contatos);
-        echo '</pre>';
-        ?> -->
+
         <div class="col-lg-4">
-          <?php if (!empty($contatos)): ?>
-          <div class="widget-sidebar">
-            <h2 class="title-widget-sidebar">Contatos</h2>
+
+          <style>
+          li.lista-link-uteis a h4 {
+            cursor: pointer;
+          }
+
+          li.lista-link-uteis a h4:hover {
+            color: #f4630b !important;
+          }
+
+          .widget-sidebar {
+            margin-bottom: 2em;
+          }
+          </style>
+          <?php 
+          if(!empty($dados['conteudoAcessoRapido']) and $dados['conteudoAcessoRapido'] !=''){
+          ?>
+          <div class="widget-sidebar col-xs-12">
+
+            <h2 class="title-widget-sidebar">#Acesso Rápido</h2>
             <div class="content-widget-sidebar">
               <ul>
-                <li class="recent-post-alunos">
-                  <div class="col-sm-2 col-xs-2">
-                    <i class="far fa-address-card fa-2x"></i>
-                    </a>
-                  </div>
-
-                  <div class="col-sm-10 col-xs-10 ">
-                    <?php foreach ($contatos as $phone): ?>
-                    <small>
-                      <div class=" ">
-                        <?php if ($phone->email != "" || $phone->email != null): ?>
-                        <p>
-                          <label>E-mail:</label>
-                        <p>
-                          <text class="Orange-label"><?= $phone->email ?></text>
-                        </p>
-                        </p>
-                        <?php endif; ?>
-                        <?php if ($phone->phonesetor != "" || $phone->phonesetor != null): ?>
-                        <p class="Orange-label">
-                          <label>Telefone: </label>
-                          <text class="Orange-label"><?= $phone->phonesetor ?></text>
-                        </p>
-                        <?php endif; ?>
-                        <!--p>
-                                                            <label>Telefone: </label>
-                                                            <text class="Orange-label"><?= $campus->phone; ?></text>
-                                                        </p-->
-                        <?php if ($phone->ramal != "" || $phone->ramal != null): ?>
-                        <p>
-                          <label>Ramal: </label>
-                          <text class="Orange-label"><?= $phone->ramal; ?></text>
-                        </p>
-                        <?php endif; ?>
-                        <?php if ($phone->phone != "" || $phone->phone != null): ?>
-                        <p>
-                          <label>Cel. Corporativo:</label>
-                          <text class="Orange-label"><?= $phone->phone; ?></text>
-                        </p>
-                        <?php endif; ?>
-                      </div>
-                    </small>
-                    <?php
-                                            endforeach;
-                                            ?>
-                  </div>
+                <?php 
+              foreach ($dados['conteudoAcessoRapido'] as $linksAcessoRapido){
+              ?>
+                <li class="lista-link-uteis">
+                  <a target="_blank" href="<?php echo $linksAcessoRapido->link_redir; ?>">
+                    <h4>
+                      <i class="fa fa-external-link"></i>
+                      <?php echo $linksAcessoRapido->title; ?>
+                    </h4>
+                  </a>
                 </li>
+                <?php 
+              }
+              ?>
               </ul>
             </div>
           </div>
-          <?php endif; ?>
-          <div class="widget-sidebar">
-            <h2 class="title-widget-sidebar">#LINKS UTEIS</h2>
-            <div class="content-widget-sidebar">
-              <ul>
-                <li class="recent-post-alunos">
-                  <div class="col-sm-3 col-xs-4">
-                    <a target="_blank" href="<?php echo $linkBookReenew; ?>">
-                      <div class="ico-wrap">
-                        <span class="mbr-iconfont fa-book fa"></span>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-sm-9 col-xs-8">
-                    <a target="_blank" href="<?php echo $linkBookReenew ?>">
-                      <h4>Renovação Livros</h4>
-                    </a>
-                    <p>
-                      <small><i target="_blank" class="fa fa-pager" data-original-title="" title=""></i>
-                        Renovação de Livros -
-                        TOTVS <?php echo $campus->name . '. ' . $campus->city; ?>
-                      </small>
-                    </p>
-                  </div>
-                </li>
-                <li class="recent-post-alunos">
-                  <div class="col-sm-3 col-xs-4">
-                    <a target="_blank" href="<?php echo $linkBibliotecaVirtual; ?>">
-                      <div class="ico-wrap">
-                        <span class="mbr-iconfont fa-desktop fa"></span>
-                      </div>
-                    </a>
-                  </div>
-                  <div class="col-sm-9 col-xs-8">
-                    <a target="_blank" href="<?php echo $linkBibliotecaVirtual ?>">
-                      <h4>Biblioteca Virtual</h4>
-                    </a>
-                    <p>
-                      <small><i target="_blank" class="fa fa-pager" data-original-title="" title=""></i>
-                        Biblioteca Virutal
-                        - <?php echo $campus->name . '. ' . $campus->city; ?>
-                      </small>
-                    </p>
-                  </div>
-                </li>
-                <?php
-                                if ($campus->id == 1) {
-                                    ?>
-                <li class="recent-post-alunos">
-                  <div class="col-sm-3 col-xs-4">
-                    <a target="_blank" href="<?php echo $linkBookReenew; ?>">
-                      <div class="ico-wrap">
-                        <span class="mbr-iconfont fa-address-book fa"></span>
-                      </div>
-                    </a>
-                  </div>
+          <?php 
+          }
+          ?>
 
-                  <div class="col-sm-9 col-xs-8">
-                    <a target="_blank" href="<?php echo $linkFichaBook ?>">
-                      <h4>Ficha Catalográfica</h4>
-                    </a>
-                    <p>
-                      <small><i target="_blank" class="fa fa-pager" data-original-title="" title=""></i>
-                        Ficha Catalográfica -
-                        <?php echo $campus->name . '. ' . $campus->city; ?>
-                      </small>
-                    </p>
+          <?php 
+          if(!empty($dados['conteudoLinksUteis']) and $dados['conteudoLinksUteis'] !==''){
+          ?>
+          <div class="widget-sidebar col-xs-12">
 
-                  </div>
-                </li>
-                <?php
-                                }
-                                ?>
-                <br />
-              </ul>
-            </div>
-          </div>
-
-          <div class="widget-sidebar">
-            <h2 class="title-widget-sidebar">Acesso rápido</h2>
+            <h2 class="title-widget-sidebar">#Links Úteis</h2>
+            <?php 
+            foreach ($dados['conteudoLinksUteis'] as $linksUteis){
+            ?>
             <div class="last-post-aluno">
-              <a target="_blank" href="http://www.periodicos.capes.gov.br/" class="accordionAluno">Periódicos Capes</a>
+              <a target="_blank" href="<?php echo $linksUteis->link_redir;?>"
+                class="accordionAluno"><?php echo $linksUteis->title;?></a>
             </div>
             <hr>
+            <?php 
+            }
+            ?>
+          </div>
+          <?php 
+          }
+          ?>
+        </div>
+      </div>
 
-            <div class="last-post-aluno">
-              <a target="_blank" href="https://scholar.google.com/" class="accordionAluno">Google
-                Acadêmico</a>
+    </div>
+  </div>
+</div>
+<?php
+if(isset($existeLinkRevistasPeriodicos) and $existeLinkRevistasPeriodicos !==''){
+?>
+<section>
+  <div class="col-md-8">
+    <div class="row">
+      <!-- <div class="col-xs-12">
+        <div class="information-library-campus text-justify">
+          <p>
+            <?php echo $dados['conteudoPag'][0]->description; ?>
+          </p>
+        </div>
+      </div>
+      <hr> -->
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12 text-center">
+            <div class="boxLibrary">
+              <h3 class="text-center" style="color:#000;">Links externos Revistas / Periódicos</h3>
+              <div class="boxLibrary-content">
+                <hr />
+                <!-- Achar a informação antiga que estava na pagina-->
+                <!--p><?php echo $dados['conteudoPag'][1]->description; ?></p-->
+                <br />
+                <div class="btnAcessMagazinesLinks">
+                  <?php echo anchor('site/revistas_periodicos/' . $uricampus, 'Acessar', array('class' => "btn btn-primary")); ?>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
+<?php
+}
+?>
 <br />
 <br />
+<?php
+if($conteudoComutacao !==''){
+?>
 <section class="comutacaoBibliografica">
   <div class="container">
 
     <div class="row mbr-justify-content-center">
       <div class="container">
         <div class="section-header text-center">
-          <h3>Comutação
-            Bibliográfica <?php echo $campus->name . ' - ' . $campus->city . ' (' . $campus->uf . ')'; ?></h3>
+          <h3><?php echo "$conteudoComutacao->title: $campus->name  -  $campus->city   ($campus->uf)"; ?>
+          </h3>
         </div>
       </div>
       <div class="container">
         <div class="text">
           <p>
-            Serviço de solicitação de artigos de periódicos, capítulos de livros, dissertações,
-            teses e
-            anais de congressos que não constam no acervo da
-            biblioteca <?php //echo //$fragmtext; ?>. Esse serviço permite
-            aos usuários o acesso a documentos, localizados nas principais bibliotecas do País,
-            em todas as
-            áreas do conhecimento.
+            <?php 
+            echo $conteudoComutacao->description;
+            ?>
           </p>
         </div>
       </div>
-      <div class="col-lg-4 mbr-col-md-10">
-        <a target="_blank" href="http://bvsalud.org/">
+      <?php 
+      if($conteudoLinkComutacao !=''){
+        foreach($conteudoLinkComutacao as $linksComutacao){
+      ?>
+
+      <div class="col-lg-6 mbr-col-md-10">
+        <a target="_blank" href="<?php echo $linksComutacao->link_redir ?>">
           <div class="wrap">
             <div class="ico-wrap">
               <span class="mbr-iconfont fa-link fa"></span>
             </div>
-            <div class="text-wrap vcenter">
+            <div class="text-center">
               <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5">
-                <span>BIREME</span>
+                <span><?php echo $linksComutacao->title ?></span>
               </h2>
-              <p class="mbr-fonts-style text1 mbr-text display-6">Centro Latino e Americano de
-                Informação
-                em Ciências da Saúde</p>
+              <?php echo $linksComutacao->description ?>
             </div>
           </div>
         </a>
       </div>
-      <div class="col-lg-4 mbr-col-md-10">
-        <a target="_blank" href="<?php echo $linkBibliotecaVirtual ?>">
-          <div class="wrap">
-            <div class="ico-wrap">
-              <span class="mbr-iconfont fa-pager fa"></span>
-            </div>
-            <div class="text-wrap vcenter">
-              <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5"><span>EBSCOHOST</span>
-              </h2>
-              <p class="mbr-fonts-style text1 mbr-text display-6">A EBSCOHOST é um poderoso
-                sistema de
-                referência on-line</p>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-lg-4 mbr-col-md-10">
-        <a target="_blank" href="https://scielo.org/">
-          <div class="wrap">
-            <div class="ico-wrap">
-              <span class="mbr-iconfont fa-book fa"></span>
-            </div>
-            <div class="text-wrap vcenter">
-              <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5">
-                <span>SCIELO</span>
-              </h2>
-              <p class="mbr-fonts-style text1 mbr-text display-6">Biblioteca Eletrônica
-                Científica -
-                Online</p>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-lg-6 mbr-col-md-10">
-        <a target="_blank" href="http://comut.ibict.br/comut/do/index?op=filtroForm">
-          <div class="wrap">
-            <div class="ico-wrap">
-              <span class="mbr-iconfont fa-calendar fa"></span>
-            </div>
-            <div class="text-wrap vcenter">
-              <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5">
-                <span>COMUT</span>
-              </h2>
-              <p class="mbr-fonts-style text1 mbr-text display-6">Programa de Comutação
-                Bibliográfica.
-                Programa conjunto do IBICT / Finep / Capes / SESu que tem como objetivo
-                facilitar o
-                acesso à informação nas diversas áreas do conhecimento</p>
-            </div>
-          </div>
-        </a>
-      </div>
-      <div class="col-lg-6 mbr-col-md-10">
-        <a target="_blank" href="http://www.ibict.br/">
-          <div class="wrap">
-            <div class="ico-wrap">
-              <span class="mbr-iconfont fa-globe fa"></span>
-            </div>
-            <div class="text-wrap vcenter">
-              <h2 class="mbr-fonts-style mbr-bold mbr-section-title3 display-5">
-                <span>IBICT</span>
-              </h2>
-              <p class="mbr-fonts-style text1 mbr-text display-6">Instituto Brasileiro de
-                Informação em
-                Ciência e Tecnologia tem como perspectiva facilitar o acesso de todos os
-                cidadãos
-                brasileiros a informações produzidas no país e exterior</p>
-            </div>
-          </div>
-        </a>
-      </div>
+      <?php
+        }
+      }
+      ?>
     </div>
   </div>
 </section>
+<?php
+}
+?>
 <script>
 $(document).ready(function() {
   //Events that reset and restart the timer animation when the slides change
