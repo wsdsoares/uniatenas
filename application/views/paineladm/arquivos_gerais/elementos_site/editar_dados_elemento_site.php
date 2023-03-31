@@ -40,7 +40,6 @@
               <span class="input-group-addon">
                 <i class="material-icons">insert_link</i>
               </span>
-
               <div class="form-line">
                 <?php
                   echo form_input(array('name' => 'link', 'class' => 'form-control', 'placeholder' => 'http://link.com.br'), set_value('link',$elementoSite->link));
