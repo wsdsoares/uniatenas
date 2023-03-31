@@ -154,10 +154,10 @@ text.Orange-label {
       </div>
       <?php
       }
-    ?>
+      ?>
       <?php 
-    if($dados['conteudoLinksUteis'] !=''){
-    ?>
+      if($dados['conteudoLinksUteis'] !=''){
+      ?>
       <div class="widget-sidebar col-xs-12">
 
         <h2 class="title-widget-sidebar">#Links Úteis</h2>

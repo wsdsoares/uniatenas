@@ -2,19 +2,30 @@
 $uricampus = $this->uri->segment(3);
 
 $colunasTabelaCampus = array(
-    'campus.facebook',
-    'campus.instagram',
-    'campus.youtube',
-    'campus.shurtName',
-    'campus.logo',
-    'campus.id',
-    'campus.name',
+  'campus.facebook',
+  'campus.instagram',
+  'campus.youtube',
+  'campus.shurtName',
+  'campus.logo',
+  'campus.id',
+  'campus.name',
 );
 
 $informacoesCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NULL, array('campus.shurtName' => $uricampus))->row();
 
-$wehreArrayLinkvestibular= array('gerais_elementos_site.tipo'=>'link_vestibular', 'gerais_elementos_site.id_campus'=>$informacoesCampus->id);
+$wehreArrayLinkvestibular= array(
+  'gerais_elementos_site.tipo'=>'link_vestibular', 
+  'gerais_elementos_site.id_campus'=>$informacoesCampus->id,
+  'gerais_elementos_site.status'=>1
+);
 $linkVetibularTopo = $this->bancosite->where('*','gerais_elementos_site',null,$wehreArrayLinkvestibular)->row();
+
+$wehreArrayLinkBiblioteca= array(
+  'gerais_elementos_site.tipo'=>'link_biblioteca', 
+  'gerais_elementos_site.id_campus'=>$informacoesCampus->id,
+  'gerais_elementos_site.status'=>1
+);
+$linkBibliotecaTopo = $this->bancosite->where('*','gerais_elementos_site',null,$wehreArrayLinkBiblioteca)->row();
 
 $verificaPaginaFinanceiro = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$informacoesCampus->id,'status'=>1))->row();
 $verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id','pages.title'),'pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id,'status'=>1))->row();
@@ -85,11 +96,19 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
                       <i class="fa fa-envelope"></i> <span class="top-page hidden-xs">Webmail</span>
                     </a>
                     <?php
-                                            echo anchor('PortalAlunos/portal/' . $informacoesCampus->shurtName, '<i class="fas fa-user-lock"></i><span class="top-page-alunos hidden-xs"> Portal Acadêmico</span>');
-                                            ?>
+                    echo anchor('PortalAlunos/portal/' . $informacoesCampus->shurtName, '<i class="fas fa-user-lock"></i><span class="top-page-alunos hidden-xs"> Portal Acadêmico</span>');
+                    ?>
+                    <?php 
+                    if(isset($linkBibliotecaTopo)){
+                    ?>
                     <?php
-                                            echo anchor('site/biblioteca/' . $informacoesCampus->shurtName, '<i class="fas fa-book"></i><span class="top-page-alunos hidden-xs"> Biblioteca</span>');
-                                            ?>
+                    //$linkBibliotecaTopo 
+                    
+                    echo anchor($linkBibliotecaTopo->link, '<i class="fas fa-book"></i><span class="top-page-alunos hidden-xs">'.$linkBibliotecaTopo->nome.'</span>');
+                    ?>
+                    <?php
+                    }
+                    ?>
                 </div>
 
                 <?php 

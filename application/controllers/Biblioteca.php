@@ -14,9 +14,9 @@ class Biblioteca extends CI_Controller {
     }
 
     public function linksRevistasPeriodicos($campus = NULL) {
-        if($campus == null){
-            redirect("");
-        }
+        // if($campus == null){
+        //     redirect("");
+        // }
         $areasLinks = $this->painelbd->getWhere('magazines_area', array('status' => 1))->result();
         $data = array(
             'head' => array(
