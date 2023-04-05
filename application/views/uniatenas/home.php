@@ -112,7 +112,7 @@ if($news)
                   echo anchor('site/ver_noticia/'.$campus->shurtName.'/'.$news[$i]->id, '<img src="' . base_url() . $news[$i]->img_destaque . '" class="img-responsive"/>');
                 ?>
                 <h6>
-                  <span><?=date('d/m/yy',strtotime($news[$i]->datestart)); ?></span>
+                  <span><?php echo date('d/m/y',strtotime($news[$i]->datestart)); ?></span>
                 </h6>
               </div>
 
