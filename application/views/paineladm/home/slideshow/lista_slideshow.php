@@ -110,7 +110,6 @@
 
                   $verificaExistenciaArquivo= explode('.',$item->files );
                   $finalArquivo =  end($verificaExistenciaArquivo);
-                  echo $finalArquivo;
                   if(!file_exists($item->files)){
                     echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
                   }elseif

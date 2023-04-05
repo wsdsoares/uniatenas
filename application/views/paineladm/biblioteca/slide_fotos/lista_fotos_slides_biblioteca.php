@@ -89,11 +89,21 @@
                 <td>
 
                   <?php 
-                  if (file_exists($item->file)){
-                    echo anchor(base_url(verifyImg($item->file)), '<img src="' . base_url(verifyImg($item->file)) . '" class="thumbnail">', array('target' => '_blank'));
-                  }else{
-                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - ARQUIVO INEXISTENTE OU CORROMPIDO</span>';
-                  }
+                   $verificaExistenciaArquivo= explode('.',$item->file );
+                   $finalArquivo =  end($verificaExistenciaArquivo);
+                   if(!file_exists($item->file)){
+                     echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
+                   }elseif
+                     (
+                       $finalArquivo == 'jpg' or $finalArquivo == 'JPG' 
+                       or $finalArquivo == 'PNG' or $finalArquivo == 'png' 
+                       or  $finalArquivo == 'JPEG' or $finalArquivo == 'jpeg'
+                     )
+                     {
+                     echo anchor(base_url(verifyImg($item->file)), '<img src="' . base_url(verifyImg($item->file)) . '" class="thumbnail">', array('target' => '_blank'));
+                   }else{
+                     echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
+                   }
                   ?>
                 </td>
 
