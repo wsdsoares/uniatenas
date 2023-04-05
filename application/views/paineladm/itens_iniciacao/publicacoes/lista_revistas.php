@@ -81,11 +81,27 @@
                 <td>
 
                   <?php
-                  if (file_exists($item->capa)){
-                    echo anchor(base_url(verifyImg($item->capa)), '<img src="' . base_url(verifyImg($item->capa)) . '" class="thumbnail">', array('target' => '_blank'));
-                  }else{
-                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - ARQUIVO INEXISTENTE OU CORROMPIDO</span>';
-                  }
+                   $verificaExistenciaArquivo= explode('.',$item->capa );
+                   $finalArquivo =  end($verificaExistenciaArquivo);
+                   if(!file_exists($item->capa)){
+                     echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
+                   }elseif
+                     (
+                       $finalArquivo == 'jpg' or $finalArquivo == 'JPG' 
+                       or $finalArquivo == 'PNG' or $finalArquivo == 'png' 
+                       or  $finalArquivo == 'JPEG' or $finalArquivo == 'jpeg'
+                     )
+                     {
+                     echo anchor(base_url(verifyImg($item->capa)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
+                   }else{
+                     echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
+                   }
+
+                  // if (file_exists($item->capa)){
+                  //   echo anchor(base_url(verifyImg($item->capa)), '<img src="' . base_url(verifyImg($item->capa)) . '" class="thumbnail">', array('target' => '_blank'));
+                  // }else{
+                  //   echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - ARQUIVO INEXISTENTE OU CORROMPIDO</span>';
+                  // }
                   ?>
                 </td>
                 </td>
