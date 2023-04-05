@@ -92,7 +92,7 @@
                        or  $finalArquivo == 'JPEG' or $finalArquivo == 'jpeg'
                      )
                      {
-                     echo anchor(base_url(verifyImg($item->capa)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
+                     echo anchor(base_url(verifyImg($item->capa)), '<img src="' . base_url(verifyImg($item->capa)) . '" class="thumbnail">', array('target' => '_blank'));
                    }else{
                      echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
                    }
