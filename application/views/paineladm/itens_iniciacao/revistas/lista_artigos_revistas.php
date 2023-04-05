@@ -85,12 +85,17 @@
                     ?>
                 </td>
 
-
-                <td><?php echo $row->title; 
-                   if (!file_exists($row->files)){
+                <td>
+                  <?php echo $row->title; 
+                  $verificaExistenciaArquivo= explode('.',$row->files );
+                  $finalArquivo =  end($verificaExistenciaArquivo);
+                  if(!file_exists($row->files)){
+                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
+                  }elseif($finalArquivo !== 'pdf'){
                     echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
-                   }
-                ?></td>
+                  }
+                  ?>
+                </td>
                 <td>
                   <?php echo $row->types . "- VOL.:" . $row->volume . " - N" . $row->number_vol ?>
                 </td>

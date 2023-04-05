@@ -107,11 +107,23 @@
                 </td>
                 <td>
                   <?php
-                  if (file_exists($item->files)){
+
+                  $verificaExistenciaArquivo= explode('.',$item->files );
+                  $finalArquivo =  end($verificaExistenciaArquivo);
+                  echo $finalArquivo;
+                  if(!file_exists($item->files)){
+                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
+                  }elseif
+                    (
+                      $finalArquivo == 'jpg' or $finalArquivo == 'JPG' 
+                      or $finalArquivo == 'PNG' or $finalArquivo == 'png' 
+                      or  $finalArquivo == 'JPEG' or $finalArquivo == 'jpeg'
+                    )
+                    {
                     echo anchor(base_url(verifyImg($item->files)), '<img src="' . base_url(verifyImg($item->files)) . '" class="thumbnail">', array('target' => '_blank'));
                   }else{
-                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - ARQUIVO INEXISTENTE OU CORROMPIDO</span>';
-                  }  
+                    echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
+                  }
                   ?>
                 </td>
                 <td>
