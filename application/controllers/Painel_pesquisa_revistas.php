@@ -3,7 +3,7 @@
 if (!defined("BASEPATH"))
     exit("No direct script access allowed");
 
-class Painel_pesquisa_comite extends CI_Controller {
+class Painel_pesquisa_revistas extends CI_Controller {
 
   public function __construct() {
     parent::__construct();
@@ -11,39 +11,39 @@ class Painel_pesquisa_comite extends CI_Controller {
     date_default_timezone_set('America/Sao_Paulo');
   }
 
-  public function lista_campus_comite() {
+  public function lista_campus_revistas() {
     verificaLogin();
-    
-    $colunasResultadoCursos = 
-        array('campus.id',
-        'campus.name',
-        'campus.city',
-        'campus.uf'
+
+    $colunasCampus = 
+      array('campus.id',
+      'campus.name',
+      'campus.city',
+      'campus.uf'
     );
 
-    $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+    $listagemDosCampus = $this->painelbd->where($colunasCampus,'campus',NULL, array('visible' => 'SIM'))->result();
     $data = array(
-        'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/itens_iniciacao/lista_campus_comite',
-        'dados' => array(
-            'page' => "Informações Menu (PESQUISA >> Comitê de Ética em Pesquisa)",
-            'tipoPagina' => 'INICIAÇÃO CIENTÍFICA',
-            'campus'=> $listagemDosCampus,
-            'tipo'=>''
-        )
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/itens_iniciacao/lista_campus_revistas',
+      'dados' => array(
+        'page' => "Informações Menu (PESQUISA >> Revistas)",
+        'campus'=> $listagemDosCampus,
+        'tipo'=>''
+      )
     );
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
+
+  
     
-  public function lista_informacoes_comite_etica($uriCampus=NULL) 
+  public function lista_informacoes_tcc($uriCampus=NULL) 
   {
     verificaLogin();
 
-    $pagina = 'pesquisaComiteEticaPesquisa';
-    $verificaExistePaginaComiteEticaPesquisa = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+    $pagina = 'pesquisaTcc';
+    $verificaExistePaginaTcc = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
     
-  
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
@@ -55,7 +55,6 @@ class Painel_pesquisa_comite extends CI_Controller {
       $colunaResultadoContatoPagina = array(
         'page_contents.id',
         'page_contents.title',
-        
         'page_contents.status',
         'page_contents.description', 
         'page_contents.order', 
@@ -65,19 +64,18 @@ class Painel_pesquisa_comite extends CI_Controller {
         'campus.city'
       );
       
-     
       $whereContatosPagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
-      $contatosPaginaComiteEticaPesquisa = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
+      $contatosPaginaTcc = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
       
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/lista_informacoes_comite_etica',
+        'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/lista_informacoes_tcc',
         'dados' => array(
          // 'conteudosPaginaComiteEticaPesquisa'=>$listaInformmacoesPaginaComiteEticaPesquisa,
-          'page' => "Informações do Comitê de Ética em Pesquisa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-          'contatosPaginaComiteEticaPesquisa'=>$contatosPaginaComiteEticaPesquisa,
+          'page' => "Informações da Página TCC - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'contatosPaginaTcc'=>$contatosPaginaTcc,
           'campus'=>$campus,
-          'paginaComiteEticaPesquisa'=> $verificaExistePaginaComiteEticaPesquisa = isset($verificaExistePaginaComiteEticaPesquisa) ? $verificaExistePaginaComiteEticaPesquisa : '',
+          'paginaTcc'=> $verificaExistePaginaTcc = isset($verificaExistePaginaTcc) ? $verificaExistePaginaTcc : '',
           'tipo'=>''
         )
       );
@@ -85,14 +83,14 @@ class Painel_pesquisa_comite extends CI_Controller {
       $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_pagina_comite_etica($uriCampus=NULL)
+  public function cadastrar_pagina_tcc($uriCampus=NULL)
   {
     verifica_login();
 
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'pesquisaComiteEticaPesquisa','pages.campusid'=>$campus->id))->row();
+    $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'pesquisaTcc','pages.campusid'=>$campus->id))->row();
 
     $this->form_validation->set_rules('status', 'Situação', 'required'); 
 
@@ -102,24 +100,23 @@ class Painel_pesquisa_comite extends CI_Controller {
         endif;
     }else {
       
-      $dados_form['title'] = 'pesquisaComiteEticaPesquisa';
+      $dados_form['title'] = 'pesquisaTcc';
       $dados_form['status'] = $this->input->post('status');
       $dados_form['campusid'] = $campus->id;
-
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
       if(isset($verificaExistePagina)){
         $dados_form['id'] = $verificaExistePagina->id;
         if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
           setMsg('<p>Dados da página (menu) Comitê de Ética em Pesquisa (CEP) atualizado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/cadastrar_pagina_comite_etica/$campus->id"));
+          redirect(base_url("Painel_pesquisa_tcc/cadastrar_pagina_tcc/$campus->id"));
         }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
       }else{
         if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
           setMsg('<p>Dados da página (menu) Iniciacao Cientifica cadastra com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/cadastrar_pagina_comite_etica/$campus->id"));
+          redirect(base_url("Painel_pesquisa_tcc/cadastrar_pagina_tcc/$campus->id"));
         }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
@@ -128,10 +125,10 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/pagina_menu_comite_etica/cadastrar_pagina_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/pagina_menu_tcc/cadastrar_pagina_tcc',
       'dados' => array(
         'paginaComiteEtica'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
-        'page' => "Cadastro de pagina (menu do site) do PESQUISA - Comitê de Ètica em Pesquisa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Cadastro de pagina (menu do site) do PESQUISA - Trabalho de Conclusão de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus'=>$campus,
         'tipo'=>''
       )
@@ -140,7 +137,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
     
-  public function cadastrar_contato_pagina_comite_etica($uriCampus=NULL,$pageId = null)
+  public function cadastrar_contato_pagina_tcc($uriCampus=NULL,$pageId = null)
   {
     verifica_login();
 
@@ -152,7 +149,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $wherePagina = array('pages.id'=>$pageId,);
     $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-    $colunaResultadContatoPaginaComiteEtica = array(
+    $colunaResultadContatoPaginaTcc = array(
       'page_contents.id',
       'page_contents.title',
       'page_contents.status',
@@ -162,16 +159,16 @@ class Painel_pesquisa_comite extends CI_Controller {
       'page_contents.updated_at', 
       'page_contents.user_id', 
     );
-    $joinConteudoContatoPaginaComiteEtica = array(
+    $joinConteudoContatoPaginaTcc = array(
       'pages'=>'pages.id = page_contents.pages_id',
       'campus' => 'campus.id= pages.campusid'
     );
-    $whereContatoPaginaComiteEtica = array(
+    $whereContatoPaginaTcc = array(
       'page_contents.pages_id'=>$pagina->id,
       'page_contents.order'=>'contatos'
     );
 
-    $contatoPaginaComiteEtica = $this->painelbd->where($colunaResultadContatoPaginaComiteEtica,'page_contents',$joinConteudoContatoPaginaComiteEtica, $whereContatoPaginaComiteEtica)->row();
+    $contatoPaginaTcc = $this->painelbd->where($colunaResultadContatoPaginaTcc,'page_contents',$joinConteudoContatoPaginaTcc, $whereContatoPaginaTcc)->row();
     
     $this->form_validation->set_rules('description', 'Informações de contato', 'required'); 
     $this->form_validation->set_rules('status', 'Situação', 'required'); 
@@ -182,7 +179,7 @@ class Painel_pesquisa_comite extends CI_Controller {
         endif;
     }else {
       
-      $dados_form['title'] = "Contatos Comitê Etica";
+      $dados_form['title'] = "Contatos";
       $dados_form['status'] = $this->input->post('status');
       $dados_form['description'] = $this->input->post('description');
       $dados_form['order'] = 'contatos';
@@ -190,18 +187,18 @@ class Painel_pesquisa_comite extends CI_Controller {
 
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-      if(isset($contatoPaginaComiteEtica)){
-        $dados_form['id'] = $contatoPaginaComiteEtica->id;
+      if(isset($contatoPaginaTcc)){
+        $dados_form['id'] = $contatoPaginaTcc->id;
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
-          setMsg('<p>Dados da página (menu) Comitê Ética em Pesquisa atualizado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/cadastrar_contato_pagina_comite_etica/$campus->id/$pagina->id"));
+          setMsg('<p>Dados da página (menu) Trabalho de Conclusão de Curso atualizado com sucesso.</p>', 'success');
+          redirect(base_url("Painel_pesquisa_tcc/cadastrar_contato_pagina_tcc/$campus->id/$pagina->id"));
         }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
       }else{
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
           setMsg('<p>Dados de contato cadastrado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/cadastrar_contato_pagina_comite_etica/$campus->id/$pagina->id"));
+          redirect(base_url("Painel_pesquisa_tcc/cadastrar_contato_pagina_tcc/$campus->id/$pagina->id"));
         }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
@@ -210,11 +207,11 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/contatos/cadastrar_contato_pagina_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/contatos/cadastrar_contato_pagina_tcc',
       'dados' => array(
-        'tituloPagina' => "Informações de contato página Comitê Ética Pesquisa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' => "Informações de contato página Trabalho de Conclusão de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'pagina'=>$pagina,
-        'contatoPaginaComiteEtica' => $contatoPaginaComiteEtica = isset($contatoPaginaComiteEtica) ? $contatoPaginaComiteEtica : '',
+        'contatoPaginaTcc' => $contatoPaginaTcc = isset($contatoPaginaTcc) ? $contatoPaginaTcc : '',
         'campus'=>$campus,
         'tipo'=>''
       )
@@ -223,7 +220,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_atendimento_pagina_comite_etica($uriCampus=NULL,$pageId = null)
+  public function cadastrar_atendimento_pagina_tcc($uriCampus=NULL,$pageId = null)
   {
     verifica_login();
 
@@ -235,7 +232,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $wherePagina = array('pages.id'=>$pageId);
     $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-    $colunaResultadoAtendimentoPaginaComiteEtica = array(
+    $colunaResultadoAtendimentoPaginaTcc = array(
       'page_contents.id',
       'page_contents.title',
       'page_contents.status',
@@ -245,16 +242,16 @@ class Painel_pesquisa_comite extends CI_Controller {
       'page_contents.updated_at', 
       'page_contents.user_id', 
     );
-    $joinConteudoatendimentoPaginaComiteEtica = array(
+    $joinConteudoatendimentoPaginaTcc = array(
       'pages'=>'pages.id = page_contents.pages_id',
       'campus' => 'campus.id= pages.campusid'
     );
-    $whereatendimentoPaginaIniciacaoCientifica = array(
+    $whereatendimentoPaginaTcc = array(
       'page_contents.pages_id'=>$pagina->id,
       'page_contents.order'=>'atendimento'
     );
 
-    $atendimentoPaginaComiteEtica = $this->painelbd->where($colunaResultadoAtendimentoPaginaComiteEtica,'page_contents',$joinConteudoatendimentoPaginaComiteEtica, $whereatendimentoPaginaIniciacaoCientifica)->row();
+    $atendimentoPaginaTcc = $this->painelbd->where($colunaResultadoAtendimentoPaginaTcc,'page_contents',$joinConteudoatendimentoPaginaTcc, $whereatendimentoPaginaTcc)->row();
     
     $this->form_validation->set_rules('description', 'Informações de atendimento', 'required'); 
     $this->form_validation->set_rules('status', 'Situação', 'required'); 
@@ -273,18 +270,18 @@ class Painel_pesquisa_comite extends CI_Controller {
 
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-      if(isset($atendimentoPaginaComiteEtica)){
-        $dados_form['id'] = $atendimentoPaginaComiteEtica->id;
+      if(isset($atendimentoPaginaTcc)){
+        $dados_form['id'] = $atendimentoPaginaTcc->id;
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
           setMsg('<p>Dados de Atendimento atualizado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/cadastrar_atendimento_pagina_comite_etica/$campus->id/$pagina->id"));
+          redirect(base_url("Painel_pesquisa_tcc/cadastrar_atendimento_pagina_tcc/$campus->id/$pagina->id"));
         }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
       }else{
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
           setMsg('<p>Dados de Atendimento cadastrado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/cadastrar_atendimento_pagina_comite_etica/$campus->id/$pagina->id"));
+          redirect(base_url("Painel_pesquisa_tcc/cadastrar_atendimento_pagina_tcc/$campus->id/$pagina->id"));
         }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
@@ -293,11 +290,11 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/contatos/cadastrar_atendimento_pagina_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/contatos/cadastrar_atendimento_pagina_tcc',
       'dados' => array(
-        'tituloPagina' => "Informações de atendimento página Comitê de Ética em Pesquisa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' => "Informações de atendimento página Trabalho de Conclusão de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'pagina'=>$pagina,
-        'atendimentoPaginaComiteEtica' => $atendimentoPaginaComiteEtica = isset($atendimentoPaginaComiteEtica) ? $atendimentoPaginaComiteEtica : '',
+        'atendimentoPaginaTcc' => $atendimentoPaginaTcc = isset($atendimentoPaginaTcc) ? $atendimentoPaginaTcc : '',
         'campus'=>$campus,
         'tipo'=>''
       )
@@ -306,7 +303,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function lista_links_uteis_pagina_comite_etica($uriCampus=NULL,$pageId = null)
+  public function lista_links_uteis_pagina_tcc($uriCampus=NULL,$pageId = null)
   {
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
@@ -316,7 +313,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $wherePagina = array('pages.id'=>$pageId);
     $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-    $colunaResultadoLinksUteisPaginaComiteEtica = array(
+    $colunaResultadoLinksUteisPaginaTcc = array(
       'page_contents.id',
       'page_contents.title',
       'page_contents.status',
@@ -326,24 +323,24 @@ class Painel_pesquisa_comite extends CI_Controller {
       'page_contents.updated_at', 
       'page_contents.user_id', 
     );
-    $joinConteudoLinksUteisPaginaComiteEtica = array(
+    $joinConteudoLinksUteisPaginaTcc = array(
       'pages'=>'pages.id = page_contents.pages_id',
       'campus' => 'campus.id= pages.campusid'
     );
-    $whereLinksUteisPaginaComiteEtica = array(
+    $whereLinksUteisPaginaTcc = array(
       'page_contents.pages_id'=>$pagina->id,
       'page_contents.order'=>'linksUteis'
     );
 
-    $listaLinksUteisPaginaComiteEtica = $this->painelbd->where($colunaResultadoLinksUteisPaginaComiteEtica,'page_contents',$joinConteudoLinksUteisPaginaComiteEtica, $whereLinksUteisPaginaComiteEtica,array('campo' => 'title', 'ordem' => 'asc'))->result();
+    $listaLinksUteisPaginaTcc = $this->painelbd->where($colunaResultadoLinksUteisPaginaTcc,'page_contents',$joinConteudoLinksUteisPaginaTcc, $whereLinksUteisPaginaTcc,array('campo' => 'title', 'ordem' => 'asc'))->result();
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/links_uteis/lista_links_uteis_pagina_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/links_uteis/lista_links_uteis_pagina_tcc',
       'dados' => array(
-        'tituloPagina' => "Lista de Links Úteis página Iniciação Científica - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' => "Lista <u>Links Úteis</u> página Trabalho de Conclusão de Curso- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'pagina'=>$pagina,
-        'listaLinksUteisPaginaComiteEtica' => $listaLinksUteisPaginaComiteEtica = isset($listaLinksUteisPaginaComiteEtica) ? $listaLinksUteisPaginaComiteEtica : '',
+        'listaLinksUteisPaginaTcc' => $listaLinksUteisPaginaTcc = isset($listaLinksUteisPaginaTcc) ? $listaLinksUteisPaginaTcc : '',
         'campus'=>$campus,
         'tipo'=>'tabelaDatatable'
       )
@@ -352,7 +349,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_links_uteis_pagina_comite_etica($uriCampus=NULL,$pageId = null)
+  public function cadastrar_links_uteis_pagina_tcc($uriCampus=NULL,$pageId = null)
   {
     verifica_login();
 
@@ -382,7 +379,7 @@ class Painel_pesquisa_comite extends CI_Controller {
       
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
         setMsg('<p>Link Útil cadastrado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_pesquisa_comite/lista_links_uteis_pagina_comite_etica/$campus->id/$pagina->id"));
+        redirect(base_url("Painel_pesquisa_tcc/lista_links_uteis_pagina_tcc/$campus->id/$pagina->id"));
       }else{
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -391,9 +388,9 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/links_uteis/cadastrar_links_uteis_pagina_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/links_uteis/cadastrar_links_uteis_pagina_tcc',
       'dados' => array(
-        'tituloPagina' => "Cadastro de Link Útil: Comitê de Ética em Pesquisa - <strong><i> $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' => "Cadastro de Link Útil: Trabalho de Conclusão de Curso - <strong><i> $campus->name ($campus->city) </i></strong>",
         'pagina'=>$pagina,
         'campus'=>$campus,
         'tipo'=>''
@@ -403,7 +400,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_links_uteis_pagina_comite_etica($uriCampus=NULL,$pageId = null,$idLink = null)
+  public function editar_links_uteis_pagina_tcc($uriCampus=NULL,$pageId = null,$idLink = null)
   {
     verifica_login();
 
@@ -415,7 +412,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $wherePagina = array('pages.id'=>$pageId);
     $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-    $colunaResultadoLinksUteisPaginaComiteEtica = array(
+    $colunaResultadoLinksUteisPaginaTcc = array(
       'page_contents.id',
       'page_contents.title',
       'page_contents.status',
@@ -425,17 +422,17 @@ class Painel_pesquisa_comite extends CI_Controller {
       'page_contents.updated_at', 
       'page_contents.user_id', 
     );
-    $joinConteudoLinksUteisPaginaComiteEtica = array(
+    $joinConteudoLinksUteisPaginaTcc = array(
       'pages'=>'pages.id = page_contents.pages_id',
       'campus' => 'campus.id= pages.campusid'
     );
-    $whereLinksUteisPaginaComiteEtica = array(
+    $whereLinksUteisPaginaTcc = array(
       'page_contents.pages_id'=>$pagina->id,
       'page_contents.id'=>$idLink,
       'page_contents.order'=>'linksUteis'
     );
 
-    $listaLinksUteisPaginaComiteEtica = $this->painelbd->where($colunaResultadoLinksUteisPaginaComiteEtica,'page_contents',$joinConteudoLinksUteisPaginaComiteEtica, $whereLinksUteisPaginaComiteEtica)->row();
+    $listaLinksUteisPaginaTcc = $this->painelbd->where($colunaResultadoLinksUteisPaginaTcc,'page_contents',$joinConteudoLinksUteisPaginaTcc, $whereLinksUteisPaginaTcc)->row();
     
     $this->form_validation->set_rules('link_redir', 'Por favor, insira o LINK ', 'required'); 
     $this->form_validation->set_rules('status', 'Situação', 'required'); 
@@ -446,16 +443,16 @@ class Painel_pesquisa_comite extends CI_Controller {
         endif;
     }else {
 
-      if($listaLinksUteisPaginaComiteEtica->title !== $this->input->post('title')){
+      if($listaLinksUteisPaginaTcc->title !== $this->input->post('title')){
         $dados_form['title'] = $this->input->post('title');
       }
-      if($listaLinksUteisPaginaComiteEtica->status !== $this->input->post('status')){
+      if($listaLinksUteisPaginaTcc->status !== $this->input->post('status')){
         $dados_form['status'] = $this->input->post('status');
       }
-      if($listaLinksUteisPaginaComiteEtica->link_redir !== $this->input->post('link_redir')){
+      if($listaLinksUteisPaginaTcc->link_redir !== $this->input->post('link_redir')){
         $dados_form['link_redir'] = $this->input->post('link_redir');
       }
-      $dados_form['id'] = $listaLinksUteisPaginaComiteEtica->id;
+      $dados_form['id'] = $listaLinksUteisPaginaTcc->id;
       $dados_form['order'] = 'linksUteis';
       $dados_form['updated_at'] = date('Y-m-d H:i:s');
       
@@ -463,7 +460,7 @@ class Painel_pesquisa_comite extends CI_Controller {
 
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
         setMsg('<p>Link Útil atualizado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_pesquisa_comite/lista_links_uteis_pagina_comite_etica/$campus->id/$pagina->id"));
+        redirect(base_url("Painel_pesquisa_tcc/lista_links_uteis_pagina_tcc/$campus->id/$pagina->id"));
       }else{
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -471,11 +468,11 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/links_uteis/editar_links_uteis_pagina_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/links_uteis/editar_links_uteis_pagina_tcc',
       'dados' => array(
-        'tituloPagina' => "Edição de Link Útil: Comitê de Ética em Pesquisa - <strong><i> $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' => "Edição de Link Útil: Trabalho de Conclusão de Curso - <strong><i> $campus->name ($campus->city) </i></strong>",
         'pagina'=>$pagina,
-        'listaLinksUteisPaginaComiteEtica' => $listaLinksUteisPaginaComiteEtica,
+        'listaLinksUteisPaginaTcc' => $listaLinksUteisPaginaTcc,
         'campus'=>$campus,
         'tipo'=>''
       )
@@ -484,7 +481,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletar_item_links_uteis_comite($uriCampus=NULL, $pagina = null,$id = NULL)
+  public function deletar_item_links_uteis_tcc($uriCampus=NULL, $pagina = null,$id = NULL)
   {
     verifica_login();
 
@@ -492,14 +489,14 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     if ($this->painelbd->deletar('page_contents', $item->id)) {
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-      redirect("Painel_pesquisa_comite/lista_links_uteis_pagina_comite_etica/$uriCampus/$pagina");
+      redirect("Painel_pesquisa_tcc/lista_links_uteis_pagina_tcc/$uriCampus/$pagina");
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-      redirect("Painel_pesquisa_comite/lista_links_uteis_pagina_comite_etica/$uriCampus/$pagina");
+      redirect("Painel_pesquisa_tcc/lista_links_uteis_pagina_tcc/$uriCampus/$pagina");
     }
   }
 
-  public function lista_itens_comite_etica($uriCampus=NULL,$pageId = null)
+  public function lista_itens_tcc($uriCampus=NULL,$pageId = null)
   {
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
@@ -509,7 +506,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $wherePagina = array('pages.id'=>$pageId);
     $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-    $colunaResultadoInformacoesPaginaIniciacaoCientifica = array(
+    $colunaResultadoInformacoesPaginaTcc = array(
       'page_contents.id',
       'page_contents.title',
       'page_contents.title_short',
@@ -521,24 +518,24 @@ class Painel_pesquisa_comite extends CI_Controller {
       'page_contents.updated_at', 
       'page_contents.user_id', 
     );
-    $joinConteudoInformacoesPaginaIniciacaoCientifica = array(
+    $joinConteudoInformacoesPaginaTcc = array(
       'pages'=>'pages.id = page_contents.pages_id',
       'campus' => 'campus.id= pages.campusid'
     );
-    $whereInformacoesPaginaIniciacaoCientifica = array(
+    $whereInformacoesPaginaTcc = array(
       'page_contents.pages_id'=>$pagina->id,
       'page_contents.tipo'=>'informacoesPagina'
     );
 
-    $listaInformacoesPaginaIniciacaoCientifica = $this->painelbd->where($colunaResultadoInformacoesPaginaIniciacaoCientifica,'page_contents',$joinConteudoInformacoesPaginaIniciacaoCientifica, $whereInformacoesPaginaIniciacaoCientifica,array('campo' => 'title', 'ordem' => 'asc'))->result();
+    $listaInformacoesPaginaTcc = $this->painelbd->where($colunaResultadoInformacoesPaginaTcc,'page_contents',$joinConteudoInformacoesPaginaTcc, $whereInformacoesPaginaTcc,array('campo' => 'title', 'ordem' => 'asc'))->result();
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/informacoes_comite/lista_itens_comite_etica',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/informacoes_tcc/lista_itens_tcc',
       'dados' => array(
-        'tituloPagina' => "Informações da página da Iniciação Científica - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' => "Informações da página Trabalho de Conclusão de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'pagina'=>$pagina,
-        'listaInformacoesPaginaIniciacaoCientifica' => $listaInformacoesPaginaIniciacaoCientifica = isset($listaInformacoesPaginaIniciacaoCientifica) ? $listaInformacoesPaginaIniciacaoCientifica : '',
+        'listaInformacoesPaginaTcc' => $listaInformacoesPaginaTcc = isset($listaInformacoesPaginaTcc) ? $listaInformacoesPaginaTcc : '',
         'campus'=>$campus,
         'tipo'=>'tabelaDatatable'
       )
@@ -547,7 +544,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
   
-  public function cadastrar_itens_comite_etica($uriCampus=NULL, $pageId = null) {
+  public function cadastrar_itens_tcc($uriCampus=NULL, $pageId = null) {
     verificaLogin();
 
     $colunasCampus = array('campus.id','campus.name','campus.city');
@@ -581,8 +578,8 @@ class Painel_pesquisa_comite extends CI_Controller {
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
-          setMsg('<p>Dados do Comitê de Ética em Pesquisa cadastrado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/lista_itens_comite_etica/$campus->id/$pagina->id"));
+          setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
+          redirect(base_url("Painel_pesquisa_tcc/lista_itens_tcc/$campus->id/$pagina->id"));
       }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -590,10 +587,10 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/informacoes_comite/cadastrar_itens_comite_etica',
+        'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/informacoes_tcc/cadastrar_itens_tcc',
         'dados' => array(
             'conteudosPagina'=>'',
-            'page' => "Cadastro de informações COMITÊ ÉTICA EM PESQUISA - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+            'page' => "Cadastro de informações TRABALHO DE CONCLUSÃO DE CURSO - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
             'campus'=>$campus,
             'pagina'=>$pagina,
             'tipo'=>''
@@ -603,7 +600,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_itens_comite_pesquisa($uriCampus=NULL, $pageId = null, $idInformacao = null) {
+  public function editar_itens_tcc($uriCampus=NULL, $pageId = null, $idInformacao = null) {
     verificaLogin();
 
     $colunasCampus = array('campus.id','campus.name','campus.city');
@@ -614,8 +611,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $wherePagina = array('pages.id'=>$pageId);
     $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-    
-    $informacoesComite = $this->painelbd->where("*",'page_contents',null, array('page_contents.id'=>$idInformacao))->row();
+    $informacoesTcc = $this->painelbd->where("*",'page_contents',null, array('page_contents.id'=>$idInformacao))->row();
 
     //Validaçãoes via Form Validation
     $this->form_validation->set_rules('title', 'Titulo', 'required');
@@ -629,29 +625,29 @@ class Painel_pesquisa_comite extends CI_Controller {
         setMsg(validation_errors(), 'error');
       endif;
     }else {
-      if($informacoesComite->description !== $this->input->post('description')){
+      if( $informacoesTcc->description !== $this->input->post('description') and !empty ($this->input->post('description'))){
         $dados_form['description'] = $this->input->post('description');
       }
-      if($informacoesComite->title_short !== $this->input->post('title_short')){
+      if($informacoesTcc->description !== $this->input->post('description') and  !empty ($this->input->post('title_short'))){
         $dados_form['title_short'] = $this->input->post('title_short');
       }
-      if($informacoesComite->title !== $this->input->post('title')){
+      if($informacoesTcc->title !== $this->input->post('title') and !empty ($this->input->post('title'))){
         $dados_form['title'] = $this->input->post('title');
       }
-      if($informacoesComite->status !== $this->input->post('status')){
+      if($informacoesTcc->status !== $this->input->post('status')){
         $dados_form['status'] = $this->input->post('status');
       }
-      if($informacoesComite->order !== $this->input->post('order') and !empty ($this->input->post('order'))){
+      if($informacoesTcc->order !== $this->input->post('order')){
         $dados_form['order'] = $this->input->post('order');
       }
             
       $dados_form['user_id'] = $this->session->userdata('codusuario');
-      $dados_form['id'] = $informacoesComite->id;
+      $dados_form['id'] = $informacoesTcc->id;
       $dados_form['updated_at'] = date('Y-m-d H:i:s');
       
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
-          setMsg('<p>Dados do COMITÊ DE ÉTICA EM PESQUISA editados com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_comite/lista_itens_comite_etica/$campus->id/$pagina->id"));
+          setMsg('<p>Dados editados com sucesso.</p>', 'success');
+          redirect(base_url("Painel_pesquisa_tcc/lista_itens_tcc/$campus->id/$pagina->id"));
       }else{
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -659,10 +655,10 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/itens_iniciacao/comite_etica_pesquisa/informacoes_comite/editar_itens_comite_pesquisa',
+        'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/informacoes_tcc/editar_itens_tcc',
         'dados' => array(
-            'informacoesComite'=> $informacoesComite,
-            'page' => "Edição de informações Comitê de Ètica em Pesquisa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+            'informacoesTcc'=> $informacoesTcc,
+            'page' => "Edição de informações Trabalho de Conclusão de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
             'campus'=>$campus,
             'pagina'=>$pagina,
             'tipo'=>''
@@ -672,7 +668,7 @@ class Painel_pesquisa_comite extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletar_item_comite_etica($uriCampus=NULL, $pagina = null,$id = NULL)
+  public function deletar_item_tcc($uriCampus=NULL, $pagina = null,$id = NULL)
   {
     verifica_login();
 
@@ -680,11 +676,10 @@ class Painel_pesquisa_comite extends CI_Controller {
 
     if ($this->painelbd->deletar('page_contents', $item->id)) {
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-      redirect("Painel_pesquisa_comite/lista_itens_comite_etica/$uriCampus/$pagina");
+      redirect("Painel_pesquisa_tcc/lista_itens_tcc/$uriCampus/$pagina");
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-      redirect("Painel_pesquisa_comite/lista_itens_comite_etica/$uriCampus/$pagina");
+      redirect("Painel_pesquisa_tcc/lista_itens_tcc/$uriCampus/$pagina");
     }
   } 
-  
 }

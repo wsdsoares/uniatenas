@@ -263,7 +263,7 @@ class Painel_publicacoes extends CI_Controller {
           redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
       }
   }
-
+  
   public function revistas($uriCampus=NULL) {
   
       $colunasResultadoRevistas = array(
@@ -721,16 +721,16 @@ class Painel_publicacoes extends CI_Controller {
   
   public function cursosMonografia() {
       
-      $data = array(
-          'titulo' => 'Início',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/cursosMonografia',
-          'dados' => array(
-              'cursos' => $this->painelbd->getCourses()->result(),
-              'tipo' => 'anais'
-          )
-      );
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/tcc/publicacoes/cursosMonografia',
+      'dados' => array(
+        'cursos' => $this->painelbd->getCourses()->result(),
+        'tipo' => 'anais'
+      )
+    );
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
 
 

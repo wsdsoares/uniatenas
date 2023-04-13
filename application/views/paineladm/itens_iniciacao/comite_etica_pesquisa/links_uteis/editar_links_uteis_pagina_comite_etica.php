@@ -77,14 +77,14 @@
           <div class="col-sm-12">
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_pesquisa_comite/lista_links_uteis_pagina_comite_etica/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+              echo anchor("Painel_pesquisa_tcc/lista_links_uteis_pagina_tcc/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
               ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>

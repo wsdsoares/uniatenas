@@ -94,7 +94,7 @@
         <div class="row clearfix">
           <div class="col-sm-6">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
+              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
               echo anchor("Painel_pesquisa_comite/lista_itens_comite_etica/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
               ?>
           </div>

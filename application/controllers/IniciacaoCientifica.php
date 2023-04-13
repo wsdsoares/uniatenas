@@ -34,7 +34,7 @@ class IniciacaoCientifica extends CI_Controller {
 
         //$pages_content = $this->bancosite->getQuery($consulta)->result();
 
-        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina' );
+        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina','page_contents.status'=> 1);
         $pages_content = $this->bancosite->where('*','page_contents',null, $whereConteudoPagina )->result();
         // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
         $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
@@ -46,7 +46,7 @@ class IniciacaoCientifica extends CI_Controller {
         $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis'))->result();
 
 
-        $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
+        //$conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
         //$pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         // $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
@@ -217,20 +217,54 @@ class IniciacaoCientifica extends CI_Controller {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.shurtName','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.shurtName','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+
+        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaTcc', 'campusid'=>$dataCampus->id))->row();
+
+        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina','page_contents.status'=>1);
+        $pages_content = $this->bancosite->where('*','page_contents',null, $whereConteudoPagina )->result();
         
-        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao','campusid'=>$dataCampus->id))->row();
-        $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
-        $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
-        $tablePhones = "campus_has_setores";
-        $dataJoinPhones = array("contatos_setores" =>"contatos_setores.setoresidcamp = campus_has_setores.id");
-        $wherePhones = array("campus_has_setores.id"=> $page->setorcampid,"contatos_setores.visiblepage" => 1);
-        $phones = $this->sitebank->where($filedPhones,$tablePhones,$dataJoinPhones,$wherePhones)->result();
+        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+
+        $colunasResultadoAtendimento = array('page_contents.id','page_contents.title','page_contents.description','page_contents.status','page_contents.pages_id');
+        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento,'page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'atendimento'))->row();
+
+        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis'))->result();
+
+   
+        
+        // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+        // $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
+        // $tablePhones = "campus_has_setores";
+        // $dataJoinPhones = array("contatos_setores" =>"contatos_setores.setoresidcamp = campus_has_setores.id");
+        // $wherePhones = array("campus_has_setores.id"=> $page->setorcampid,"contatos_setores.visiblepage" => 1);
+        // $phones = $this->sitebank->where($filedPhones,$tablePhones,$dataJoinPhones,$wherePhones)->result();
 
         $revistas = $this->bancosite->getQuery('SELECT * FROM revistas where id in(2,3)')->result();
         
-        $tccs = $this->bancosite->where(array('courses.id','courses.name','courses.types','courses.icone'),'courses',NULL, array('modalidade' => 'presencial'))->result();
+        $queryConteudoCursosTCCs = "
+        SELECT 
+          campus_has_courses.id as idCursoCampus,
+            `courses`.`id`,
+            `courses`.`name`,
+            `courses`.`types`,
+            `courses`.`icone`
+        FROM
+            `campus_has_courses`
+        JOIN courses 
+          on courses.id = campus_has_courses.courses_id
+        JOIN campus 
+          on campus.id = campus_has_courses.campus_id
+        WHERE
+            courses.modalidade = 'presencial'
+            and campus.id = $dataCampus->id
+          and ( SELECT count(tcc.id) FROM monography as tcc where tcc.campus_has_courses_id = campus_has_courses.id) > 0
+          
+        ORDER BY courses.name ASC
+        ";
+        // $conteudoTrabalhoDeConclusaoCurso = $this->bancosite->where(array('coursesWWW.id','courses.name','courses.types','courses.icone'),'courses',NULL, array('modalidade' => 'presencial'))->result();
+        $conteudoTrabalhoDeConclusaoCurso = $this->bancosite->getQuery($queryConteudoCursosTCCs)->result();
 
         $data = array(
             'head' => array(
@@ -242,11 +276,18 @@ class IniciacaoCientifica extends CI_Controller {
             'conteudo' => 'uniatenas/pesquisaIniciacao/trabalhoConclusao',
             'dados' => array(
                 'campus' => $dataCampus,
-                'conteudoPag' => $pages_content,
-                'revistas' => $revistas,
-                'tcss_cursos' =>$tccs,
+                'conteudo' => $pages_content,
                 'conteudoContato' => $pages_content_contato,
-                'phones' => $phones,
+                'conteudoAtendimento' => $conteudoAtendimento = isset($conteudoAtendimento) ? $conteudoAtendimento : '',
+                'conteudoLinksUteis' => $conteudoLinksUteis = isset($conteudoLinksUteis) ? $conteudoLinksUteis : '',
+                'conteudoTrabalhoDeConclusaoCurso' => $conteudoTrabalhoDeConclusaoCurso = isset($conteudoTrabalhoDeConclusaoCurso) ? $conteudoTrabalhoDeConclusaoCurso : '',
+                'contatos' => '',
+                // 'campus' => $dataCampus,
+                // 'conteudoPag' => $pages_content,
+                // 'revistas' => $revistas,
+                // 'tcss_cursos' =>$tccs,
+                // 'conteudoContato' => $pages_content_contato,
+                // 'phones' => $phones,
             )
         );
         $this->output->cache(14400);
@@ -293,11 +334,54 @@ class IniciacaoCientifica extends CI_Controller {
         if($uricampus == null){
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        $cursos = $this->bancosite->where(array('courses.id','courses.name','courses.types','courses.icone'),'courses',NULL, array('courses.id'=>$courseId))->row();
+        $colunasCampus = array(
+          'campus.id',
+          'campus.name',
+          'campus.city',
+          'campus.shurtName');
+        $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
+        
+        $colunaResultadosCursos = array(
+          'campus_has_courses.id','courses.name','courses.types','courses.icone'
+        );
+        $joinCursosCampus = array(
+          'courses'=>'courses.id = campus_has_courses.courses_id',
+          'campus'=>'campus.id = campus_has_courses.campus_id'
+        );
 
+        $whereCusosCampus = array(
+          'campus_has_courses.id'=>$courseId,
+          'campus.id' => $dataCampus->id
+        );
+        $cursos = $this->bancosite->where($colunaResultadosCursos,'campus_has_courses',$joinCursosCampus, $whereCusosCampus)->row();
 
-        $yearsTCC = $this->bancosite->getQuery("SELECT year FROM monography where coursesid =$courseId group by(year) order by 1 desc")->result();
+        // $consultaAnosTCC =
+        //   "SELECT 
+        //       year
+        //     FROM monography 
+        //     JOIN campus_has_courses on campus_has_courses.id = monography.campus_has_courses_id
+        //     where monography.campus_has_courses_id =$courseId 
+        //     and ( SELECT count(tcc.id) FROM monography as tcc where tcc.campus_has_courses_id = campus_has_courses.id) = 0
+        //     group by(year) order by 1 desc";
+
+        $consultaAnosTCC =
+        "SELECT 
+          count(monography.year), monography.year
+        FROM
+            campus_has_courses
+        JOIN courses 
+          on courses.id = campus_has_courses.courses_id
+        JOIN campus 
+          on campus.id = campus_has_courses.campus_id
+		join monography
+		  on monography.campus_has_courses_id = campus_has_courses.id
+        WHERE
+            courses.modalidade = 'presencial'
+          and campus.id = $dataCampus->id
+          and monography.campus_has_courses_id =$courseId 
+          and  ( SELECT count(tcc.id) FROM monography as tcc where tcc.campus_has_courses_id = campus_has_courses.id) > 0
+        ORDER BY courses.name ASC";
+        $yearsTCC = $this->bancosite->getQuery($consultaAnosTCC)->result();
 
         $data = array(
             'head' => array(
@@ -321,11 +405,42 @@ class IniciacaoCientifica extends CI_Controller {
         if($uricampus == null){
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        $cursos = $this->bancosite->where(array('courses.id','courses.name','courses.types','courses.icone'),'courses',NULL, array('courses.id'=>$courseId))->row();
+       
+        $colunasCampus = array(
+          'campus.id',
+          'campus.name',
+          'campus.city',
+          'campus.shurtName');
+        $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
+        
+        $colunaResultadosCursos = array(
+          'campus_has_courses.id','courses.name','courses.types','courses.icone'
+        );
+        $joinCursosCampus = array(
+          'courses'=>'courses.id = campus_has_courses.courses_id',
+          'campus'=>'campus.id = campus_has_courses.campus_id'
+        );
 
-        $monographys = $this->bancosite->getQuery("select * from monography where coursesid = $courseId and year = $yearMonography")->result();
-    
+        $whereCusosCampus = array(
+          'campus_has_courses.id'=>$courseId,
+          'campus.id' => $dataCampus->id
+        );
+        $cursos = $this->bancosite->where($colunaResultadosCursos,'campus_has_courses',$joinCursosCampus, $whereCusosCampus)->row();
+        
+        $consultaMonografia = "
+        select 
+          monography.id, 
+          monography.title,
+          monography.files
+        from 
+          monography 
+        where 
+        monography.campus_has_courses_id = $courseId 
+          and year = $yearMonography 
+          and monography.files not like '%/<'
+          and monography.status = 1
+        ";
+        $monographys = $this->bancosite->getQuery($consultaMonografia)->result();           
 
         $data = array(
             'head' => array(

@@ -137,6 +137,26 @@ if($news)
         </div>
       </div>
       <div class="col-md-offset-1 col-md-3 col-xs-12 text-center">
+        <h4>Informações</h4>
+        <div class="bannerRigth">
+          <div class="col-md-12">
+            <img src="<?php echo base_url('assets/images/bannerLateral.png') ?>" alt="Banner" class="img-responsive" />
+          </div>
+          <?php
+          if ($dados['campus']->id == 1) {
+          ?>
+          <div class="col-md-12">
+            <?php echo anchor('graduacao/inscricao/' . $uricampus, ' 
+            <img src="' . base_url('assets/images/bannerLateral2.png') . '" alt="Banner"
+              class="img-responsive"/>');
+            ?>
+          </div>
+          <?php
+          }
+          ?>
+        </div>
+      </div>
+      <!-- <div class="col-md-offset-1 col-md-3 col-xs-12 text-center">
         <h4>E-MEC</h4>
         <div class="bannerRigth">
           <div class="col-md-12">
@@ -151,7 +171,7 @@ if($news)
               no Sistema E-MEC.</span>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 </section>
 <?php

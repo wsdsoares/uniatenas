@@ -18,7 +18,7 @@
             echo $msg;
           }
           ?>
-        <?php echo form_open("Painel_pesquisa_comite/cadastrar_links_uteis_pagina_comite_etica/$campus->id/$pagina->id") ?>
+        <?php echo form_open("Painel_iniciacao_cientifica/cadastrar_links_uteis_pagina_iniciacao_cientifica/$campus->id/$pagina->id") ?>
 
         <h2 class="card-inside-title">Informações Links Úteis
         </h2>

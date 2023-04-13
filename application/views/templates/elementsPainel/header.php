@@ -314,7 +314,12 @@ function ativo() {
             <span>Gestão Biblioteca</span>
           </a>
           <ul class="ml-menu">
-            <li>
+            <!-- <li>
+              <?php
+                echo anchor('Painel_biblioteca_revistas_periodicos/lista_campus_revistas_periodicos', '<span>Revistas/Periódicos <u>(links)</u></span>');
+                ?>
+            </li> -->
+            <!-- <li>
               <a href="javascript:void(0);" class="menu-toggle">
                 <span> Revistas e Periódicos</span>
               </a>
@@ -326,7 +331,7 @@ function ativo() {
                   <?php echo anchor('biblioteca/linksAreasCursos', '<span>Areas/ Cursos</span>'); ?>
                 </li>
               </ul>
-            </li>
+            </li> -->
             <li>
               <?php
                 echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<span>Item biblioteca</span>');
@@ -451,7 +456,7 @@ function ativo() {
 
                 <li>
                   <?php
-                    //echo anchor('Painel_publicacoes/cursosMonografia', '<span>Monografias</span>');
+                    echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Monografias - TCC</span>');
                   ?>
                 </li>
                 <li>
@@ -463,12 +468,18 @@ function ativo() {
                 </li>
 
               </ul>
+              <?php
+                echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
+              ?>
 
               <?php
                 echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
               ?>
               <?php
                 echo anchor('Painel_pesquisa_comite/lista_campus_comite', '<span>CEP - Comitê de Ética em Pesquisa</span>');
+              ?>
+              <?php
+                echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Página TCC</span>');
               ?>
             </li>
           </ul>
