@@ -14,7 +14,7 @@ class Atenas extends CI_Controller
     public function index()
     
     {
-        $colunaCampus = array('campus.name', 'campus.city', 'campus.uf', 'campus.facebook', 'campus.youtube', 'campus.iconeCampus', 'campus.instagram','campus.cor_fundo_lista_campusRGBA');
+        $colunaCampus = array('campus.name', 'campus.city','campus.shurtName', 'campus.uf', 'campus.facebook', 'campus.youtube', 'campus.iconeCampus', 'campus.instagram','campus.cor_fundo_lista_campusRGBA');
 
         $informacoesTodosCampus = $this->bancosite->where($colunaCampus, 'campus', NULL, array('campus.visible' => 'SIM'), array('campo' => 'city', 'ordem' => 'asc', NULL))->result();
 
@@ -35,8 +35,8 @@ class Atenas extends CI_Controller
 
 
     public function inicio($campus = NULL)
-    {
-
+    {   
+        $campus = noAccentuation($campus);
         $colunaCampus = array('campus.city', 'campus.shurtName');
 
         $informacoesTodosCampus = $this->bancosite->where($colunaCampus, 'campus', NULL, array('campus.visible' => 'SIM'), NULL, NULL)->result();

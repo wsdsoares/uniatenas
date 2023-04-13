@@ -56,7 +56,7 @@
 
       <?php
       foreach ($dados['informacoesTodosCampus'] as $local) {
-        $localCampus = noAccentuation(mb_strtolower(removerAcentos($local->city)));
+        $localCampus = noAccentuation(mb_strtolower(removerAcentos($local->shurtName)));
       ?>
       <style>
       .bg- <?php echo $local->$localCampus?> {
