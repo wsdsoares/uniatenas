@@ -28,6 +28,7 @@ $wehreArrayLinkBiblioteca= array(
 $linkBibliotecaTopo = $this->bancosite->where('*','gerais_elementos_site',null,$wehreArrayLinkBiblioteca)->row();
 
 $verificaPaginaFinanceiro = $this->bancosite->where('*','pages', null, array('title' => 'financeiro','campusid'=>$informacoesCampus->id,'status'=>1))->row();
+$verificaPaginaNapp= $this->bancosite->where('pages.id','pages', null, array('title' => 'napp','campusid'=>$informacoesCampus->id,'status'=>1))->row();
 $verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id','pages.title'),'pages', null, array('title' => 'comoingressar','campusid'=>$informacoesCampus->id,'status'=>1))->row();
 
 $joinCountCursosEad = array(
@@ -270,7 +271,13 @@ if(isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') {
                           <li>
                             <ul>
                               <li class="itensMenu">
+                                <?php
+                              if(isset($verificaPaginaNapp)){
+                                ?>
                                 <?php echo anchor('site/napp/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Atendimento Psicopedagógico(NAPP) '); ?>
+                                <?php
+                                }
+                              ?>
                               </li>
                               <?php
                                                             if ($informacoesCampus->id == '1') {

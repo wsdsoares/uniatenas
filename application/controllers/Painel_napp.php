@@ -35,11 +35,11 @@ class Painel_napp extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_informacoes_financeiro($uriCampus=NULL) {
+    public function lista_informacoes_napp($uriCampus=NULL) {
     verificaLogin();
 
-    $pagina = 'financeiro';
-    $verificaExistePaginaFinanceiro = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+    $pagina = 'napp';
+    $verificaExistePaginaNapp = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
   
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
@@ -61,7 +61,7 @@ class Painel_napp extends CI_Controller {
         'campus.city'
       );
       
-      $listaInformmacoesPaginasFinanceiro =  $this->painelbd->getQuery(
+      $listaInformmacoesPaginasNapp =  $this->painelbd->getQuery(
         "SELECT 
           page_contents.id,
           page_contents.title,
@@ -86,17 +86,17 @@ class Painel_napp extends CI_Controller {
         ORDER BY page_contents.order ASC")->result();
       
       $whereContatosPagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
-      $contatosPaginaFinanceiro = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
+      $contatosPaginaNapp = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/financeiro/lista_informacoes_financeiro',
+        'conteudo' => 'paineladm/napp/lista_informacoes_napp',
         'dados' => array(
-          'conteudosPagina'=>$listaInformmacoesPaginasFinanceiro,
-          'contatosPaginaFinanceiro'=>$contatosPaginaFinanceiro,
-          'page' => "Cadastro de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'conteudosPagina'=>$listaInformmacoesPaginasNapp,
+          'contatosPaginaNapp'=>$contatosPaginaNapp,
+          'page' => "Cadastro de informações do napp - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
-          'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
+          'paginaNapp'=> $verificaExistePaginaNapp = isset($verificaExistePaginaNapp) ? $verificaExistePaginaNapp : '',
           'tipo'=>''
         )
       );
@@ -104,7 +104,7 @@ class Painel_napp extends CI_Controller {
       $this->load->view('templates/layoutPainelAdm', $data);
     }
     
-    public function cadastrar_contato_pagina_financeiro($uriCampus=NULL,$pageId = null)
+    public function cadastrar_contato_pagina_napp($uriCampus=NULL,$pageId = null)
     {
       verifica_login();
   
@@ -116,7 +116,7 @@ class Painel_napp extends CI_Controller {
       $wherePagina = array('pages.id'=>$pageId,);
       $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
-      $colunaResultadContatoPaginaFinanceiro = array(
+      $colunaResultadContatoPaginaNapp = array(
         'page_contents.id',
         'page_contents.title',
         'page_contents.status',
@@ -126,16 +126,16 @@ class Painel_napp extends CI_Controller {
         'page_contents.updated_at', 
         'page_contents.user_id', 
       );
-      $joinConteudoContatoPaginaFinanceiro = array(
+      $joinConteudoContatoPaginaNapp = array(
         'pages'=>'pages.id = page_contents.pages_id',
         'campus' => 'campus.id= pages.campusid'
       );
-      $whereContatoPaginaFinanceiro = array(
+      $whereContatoPaginaNapp = array(
         'page_contents.pages_id'=>$pagina->id,
         'page_contents.order'=>'contatos'
       );
 
-      $contatoPaginaFinanceiro = $this->painelbd->where($colunaResultadContatoPaginaFinanceiro,'page_contents',$joinConteudoContatoPaginaFinanceiro, $whereContatoPaginaFinanceiro)->row();
+      $contatoPaginaNapp = $this->painelbd->where($colunaResultadContatoPaginaNapp,'page_contents',$joinConteudoContatoPaginaNapp, $whereContatoPaginaNapp)->row();
       
       $this->form_validation->set_rules('description', 'Informações de contato', 'required'); 
       $this->form_validation->set_rules('status', 'Situação', 'required'); 
@@ -154,18 +154,18 @@ class Painel_napp extends CI_Controller {
 
         $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-        if(isset($contatoPaginaFinanceiro)){
-          $dados_form['id'] = $contatoPaginaFinanceiro->id;
+        if(isset($contatoPaginaNapp)){
+          $dados_form['id'] = $contatoPaginaNapp->id;
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) financeiro atualizado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
+            setMsg('<p>Dados da página (menu) napp atualizado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_napp/cadastrar_contato_pagina_napp/$campus->id/$pagina->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
         }else{
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
             setMsg('<p>Dados de contato cadastrado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
+            redirect(base_url("Painel_napp/cadastrar_contato_pagina_napp/$campus->id/$pagina->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
@@ -174,11 +174,11 @@ class Painel_napp extends CI_Controller {
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/financeiro/contatos/cadastrar_contato_pagina_financeiro',
+        'conteudo' => 'paineladm/napp/contatos/cadastrar_contato_pagina_napp',
         'dados' => array(
-          'tituloPagina' => "Informações de contato página Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'tituloPagina' => "Informações de contato página napp - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'pagina'=>$pagina,
-          'contatoPaginaFinanceiro' => $contatoPaginaFinanceiro = isset($contatoPaginaFinanceiro) ? $contatoPaginaFinanceiro : '',
+          'contatoPaginaNapp' => $contatoPaginaNapp = isset($contatoPaginaNapp) ? $contatoPaginaNapp : '',
           'campus'=>$campus,
           'tipo'=>''
         )
@@ -187,14 +187,14 @@ class Painel_napp extends CI_Controller {
       $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_pagina_financeiro($uriCampus=NULL)
+    public function cadastrar_pagina_napp($uriCampus=NULL)
     {
       verifica_login();
   
       $colunasCampus = array('campus.id','campus.name','campus.city');
       $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'financeiro','pages.campusid'=>$campus->id))->row();
+      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'napp','pages.campusid'=>$campus->id))->row();
 
       $this->form_validation->set_rules('status', 'Situação', 'required'); 
 
@@ -204,7 +204,7 @@ class Painel_napp extends CI_Controller {
           endif;
       }else {
         
-        $dados_form['title'] = $this->input->post('title');
+        $dados_form['title'] = 'napp';
         $dados_form['status'] = $this->input->post('status');
         $dados_form['campusid'] = $campus->id;
 
@@ -213,15 +213,15 @@ class Painel_napp extends CI_Controller {
         if(isset($verificaExistePagina)){
           $dados_form['id'] = $verificaExistePagina->id;
           if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) financeiro atualizado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id"));
+            setMsg('<p>Dados da página (menu) napp atualizado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_napp/cadastrar_pagina_napp/$campus->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
         }else{
           if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) financeiro cadastra com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id"));
+            setMsg('<p>Dados da página (menu) napp cadastrada com sucesso.</p>', 'success');
+            redirect(base_url("Painel_napp/cadastrar_pagina_napp/$campus->id"));
           }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
@@ -230,10 +230,10 @@ class Painel_napp extends CI_Controller {
 
       $data = array(
         'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/financeiro/pagina_menu_financeiro/cadastrar_pagina_financeiro',
+        'conteudo' => 'paineladm/napp/pagina_menu_napp/cadastrar_pagina_napp',
         'dados' => array(
-          'paginaFinanceiro'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
-          'page' => "Cadastro de pagina (menu do site) do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'paginaNapp'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
+          'page' => "Cadastro de pagina (menu do site) do napp - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
           'tipo'=>''
         )
@@ -242,13 +242,13 @@ class Painel_napp extends CI_Controller {
       $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_informacoes_financeiro($uriCampus=NULL) {
+    public function cadastrar_informacoes_napp($uriCampus=NULL) {
         verificaLogin();
 
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
         
-        $pagina = 'financeiro';
+        $pagina = 'napp';
         $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
         $colunasTabelaPages = array('pages.id','pages.title');
@@ -257,7 +257,7 @@ class Painel_napp extends CI_Controller {
         $listaItemPages = $this->painelbd->where($colunasTabelaPages,'pages',$joinConteudoPagina, $wherePagina,null)->row();
 
         if(!isset($listaItemPages)){
-          redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+          redirect(base_url("Painel_napp/lista_informacoes_napp/$campus->id"));
         }
 
         //Validaçãoes via Form Validation
@@ -287,8 +287,8 @@ class Painel_napp extends CI_Controller {
           $dados_form['user_id'] = $this->session->userdata('codusuario');
   
           if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
-              setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-              redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+              setMsg('<p>Dados do napp cadastrado com sucesso.</p>', 'success');
+              redirect(base_url("Painel_napp/lista_informacoes_napp/$campus->id"));
           }else{
               setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
           }
@@ -296,10 +296,10 @@ class Painel_napp extends CI_Controller {
 
         $data = array(
             'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/financeiro/cadastrar_informacoes_financeiro',
+            'conteudo' => 'paineladm/napp/cadastrar_informacoes_napp',
             'dados' => array(
                 'conteudosPagina'=>'',
-                'page' => "Cadastro de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'page' => "Cadastro de informações do napp - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
                 'campus'=>$campus,
                 'tipo'=>''
             )
@@ -308,20 +308,20 @@ class Painel_napp extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_informacoes_financeiro($uriCampus=NULL,$itemId=null) {
+    public function editar_informacoes_napp($uriCampus=NULL,$itemId=null) {
       verificaLogin();
 
       $colunasCampus = array('campus.id','campus.name','campus.city');
       $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
       
-      $pagina = 'financeiro';
+      $pagina = 'napp';
       //$wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
-      $colunasTabelaPagesFinanceiro = array('page_contents.id','page_contents.title','page_contents.description','page_contents.order','page_contents.img_destaque','page_contents.link_redir','page_contents.status');
+      $colunasTabelaPagesnapp = array('page_contents.id','page_contents.title','page_contents.description','page_contents.order','page_contents.img_destaque','page_contents.link_redir','page_contents.status');
       $joinConteudoPagina = array('pages' => 'pages.id = page_contents.pages_id');
-      $wherePaginaFinanceiro = array('page_contents.id'=>$itemId);
+      $wherePaginaNapp = array('page_contents.id'=>$itemId);
 
-      $paginaFinanceiro = $this->painelbd->where($colunasTabelaPagesFinanceiro,'page_contents',$joinConteudoPagina, $wherePaginaFinanceiro,null)->row();
+      $paginaNapp = $this->painelbd->where($colunasTabelaPagesnapp,'page_contents',$joinConteudoPagina, $wherePaginaNapp,null)->row();
       
       $this->form_validation->set_rules('title', 'Titulo', 'required');
       $this->form_validation->set_rules('description', 'Descrição', 'required');
@@ -334,30 +334,30 @@ class Painel_napp extends CI_Controller {
          endif;
       }else {
         
-        if ($paginaFinanceiro->description != $this->input->post('description')) {
+        if ($paginaNapp->description != $this->input->post('description')) {
           $dados_form['description'] = $this->input->post('description');
         }
 
-        if ($paginaFinanceiro->link_redir != $this->input->post('link_redir')) {
+        if ($paginaNapp->link_redir != $this->input->post('link_redir')) {
           $dados_form['link_redir'] = $this->input->post('link_redir');
         }
 
-        if ($paginaFinanceiro->title != $this->input->post('title')) {
+        if ($paginaNapp->title != $this->input->post('title')) {
           $dados_form['title'] = $this->input->post('title');
         }
 
-        if ($paginaFinanceiro->status != $this->input->post('status')) {
+        if ($paginaNapp->status != $this->input->post('status')) {
           $dados_form['status'] = $this->input->post('status');
         }
-        if ($paginaFinanceiro->order != $this->input->post('order')) {
+        if ($paginaNapp->order != $this->input->post('order')) {
           $dados_form['order'] = $this->input->post('order');
         }
 
 
         if (isset($_FILES['img_destaque']) && !empty($_FILES['img_destaque']['name'])) {
 
-          if (file_exists($paginaFinanceiro->img_destaque)) {
-            unlink($paginaFinanceiro->img_destaque);
+          if (file_exists($paginaNapp->img_destaque)) {
+            unlink($paginaNapp->img_destaque);
           }
 
           $path = "assets/images/financing/$campus->id";
@@ -368,12 +368,12 @@ class Painel_napp extends CI_Controller {
           $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
         }
         
-        $dados_form['id'] = $paginaFinanceiro->id;
+        $dados_form['id'] = $paginaNapp->id;
         $dados_form['user_id'] = $this->session->userdata('codusuario');
 
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
-            setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+            setMsg('<p>Dados do napp cadastrado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_napp/lista_informacoes_napp/$campus->id"));
         }else{
             setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
@@ -381,10 +381,10 @@ class Painel_napp extends CI_Controller {
 
       $data = array(
           'titulo' => 'UniAtenas',
-          'conteudo' => 'paineladm/financeiro/editar_informacoes_financeiro',
+          'conteudo' => 'paineladm/napp/editar_informacoes_napp',
           'dados' => array(
-              'paginaFinanceiro'=>$paginaFinanceiro,
-              'page' => "Edição de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+              'paginaNapp'=>$paginaNapp,
+              'page' => "Edição de informações do napp - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
               'campus'=>$campus,
               'tipo'=>''
           )
@@ -393,7 +393,7 @@ class Painel_napp extends CI_Controller {
       $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function deletar_item_financeiro($uriCampus=NULL,$id = NULL)
+    public function deletar_item_napp($uriCampus=NULL,$id = NULL)
     {
         verifica_login();
     
@@ -401,10 +401,10 @@ class Painel_napp extends CI_Controller {
 
         if ($this->painelbd->deletar('page_contents', $item->id)) {
             setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-            redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+            redirect("Painel_napp/lista_informacoes_napp/$uriCampus");
         } else {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-            redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+            redirect("Painel_napp/lista_informacoes_napp/$uriCampus");
         }
     }
 }
