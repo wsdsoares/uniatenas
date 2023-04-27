@@ -624,10 +624,13 @@ class Painel_campus extends CI_Controller {
     public function lista_historia($uriCampus=NULL) {
         verificaLogin();
 
+
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
         
         $pagina = 'nossaHistoria';
+        $verificaExistePaginaNossaHistoria = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+
         $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
 
         $joinConteudoPagina = array(
@@ -659,6 +662,7 @@ class Painel_campus extends CI_Controller {
                 'conteudosPagina'=>$listaInformmacoesHistoria,
                 'page' => "Cadastro de História - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
                 'campus'=>$campus,
+                'paginaNossaHistoria'=> $verificaExistePaginaNossaHistoria = isset($verificaExistePaginaNossaHistoria) ? $verificaExistePaginaNossaHistoria : '',
                 'tipo'=>''
             )
         );
@@ -699,13 +703,17 @@ class Painel_campus extends CI_Controller {
 
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
+
+            echo '<pre>';
+            print_r($dados_form);
+            echo '</pre>';
             
-            if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
+            /*if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_campus/lista_historia/$campus->id"));
             }else{
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-            }
+            }*/
        }
 
         $data = array(

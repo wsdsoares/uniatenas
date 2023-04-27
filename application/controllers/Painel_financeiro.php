@@ -204,7 +204,7 @@ class Painel_financeiro extends CI_Controller {
           endif;
       }else {
         
-        $dados_form['title'] = $this->input->post('title');
+        $dados_form['title'] = 'financeiro';
         $dados_form['status'] = $this->input->post('status');
         $dados_form['campusid'] = $campus->id;
 

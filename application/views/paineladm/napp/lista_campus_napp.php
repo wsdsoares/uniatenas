@@ -1,5 +1,5 @@
 <div class="block-header">
-  <h2></h2>
+  <h2>Painel Administrativo</h2>
 </div>
 
 <div class="row clearfix">
@@ -27,7 +27,7 @@
                 <h4 class="card-title"><?php echo $campus->name.'<br/> '.$campus->city.'('.$campus->uf.')'; ?></h4>
 
                 <?php
-                echo anchor("Painel_financeiro/lista_informacoes_financeiro/$campus->id", '<span>Ver itens do Financeiro</span>','class="btn btn-lg btn-block btn-info"');
+                echo anchor("Painel_napp/lista_informacoes_napp/$campus->id", '<span>Ver itens do NAPP</span>','class="btn btn-lg btn-block btn-info"');
                 ?>
               </div>
             </div>

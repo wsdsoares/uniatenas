@@ -35,53 +35,56 @@ class Painel_pesquisa_revistas extends CI_Controller {
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  
-    
-  public function lista_informacoes_tcc($uriCampus=NULL) 
-  {
+  public function lista_informacoes_revistas($uriCampus=NULL) {
     verificaLogin();
 
-    $pagina = 'pesquisaTcc';
-    $verificaExistePaginaTcc = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
-    
+    $pagina = 'revistas';
+    $verificaExistePaginaRevistas = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+  
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $joinContatoPagina = array(
-      'pages'=>'pages.id = page_contents.pages_id',
-      'campus' => 'campus.id= pages.campusid'
-    );
+  
+      
+      $listaInformmacoesPaginasRevistas =  $this->painelbd->getQuery(
+        "SELECT 
+          page_contents.id,
+          page_contents.title,
+          page_contents.img_destaque,
+          page_contents.status,
+          page_contents.title_short,
+          page_contents.description, 
+          page_contents.order, 
+          page_contents.created_at, 
+          page_contents.updated_at, 
+          page_contents.user_id, 
+          campus.city
+        FROM 
+          page_contents
+        INNER JOIN pages ON pages.id = page_contents.pages_id
+        INNER JOIN campus ON campus.id= pages.campusid
+        WHERE 
+            pages.title = '$pagina'AND 
+            pages.campusid = $campus->id AND 
+            page_contents.order <>'contatos' AND 
+            page_contents.status=1 
+        ORDER BY page_contents.order ASC")->result();
 
-      $colunaResultadoContatoPagina = array(
-        'page_contents.id',
-        'page_contents.title',
-        'page_contents.status',
-        'page_contents.description', 
-        'page_contents.order', 
-        'page_contents.created_at', 
-        'page_contents.updated_at', 
-        'page_contents.user_id', 
-        'campus.city'
-      );
-      
-      $whereContatosPagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
-      $contatosPaginaTcc = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
-      
       $data = array(
-        'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/lista_informacoes_tcc',
+        'titulo' => 'Gestão de Revistas - Uniatenas',
+        'conteudo' => 'paineladm/itens_iniciacao/revistas/lista_revistas',
+        //'conteudo' => 'paineladm/financeiro/lista_informacoes_financeiro',
         'dados' => array(
-         // 'conteudosPaginaComiteEticaPesquisa'=>$listaInformmacoesPaginaComiteEticaPesquisa,
-          'page' => "Informações da Página TCC - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-          'contatosPaginaTcc'=>$contatosPaginaTcc,
+          'conteudosPagina'=>$listaInformmacoesPaginasRevistas,
+          'page' => "Cadastro de informações Revistas - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
           'campus'=>$campus,
-          'paginaTcc'=> $verificaExistePaginaTcc = isset($verificaExistePaginaTcc) ? $verificaExistePaginaTcc : '',
+          'paginaRevistas'=> $verificaExistePaginaRevistas = isset($verificaExistePaginaRevistas) ? $verifverificaExistePaginaRevistasicaExistePaginaFinanceiro : '',
           'tipo'=>''
         )
       );
 
       $this->load->view('templates/layoutPainelAdm', $data);
-  }
+    }
 
   public function cadastrar_pagina_tcc($uriCampus=NULL)
   {

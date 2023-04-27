@@ -67,20 +67,22 @@ class Financeiro extends CI_Controller
         if($campus == null){
             redirect("");
         }
-        if ($campus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($campus == 'passos') {
-            $city = "Passos";
-        } elseif ($campus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        }
+        // if ($campus == 'paracatu') {
+        //     $city = "Paracatu";
+        // } elseif ($campus == 'passos') {
+        //     $city = "Passos";
+        // } elseif ($campus == 'setelagoas') {
+        //     $city = "Sete Lagoas";
+        // }
 
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf','campus.shurtName');
+        $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('campus.shurtName'=>$campus))->row();
+
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('id' => $id))->row();
 
         $data = array(
             'head' => array(
-                'title' => 'Financeiro - UniAtenas'.$city,
+                'title' => 'Financeiro - UniAtenas'.$dataCampus->city,
                 'css' => base_url('assets/css/financing.css')
             ),
             'conteudo' => "uniatenas/financeiro/pagina",

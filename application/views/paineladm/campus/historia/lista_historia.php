@@ -1,14 +1,52 @@
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO</h2>
 </div>
-<!-- Exportable Table -->
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header">
+        <h2>
+          <?php echo "Página História, Missão e Valores - Menu NOSSA HISTÓRIA"; ?>
+
+        </h2>
+        <div>
+          <span>
+            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu NOSSA HISTÓRIA no site principal"; ?></i>
+          </span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-6">
+              <?php 
+                if(isset($paginaNossaHistoria) and $paginaNossaHistoria != '' ){
+                  $tituloBotao = "EDITAR";
+                }else{
+                  $tituloBotao = "CADASTRAR";
+                }
+                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu financeiro)', array('class' => 'btn alerts_info'));
+              ?>
+            </div>
+            <div class="col-xs-6">
+              <?php
+              if(isset($paginaNossaHistoria) and $paginaNossaHistoria != '' ){
+                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaNossaHistoria->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (financeiro)', array('class' => 'btn btn-blue1'));
+              }
+              ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      echo '<pre>';
-      // print_r($dados['conteudosPagina']);
-      echo '</pre>';
+ 
       if ($msg = getMsg()){
           echo $msg;
       }

@@ -701,8 +701,9 @@ class Site extends CI_Controller
         }
 
         $pages_content = $this->bancosite->getQuery($consulta)->result();
+        
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
-
+        
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
         $dataJoinPhones = array("contatos_setores" => "contatos_setores.setoresidcamp = campus_has_setores.id");
@@ -722,6 +723,7 @@ class Site extends CI_Controller
                 'campus' => $dataCampus,
                 'conteudo' => $pages_content,
                 'conteudoPag' => $conteudoPrincipal,
+                
                 'page_banner' => $banner,
                 'contatos' => $phones,
             )

@@ -1,34 +1,40 @@
 <div class="block-header">
-  <h2>PAINEL ADMINISTRATIVO</h2>
+  <h2>Painel Administrativo</h2>
 </div>
-<!-- Exportable Table -->
+
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
       if ($msg = getMsg()){
-          echo $msg;
+        echo $msg;
       }
       ?>
       <div class="header">
         <h2>
           <?php echo $page; ?>
+
         </h2>
 
+        <br />
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
+
           <div class="col-xs-6">
-            <?php echo anchor("Painel_cpa/cadastrar_dados_cpa/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR itens CPA', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_cpa/cadastrar_arquivos_cpa/$campus->id/$conteudoItemCPA->id", '<i class="material-icons">add_box</i> CADASTRAR Arquivos CPA', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
           </div>
+
           <div class="col-xs-6">
-            <?php 
-          echo anchor('Painel_cpa/lista_campus_cpa', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
-          ?>
+            <?php echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
           </div>
         </div>
       </div>
       <br />
+      <?php
+      
+      if(isset($listaArquivosConteudosCpa) and $listaArquivosConteudosCpa != '' ){
+      ?>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
@@ -36,12 +42,9 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Título Página</th>
-                <th>Descrição</th>
-                <th>Arquivos</th>
+                <th>Título</th>
+                <th>Link PDF</th>
                 <th>Situação</th>
-                <th>Cidade</th>
-                <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </thead>
@@ -49,70 +52,79 @@
               <tr>
                 <th>Ações</th>
                 <th>#</th>
-                <th>Título Página</th>
-                <th>Descrição</th>
-                <th>Arquivos</th>
+                <th>Título</th>
+                <th>Link PDF</th>
                 <th>Situação</th>
-                <th>Cidade</th>
-                <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['conteudosPagina'] as $item):
-              ?>
-              <tr>
+              foreach ($dados['listaArquivosConteudosCpa'] as $item):
+
+                $verificaExistenciaArquivo= explode('.',$item->files );
+                $finalArquivo =  end($verificaExistenciaArquivo);
+                
+                if(!file_exists($item->files)){
+                  $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
+                }elseif($finalArquivo !== 'pdf'){
+                  $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
+                }else{
+                  $estiloAlerta = '';
+                }
+               ?>
+
+
+              <tr style="<?php echo  $estiloAlerta; ?>">
                 <td class="center">
                   <?php 
 
-                    echo '<a href=' . base_url("Painel_cpa/editar_dados_cpa/$campus->id/$item->id") . '>'
+                    echo '<a href=' . base_url("Painel_cpa/editar_arquivos_cpa/$campus->id/$pagina->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="'.$item->title.'" data-id="'. $item->id . '" >'
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-
-                    /*  $redirect = 'Painel_home-slideshow';
-                      $table = 'banners';
-
-                      if ($campus->status == 1) {
-                          echo  '<i class="material-icons">visibility</i>'
-                              . '</a>';
-                      } elseif ($campus->status == 0) {
-                          echo  '<i class="material-icons">visibility_off</i>'
-                              . '</a>';
-                      }
-                      */
                   ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->title;?></td>
-                <td><?php echo substr($item->description, 0, 150).'...';?></td>
                 <td>
                   <div class="btn-opcoes-curso">
                     <?php
-                      echo anchor("Painel_cpa/lista_arquivos_cpa/$campus->id/$item->id",'Lista Arquivos',array('class'=>"btn-opcoes-curso btn btn-primary")); 
-                      ?>
+
+                      $verificaExistenciaArquivo= explode('.',$item->files );
+                      $finalArquivo =  end($verificaExistenciaArquivo);
+                      if(!file_exists($item->files)){
+                        echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
+                      }elseif($finalArquivo !== 'pdf'){
+                        echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
+                      }else{
+                        echo anchor($item->files, 'ACESSAR LINK <i class="material-icons">picture_as_pdf</i>', array("target" => 'blank'));
+                      }
+                     ?>
                   </div>
                 </td>
+
+
 
                 <td>
                   <?php
                     if($item->status =='0'){
-                      echo 'Inativo';
+                        $situacao = 'Inativo';
                     }else{
-                      echo 'Ativo';
+                        $situacao = 'Ativo';
                     }
+
+                    echo $situacao;
                     ?>
                 </td>
-                <td><?php echo $item->city;?></td>
 
-                <td> <?php echo date("d/m/Y",strtotime($item->created_at)); ?></td>
+
                 <td>
                   <?php 
                     $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).' - '.$item->user_id; 
+                    echo $dateModification . ' - ' . $item->user_id;
                     ?>
                 </td>
 
@@ -125,6 +137,9 @@
           </table>
         </div>
       </div>
+      <?php
+      }
+      ?>
     </div>
   </div>
 </div>
@@ -143,9 +158,7 @@
           ligados a esse item serão removidos <span class="text-danger"
             style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
-        <p>O item selecionado é:
-          <span class="text-info nomeItem" style="font-weight: bold"><?php echo $item->title;?></span>
-        </p>
+        <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
@@ -160,8 +173,10 @@
 $('#modalDelete').on('show.bs.modal', function(e) {
   var nomeItem = $(e.relatedTarget).attr('data-nome');
   var id = $(e.relatedTarget).attr('data-id');
+
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_cpa/deletar_item_cpa/$campus->id/"); ?>' + id);
+    '<?php echo base_url("Painel_cpa/deletar_arquivo_cpa/$campus->id/$conteudoItemCPA->id/"); ?>' +
+    id);
 });
 </script>

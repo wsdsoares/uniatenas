@@ -366,9 +366,9 @@ class IniciacaoCientifica extends CI_Controller {
 
         $consultaAnosTCC =
         "SELECT 
-          count(monography.year), monography.year
+          monography.year
         FROM
-            campus_has_courses
+            `campus_has_courses`
         JOIN courses 
           on courses.id = campus_has_courses.courses_id
         JOIN campus 
@@ -377,11 +377,16 @@ class IniciacaoCientifica extends CI_Controller {
 		  on monography.campus_has_courses_id = campus_has_courses.id
         WHERE
             courses.modalidade = 'presencial'
-          and campus.id = $dataCampus->id
+          and campus.id =  $dataCampus->id
           and monography.campus_has_courses_id =$courseId 
-          and  ( SELECT count(tcc.id) FROM monography as tcc where tcc.campus_has_courses_id = campus_has_courses.id) > 0
-        ORDER BY courses.name ASC";
-        $yearsTCC = $this->bancosite->getQuery($consultaAnosTCC)->result();
+          and monography.files not like ('%<')
+          and  ( SELECT count(tcc.id) FROM monography as tcc where tcc.campus_has_courses_id = campus_has_courses.id and tcc.year = monography.year) > 0
+		group by ( monography.year)
+        ORDER BY 1 desc";
+
+      
+         $yearsTCC = $this->bancosite->getQuery($consultaAnosTCC)->result();
+        //$yearsTCC = $this->bancosite->getQuery("SELECT year FROM monography where coursesid =$courseId group by(year) order by 1 desc")->result();
 
         $data = array(
             'head' => array(

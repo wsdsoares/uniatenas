@@ -41,16 +41,20 @@ class Painel_cpa extends CI_Controller {
         $colunasCampus = array('campus.id','campus.name','campus.city');
         $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
         
-        $pagina = 'cpa';
-        $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
+        $colunaResultadPagina = array('pages.id','pages.title','pages.status');
+        $joinPagina = array('campus' => 'campus.id = pages.campusid');
+        $wherePagina = array('pages.title'=>'cpa');
 
-        $joinConteudoPagina = array(
+        $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
+        
+
+        $joinConteudoCpa = array(
             'pages'=>'pages.id = page_contents.pages_id',
             'campus' => 'campus.id= pages.campusid'
             
         );
 
-        $colunaResultadPagina = array(
+        $colunaResultadInformacoesCpa = array(
             'page_contents.id',
             'page_contents.title',
             'page_contents.status',
@@ -62,18 +66,21 @@ class Painel_cpa extends CI_Controller {
             'page_contents.user_id', 
             'campus.city'
         );
+
+        $whereInformacoesCpa = array('pages.id'=> $pagina->id,'pages.campusid'=>$campus->id);
         
-        $listaInformmacoesPaginaCPA = $this->painelbd->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
+        $listaInformmacoesPaginaCPA = $this->painelbd->where($colunaResultadInformacoesCpa,'page_contents',$joinConteudoCpa, $whereInformacoesCpa,null)->result();
 
         $data = array(
-            'titulo' => 'UniAtenas',
-            'conteudo' => 'paineladm/campus/cpa/lista_dados_cpa',
-            'dados' => array(
-                'conteudosPagina'=>$listaInformmacoesPaginaCPA,
-                'page' => "Cadastro itens CPA - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=>$campus,
-                'tipo'=>''
-            )
+          'titulo' => 'UniAtenas',
+          'conteudo' => 'paineladm/campus/cpa/lista_dados_cpa',
+          'dados' => array(
+            'conteudosPagina'=>$listaInformmacoesPaginaCPA,
+            'page' => "Cadastro itens CPA - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+            'campus'=>$campus,
+            'pagina'=>$pagina,
+            'tipo'=>'tabelaDatatable'
+          )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
@@ -228,5 +235,252 @@ class Painel_cpa extends CI_Controller {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
             redirect("Painel_cpa/lista_dados_cpa/$uriCampus");
         }
+    }
+
+
+    public function lista_arquivos_cpa($uriCampus = NULL, $idConteudoPagina = NULL) {
+    
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $coluntaResultadoConteudoItemCPA = array(
+      'page_contents.title', 'page_contents.id','page_contents.pages_id'
+      );
+      $whereConteudoItemCPA = array('page_contents.id'=>$idConteudoPagina);
+      $conteudoItemCPA = $this->painelbd->where($coluntaResultadoConteudoItemCPA,'page_contents',NULL,$whereConteudoItemCPA)->row();
+      
+      $colunaResultadPagina = array('pages.id','pages.title','pages.status');
+      $joinPagina = array('campus' => 'campus.id = pages.campusid');
+      $wherePagina = array('pages.id'=>$conteudoItemCPA->pages_id);
+      $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
+  
+       
+      $colunaResultadoArquivosItensCpa = array(
+        'page_contents_files.id',
+        'page_contents_files.title',
+        'page_contents_files.id_page_contents',
+        'page_contents_files.status',
+        'page_contents_files.files',
+        'page_contents_files.order',
+        'page_contents_files.created_at',
+        'page_contents_files.updated_at',
+        'page_contents_files.user_id',
+      );
+
+      $joinArquivosConteudosCpa= array(
+        'page_contents'=>'page_contents.id = page_contents_files.id_page_contents',
+      );
+      $whereArquivosConteudosCpa = array('page_contents_files.id_page_contents'=>$conteudoItemCPA->id);
+      $listaArquivosConteudosCpa= $this->painelbd->where($colunaResultadoArquivosItensCpa,'page_contents_files',$joinArquivosConteudosCpa, $whereArquivosConteudosCpa,)->result();
+      
+      $data = array(
+        'titulo' => 'Arquivos CPA - Painel ADM',
+        'conteudo' => 'paineladm/campus/cpa/arquivos/lista_arquivos_cpa',
+        'dados' => array(
+          'page'=> "Lista Arquivos <u><i> $conteudoItemCPA->title </i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'listaArquivosConteudosCpa' => $listaArquivosConteudosCpa,
+          'conteudoItemCPA' => $conteudoItemCPA,
+          'campus'=>$campus,
+          'pagina'=>$pagina,
+          'tipo' => 'tabelaDatatable')
+      );
+  
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+  
+    public function cadastrar_arquivos_cpa($uriCampus=NULL, $idConteudoPagina = NULL) {
+      $this->load->helper('file');
+      
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+      
+      $coluntaResultadoConteudoItemCPA = array(
+        'page_contents.title', 'page_contents.id','page_contents.pages_id'
+        );
+      $whereConteudoItemCPA = array('page_contents.id'=>$idConteudoPagina);
+      $conteudoItemCPA = $this->painelbd->where($coluntaResultadoConteudoItemCPA,'page_contents',NULL,$whereConteudoItemCPA)->row();
+      
+      // $colunaResultadPagina = array('pages.id','pages.title','pages.status');
+      // $joinPagina = array('campus' => 'campus.id = pages.campusid');
+      // $wherePagina = array('pages.id'=>$conteudoItemCPA->pages_id);
+      // $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
+  
+      $this->form_validation->set_rules('title', 'Título arquivo', 'required');
+      $this->form_validation->set_rules('order', 'Ordem', 'required');
+  
+      if (empty($_FILES['files']['name'])) {
+          $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+          $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+      }
+  
+      if ($this->form_validation->run() == FALSE) {
+        if (validation_errors()){
+          setMsg(validation_errors(), 'error');
+        }
+      }else {
+        $path = "assets/files/CPA/$campus->id";
+        is_way($path);
+  
+        if (unique_name_args(noAccentuation($this->input->post('title'), NULL), $path)) {
+          $name_tmp = null;
+        } else {
+          $name_tmp = noAccentuation($this->input->post('title'), NULL);
+        }
+        //$name_tmp = noAccentuation($this->input->post('title').'-'.$this->input->post('year').'-'.date('h:i:s d/m/Y'));
+        $upload = $this->painelbd->uploadFiles('files', $path, $types = 'PDF|pdf', $name_tmp);
+  
+        if ($upload){
+          //upload efetuado
+          $dados_form = elements(array('title','order','status'), $this->input->post());
+          $dados_form['id_page_contents'] = $conteudoItemCPA->id;      
+          $dados_form['files'] = $path . '/' . $upload['file_name'];
+          $dados_form['user_id'] = $this->session->userdata('codusuario');
+          
+          if ($this->painelbd->salvar('page_contents_files', $dados_form) == TRUE){
+            setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
+            redirect("Painel_cpa/lista_arquivos_cpa/$campus->id/$conteudoItemCPA->id");
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }   
+      }
+      $data = array(
+        'titulo' => 'Arquivos CPA - Painel ADM',
+        'conteudo' => 'paineladm/campus/cpa/arquivos/cadastrar_arquivos_cpa',
+        'dados' => array(
+          'page'=> "Cadastro de Arquivos CPA >> ITEM <u><i> $conteudoItemCPA->title</i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'conteudoItemCPA' => $conteudoItemCPA,
+          'campus'=>$campus,
+          //'pagina'=>$pagina,
+          'tipo' => '')
+      );
+  
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+  
+    public function editar_arquivos_cpa($uriCampus=NULL, $idConteudoPagina = NULL, $idArquivo=NULL) {
+      $this->load->helper('file');
+      
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+      
+      $colunaResultadoArquivo = array(
+        'page_contents_files.id',
+        'page_contents_files.id_page_contents',
+        'page_contents_files.title',
+        'page_contents_files.files',
+        'page_contents_files.order',
+        'page_contents_files.status',
+        'page_contents_files.user_id',
+      );
+      $joinArquivo = array(
+        'page_contents'=>'page_contents.id = page_contents_files.id_page_contents',
+      );
+      $whereArquivo = array('page_contents_files.id'=>$idArquivo);
+      
+      $arquivoCpa = $this->painelbd->where($colunaResultadoArquivo,'page_contents_files',$joinArquivo, $whereArquivo)->row();
+
+      $coluntaResultadoConteudoItemCPA = array(
+        'page_contents.title', 'page_contents.id','page_contents.pages_id'
+        );
+      $whereConteudoItemCPA = array('page_contents.id'=>$arquivoCpa->id_page_contents);
+      $conteudoItemCPA = $this->painelbd->where($coluntaResultadoConteudoItemCPA,'page_contents',NULL,$whereConteudoItemCPA)->row();
+      
+      // $colunaResultadPagina = array('pages.id','pages.title','pages.status');
+      // $joinPagina = array('campus' => 'campus.id = pages.campusid');
+      // $wherePagina = array('pages.id'=>$conteudoItemCPA->pages_id);
+      // $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
+  
+      $this->form_validation->set_rules('title', 'Título do arquivo', 'required');
+      $this->form_validation->set_rules('order', 'Ordem', 'required');
+  
+      // if (empty($_FILES['files']['name'])) {
+      //     $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+      //     $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+      // }
+  
+      if ($this->form_validation->run() == FALSE) {
+        if (validation_errors()){
+          setMsg(validation_errors(), 'error');
+        }
+      }else{
+        if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
+  
+          $verificaExistenciaArquivo= explode('.',$arquivoCpa->files );
+          $finalArquivo =  end($verificaExistenciaArquivo);
+  
+          if($finalArquivo === 'pdf'){
+            unlink($arquivoCpa->files);
+          }
+                  
+          $path = "assets/files/CPA/$campus->id";
+          is_way($path);
+
+          if (unique_name_args(noAccentuation($this->input->post('title'), NULL), $path)) {
+            $name_tmp = null;
+          } else {
+            $name_tmp = noAccentuation($this->input->post('title'), NULL);
+          }
+          
+          $upload = $this->painelbd->uploadFiles('files', $path, $types = 'PDF|pdf', $name_tmp);
+  
+          if ($upload){
+            $dados_form['files'] = $path.'/'.$upload['file_name'];
+          }
+        }
+  
+        if ($arquivoCpa->title != $this->input->post('title')) {
+          $dados_form['title'] = $this->input->post('title');
+        }
+        if ($arquivoCpa->status != $this->input->post('status')) {
+          $dados_form['status'] = $this->input->post('status');
+        }
+        if ($arquivoCpa->order != $this->input->post('order')) {
+          $dados_form['order'] = $this->input->post('order');
+        }
+        
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+        $dados_form['updated_at'] = date('Y-m-d H:i:s');
+        $dados_form['id'] = $arquivoCpa->id;
+        
+        if ($this->painelbd->salvar('page_contents_files', $dados_form) == TRUE){
+          setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
+          redirect("Painel_cpa/lista_arquivos_cpa/$campus->id/$arquivoCpa->id_page_contents");
+        }else{
+          setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+        } 
+      }
+      $data = array(
+        'titulo' => 'Arquivos CPA - Painel ADM',
+        'conteudo' => 'paineladm/campus/cpa/arquivos/editar_arquivos_cpa',
+        'dados' => array(
+          'page'=> "Edição de Arquivos CPA >> ITEM <u><i> $conteudoItemCPA->title</i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'conteudoItemCPA' => $conteudoItemCPA,
+          'arquivoCpa' => $arquivoCpa,
+          'campus'=>$campus,
+          //'pagina'=>$pagina,
+          'tipo' => '')
+      );
+  
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+  
+  
+    public function deletar_arquivo_cpa($uriCampus=NULL, $idConteudoItemCPA = NULL, $id = null) {
+  
+      $item = $this->painelbd->where('*','page_contents_files', NULL, array('page_contents_files.id' => $id))->row();
+   
+      $arquivo = $item->files;
+  
+      if ($this->painelbd->deletar('page_contents_files', $item->id)) {
+        unlink($item->files);
+        setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+        redirect("Painel_cpa/lista_arquivos_cpa/$uriCampus/$idConteudoItemCPA");
+      } else {
+        setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+        redirect("Painel_cpa/lista_arquivos_cpa/$uriCampus/$idConteudoItemCPA");
+      }
+     
+      
     }
 }

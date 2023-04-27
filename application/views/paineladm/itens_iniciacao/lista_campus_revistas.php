@@ -30,7 +30,7 @@
                 <h4 class="card-title"><?php echo $campus->name.'<br/> '.$campus->city.'('.$campus->uf.')'; ?></h4>
 
                 <?php
-                echo anchor("Painel_publicacoes/lista_revistas/$campus->id", '<span>Ver Revistas</span>','class="btn btn-lg btn-block btn-info"');
+                echo anchor("Painel_pesquisa_revistas/lista_informacoes_revistas/$campus->id", '<span>Ver Revistas</span>','class="btn btn-lg btn-block btn-info"');
                 ?>
               </div>
             </div>
