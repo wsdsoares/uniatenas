@@ -1,5 +1,6 @@
 ##Projeto Uniatenas - Versão com painel administrativo
 
 ##
-Dashboard(https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/1.1%20Dashboard.PNG)
+Dashboard
+<img src="https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/1.1%20Dashboard.PNG)" />
 
