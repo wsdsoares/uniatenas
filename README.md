@@ -5,7 +5,7 @@
 
 ###SITE
 
-<video src="https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/UniAtenas%20-%20Paracatu%20-%20Opera%202022-09-22%2015-47-55.mp4">
+<video src="https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/UniAtenas%20-%20Paracatu%20-%20Opera%202022-09-22%2015-47-55.mp4" autoplay>
  </video>
 
 Projedo desenvolvido utilizando as tecnologias:
