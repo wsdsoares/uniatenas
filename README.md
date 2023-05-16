@@ -15,6 +15,9 @@ Projedo desenvolvido utilizando as tecnologias:
 * CSS
 * PHP 5.68
 
+#### Link das entidades de BD
+<img src="https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/Banco%20de%20dados%20-%20site.PNG" />
+
 ### Painel ADM
 Tela de Login
 <img src="https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/1.PNG" />
@@ -28,7 +31,7 @@ Gestão de Slides
 Gestão de Cursos
 <img src="https://github.com/wsdsoares/assets-projetos/blob/main/uniatenas/Lista%20informacoes%20-%20Cursos.PNG" />
 
-Demais imagens
+
 VER MAIS IMAGENS: <a href="https://github.com/wsdsoares/assets-projetos/tree/main/uniatenas" target="_blank"> Clique Aqui </a>
 
           
