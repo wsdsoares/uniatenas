@@ -7,11 +7,11 @@ include_once 'navbar.php';
 $permissionCampusArray = '';
 ?>
 <script type="text/javascript">
-function ativo() {
-  const elemento = document.querySelectorAll("<li> .active");
-  console.log(elemento);
-  alert(elemento);
-}
+  function ativo() {
+    const elemento = document.querySelectorAll("<li> .active");
+    console.log(elemento);
+    alert(elemento);
+  }
 </script>
 <section>
   <aside id="leftsideba" class="sidebar">
@@ -34,33 +34,33 @@ function ativo() {
           <ul class="ml-menu">
             <li>
               <?php
-                echo anchor('Painel_campus/lista_campus', '<span>Todos os Campus</span>');
+              echo anchor('Painel_campus/lista_campus', '<span>Todos os Campus</span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_campus/lista_campus_botoes_acessos', '<span>Botões de Acesso Rápido</span>');
-                // echo anchor('Painel_campus/lista_botoes_acesso_rapido_camp', '<span>Botões de Acesso Rápido</span>');
+              echo anchor('Painel_campus/lista_campus_botoes_acessos', '<span>Botões de Acesso Rápido</span>');
+              // echo anchor('Painel_campus/lista_botoes_acesso_rapido_camp', '<span>Botões de Acesso Rápido</span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_Campus/lista_campus_indicadores', '<span>Indicadores <strong>(Item do Rodapé)</strong></span>');
+              echo anchor('Painel_Campus/lista_campus_indicadores', '<span>Indicadores <strong>(Item do Rodapé)</strong></span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_geral/lista_campus_elementos_site', '<span>Itens do Site <small><strong>(Topo e rodapé página)</strong></small></span>');
+              echo anchor('Painel_geral/lista_campus_elementos_site', '<span>Itens do Site <small><strong>(Topo e rodapé página)</strong></small></span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_galeria/lista_campus_galeria_fotos', '<span>Galeria <small> <strong>(Fotos diversas do Campus)</strong></small></span>');
+              echo anchor('Painel_galeria/lista_campus_galeria_fotos', '<span>Galeria <small> <strong>(Fotos diversas do Campus)</strong></small></span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_geral/lista_campus_whatsapp', '<span>WhatsApp <small> <strong>(Exibido em todo site)</strong></small></span>');
+              echo anchor('Painel_geral/lista_campus_whatsapp', '<span>WhatsApp <small> <strong>(Exibido em todo site)</strong></small></span>');
               ?>
             </li>
           </ul>
@@ -97,13 +97,13 @@ function ativo() {
           <ul class="ml-menu">
             <li>
               <?php
-                echo anchor('Painel_home/lista_campus', '<span>Banners Principal - Slide</span>');
-                ?>
+              echo anchor('Painel_home/lista_campus', '<span>Banners Principal - Slide</span>');
+              ?>
             </li>
           </ul>
         </li>
         <li>
-          <?php 
+          <?php
           echo anchor('Painel_noticias/lista_campus_noticias', '<i class="material-icons">newspaper</i><span>Notícias</span>');
           ?>
         </li>
@@ -119,8 +119,8 @@ function ativo() {
           <ul class="ml-menu">
             <li>
               <?php
-                echo anchor('Painel_mensagens_contatos/lista_campus_mensagens_contatos', '<span>Mensagens Recebidas</span>');
-                ?>
+              echo anchor('Painel_mensagens_contatos/lista_campus_mensagens_contatos', '<span>Mensagens Recebidas</span>');
+              ?>
             </li>
           </ul>
         </li>
@@ -137,22 +137,22 @@ function ativo() {
           <ul class="ml-menu">
             <li>
               <?php
-                echo anchor('Painel_campus/lista_dirigentes', '<span>Dirigentes <strong>(Diretores/Reitores)</strong></span>');
+              echo anchor('Painel_campus/lista_dirigentes', '<span>Dirigentes <strong>(Diretores/Reitores)</strong></span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_campus/lista_campus_nossa_historia', '<span>História <strong>(Missão, visão e valores)</strong></span>');
+              echo anchor('Painel_campus/lista_campus_nossa_historia', '<span>História <strong>(Missão, visão e valores)</strong></span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_cpa/lista_campus_cpa', '<span>CPA <small> <strong>(Comissão Própria de Avaliação)</strong></small></span>');
+              echo anchor('Painel_cpa/lista_campus_cpa', '<span>CPA <small> <strong>(Comissão Própria de Avaliação)</strong></small></span>');
               ?>
             </li>
             <li>
               <?php
-                echo anchor('Painel_campus/lista_campus_infraestrutura', '<span>Infraestrutura <small> <strong>(Locais do Campus)</strong></small></span>');
+              echo anchor('Painel_campus/lista_campus_infraestrutura', '<span>Infraestrutura <small> <strong>(Locais do Campus)</strong></small></span>');
               ?>
             </li>
           </ul>
@@ -169,8 +169,8 @@ function ativo() {
           <ul class="ml-menu">
             <li>
               <?php
-                echo anchor('Painel_como_ingressar/lista_campus_como_ingressar', '<span>Páginas por Campus</span>');
-                ?>
+              echo anchor('Painel_como_ingressar/lista_campus_como_ingressar', '<span>Páginas por Campus</span>');
+              ?>
             </li>
           </ul>
         </li>
@@ -183,8 +183,8 @@ function ativo() {
           <ul class="ml-menu">
             <li>
               <?php
-                echo anchor('Painel_financeiro/lista_campus_financeiro', '<span>Páginas por Campus</span>');
-                ?>
+              echo anchor('Painel_financeiro/lista_campus_financeiro', '<span>Páginas por Campus</span>');
+              ?>
             </li>
           </ul>
         </li>
@@ -205,10 +205,10 @@ function ativo() {
               </a>
               <ul class="ml-menu">
                 <li>
-                  <?php echo anchor('Painel_graduacao/todos_cursos/presencial', '<span>Presencial</span>');?>
+                  <?php echo anchor('Painel_graduacao/todos_cursos/presencial', '<span>Presencial</span>'); ?>
                 </li>
                 <li>
-                  <?php echo anchor('Painel_graduacao/todos_cursos/ead', '<span>EAD</span>');?>
+                  <?php echo anchor('Painel_graduacao/todos_cursos/ead', '<span>EAD</span>'); ?>
                 </li>
               </ul>
             </li>
@@ -218,17 +218,17 @@ function ativo() {
               </a>
               <ul class="ml-menu">
                 <li>
-                  <?php echo anchor('Painel_graduacao/lista_campus_cursos/presencial', '<span>Presencial</span>');?>
+                  <?php echo anchor('Painel_graduacao/lista_campus_cursos/presencial', '<span>Presencial</span>'); ?>
                 </li>
                 <li>
-                  <?php echo anchor('Painel_graduacao/lista_campus_cursos/ead', '<span>EAD</span>');?>
+                  <?php echo anchor('Painel_graduacao/lista_campus_cursos/ead', '<span>EAD</span>'); ?>
                 </li>
               </ul>
             </li>
             <li>
               <?php
-                //echo anchor('Painel_graduacao/lista_campus_cursos', '<span>Cursos Por Campus</span>');
-                ?>
+              //echo anchor('Painel_graduacao/lista_campus_cursos', '<span>Cursos Por Campus</span>');
+              ?>
             </li>
           </ul>
         </li>
@@ -266,14 +266,14 @@ function ativo() {
 
           <ul class="ml-menu">
             <li>
-              <?php echo anchor('TrabalheConosco/curriculosRecebidos', '<span>Curriculos - Recebidos</span>');?>
+              <?php echo anchor('TrabalheConosco/curriculosRecebidos', '<span>Curriculos - Recebidos</span>'); ?>
             </li>
 
             <li>
-              <?php echo anchor('TrabalheConosco/vagasTrabalho', '<span>Vagas de trabalho</span>');?>
+              <?php echo anchor('TrabalheConosco/vagasTrabalho', '<span>Vagas de trabalho</span>'); ?>
             </li>
             <li>
-              <?php echo anchor('TrabalheConosco/areasSetores', '<span>Áreas / Setores</span>');?>
+              <?php echo anchor('TrabalheConosco/areasSetores', '<span>Áreas / Setores</span>'); ?>
             </li>
           </ul>
         </li> -->
@@ -282,7 +282,7 @@ function ativo() {
         <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
         <?php //include_once('itens_header/item_h_vestibular.php');?>
 
-        <li class="header">Secretaria</li>
+        <li class="header">Secretaria Acadêmica</li>
         <a href="javascript:void(0);" class="menu-toggle">
           <i class="material-icons">assignment</i>
           <span>Coodenação Secretaria</span>
@@ -290,36 +290,43 @@ function ativo() {
 
         <ul class="ml-menu">
           <li>
+            <?php
+            echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Itens</span>');
+            ?>
+          </li>
+          <!-- <li>
             <a href="javascript:void(0);" class="menu-toggle">
               <span>Calendários Semestre</span>
             </a>
             <ul class="ml-menu">
               <li>
-                <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
-              </li>
-            </ul>
+
+                <!-- <?php //echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?> -->
+          <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Informações</span>'); ?>
           </li>
         </ul>
-        <li>
-          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
-        </li>
-        <li>
-          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
-        </li>
+        </li> -->
+      </ul>
+      <li>
+        <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
+      </li>
+      <li>
+        <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
+      </li>
 
-        <li class="header">Biblioteca</li>
-        <li>
-          <a href="javascript:void(0);" class="menu-toggle">
-            <i class="material-icons">assignment</i>
-            <span>Gestão Biblioteca</span>
-          </a>
-          <ul class="ml-menu">
-            <!-- <li>
+      <li class="header">Biblioteca</li>
+      <li>
+        <a href="javascript:void(0);" class="menu-toggle">
+          <i class="material-icons">assignment</i>
+          <span>Gestão Biblioteca</span>
+        </a>
+        <ul class="ml-menu">
+          <!-- <li>
               <?php
-                echo anchor('Painel_biblioteca_revistas_periodicos/lista_campus_revistas_periodicos', '<span>Revistas/Periódicos <u>(links)</u></span>');
-                ?>
+              echo anchor('Painel_biblioteca_revistas_periodicos/lista_campus_revistas_periodicos', '<span>Revistas/Periódicos <u>(links)</u></span>');
+              ?>
             </li> -->
-            <!-- <li>
+          <!-- <li>
               <a href="javascript:void(0);" class="menu-toggle">
                 <span> Revistas e Periódicos</span>
               </a>
@@ -332,49 +339,49 @@ function ativo() {
                 </li>
               </ul>
             </li> -->
-            <li>
-              <?php
-                echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<span>Item biblioteca</span>');
-                ?>
-            </li>
-          </ul>
+          <li>
+            <?php
+            echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<span>Item biblioteca</span>');
+            ?>
+          </li>
+        </ul>
 
-        </li>
-
-
-        <li class="header">Menu Serviços</li>
-        <li>
-          <a href="javascript:void(0);" class="menu-toggle">
-            <i class="material-icons">assignment</i>
-            <span>Serviços</span>
-          </a>
-          <ul class="ml-menu">
-            <li>
-              <?php
-                echo anchor('Painel_servicos/lista_campus_servicos/gerais', '<span>Itens Gerais</span>');
-                ?>
-            </li>
-            <li>
-              <?php
-                echo anchor('Painel_servicos/lista_campus_servicos/nucleos', '<span>Núcleos</span>');
-                ?>
-            </li>
-            <li>
-              <?php
-                echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
-                ?>
-            </li>
-            <li>
-              <?php
-                echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
-                ?>
-            </li>
-          </ul>
-
-        </li>
+      </li>
 
 
-        <!--li>
+      <li class="header">Menu Serviços</li>
+      <li>
+        <a href="javascript:void(0);" class="menu-toggle">
+          <i class="material-icons">assignment</i>
+          <span>Serviços</span>
+        </a>
+        <ul class="ml-menu">
+          <li>
+            <?php
+            echo anchor('Painel_servicos/lista_campus_servicos/gerais', '<span>Itens Gerais</span>');
+            ?>
+          </li>
+          <li>
+            <?php
+            echo anchor('Painel_servicos/lista_campus_servicos/nucleos', '<span>Núcleos</span>');
+            ?>
+          </li>
+          <li>
+            <?php
+            echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
+            ?>
+          </li>
+          <li>
+            <?php
+            echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
+            ?>
+          </li>
+        </ul>
+
+      </li>
+
+
+      <!--li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>Mural Site</span>
@@ -386,13 +393,13 @@ function ativo() {
               </a>
               <ul class="ml-menu">
                 <li>
-                  <?php echo anchor('Mural/informacoesProvas/1', '<span>Paracatu</span>');?>
+                  <?php echo anchor('Mural/informacoesProvas/1', '<span>Paracatu</span>'); ?>
                 </li>
                 <li>
                   <?php echo anchor('Mural/informacoesProvas/3', '<span>Passos</span>'); ?>
                 </li>
                 <li>
-                  <?php echo anchor('Mural/informacoesProvas/2', '<span>Sete Lagoas</span>');?>
+                  <?php echo anchor('Mural/informacoesProvas/2', '<span>Sete Lagoas</span>'); ?>
                 </li>
               </ul>
             </li>
@@ -402,13 +409,13 @@ function ativo() {
               </a>
               <ul class="ml-menu">
                 <li>
-                  <?php echo anchor('Mural/informacoesProvas/1', '<span>Paracatu</span>');?>
+                  <?php echo anchor('Mural/informacoesProvas/1', '<span>Paracatu</span>'); ?>
                 </li>
                 <li>
                   <?php echo anchor('Mural/informacoesProvas/2', '<span>Passos</span>'); ?>
                 </li>
                 <li>
-                  <?php echo anchor('Mural/informacoesProvas/3', '<span>Sete Lagoas</span>');  ?>
+                  <?php echo anchor('Mural/informacoesProvas/3', '<span>Sete Lagoas</span>'); ?>
                 </li>
               </ul>
             </li>
@@ -425,7 +432,7 @@ function ativo() {
           </ul>
           </li-->
 
-        <!-- <li>
+      <!-- <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>TV</span>
@@ -436,57 +443,57 @@ function ativo() {
             </li>
           </ul>
         </li> -->
-        <li class="header">Gestão - Pesquisa e Iniciação</li>
-        <li>
-          <a href="javascript:void(0);" class="menu-toggle">
-            <i class="material-icons">assignment</i>
-            <span>PESQUISA</span>
-          </a>
-          <ul class="ml-menu">
-            <li>
-              <a href="javascript:void(0);" class="menu-toggle">
-                <span>Publicações</span>
-              </a>
-              <ul class="ml-menu">
-                <li>
-                  <?php
-                    echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
-                  ?>
-                </li>
+      <li class="header">Gestão - Pesquisa e Iniciação</li>
+      <li>
+        <a href="javascript:void(0);" class="menu-toggle">
+          <i class="material-icons">assignment</i>
+          <span>PESQUISA</span>
+        </a>
+        <ul class="ml-menu">
+          <li>
+            <a href="javascript:void(0);" class="menu-toggle">
+              <span>Publicações</span>
+            </a>
+            <ul class="ml-menu">
+              <li>
+                <?php
+                echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
+                ?>
+              </li>
 
-                <li>
-                  <?php
-                    echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Monografias - TCC</span>');
-                  ?>
-                </li>
-                <li>
-                  <?php
-                    //comentado até a definição correta do processo
-                    /*echo anchor('publicacoes/anaisMonografia', '
-                                                <span>Anais</span>');*/
-                    ?>
-                </li>
+              <li>
+                <?php
+                echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Monografias - TCC</span>');
+                ?>
+              </li>
+              <li>
+                <?php
+                //comentado até a definição correta do processo
+                /*echo anchor('publicacoes/anaisMonografia', '
+                                            <span>Anais</span>');*/
+                ?>
+              </li>
 
-              </ul>
-              <?php
-                echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
-              ?>
+            </ul>
+            <?php
+            echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
+            ?>
 
-              <?php
-                echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
-              ?>
-              <?php
-                echo anchor('Painel_pesquisa_comite/lista_campus_comite', '<span>CEP - Comitê de Ética em Pesquisa</span>');
-              ?>
-              <?php
-                echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Página TCC</span>');
-              ?>
-            </li>
-          </ul>
-        </li>
-        <li class="header"></li>
+            <?php
+            echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
+            ?>
+            <?php
+            echo anchor('Painel_pesquisa_comite/lista_campus_comite', '<span>CEP - Comitê de Ética em Pesquisa</span>');
+            ?>
+            <?php
+            echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Página TCC</span>');
+            ?>
+          </li>
+        </ul>
+      </li>
+      <li class="header"></li>
 
-        <!-- <li>
+      <!-- <li>
           <li class="header">Gestão - Vestibular Medicina</li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
@@ -499,10 +506,10 @@ function ativo() {
               </a>
               <ul class="ml-menu">
                 <li>
-                  <?php echo anchor('ProcessoSeletivo/insricoesEad', '<span>EAD - Uniatenas</span>');?>
+                  <?php echo anchor('ProcessoSeletivo/insricoesEad', '<span>EAD - Uniatenas</span>'); ?>
                 </li>
                 <li>
-                  <?php echo anchor('publicacoes/anais', '<span>Presenciais</span>');?>
+                  <?php echo anchor('publicacoes/anais', '<span>Presenciais</span>'); ?>
                 </li>
               </ul>
             </li>
