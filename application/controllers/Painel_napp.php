@@ -272,7 +272,7 @@ class Painel_napp extends CI_Controller {
            endif;
         }else {
           
-          $path = "assets/images/financing/$campus->id";
+          $path = "assets/images/napp/$campus->id";
           is_way($path);
 
           $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
@@ -319,6 +319,7 @@ class Painel_napp extends CI_Controller {
 
       $colunasTabelaPagesnapp = array('page_contents.id','page_contents.title','page_contents.description','page_contents.order','page_contents.img_destaque','page_contents.link_redir','page_contents.status');
       $joinConteudoPagina = array('pages' => 'pages.id = page_contents.pages_id');
+      
       $wherePaginaNapp = array('page_contents.id'=>$itemId);
 
       $paginaNapp = $this->painelbd->where($colunasTabelaPagesnapp,'page_contents',$joinConteudoPagina, $wherePaginaNapp,null)->row();
@@ -360,7 +361,7 @@ class Painel_napp extends CI_Controller {
             unlink($paginaNapp->img_destaque);
           }
 
-          $path = "assets/images/financing/$campus->id";
+          $path = "assets/images/napp/$campus->id";
           is_way($path);
 
           $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);

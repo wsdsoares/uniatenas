@@ -363,10 +363,7 @@ class Painel_secretaria Extends CI_Controller
 
 //         $listagem = $this->bd->Where($field, $table, $datajoin, $where,$order)->result();
 
-//         /*echo '<pre>';
-//         print_r($listagem);
-//         echo '<pre>';*/
-
+//    
 //         $data = array(
 //             'titulo' => 'Lista de Calendários ',
 //             'conteudo' => 'paineladm/secretaria/ped/lista',

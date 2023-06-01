@@ -43,9 +43,7 @@ $page = $this->uri->segment(2);
                         <tbody>
                             <?php
                             
-                            echo '<pre>';
-                            print_r($dados);
-                            echo '</pre>';
+                           
                             /*foreach ($dados as $item):
                                 ?>
                                 <tr>

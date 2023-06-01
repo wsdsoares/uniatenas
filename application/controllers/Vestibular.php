@@ -83,9 +83,7 @@ class Vestibular extends CI_Controller
 
             $dadosCampus = $this->bancosite->getQuery($consultaResultadosVestibular)->result();
 
-            // echo '<pre>';
-            // print_r($dadosCampus);
-            // echo '</pre>';
+        
             
             $data = array(
                 'head' => array(

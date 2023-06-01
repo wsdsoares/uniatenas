@@ -5,6 +5,47 @@
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
+      <div class="header">
+        <h2>
+          <?php echo "Página CPA - Menu CPA do"; ?>
+
+        </h2>
+        <div>
+          <span>
+            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu CPA no site principal"; ?></i>
+          </span>
+        </div>
+      </div>
+      <div class="body">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-6">
+              <?php 
+                if(isset($paginaCpa) and $paginaCpa != '' ){
+                  $tituloBotao = "EDITAR";
+                }else{
+                  $tituloBotao = "CADASTRAR";
+                }
+                echo anchor("Painel_cpa/cadastrar_pagina_cpa/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu cpa)', array('class' => 'btn alerts_info'));
+              ?>
+            </div>
+            <div class="col-xs-6">
+              <?php
+              if(isset($paginaCpa) and $paginaCpa != '' ){
+                echo anchor("Painel_cpa/cadastrar_contato_pagina_cpa/$campus->id/$paginaCpa->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (cpa)', array('class' => 'btn btn-blue1'));
+              }
+              ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
       <?php
       if ($msg = getMsg()){
           echo $msg;
@@ -29,6 +70,9 @@
         </div>
       </div>
       <br />
+      <?php
+      if(isset($paginaCpa) and $paginaCpa != '' ){
+      ?>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
@@ -125,6 +169,9 @@
           </table>
         </div>
       </div>
+      <?php 
+      }
+      ?>
     </div>
   </div>
 </div>

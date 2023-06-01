@@ -12,9 +12,7 @@
       </div>
       <div class="body">
         <?php
-        echo '<pre>';
-        //print_r($dados);
-        echo '</pre>';
+    
         if ($msg = getMsg()){
             echo $msg;
         }

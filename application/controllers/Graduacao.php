@@ -17,7 +17,6 @@ class Graduacao extends CI_Controller
 
     public function como_ingressar($uricampus = NULL, $modalidadeIngresso = NULL)
     {
-
       if ($uricampus == null) {
           redirect("");
       }
@@ -313,17 +312,20 @@ order by courses.name";
         if ($uricampus == null) {
             redirect("");
         }
-        if ($uricampus == 'paracatu') {
-            $city = "Paracatu";
-        } elseif ($uricampus == 'passos') {
-            $city = "Passos";
-        } elseif ($uricampus == 'setelagoas') {
-            $city = "Sete Lagoas";
-        } elseif ($uricampus == 'valenca') {
-            $city = "Valenca";
-        }
+        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
+        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.city'=>$uricampus))->row();
 
-        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $city))->row();
+        // if ($uricampus == 'paracatu') {
+        //     $city = "Paracatu";
+        // } elseif ($uricampus == 'passos') {
+        //     $city = "Passos";
+        // } elseif ($uricampus == 'setelagoas') {
+        //     $city = "Sete Lagoas";
+        // } elseif ($uricampus == 'valenca') {
+        //     $city = "Valenca";
+        // }
+        
+        $dataCampus = $this->bancosite->getWhere('campus', array('city' => $campus->city))->row();
 
         $queryCourses = "SELECT 
                     courses.id, 
@@ -503,6 +505,7 @@ order by courses.name";
           'courses_pages.actuation',
           'courses.duration',
           'courses_pages.capa',
+          'courses_pages.ppc',
 
           'courses_pages.link_vestibular',
           'courses_pages.filesGrid',

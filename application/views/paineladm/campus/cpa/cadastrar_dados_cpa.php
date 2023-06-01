@@ -79,7 +79,7 @@
           <div class="col-sm-12">
             <?php
               echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_campus/lista_historia/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+              echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
               ?>
           </div>

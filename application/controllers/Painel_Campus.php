@@ -318,16 +318,7 @@ class Painel_campus extends CI_Controller {
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['id'] = $campus->id;
 
-            // echo '<pre>';
-            // echo '<br/>';
-            // echo '<br/>';
-            // echo '<br/>';
-            // echo '<br/>';
-            // echo '<br/>';
-            // echo '<br/>';
-            // print_r($dados_form);
-            // echo '</pre>';
-
+        
             if ($this->painelbd->salvar('campus', $dados_form) == TRUE){
               setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
               redirect(base_url("Painel_campus/lista_campus/$campus->id"));

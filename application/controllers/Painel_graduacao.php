@@ -246,6 +246,7 @@ class Painel_graduacao extends CI_Controller {
             
             'courses_pages.id as coursePageId',
             'courses_pages.status',
+            'courses_pages.ppc',
             'courses_pages.description',
             'courses_pages.capa',
             'courses_pages.link_vestibular',
@@ -331,16 +332,16 @@ class Painel_graduacao extends CI_Controller {
                 }
             }
 
-            if (isset($_FILES["autorization"]) && !empty($_FILES['autorization']['name'])) {
+            // if (isset($_FILES["autorization"]) && !empty($_FILES['autorization']['name'])) {
+            if (!empty($_FILES['autorization']['name'])) {
                 
-                $path = 'assets/files/cursos/'.$campus->id.'/autorization';
+                $path = "assets/files/cursos/$campus->id/autorization/$informacoesCurso->coursePageId";
                 is_way($path);
                 $upload = $this->painelbd->uploadFiles('autorization', $path, $types = 'pdf|PDF', NULL);
 
                 if ($upload){
                     //upload efetuado
                     $dados_form['autorization'] = $path . '/' . $upload['file_name'];
-                    echo '<script>alert("'.$dados_form['autorization'].'")</script>';
                 }else{
                     //erro no upload
                     $msg = $this->upload->display_errors();
@@ -349,15 +350,16 @@ class Painel_graduacao extends CI_Controller {
                 }
             }
 
-            if (isset($_FILES["recognition"]) && !empty($_FILES['recognition']['name'])) {
+            // if (isset($_FILES["recognition"]) && !empty($_FILES['recognition']['name'])) {
+            if (!empty($_FILES['recognition']['name'])) {
                 
-                $path = 'assets/files/cursos/'.$campus->id.'/recognition';
+                $path = "assets/files/cursos/$campus->id/recognition/$informacoesCurso->coursePageId";
                 is_way($path);
                 $upload = $this->painelbd->uploadFiles('recognition', $path, $types = 'pdf|PDF', NULL);
 
                 if ($upload){
                     //upload efetuado
-                    $dados_form['autorization'] = $path . '/' . $upload['file_name'];
+                    $dados_form['recognition'] = $path . '/' . $upload['file_name'];
                     
                 }else{
                     //erro no upload
@@ -366,6 +368,26 @@ class Painel_graduacao extends CI_Controller {
                     setMsg($msg, 'erro');
                 }
             }
+            if (isset($_FILES["ppc"]) && !empty($_FILES['ppc']['name'])) {
+                
+                $path = "assets/files/cursos/$campus->id/ppc/$informacoesCurso->coursePageId";
+                is_way($path);
+                $upload = $this->painelbd->uploadFiles('ppc', $path, $types = 'pdf|PDF', NULL);
+
+                if ($upload){
+                    //upload efetuado
+                    $dados_form['ppc'] = $path . '/' . $upload['file_name'];
+                    
+                }else{
+                    //erro no upload
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
+
+                
+
 
             $dados_form['id'] = $informacoesCurso->coursePageId;
             $dados_form['userid'] = $this->session->userdata('codusuario');

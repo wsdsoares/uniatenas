@@ -44,22 +44,9 @@ class Painel_financeiro extends CI_Controller {
     $colunasCampus = array('campus.id','campus.name','campus.city');
     $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $joinContatoPagina = array(
-      'pages'=>'pages.id = page_contents.pages_id',
-      'campus' => 'campus.id= pages.campusid'
-    );
+   
 
-      $colunaResultadoContatoPagina = array(
-        'page_contents.id',
-        'page_contents.title',
-        'page_contents.status',
-        'page_contents.description', 
-        'page_contents.order', 
-        'page_contents.created_at', 
-        'page_contents.updated_at', 
-        'page_contents.user_id', 
-        'campus.city'
-      );
+ 
       
       $listaInformmacoesPaginasFinanceiro =  $this->painelbd->getQuery(
         "SELECT 
@@ -84,8 +71,23 @@ class Painel_financeiro extends CI_Controller {
             page_contents.order <>'contatos' AND 
             page_contents.status=1 
         ORDER BY page_contents.order ASC")->result();
-      
+
+        $colunaResultadoContatoPagina = array(
+            'page_contents.id',
+            'page_contents.title',
+            'page_contents.status',
+            'page_contents.description', 
+            'page_contents.order', 
+            'page_contents.created_at', 
+            'page_contents.updated_at', 
+            'page_contents.user_id', 
+            'campus.city'
+          );
       $whereContatosPagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
+      $joinContatoPagina = array(
+        'pages'=>'pages.id = page_contents.pages_id',
+        'campus' => 'campus.id= pages.campusid'
+      );
       $contatosPaginaFinanceiro = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
 
       $data = array(

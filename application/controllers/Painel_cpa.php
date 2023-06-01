@@ -35,6 +35,147 @@ class Painel_cpa extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
+    public function cadastrar_contato_pagina_cpa($uriCampus=NULL,$pageId = null)
+    {
+      verifica_login();
+  
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $colunaResultadPagina = array('pages.id','pages.title','pages.status',);
+      $joinPagina = array('campus' => 'campus.id= pages.campusid');
+      $wherePagina = array('pages.id'=>$pageId,);
+      $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
+
+      $colunaResultadContatoPaginaCpa = array(
+        'page_contents.id',
+        'page_contents.title',
+        'page_contents.status',
+        'page_contents.description', 
+        'page_contents.order', 
+        'page_contents.created_at', 
+        'page_contents.updated_at', 
+        'page_contents.user_id', 
+      );
+      $joinConteudoContatoPaginaCpa = array(
+        'pages'=>'pages.id = page_contents.pages_id',
+        'campus' => 'campus.id= pages.campusid'
+      );
+      $whereContatoPaginaCpa = array(
+        'page_contents.pages_id'=>$pagina->id,
+        'page_contents.order'=>'contatos'
+      );
+
+      $contatoPaginaCpa = $this->painelbd->where($colunaResultadContatoPaginaCpa,'page_contents',$joinConteudoContatoPaginaCpa, $whereContatoPaginaCpa)->row();
+      
+      $this->form_validation->set_rules('description', 'Informações de contato', 'required'); 
+      $this->form_validation->set_rules('status', 'Situação', 'required'); 
+
+      if ($this->form_validation->run() == FALSE) {
+          if (validation_errors()):
+              setMsg(validation_errors(), 'error');
+          endif;
+      }else {
+        
+        $dados_form['title'] = "Contatos ".$this->input->post('title');
+        $dados_form['status'] = $this->input->post('status');
+        $dados_form['description'] = $this->input->post('description');
+        $dados_form['order'] = 'contatos';
+        $dados_form['pages_id'] = $pagina->id;
+
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+        if(isset($contatoPaginaCpa)){
+          $dados_form['id'] = $contatoPaginaCpa->id;
+          if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
+            setMsg('<p>Dados da página (menu) atualizado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_cpa/cadastrar_contato_pagina_cpa/$campus->id/$pagina->id"));
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }else{
+          if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
+            setMsg('<p>Dados de contato cadastrado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_cpa/cadastrar_contato_pagina_cpa/$campus->id/$pagina->id"));
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }
+      }
+
+      $data = array(
+        'titulo' => 'UniAtenas',
+        'conteudo' => 'paineladm/campus/cpa/contatos/cadastrar_contato_pagina_cpa',
+        'dados' => array(
+          'tituloPagina' => "Informações de contato página cpa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'pagina'=>$pagina,
+          'contatoPaginaCpa' => $contatoPaginaCpa = isset($contatoPaginaCpa) ? $contatoPaginaCpa : '',
+          'campus'=>$campus,
+          'tipo'=>''
+        )
+      );
+
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function cadastrar_pagina_cpa($uriCampus=NULL)
+    {
+      verifica_login();
+  
+      $colunasCampus = array('campus.id','campus.name','campus.city');
+      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'cpa','pages.campusid'=>$campus->id))->row();
+
+      $this->form_validation->set_rules('status', 'Situação', 'required'); 
+
+      if ($this->form_validation->run() == FALSE) {
+          if (validation_errors()):
+              setMsg(validation_errors(), 'error');
+          endif;
+      }else {
+        
+        $dados_form['title'] = 'cpa';
+        $dados_form['status'] = $this->input->post('status');
+        $dados_form['campusid'] = $campus->id;
+
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+        
+
+        if(isset($verificaExistePagina)){
+          $dados_form['id'] = $verificaExistePagina->id;
+          
+          if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
+            setMsg('<p>Dados da página (menu) cpa atualizado com sucesso.</p>', 'success');
+            redirect(base_url("Painel_cpa/cadastrar_pagina_cpa/$campus->id"));
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }else{
+          if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
+            setMsg('<p>Dados da página (menu) cpa cadastra com sucesso.</p>', 'success');
+            redirect(base_url("Painel_cpa/cadastrar_pagina_cpa/$campus->id"));
+          }else{
+            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+          }
+        }
+      }
+
+      $data = array(
+        'titulo' => 'UniAtenas',
+        'conteudo' => 'paineladm/campus/cpa/pagina_menu_cpa/cadastrar_pagina_cpa',
+        'dados' => array(
+          'paginaCpa'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
+          'page' => "Cadastro de pagina (menu do site) do cpa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+          'campus'=>$campus,
+          'tipo'=>''
+        )
+      );
+
+      $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
     public function lista_dados_cpa($uriCampus=NULL) {
         verificaLogin();
 
@@ -43,17 +184,26 @@ class Painel_cpa extends CI_Controller {
         
         $colunaResultadPagina = array('pages.id','pages.title','pages.status');
         $joinPagina = array('campus' => 'campus.id = pages.campusid');
-        $wherePagina = array('pages.title'=>'cpa');
-
-        $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
-        
-
-        $joinConteudoCpa = array(
-            'pages'=>'pages.id = page_contents.pages_id',
-            'campus' => 'campus.id= pages.campusid'
-            
+                
+        $verificaExistePaginaCpa = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> 'cpa'))->row();
+ 
+        $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, array('pages.title'=>'cpa'))->row();
+  
+        $colunaResultadoContatoPagina = array(
+          'page_contents.id',
+          'page_contents.title',
+          'page_contents.status',
+          'page_contents.description', 
+          'page_contents.order', 
+          'page_contents.created_at', 
+          'page_contents.updated_at', 
+          'page_contents.user_id', 
+          'campus.city'
         );
-
+        $whereContatosPagina = array('pages.id'=> $pagina->id,'pages.campusid'=>$campus->id,'page_contents.order'=>'contatos');
+        $joinContatoPagina = array('pages'=>'pages.id = page_contents.pages_id','campus' => 'campus.id= pages.campusid');
+        $contatosPaginaCpa = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
+        
         $colunaResultadInformacoesCpa = array(
             'page_contents.id',
             'page_contents.title',
@@ -69,6 +219,11 @@ class Painel_cpa extends CI_Controller {
 
         $whereInformacoesCpa = array('pages.id'=> $pagina->id,'pages.campusid'=>$campus->id);
         
+        $joinConteudoCpa = array(
+          'pages'=>'pages.id = page_contents.pages_id',
+          'campus' => 'campus.id= pages.campusid'  
+        );
+        
         $listaInformmacoesPaginaCPA = $this->painelbd->where($colunaResultadInformacoesCpa,'page_contents',$joinConteudoCpa, $whereInformacoesCpa,null)->result();
 
         $data = array(
@@ -76,9 +231,10 @@ class Painel_cpa extends CI_Controller {
           'conteudo' => 'paineladm/campus/cpa/lista_dados_cpa',
           'dados' => array(
             'conteudosPagina'=>$listaInformmacoesPaginaCPA,
-            'page' => "Cadastro itens CPA - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+            'contatosPaginaCpa'=>$contatosPaginaCpa,
+            'page' => "Cadastro de informações da CPA - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
             'campus'=>$campus,
-            'pagina'=>$pagina,
+            'paginaCpa'=> $verificaExistePaginaCpa = isset($verificaExistePaginaCpa) ? $verificaExistePaginaCpa : '',
             'tipo'=>'tabelaDatatable'
           )
         );

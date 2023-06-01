@@ -207,14 +207,16 @@ p {
         </div>
         <div id="services">
           <?php
+          
         if (!empty($dados['gradeCurricular'])) {
         ?>
           <div class="container wow fadeIn">
-            <div class="section-header" style="text-align:justify;">
+            <!-- <div class="section-header" style="text-align:justify;">
               <h3 class="section-title">Grade Curricular</h3>
               <p class="section-description">Visualize abaixo, os conteúdos que serão estudados no curso.</p>
-            </div>
-            <div class="row itensGradeCurricular">
+            </div> -->
+
+            <!-- <div class="row itensGradeCurricular">
               <div class="col-sm-12">
                 <div class="row">
                   <?php
@@ -258,12 +260,13 @@ p {
                 ?>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="row">
               <div class="col-sm-12">
                 <?php
               if (empty($dados['informacoesCurso']->filesGrid)) {
-              ?>
+                
+                ?>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
                   <div class="boxcoordenador boxitens" style="height: 100px;">
                     <div class="icon">
@@ -283,11 +286,12 @@ p {
                 </div>
                 <?php 
               } 
+             
             }
             if (!empty($dados['informacoesCurso']->recognition)) {
             ?>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-                  <div class="boxcoordenador boxitens">
+                  <div class="boxcoordenador boxitens text-center" style="background:#F8F8FF	">
                     <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"></a>
                     <div class="icon">
                       <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"><i
@@ -304,6 +308,27 @@ p {
                   </div>
                 </div>
                 <?php 
+                }
+                if (!empty($dados['informacoesCurso']->ppc)) {
+                  ?>
+                  <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="boxcoordenador boxitens text-center" style="background:#F5F5F5;padding-bottom:2rem">
+                      <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank"></a>
+                      <div class="icon">
+                        <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank"><i
+                            class="fas fa-gavel"></i></a>
+                      </div>
+                      <h4 class="title">
+                        <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank">Plano Pedagógico de Curso</a>
+                        <br/>
+                      </h4>
+                      <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank">
+                        <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+                      </a>
+                      
+                    </div>
+                  </div>
+                  <?php 
                 }
                 foreach ($dados['coordenadorCurso'] as $row) {
                 ?>

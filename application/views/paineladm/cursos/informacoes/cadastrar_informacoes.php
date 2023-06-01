@@ -130,7 +130,7 @@
                 </div>
                 <div class="col-xs-6">
                   <?php
-                   echo '<script>alert("'.$informacoesCurso->matriz_visivel.'")</script>';
+                   
                    $valorMatrizVisivel = false;
 
                    if(isset($informacoesCurso->matriz_visivel) and !empty($informacoesCurso->matriz_visivel)){
@@ -152,6 +152,41 @@
           </div>
         </div>
         <div class="separacao-forms"></div>
+        
+        <div class="row clearfix" style="background:#FFFFF0">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="title">Plano Pedagógico de Curso (PDF)
+                </label>
+                <?php echo form_input(array('name' => 'ppc', 'type' => 'file', 'class' => 'form-control'), set_value('ppc')); ?>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label for="title">Acessar Arquivo</label>
+            <div class="input-group">
+              <?php
+              if($informacoesCurso->ppc!='' and !empty($informacoesCurso->ppc)){
+                ?>
+              <div class="row">
+                <div class="col-xs-6">
+                  <?php
+                  echo '<i class="material-icons">archive</i>"';
+                  echo anchor($informacoesCurso->ppc,'<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
+                  ?>
+                </div>
+                
+
+              </div>
+              <?php
+                }else{
+                  echo '<span> Não há arquivo cadastrado. <span>';
+                }
+              ?>
+            </div>
+          </div>
+        </div>
         <div class="separacao-forms"></div>
         <div class="separacao-forms"></div>
 

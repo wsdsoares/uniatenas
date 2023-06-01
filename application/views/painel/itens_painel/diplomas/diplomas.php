@@ -48,10 +48,7 @@
                                         $status = '0';
                                         $registros = $this->painel->get_all('diplomas')->result();
 
-                                        echo '<pre>';
-                                        print_r($registros);
-                                        echo '<pre>';
-
+                                     
                                         /*foreach ($registros as $linha) :
                                             if ($linha->status == 0) :
                                                 $status = 'Inativo';
