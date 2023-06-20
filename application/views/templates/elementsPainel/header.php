@@ -283,50 +283,51 @@ $permissionCampusArray = '';
         <?php //include_once('itens_header/item_h_vestibular.php');?>
 
         <li class="header">Secretaria Acadêmica</li>
-        <a href="javascript:void(0);" class="menu-toggle">
-          <i class="material-icons">assignment</i>
-          <span>Coodenação Secretaria</span>
-        </a>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>Coodenação Secretaria</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+              echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Itens</span>');
+              ?>
+            </li>
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Calendários Semestre</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
 
-        <ul class="ml-menu">
-          <li>
-            <?php
-            echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Itens</span>');
-            ?>
-          </li>
-          <!-- <li>
-            <a href="javascript:void(0);" class="menu-toggle">
-              <span>Calendários Semestre</span>
-            </a>
-            <ul class="ml-menu">
-              <li>
+                  <?php //echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
+                  <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Informações</span>'); ?>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
+        </li>
+        <li>
+          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
+        </li>
 
-                <!-- <?php //echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?> -->
-          <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Informações</span>'); ?>
-          </li>
-        </ul>
-        </li> -->
-      </ul>
-      <li>
-        <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
-      </li>
-      <li>
-        <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
-      </li>
-
-      <li class="header">Biblioteca</li>
-      <li>
-        <a href="javascript:void(0);" class="menu-toggle">
-          <i class="material-icons">assignment</i>
-          <span>Gestão Biblioteca</span>
-        </a>
-        <ul class="ml-menu">
-          <!-- <li>
+        <li class="header">Biblioteca</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>Gestão Biblioteca</span>
+          </a>
+          <ul class="ml-menu">
+            <!-- <li>
               <?php
               echo anchor('Painel_biblioteca_revistas_periodicos/lista_campus_revistas_periodicos', '<span>Revistas/Periódicos <u>(links)</u></span>');
               ?>
             </li> -->
-          <!-- <li>
+            <!-- <li>
               <a href="javascript:void(0);" class="menu-toggle">
                 <span> Revistas e Periódicos</span>
               </a>
@@ -339,49 +340,49 @@ $permissionCampusArray = '';
                 </li>
               </ul>
             </li> -->
-          <li>
-            <?php
-            echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<span>Item biblioteca</span>');
-            ?>
-          </li>
-        </ul>
+            <li>
+              <?php
+              echo anchor('Painel_biblioteca/lista_campus_biblioteca', '<span>Item biblioteca</span>');
+              ?>
+            </li>
+          </ul>
 
-      </li>
-
-
-      <li class="header">Menu Serviços</li>
-      <li>
-        <a href="javascript:void(0);" class="menu-toggle">
-          <i class="material-icons">assignment</i>
-          <span>Serviços</span>
-        </a>
-        <ul class="ml-menu">
-          <li>
-            <?php
-            echo anchor('Painel_servicos/lista_campus_servicos/gerais', '<span>Itens Gerais</span>');
-            ?>
-          </li>
-          <li>
-            <?php
-            echo anchor('Painel_servicos/lista_campus_servicos/nucleos', '<span>Núcleos</span>');
-            ?>
-          </li>
-          <li>
-            <?php
-            echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
-            ?>
-          </li>
-          <li>
-            <?php
-            echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
-            ?>
-          </li>
-        </ul>
-
-      </li>
+        </li>
 
 
-      <!--li>
+        <li class="header">Menu Serviços</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>Serviços</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+              echo anchor('Painel_servicos/lista_campus_servicos/gerais', '<span>Itens Gerais</span>');
+              ?>
+            </li>
+            <li>
+              <?php
+              echo anchor('Painel_servicos/lista_campus_servicos/nucleos', '<span>Núcleos</span>');
+              ?>
+            </li>
+            <li>
+              <?php
+              echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
+              ?>
+            </li>
+            <li>
+              <?php
+              echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
+              ?>
+            </li>
+          </ul>
+
+        </li>
+
+
+        <!--li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>Mural Site</span>
@@ -432,7 +433,7 @@ $permissionCampusArray = '';
           </ul>
           </li-->
 
-      <!-- <li>
+        <!-- <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>
             <span>TV</span>
@@ -443,57 +444,57 @@ $permissionCampusArray = '';
             </li>
           </ul>
         </li> -->
-      <li class="header">Gestão - Pesquisa e Iniciação</li>
-      <li>
-        <a href="javascript:void(0);" class="menu-toggle">
-          <i class="material-icons">assignment</i>
-          <span>PESQUISA</span>
-        </a>
-        <ul class="ml-menu">
-          <li>
-            <a href="javascript:void(0);" class="menu-toggle">
-              <span>Publicações</span>
-            </a>
-            <ul class="ml-menu">
-              <li>
-                <?php
-                echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
-                ?>
-              </li>
+        <li class="header">Gestão - Pesquisa e Iniciação</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">assignment</i>
+            <span>PESQUISA</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <a href="javascript:void(0);" class="menu-toggle">
+                <span>Publicações</span>
+              </a>
+              <ul class="ml-menu">
+                <li>
+                  <?php
+                  echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
+                  ?>
+                </li>
 
-              <li>
-                <?php
-                echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Monografias - TCC</span>');
-                ?>
-              </li>
-              <li>
-                <?php
-                //comentado até a definição correta do processo
-                /*echo anchor('publicacoes/anaisMonografia', '
-                                            <span>Anais</span>');*/
-                ?>
-              </li>
+                <li>
+                  <?php
+                  echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Monografias - TCC</span>');
+                  ?>
+                </li>
+                <li>
+                  <?php
+                  //comentado até a definição correta do processo
+                  /*echo anchor('publicacoes/anaisMonografia', '
+                                              <span>Anais</span>');*/
+                  ?>
+                </li>
 
-            </ul>
-            <?php
-            echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
-            ?>
+              </ul>
+              <?php
+              echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
+              ?>
 
-            <?php
-            echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
-            ?>
-            <?php
-            echo anchor('Painel_pesquisa_comite/lista_campus_comite', '<span>CEP - Comitê de Ética em Pesquisa</span>');
-            ?>
-            <?php
-            echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Página TCC</span>');
-            ?>
-          </li>
-        </ul>
-      </li>
-      <li class="header"></li>
+              <?php
+              echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
+              ?>
+              <?php
+              echo anchor('Painel_pesquisa_comite/lista_campus_comite', '<span>CEP - Comitê de Ética em Pesquisa</span>');
+              ?>
+              <?php
+              echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Página TCC</span>');
+              ?>
+            </li>
+          </ul>
+        </li>
+        <li class="header"></li>
 
-      <!-- <li>
+        <!-- <li>
           <li class="header">Gestão - Vestibular Medicina</li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">assignment</i>

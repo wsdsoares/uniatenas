@@ -23,7 +23,6 @@ $paginaSecretariaStatus = $dados['paginaSecretaria'] != "" ? $dados['paginaSecre
         <?php echo form_open("Painel_secretaria/cadastrar_pagina_secretaria/$campus->id") ?>
         <h2 class="card-inside-title">Informações do Página
         </h2>
-
         <div class="row clearfix">
           <div class="col-sm-4">
             <label for="title">Menu/Página</label>
@@ -36,6 +35,7 @@ $paginaSecretariaStatus = $dados['paginaSecretaria'] != "" ? $dados['paginaSecre
                 echo form_input(array('name' => 'title', 'class' => 'form-control', 'readonly' => "readonly"), set_value('title', 'Secretária Acadêmica'));
                 ?>
               </div>
+
             </div>
           </div>
           <div class="col-sm-4">

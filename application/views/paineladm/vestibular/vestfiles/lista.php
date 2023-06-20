@@ -1,14 +1,15 @@
 <?php
 $page = $this->uri->segment(2);
-if($tipo == 'provaGab'){
-    $table = str_replace('=','',base64_encode('vestibular_exams'));
-}if($tipo == 'files'){
-    $table = str_replace('=','',base64_encode('vestibular_files'));
+if ($tipo == 'provaGab') {
+  $table = str_replace('=', '', base64_encode('vestibular_exams'));
+}
+if ($tipo == 'files') {
+  $table = str_replace('=', '', base64_encode('vestibular_files'));
 }
 $redirect = 'Painel_vestibular-vestfiles';
 //if (in_array("admProvaGab", $permissionCampusArray['campus-1']) || in_array("provaGab", $permissionCampusArray['campus-1'])) {
 
-    ?>
+?>
 
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -16,23 +17,23 @@ $redirect = 'Painel_vestibular-vestfiles';
       <div class="header">
         <h2>
           <?php
-                        echo 'LISTA DE '.$titulo;
-                        ?>
+          echo 'LISTA DE ' . $titulo;
+          ?>
         </h2>
         <?php
-                    $page = $this->uri->segment(2);
-                    
-                        echo anchor('Painel_vestibular/cadastrar_vestfiles/'.$tipo, '<i class="material-icons">add_box</i> CADASTRAR ', array('class' => 'btn btn-primary m-t-15 waves-effect'));
-                    ?>
+        $page = $this->uri->segment(2);
+
+        echo anchor('Painel_vestibular/cadastrar_vestfiles/' . $tipo, '<i class="material-icons">add_box</i> CADASTRAR ', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+        ?>
 
       </div>
       <br>
       <div class="body">
         <?php
-                    if ($msg = getMsg()):
-                        echo $msg;
-                    endif
-                    ?>
+        if ($msg = getMsg()):
+          echo $msg;
+        endif
+        ?>
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
             <thead>
@@ -59,49 +60,62 @@ $redirect = 'Painel_vestibular-vestfiles';
             </tfoot>
             <tbody>
               <?php
-                            if(!empty($listagem)){
-                            foreach ($listagem as $item):
-                                ?>
-              <tr>
-                <td class="center">
+              if (!empty($listagem)) {
+                foreach ($listagem as $item):
+                  ?>
+                  <tr>
+                    <td class="center">
+                      <?php
+                      echo anchor($item->files, '<i class="material-icons">insert_drive_file</i>', array('title' => "arquivo"));
+
+                      echo '<a href=' . base_url("Painel_vestibular/editar_vestfiles/$item->id/$tipo/") . '>'
+                        . '<i class="material-icons">edit</i>'
+                        . '</a> ';
+                      if ($item->status == 1) {
+                        echo '<a href=' . base_url("Painel_vestibular/statusAlter/$item->id/0/$table/$redirect/$tipo ") . '>'
+                          . '<i class="material-icons">visibility</i>'
+                          . '</a>';
+                      } elseif ($item->status == 0) {
+                        echo '<a href=' . base_url("Painel_vestibular/statusAlter/$item->id/1/$table/$redirect/$tipo ") . '>'
+                          . '<i class="material-icons">visibility_off</i>'
+                          . '</a>';
+                      }
+
+
+
+                      echo '<a href=' . base_url("Painel_vestibular/deletaR/$item->id/$table/$redirect/$tipo") . '>'
+                        . '<i class="material-icons">delete</i>'
+                        . '</a> ';
+                      ?>
+                    </td>
+                    <td>
+                      <?php echo $item->id; ?>
+                    </td>
+                    <td>
+                      <?php echo $item->name; ?>
+                    </td>
+                    <td>
+                      <?php echo $item->vestname; ?>
+                    </td>
+                    <td>
+                      <?php echo $item->title; ?>
+                    </td>
+                    <td>
+                      <?php echo $item->datecreated; ?>
+                    </td>
+                    <td>
+                      <?php echo $item->datemodified; ?>
+                    </td>
+                    <td>
+                      <?php
+                      ?>
+                    </td>
+
+                  </tr>
                   <?php
-                                        echo anchor($item->files, '<i class="material-icons">insert_drive_file</i>', array('title' => "arquivo"));
-                                        
-                                            echo '<a href=' . base_url("Painel_vestibular/editar_vestfiles/$item->id/$tipo/") . '>'
-                                                . '<i class="material-icons">edit</i>'
-                                                . '</a> ';
-                                                if ($item->status == 1 ) {
-                                                    echo '<a href=' . base_url("Painel_vestibular/statusAlter/$item->id/0/$table/$redirect/$tipo ") . '>'
-                                                        . '<i class="material-icons">visibility</i>'
-                                                        . '</a>';
-                                                } elseif ($item->status == 0 ) {
-                                                    echo '<a href=' . base_url("Painel_vestibular/statusAlter/$item->id/1/$table/$redirect/$tipo ") . '>'
-                                                        . '<i class="material-icons">visibility_off</i>'
-                                                        . '</a>';
-                                                }
-
-                                        
-                                        
-                                            echo '<a href=' . base_url("Painel_vestibular/deletaR/$item->id/$table/$redirect/$tipo") . '>'
-                                                . '<i class="material-icons">delete</i>'
-                                                . '</a> ';
-                                        ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->name; ?></td>
-                <td><?php echo $item->vestname; ?></td>
-                <td><?php echo $item->title; ?></td>
-                <td><?php echo $item->datecreated; ?></td>
-                <td><?php echo $item->datemodified; ?></td>
-                <td><?php
-                                        ?>
-                </td>
-
-              </tr>
-              <?php
-                            endforeach;
-                            }
-                            ?>
+                endforeach;
+              }
+              ?>
             </tbody>
           </table>
         </div>
@@ -137,12 +151,11 @@ $redirect = 'Painel_vestibular-vestfiles';
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
-  console.log(id);
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("publicacoes/deletarMagazine/"); ?>' + id);
-});
+  $('#modalDelete').on('show.bs.modal', function (e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
+    console.log(id);
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href', '<?php echo base_url("publicacoes/deletarMagazine/"); ?>' + id);
+  });
 </script>
-<?php

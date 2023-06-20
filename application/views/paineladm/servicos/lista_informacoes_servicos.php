@@ -12,7 +12,9 @@
         </h2>
         <div>
           <span>
-            <i><?php echo "Caso não exista a página cadastrada, não será exibido o menu financeiro no site principal"; ?></i>
+            <i>
+              <?php echo "Caso não exista a página cadastrada, não será exibido o menu financeiro no site principal"; ?>
+            </i>
           </span>
         </div>
       </div>
@@ -20,19 +22,19 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-6">
-              <?php 
-                if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
-                  $tituloBotao = "EDITAR";
-                }else{
-                  $tituloBotao = "CADASTRAR";
-                }
-                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu financeiro)', array('class' => 'btn alerts_info'));
+              <?php
+              if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
+                $tituloBotao = "EDITAR";
+              } else {
+                $tituloBotao = "CADASTRAR";
+              }
+              echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> ' . $tituloBotao . ' página (menu financeiro)', array('class' => 'btn alerts_info'));
               ?>
             </div>
             <div class="col-xs-6">
               <?php
-              if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
-                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaFinanceiro->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (financeiro)', array('class' => 'btn btn-blue1'));
+              if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
+                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaFinanceiro->id", '<i class="material-icons">contact_phone</i> ' . $tituloBotao . ' contatos (financeiro)', array('class' => 'btn btn-blue1'));
               }
               ?>
             </div>
@@ -47,7 +49,7 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
+      if ($msg = getMsg()) {
         echo $msg;
       }
       ?>
@@ -60,26 +62,24 @@
       <div class="botoes-acoes-formularios">
         <div class="container">
           <?php
-          if(isset($paginaFinanceiro) and $paginaFinanceiro != '' ){
-          ?>
+          if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
+            ?>
           <div class="col-xs-6">
-            <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
-          <?php 
+          <?php
           }
           ?>
           <div class="col-xs-6">
-            <?php echo anchor('Painel_financeiro/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
+            <?php echo anchor('Painel_financeiro/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
         </div>
       </div>
       <br />
       <?php
-      echo '<pre>';
-      print_r($conteudosPaginaServicos);
-      echo '</pre>';
-      if(isset($conteudosPaginaServicos) and $conteudosPaginaServicos != '' ){
-      ?>
+
+      if (isset($conteudosPaginaServicos) and $conteudosPaginaServicos != '') {
+        ?>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
@@ -107,52 +107,58 @@
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['conteudosPaginaServicos'] as $item):
+                foreach ($dados['conteudosPaginaServicos'] as $item):
                   ?>
               <tr>
                 <td class="center">
-                  <?php 
+                  <?php
 
-                    echo '<a href=' . base_url("Painel_financeiro/editar_informacoes_financeiro/$campus->id/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_financeiro/editar_informacoes_financeiro/$campus->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-                  ?>
+                      ?>
                 </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->title;?></td>
+                <td>
+                  <?php echo $item->id; ?>
+                </td>
+                <td>
+                  <?php echo $item->title; ?>
+                </td>
                 <td>
 
                   <?php
-                  // if($item->order==0){
-                  //   echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
-                  // }else{
-                  //   echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
-                  // }
-                  ?>
+                      // if($item->order==0){
+                      //   echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
+                      // }else{
+                      //   echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
+                      // }
+                      ?>
                 </td>
                 </td>
                 <td>
                   <?php
-                    if($item->status =='0'){
+                      if ($item->status == '0') {
                         $situacao = 'Inativo';
-                    }else{
+                      } else {
                         $situacao = 'Ativo';
-                    }
+                      }
 
-                    echo $situacao;
-                    ?>
+                      echo $situacao;
+                      ?>
                 </td>
 
-                <td><?php echo $item->city;?></td>
+                <td>
+                  <?php echo $item->city; ?>
+                </td>
 
                 <td>
-                  <?php 
-                    $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo $dateModification . ' - ' . $item->user_id;
-                    ?>
+                  <?php
+                      $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
+                      echo $dateModification . ' - ' . $item->user_id;
+                      ?>
                 </td>
 
 

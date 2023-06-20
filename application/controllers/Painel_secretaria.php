@@ -67,6 +67,204 @@ class Painel_secretaria extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
+  public function lista_itens_secretaria($uriCampus = NULL, $pageId = null)
+  {
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+
+    $queryItensSecretaria = "
+    SELECT 
+    page_contents.id,
+    page_contents.title,
+    page_contents.title_short,
+    page_contents.status,
+    page_contents.tipo,
+    page_contents.order,
+    page_contents.description,
+    page_contents.link_redir,
+    page_contents.created_at,
+    page_contents.updated_at,
+    page_contents.user_id
+    FROM
+        page_contents
+        JOIN pages ON pages.id = page_contents.pages_id
+        JOIN campus ON campus.id = pages.campusid
+    WHERE
+        page_contents.pages_id = $pagina->id AND 
+        page_contents.tipo = 'informacoesPagina' AND
+        page_contents.order NOT IN ('linkComutacao','comutacao')
+    ORDER BY page_contents.title ASC
+    ";
+
+    $listaItensPaginaSecretaria = $this->painelbd->getQuery($queryItensSecretaria)->result();
+
+    $data = array(
+      'titulo' => 'Secretaria Acadêmica - Uniatenas',
+      'conteudo' => 'paineladm/secretaria/itens/lista_itens_secretaria',
+      'dados' => array(
+        'page' => "Informações da página SECRETARIA- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'pagina' => $pagina,
+        'listaItensPaginaSecretaria' => $listaItensPaginaSecretaria = isset($listaItensPaginaSecretaria) ? $listaItensPaginaSecretaria : '',
+        'campus' => $campus,
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function cadastrar_itens_secretaria($uriCampus = NULL, $pageId = NULL)
+  {
+    verificaLogin();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadoPagina = array('pages.id');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadoPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    //Validaçãoes via Form Validation
+    $this->form_validation->set_rules('title', 'Titulo', 'required');
+    // $this->form_validation->set_rules('title_short', 'Subtítulo', 'required');
+    $this->form_validation->set_rules('description', 'Descrição', 'required');
+    $this->form_validation->set_rules('status', 'Situação', 'required');
+    // $this->form_validation->set_rules('order', 'Ordem', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+
+      $dados_form['description'] = $this->input->post('description');
+
+      if (!empty($this->input->post('title_short'))) {
+        $dados_form['title_short'] = $this->input->post('title_short');
+      }
+
+      $dados_form['title'] = $this->input->post('title');
+      $dados_form['status'] = $this->input->post('status');
+      $dados_form['order'] = $this->input->post('order');
+      $dados_form['tipo'] = 'informacoesPagina';
+      $dados_form['pages_id'] = $pagina->id;
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
+        setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
+        redirect(base_url("Painel_secretaria/lista_itens_secretaria/$campus->id/$pagina->id"));
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/secretaria/itens/cadastrar_itens_secretaria',
+      'dados' => array(
+        'page' => "Cadastro de informações SECRETARIA ACADÊMICA - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'pagina' => $pagina,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function editar_itens_secretaria($uriCampus = NULL, $pageId = null, $idInformacao = null)
+  {
+    verificaLogin();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadoPagina = array('pages.id');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadoPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $informacoesSecretaria = $this->painelbd->where("*", 'page_contents', null, array('page_contents.id' => $idInformacao))->row();
+
+    //Validaçãoes via Form Validation
+    $this->form_validation->set_rules('title', 'Titulo', 'required');
+    //$this->form_validation->set_rules('title_short', 'Subtítulo', 'required');
+    $this->form_validation->set_rules('description', 'Descrição', 'required');
+    $this->form_validation->set_rules('status', 'Situação', 'required');
+    //$this->form_validation->set_rules('order', 'Ordem', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+      if ($informacoesSecretaria->description !== $this->input->post('description')) {
+        $dados_form['description'] = $this->input->post('description');
+      }
+      if ($informacoesSecretaria->title_short !== $this->input->post('title_short') and !empty($this->input->post('title_short'))) {
+        $dados_form['title_short'] = $this->input->post('title_short');
+      }
+      if ($informacoesSecretaria->title !== $this->input->post('title') and !empty($this->input->post('title'))) {
+        $dados_form['title'] = $this->input->post('title');
+      }
+      if ($informacoesSecretaria->status !== $this->input->post('status')) {
+        $dados_form['status'] = $this->input->post('status');
+      }
+
+      if ($informacoesSecretaria->order !== $this->input->post('order')) {
+        $dados_form['order'] = $this->input->post('order');
+      }
+
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+      $dados_form['id'] = $informacoesSecretaria->id;
+      $dados_form['updated_at'] = date('Y-m-d H:i:s');
+
+      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
+        setMsg('<p>Dados editados com sucesso.</p>', 'success');
+        redirect(base_url("Painel_secretaria/lista_itens_secretaria/$campus->id/$pagina->id"));
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/secretaria/itens/editar_itens_secretaria',
+      'dados' => array(
+        'informacoesSecretaria' => $informacoesSecretaria,
+        'page' => "Edição de informações SECRETARIA ACADÊMICA- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'pagina' => $pagina,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function deletar_item_secretaria($uriCampus = NULL, $pagina = null, $id = NULL)
+  {
+    verifica_login();
+
+    $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
+
+    if ($this->painelbd->deletar('page_contents', $item->id)) {
+      setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+      redirect("Painel_secretaria/lista_itens_secretaria/$uriCampus/$pagina");
+    } else {
+      setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+      redirect("Painel_secretaria/lista_itens_secretaria/$uriCampus/$pagina");
+    }
+  }
+
+
   public function cadastrar_pagina_secretaria($uriCampus = NULL)
   {
     verifica_login();
@@ -79,7 +277,7 @@ class Painel_secretaria extends CI_Controller
     $this->form_validation->set_rules('status', 'Situação', 'required');
 
     if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()):
+      if (validation_errors()) :
         setMsg(validation_errors(), 'error');
       endif;
     } else {
@@ -189,7 +387,7 @@ class Painel_secretaria extends CI_Controller
     }
 
     if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()):
+      if (validation_errors()) :
         setMsg(validation_errors(), 'erro');
       endif;
     } else {
@@ -285,7 +483,7 @@ class Painel_secretaria extends CI_Controller
     $this->form_validation->set_rules('title', 'Título', 'required');
 
     if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()):
+      if (validation_errors()) :
         setMsg(validation_errors(), 'error');
       endif;
     } else {
@@ -393,6 +591,4 @@ class Painel_secretaria extends CI_Controller
       redirect(base_url("Painel_secretaria/calendarios_semestre/$campusId"));
     }
   }
-
-
 }

@@ -16,17 +16,19 @@
           <?php echo $page; ?>
         </h2>
       </div>
-      <?php 
+      <?php
       ?>
       <div class="body">
         <?php
-          if ($msg = getMsg()){
-              echo $msg;
-          }
-          ?>
+        if ($msg = getMsg()) {
+          echo $msg;
+        }
+        ?>
         <?php echo form_open_multipart("Painel_graduacao/cadastrar_informacoes_curso/$informacoesCurso->campus_coursesid/$modalidade") ?>
 
-        <h2 class="card-inside-title">Informações do Curso <i><u><?php echo $informacoesCurso->nameCourse;?></u></i>
+        <h2 class="card-inside-title">Informações do Curso <i><u>
+              <?php echo $informacoesCurso->nameCourse; ?>
+            </u></i>
         </h2>
 
         <div class="row clearfix">
@@ -38,7 +40,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'link_vestibular', 'class' => 'form-control', 'placeholder' => 'URL do Vestibular (Link)'), set_value('link_vestibular',$informacoesCurso->link_vestibular));
+                echo form_input(array('name' => 'link_vestibular', 'class' => 'form-control', 'placeholder' => 'URL do Vestibular (Link)'), set_value('link_vestibular', $informacoesCurso->link_vestibular));
                 ?>
               </div>
             </div>
@@ -49,10 +51,10 @@
             <div class="input-group">
 
               <?php
-              if(isset($informacoesCurso->link_vestibular) and $informacoesCurso->link_vestibular != ''){
-                echo anchor($informacoesCurso->link_vestibular,'<button type="button" class="btn btn-info">Ver Link</button>');
+              if (isset($informacoesCurso->link_vestibular) and $informacoesCurso->link_vestibular != '') {
+                echo anchor($informacoesCurso->link_vestibular, '<button type="button" class="btn btn-info">Ver Link</button>');
               }
-            ?>
+              ?>
             </div>
           </div>
         </div>
@@ -67,18 +69,18 @@
                   <small> (Explicação e inforamções pertinentes ao campus)</small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description',$informacoesCurso->description)));
+                echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description', $informacoesCurso->description)));
                 ?>
               </div>
             </div>
           </div>
         </div>
         <script type="text/javascript">
-        // replace: substitui o formato padrão do textarea (descricao)
-        // e aplica as configurações do CKEDitor através do arquivo config.js
-        var editor = CKEDITOR.replace('description', {
-          customConfig: 'config.js'
-        });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
         </script>
         <div class="row clearfix">
           <div class="col-sm-12">
@@ -88,18 +90,18 @@
                   <small> (Áreas de atuação do curso)</small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'actuation', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('actuation', $informacoesCurso->actuation)));
+                echo form_textarea(array('name' => 'actuation', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('actuation', $informacoesCurso->actuation)));
                 ?>
               </div>
             </div>
           </div>
         </div>
         <script type="text/javascript">
-        // replace: substitui o formato padrão do textarea (descricao)
-        // e aplica as configurações do CKEDitor através do arquivo config.js
-        var editor = CKEDITOR.replace('actuation', {
-          customConfig: 'config.js'
-        });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('actuation', {
+            customConfig: 'config.js'
+          });
         </script>
 
         <div class="separacao-forms"></div>
@@ -119,40 +121,39 @@
             <label for="title">Acessar Arquivo</label>
             <div class="input-group">
               <?php
-              if($informacoesCurso->filesGrid!='' and !empty($informacoesCurso->filesGrid)){
+              if ($informacoesCurso->filesGrid != '' and !empty($informacoesCurso->filesGrid)) {
                 ?>
-              <div class="row">
-                <div class="col-xs-6">
-                  <?php
-                  echo '<i class="material-icons">archive</i>"';
-                  echo anchor($informacoesCurso->filesGrid,'<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
-                  ?>
+                <div class="row">
+                  <div class="col-xs-6">
+                    <?php
+                    echo '<i class="material-icons">archive</i>"';
+                    echo anchor($informacoesCurso->filesGrid, '<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>', array('target' => '_blank'));
+                    ?>
+                  </div>
+                  <div class="col-xs-6">
+                    <?php
+
+                    $valorMatrizVisivel = false;
+
+                    if (isset($informacoesCurso->matriz_visivel) and !empty($informacoesCurso->matriz_visivel)) {
+                      $valorMatrizVisivel = true;
+                    }
+                    echo '<spam>Exibir arquivo PDF -</spam>';
+                    echo form_checkbox('matriz_visivel', 'S', set_checkbox('matriz_visivel', $informacoesCurso->matriz_visivel, $valorMatrizVisivel));
+                    ?>
+
+                  </div>
+
                 </div>
-                <div class="col-xs-6">
-                  <?php
-                   
-                   $valorMatrizVisivel = false;
-
-                   if(isset($informacoesCurso->matriz_visivel) and !empty($informacoesCurso->matriz_visivel)){
-                    $valorMatrizVisivel = true;
-                   }
-                  echo '<spam>Exibir arquivo PDF -</spam>';
-                  echo form_checkbox('matriz_visivel', 'S', set_checkbox('matriz_visivel', $informacoesCurso->matriz_visivel,$valorMatrizVisivel));
-                  ?>
-
-                </div>
-
-              </div>
-              <?php
-                }else{
-                  echo '<span> Não há arquivo cadastrado. <span>';
-                }
+                <?php
+              } else {
+                echo '<span> Não há arquivo cadastrado. <span>';
+              }
               ?>
             </div>
           </div>
         </div>
         <div class="separacao-forms"></div>
-        
         <div class="row clearfix" style="background:#FFFFF0">
           <div class="col-sm-6">
             <div class="form-group">
@@ -167,22 +168,22 @@
             <label for="title">Acessar Arquivo</label>
             <div class="input-group">
               <?php
-              if($informacoesCurso->ppc!='' and !empty($informacoesCurso->ppc)){
+              if ($informacoesCurso->ppc != '' and !empty($informacoesCurso->ppc)) {
                 ?>
-              <div class="row">
-                <div class="col-xs-6">
-                  <?php
-                  echo '<i class="material-icons">archive</i>"';
-                  echo anchor($informacoesCurso->ppc,'<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
-                  ?>
-                </div>
-                
+                <div class="row">
+                  <div class="col-xs-6">
+                    <?php
+                    echo '<i class="material-icons">archive</i>"';
+                    echo anchor($informacoesCurso->ppc, '<button type="button" class="btn btn-sucess"><i class="material-icons">archive</i> Ver Arquivo</button>', array('target' => '_blank'));
+                    ?>
+                  </div>
 
-              </div>
-              <?php
-                }else{
-                  echo '<span> Não há arquivo cadastrado. <span>';
-                }
+
+                </div>
+                <?php
+              } else {
+                echo '<span> Não há arquivo cadastrado. <span>';
+              }
               ?>
             </div>
           </div>
@@ -206,12 +207,12 @@
             <label for="title">Acessar Arquivo</label>
             <div class="input-group">
               <?php
-              if($informacoesCurso->autorization!='' and !empty($informacoesCurso->autorization)){
+              if ($informacoesCurso->autorization != '' and !empty($informacoesCurso->autorization)) {
                 echo '<i class="material-icons">archive</i>"';
-                echo anchor($informacoesCurso->autorization,'<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
-                }else{
-                  echo '<span> Não há arquivo cadastrado. <span>';
-                }
+                echo anchor($informacoesCurso->autorization, '<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>', array('target' => '_blank'));
+              } else {
+                echo '<span> Não há arquivo cadastrado. <span>';
+              }
               ?>
             </div>
           </div>
@@ -232,12 +233,12 @@
             <label for="title">Acessar Arquivo</label>
             <div class="input-group">
               <?php
-              if($informacoesCurso->recognition!='' and !empty($informacoesCurso->recognition)){
-                echo form_input(array('name' => 'recognitionAtual', 'type'=>'hidden', 'class' => 'form-control', 'readonly' => 'readonly'), set_value('recognitionAtual', $informacoesCurso->recognition));
-                echo anchor($informacoesCurso->recognition,'<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
-                }else{
-                  echo '<span> Não há arquivo cadastrado. <span>';
-                }
+              if ($informacoesCurso->recognition != '' and !empty($informacoesCurso->recognition)) {
+                echo form_input(array('name' => 'recognitionAtual', 'type' => 'hidden', 'class' => 'form-control', 'readonly' => 'readonly'), set_value('recognitionAtual', $informacoesCurso->recognition));
+                echo anchor($informacoesCurso->recognition, '<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>', array('target' => '_blank'));
+              } else {
+                echo '<span> Não há arquivo cadastrado. <span>';
+              }
               ?>
             </div>
           </div>
@@ -257,12 +258,12 @@
           <div class="col-sm-6">
             <div class="informacoes-cadastradas">
               <?php
-              if($informacoesCurso->capa!='' and !empty($informacoesCurso->capa)){
-                echo form_input(array('name' => 'capaAtual', 'type'=>'hidden'), set_value('capaAtual', $informacoesCurso->capa));
+              if ($informacoesCurso->capa != '' and !empty($informacoesCurso->capa)) {
+                echo form_input(array('name' => 'capaAtual', 'type' => 'hidden'), set_value('capaAtual', $informacoesCurso->capa));
                 echo anchor(base_url(verifyImg($informacoesCurso->capa)), '<img src="' . base_url(verifyImg($informacoesCurso->capa)) . '" class="thumbnail">', array('target' => '_blank'));
-                }else{
-                  echo '<span> Sem imagem cadastrada. <span>';
-                }
+              } else {
+                echo '<span> Sem imagem cadastrada. <span>';
+              }
               ?>
             </div>
           </div>
@@ -276,12 +277,12 @@
               <div class="form-line">
                 <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$informacoesCurso->status), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status', $informacoesCurso->status), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -289,59 +290,59 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_graduacao/lista_cursos/$campus->id/$modalidade", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_graduacao/lista_cursos/$campus->id/$modalidade", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>
 </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function() {
-  $("#idcampus").change(function() {
-    var campus_id = $('#idcampus').val();
-    if (campus_id != '') {
-      $.ajax({
-        url: "<?php echo base_url();?>Painel_home/getBannerPositionbyCampus",
-        method: "POST",
-        data: {
-          campus_id: campus_id
-        },
-        success: function(data) {
-          var opts = $.parseJSON(data);
-          $('#selectOrder').empty();
-          $.each(opts, function(i, position) {
-            $('#selectOrder').append($('<option>', {
-              value: position.priority,
-              text: position.priority
-            }));
-
-            if (opts.length == i + 1) {
+  $(document).ready(function () {
+    $("#idcampus").change(function () {
+      var campus_id = $('#idcampus').val();
+      if (campus_id != '') {
+        $.ajax({
+          url: "<?php echo base_url(); ?>Painel_home/getBannerPositionbyCampus",
+          method: "POST",
+          data: {
+            campus_id: campus_id
+          },
+          success: function (data) {
+            var opts = $.parseJSON(data);
+            $('#selectOrder').empty();
+            $.each(opts, function (i, position) {
               $('#selectOrder').append($('<option>', {
-                value: (+(position.priority) + +(1)),
-                text: (+(position.priority) + +(1))
+                value: position.priority,
+                text: position.priority
               }));
-            }
-            $('#selectOrder').selectpicker('refresh');
-          })
-        }
-      })
-    }
-    if ('select') {
-      $('#selectOrder').empty();
-      $('#selectOrder').append($('<option>', {
-        text: 'Selecione o campus'
-      }));
-      $('#selectOrder').selectpicker('refresh');
-    }
-  });
 
-})
+              if (opts.length == i + 1) {
+                $('#selectOrder').append($('<option>', {
+                  value: (+(position.priority) + +(1)),
+                  text: (+(position.priority) + +(1))
+                }));
+              }
+              $('#selectOrder').selectpicker('refresh');
+            })
+          }
+        })
+      }
+      if ('select') {
+        $('#selectOrder').empty();
+        $('#selectOrder').append($('<option>', {
+          text: 'Selecione o campus'
+        }));
+        $('#selectOrder').selectpicker('refresh');
+      }
+    });
+
+  })
 </script>

@@ -56,15 +56,32 @@
       <br />
       <?php
       if (isset($paginaSecretaria) and $paginaSecretaria != '') {
-        ?>
+      ?>
         <div class="botoes-acoes-formularios">
+          <div class="container">
+            <?php
+            /*
+            if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
+              ?>
+          <div class="col-xs-6">
+            <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
+          </div>
+          <?php
+            }*/
+            ?>
+            <div class="col-xs-6">
+              <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
+            </div>
+          </div>
+        </div>
+        <div class="body">
           <div class="container">
             <div class="row">
               <div class="col-sm-2 text-center">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Informações Biblioteca</h5>
-                    <p class="card-text"><small>(Apresentação, descrição, comutação, etc)</small></p>
+                    <h5 class="card-title">Informações Secretaria Acadêmica</h5>
+                    <p class="card-text"><small>(Apresentação, descrição)</small></p>
                     <?php
                     echo anchor("Painel_secretaria/lista_itens_secretaria/$campus->id/$paginaSecretaria->id", 'Ver Itens', array('class' => 'btn btn-primary'));
                     ?>
@@ -123,7 +140,7 @@
             </div>
           </div>
         </div>
-        <?php
+      <?php
       }
       ?>
     </div>
