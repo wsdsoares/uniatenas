@@ -102,7 +102,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-2 text-center">
+              <!--div class="col-sm-2 text-center">
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title">Comutação Bibliográfica</h5>
@@ -136,7 +136,7 @@
                     ?>
                   </div>
                 </div>
-              </div>
+              </div-->
             </div>
           </div>
         </div>

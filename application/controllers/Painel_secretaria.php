@@ -591,4 +591,206 @@ class Painel_secretaria extends CI_Controller
       redirect(base_url("Painel_secretaria/calendarios_semestre/$campusId"));
     }
   }
+
+  /** Gerenciamento de links uteis */
+  public function lista_links_uteis_secretaria($uriCampus = NULL, $pageId = null)
+  {
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadoPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadoPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $colunaResultadoLinksUteisPaginaSecretaria = array(
+      'page_contents.id',
+      'page_contents.title',
+      'page_contents.status',
+      'page_contents.description',
+      'page_contents.link_redir',
+      'page_contents.created_at',
+      'page_contents.updated_at',
+      'page_contents.user_id',
+    );
+    $joinConteudoLinksUteisPaginaSecretaria = array(
+      'pages' => 'pages.id = page_contents.pages_id',
+      'campus' => 'campus.id= pages.campusid'
+    );
+    $whereLinksUteisPaginaSecretaria = array(
+      'page_contents.pages_id' => $pagina->id,
+      'page_contents.order' => 'linksUteis'
+    );
+
+    $listaLinksUteisPaginaSecretaria = $this->painelbd->where($colunaResultadoLinksUteisPaginaSecretaria, 'page_contents', $joinConteudoLinksUteisPaginaSecretaria, $whereLinksUteisPaginaSecretaria, array('campo' => 'title', 'ordem' => 'asc'))->result();
+
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/secretaria/links_uteis/lista_links_uteis_secretaria',
+      'dados' => array(
+        'page' => "Lista <u>Links Úteis</u> página Secretaria- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'pagina' => $pagina,
+        'listaLinksUteisPaginaSecretaria' => $listaLinksUteisPaginaSecretaria = isset($listaLinksUteisPaginaSecretaria) ? $listaLinksUteisPaginaSecretaria : '',
+        'campus' => $campus,
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function cadastrar_links_uteis_secretaria($uriCampus = NULL, $pageId = null)
+  {
+    verifica_login();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $this->form_validation->set_rules('link_redir', 'Por favor, insira o LINK ', 'required');
+    $this->form_validation->set_rules('status', 'Situação', 'required');
+    $this->form_validation->set_rules('tipo', 'Tipo Link', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+
+      $dados_form['title'] = $this->input->post('title');
+      $dados_form['status'] = $this->input->post('status');
+      $dados_form['tipo'] = $this->input->post('tipo');
+      $dados_form['link_redir'] = $this->input->post('link_redir');
+      $dados_form['order'] = 'linksUteis';
+      $dados_form['pages_id'] = $pagina->id;
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
+        setMsg('<p>Link Útil cadastrado com sucesso.</p>', 'success');
+        redirect(base_url("Painel_secretaria/lista_links_uteis_secretaria/$campus->id/$pagina->id"));
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/secretaria/links_uteis/cadastrar_links_uteis_secretaria',
+      'dados' => array(
+        'page' => "Cadastro de Link Útil: Secretaria - <strong><i> $campus->name ($campus->city) </i></strong>",
+        'pagina' => $pagina,
+        'campus' => $campus,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function editar_links_uteis_secretaria($uriCampus = NULL, $pageId = null, $idLink = null)
+  {
+    verifica_login();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $colunaResultadoLinksUteisPaginaSecretaria = array(
+      'page_contents.id',
+      'page_contents.title',
+      'page_contents.tipo',
+      'page_contents.status',
+      'page_contents.link_redir',
+      'page_contents.order',
+      'page_contents.created_at',
+      'page_contents.updated_at',
+      'page_contents.user_id',
+    );
+    $joinConteudoLinksUteisPaginaSecretaria = array(
+      'pages' => 'pages.id = page_contents.pages_id',
+      'campus' => 'campus.id= pages.campusid'
+    );
+    $whereLinksUteisPaginaSecretaria = array(
+      'page_contents.pages_id' => $pagina->id,
+      'page_contents.id' => $idLink,
+      'page_contents.order' => 'linksUteis'
+    );
+
+    $listaLinksUteisPaginaSecretaria = $this->painelbd->where($colunaResultadoLinksUteisPaginaSecretaria, 'page_contents', $joinConteudoLinksUteisPaginaSecretaria, $whereLinksUteisPaginaSecretaria)->row();
+
+    $this->form_validation->set_rules('link_redir', 'Por favor, insira o LINK ', 'required');
+    $this->form_validation->set_rules('status', 'Situação', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+
+      if ($listaLinksUteisPaginaSecretaria->title !== $this->input->post('title')) {
+        $dados_form['title'] = $this->input->post('title');
+      }
+      if ($listaLinksUteisPaginaSecretaria->status !== $this->input->post('status')) {
+        $dados_form['status'] = $this->input->post('status');
+      }
+      if ($listaLinksUteisPaginaSecretaria->tipo !== $this->input->post('tipo')) {
+        $dados_form['tipo'] = $this->input->post('tipo');
+      }
+      if ($listaLinksUteisPaginaSecretaria->link_redir !== $this->input->post('link_redir')) {
+        $dados_form['link_redir'] = $this->input->post('link_redir');
+      }
+      $dados_form['id'] = $listaLinksUteisPaginaSecretaria->id;
+      $dados_form['order'] = 'linksUteis';
+      $dados_form['updated_at'] = date('Y-m-d H:i:s');
+
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
+        setMsg('<p>Link Útil atualizado com sucesso.</p>', 'success');
+        redirect(base_url("Painel_secretaria/lista_links_uteis_secretaria/$campus->id/$pagina->id"));
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/secretaria/links_uteis/editar_links_uteis_secretaria',
+      'dados' => array(
+        'tituloPagina' => "Edição de Link Útil: Secretaria - <strong><i> $campus->name ($campus->city) </i></strong>",
+        'pagina' => $pagina,
+        'listaLinksUteisPaginaSecretaria' => $listaLinksUteisPaginaSecretaria,
+        'campus' => $campus,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function deletar_item_links_uteis_secretaria($uriCampus = NULL, $pagina = null, $id = NULL)
+  {
+    verifica_login();
+
+    $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
+
+    if ($this->painelbd->deletar('page_contents', $item->id)) {
+      setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+      redirect("Painel_secretaria/lista_links_uteis_secretaria/$uriCampus/$pagina");
+    } else {
+      setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+      redirect("Painel_secretaria/lista_links_uteis_secretaria/$uriCampus/$pagina");
+    }
+  }
+
+
+
 }

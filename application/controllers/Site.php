@@ -215,7 +215,7 @@ class Site extends CI_Controller
 
         $existeLinkRevistasPeriodicos = count($conteudoLinksRevistaPeriodicos);
 
-        $pages_content_contato = $this->bancosite->where('*', 'page_contents', NULL, array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+        //$pages_content_contato = $this->bancosite->where('*', 'page_contents', NULL, array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         $data = array(
             'head' => array(
@@ -1369,7 +1369,16 @@ and revistas.id =$id;
 
         $horasComplementares = $this->bancosite->getWhere('files', array('campusid' => $dataCampus->id, 'typesfile' => 'cartilha'))->row();
 
-        $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+        //$pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+
+        $colunasResultadoLinksUteis = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $whereLinksUteis = array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis', 'page_contents.tipo' => 'linksUteis');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis, 'page_contents', null, $whereLinksUteis)->result();
+
+        $colunasResultadoAcessoRapido = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $whereAcessoRapido = array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis', 'page_contents.tipo' => 'acessoRapido');
+        $conteudoAcessoRapido = $this->bancosite->where($colunasResultadoAcessoRapido, 'page_contents', null, $whereAcessoRapido)->result();
+
 
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
@@ -1384,12 +1393,14 @@ and revistas.id =$id;
             'conteudo' => 'uniatenas/secretariaacademica/homesecretaria',
             'dados' => array(
                 'campus' => $dataCampus,
+                'conteudoAcessoRapido' => $conteudoAcessoRapido = isset($conteudoAcessoRapido) ? $conteudoAcessoRapido : '',
+                'conteudoLinksUteis' => $conteudoLinksUteis = isset($conteudoLinksUteis) ? $conteudoLinksUteis : '',
                 'conteudoPag' => $pages_content,
                 'calendars' => $calendars,
                 'calendarsMedicine' => $calendarsMedicine,
-                'conteudoContato' => $pages_content_contato,
+                //'conteudoContato' => $pages_content_contato,
                 'horasComplementares' => $horasComplementares,
-                'contatos' => $phones,
+                //'contatos' => $phones,
             ),
             'js' => null,
             'footer' => ''
