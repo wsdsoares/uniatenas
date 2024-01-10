@@ -3,7 +3,7 @@
 if (!defined("BASEPATH"))
     exit("No direct script access allowed");
 
-class Painel_vestibular Extends CI_Controller
+class Painel_vestibular extends CI_Controller
 {
     public function __construct()
     {
@@ -18,9 +18,37 @@ class Painel_vestibular Extends CI_Controller
 
     /** MODULO DE INFORMAÇÕES DO VESTIBULAR  **/
 
-    public function informacoesVestibular()
+    public function lista_campus_vestibular()
     {
         verificaLogin();
+
+        $colunasResultadoCampus =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/vestibular/lista_campus_vestibular',
+            'dados' => array(
+                'page' => "Informações Página Vestibular (MEDICINA)",
+                'campus' => $listagemDosCampus,
+                'tipo' => ''
+            )
+        );
+
+        $this->load->view('templates/layoutPainelAdm', $data);
+    }
+
+    public function lista_informacoes_vestibular($idCampus = null)
+    {
+        verificaLogin();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $idCampus))->row();
 
         $fieldsBd = array(
             'vestibular.id',
@@ -30,83 +58,55 @@ class Painel_vestibular Extends CI_Controller
             'campus.city as cityCampus',
             'vestibular.datecreated',
             'vestibular.datemodified',
-            'vestibular_situation.name as vestibularSituation');
+            'vestibular_situation.name as vestibularSituation'
+        );
         $dataJoin = array(
             'vestibular' => 'vestibular.campusid = campus.id',
             'vestibular_situation' => 'vestibular_situation.id = vestibular.vestibular_situationid',
         );
+        $whereVestibular = array(
+            'campus.id' => $idCampus,
+        );
 
-        $vestibularSituation = $this->bd->where($fieldsBd, 'campus', $dataJoin, NULL)->result();
+        $vestibularSituation = $this->painelbd->where($fieldsBd, 'campus', $dataJoin, $whereVestibular)->result();
 
         $data = array(
-            'titulo' => 'Informações do Vestibular',
-            'conteudo' => 'paineladm/vestibular/informacoesVestibular/lista',
+            'titulo' => "Informações do Vestibular Campus <strong> $campus->name</strong>",
+            'conteudo' => 'paineladm/vestibular/informacoesVestibular/lista_informacoes_vestibular',
             'dados' => array(
                 //'permissionCampusArray' => '',
                 'listagem' => $vestibularSituation,
-                'tipo' => 'provaGab'
+                'tipo' => 'provaGab',
+                'campus' => $campus,
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_informacoes_vestibular($idVestibular)
+    public function cadastrar_informacoes_vestibular($idCampus)
     {
         verificaLogin();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $idCampus))->row();
 
-        $fieldsBd = array(
-            'vestibular.id',
-            'vestibular_files.files',
-            'vestibular.name as nameVestibular',
-            'vestibular.link',
-            'campus.name as nameCampus',
-            'campus.id as idCampus',
-            'campus.city as cityCampus',
-            'vestibular.datecreated',
-            'vestibular.datemodified',
-            'vestibular_situation.name as vestibularSituation', 'vestibular_situation.id as idSituation');
-        $dataJoin = array(
-            'vestibular' => 'vestibular.campusid = campus.id',
-            'vestibular_situation' => 'vestibular_situation.id = vestibular.vestibular_situationid',
-            'vestibular_files'=>'vestibular_files.vestibularid = vestibular.id'
-        );
-        $whereBd = array('vestibular.id'=>$idVestibular,'vestibular_files.typesid'=>1);
-
-        $vestibularSituation = $this->bd->where($fieldsBd, 'campus', $dataJoin, $whereBd)->row();
+        $situacaoVesitublar = $this->painelbd->where('*', 'vestibular_situation', null, null)->result();
 
         $this->form_validation->set_rules('name', 'Nome do Vestibular ', 'required');
         $this->form_validation->set_rules('vestibular_situationid', 'Situação do Vestibular ', 'required');
 
-
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
 
-            if ($vestibularSituation->nameVestibular != $this->input->post('name')) {
-                $dados_form['name'] = $this->input->post('name');
-            }
-            if ($vestibularSituation->idCampus != $this->input->post('campusid')) {
-                $dados_form['campusid'] = $this->input->post('campusid');
-            }
-
-            if ($vestibularSituation->idSituation != $this->input->post('vestibular_situationid')) {
-                $dados_form['vestibular_situationid'] = $this->input->post('vestibular_situationid');
-            }
-
             $link = $this->input->post('link');
             $dadosLink = $vestibularSituation->link;
 
-
-            if ($link !='' and   $dadosLink != $link ) {
-                $dados_form['link'] = $this->input->post('link');
-            }
-
-            if(isset($dados_form)){
+            if (isset($dados_form)) {
                 $dados_form['datemodified'] = date('Y-m-d H:i:s');
-                $dados_form['id']=$vestibularSituation->id;
-                $dados_form['usersid']=$this->session->userdata('codusuario');
+                $dados_form['id'] = $vestibularSituation->id;
+                $dados_form['usersid'] = $this->session->userdata('codusuario');
                 if ($this->bd->salvar('vestibular', $dados_form) == TRUE) {
                     setMsg('<p>Dados alterados com sucesso.</p>', 'success');
                     redirect('Painel_vestibular/informacoesVestibular');
@@ -114,27 +114,109 @@ class Painel_vestibular Extends CI_Controller
                     setMsg('<p>Erro! Os dados não foi alterado.</p>', 'error');
                     redirect('Painel_vestibular/informacoesVestibular');
                 }
-            }else{
+            } else {
                 setMsg('<p>Atenção! Você não fez nenhuma alteração.</p>', 'alert');
             }
-
-
         }
 
         $data = array(
             'titulo' => 'Informações do Vestibular',
-            'conteudo' => 'paineladm/vestibular/informacoesVestibular/editar',
+            'conteudo' => 'paineladm/vestibular/informacoesVestibular/cadastrar_informacoes_vestibular',
             'dados' => array(
-                // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'listagem' => $vestibularSituation,
                 'tipo' => 'provaGab',
-                'locaisCampus'=>$this->bd->where('*','campus',NULL,array('visible'=>'SIM'))->result(),
-                'situation' => $this->bd->where('*','vestibular_situation',NULL,NULL)->result(),
-                'campus'=>$this->bd->where('*','campus',NULL, array('id'=>$vestibularSituation->idCampus))->row()
+                'locaisCampus' => '',
+                'situacaoVesitublar' => $situacaoVesitublar,
+                'campus' => ''
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
+
+    // public function cadastrar_informacoes_vestibular($idVestibular)
+    // {
+    //     verificaLogin();
+
+    //     $fieldsBd = array(
+    //         'vestibular.id',
+    //         'vestibular_files.files',
+    //         'vestibular.name as nameVestibular',
+    //         'vestibular.link',
+    //         'campus.name as nameCampus',
+    //         'campus.id as idCampus',
+    //         'campus.city as cityCampus',
+    //         'vestibular.datecreated',
+    //         'vestibular.datemodified',
+    //         'vestibular_situation.name as vestibularSituation', 'vestibular_situation.id as idSituation'
+    //     );
+    //     $dataJoin = array(
+    //         'vestibular' => 'vestibular.campusid = campus.id',
+    //         'vestibular_situation' => 'vestibular_situation.id = vestibular.vestibular_situationid',
+    //         'vestibular_files' => 'vestibular_files.vestibularid = vestibular.id'
+    //     );
+    //     $whereBd = array('vestibular.id' => $idVestibular, 'vestibular_files.typesid' => 1);
+
+    //     $vestibularSituation = $this->bd->where($fieldsBd, 'campus', $dataJoin, $whereBd)->row();
+
+    //     $this->form_validation->set_rules('name', 'Nome do Vestibular ', 'required');
+    //     $this->form_validation->set_rules('vestibular_situationid', 'Situação do Vestibular ', 'required');
+
+
+    //     if ($this->form_validation->run() == FALSE) {
+    //         if (validation_errors()) :
+    //             setMsg(validation_errors(), 'error');
+    //         endif;
+    //     } else {
+
+    //         if ($vestibularSituation->nameVestibular != $this->input->post('name')) {
+    //             $dados_form['name'] = $this->input->post('name');
+    //         }
+    //         if ($vestibularSituation->idCampus != $this->input->post('campusid')) {
+    //             $dados_form['campusid'] = $this->input->post('campusid');
+    //         }
+
+    //         if ($vestibularSituation->idSituation != $this->input->post('vestibular_situationid')) {
+    //             $dados_form['vestibular_situationid'] = $this->input->post('vestibular_situationid');
+    //         }
+
+    //         $link = $this->input->post('link');
+    //         $dadosLink = $vestibularSituation->link;
+
+
+    //         if ($link != '' and   $dadosLink != $link) {
+    //             $dados_form['link'] = $this->input->post('link');
+    //         }
+
+    //         if (isset($dados_form)) {
+    //             $dados_form['datemodified'] = date('Y-m-d H:i:s');
+    //             $dados_form['id'] = $vestibularSituation->id;
+    //             $dados_form['usersid'] = $this->session->userdata('codusuario');
+    //             if ($this->bd->salvar('vestibular', $dados_form) == TRUE) {
+    //                 setMsg('<p>Dados alterados com sucesso.</p>', 'success');
+    //                 redirect('Painel_vestibular/informacoesVestibular');
+    //             } else {
+    //                 setMsg('<p>Erro! Os dados não foi alterado.</p>', 'error');
+    //                 redirect('Painel_vestibular/informacoesVestibular');
+    //             }
+    //         } else {
+    //             setMsg('<p>Atenção! Você não fez nenhuma alteração.</p>', 'alert');
+    //         }
+    //     }
+
+    //     $data = array(
+    //         'titulo' => 'Informações do Vestibular',
+    //         'conteudo' => 'paineladm/vestibular/informacoesVestibular/editar',
+    //         'dados' => array(
+    //             // 'permissionCampusArray' => $_SESSION['permissionCampus'],
+    //             'listagem' => $vestibularSituation,
+    //             'tipo' => 'provaGab',
+    //             'locaisCampus' => $this->bd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result(),
+    //             'situation' => $this->bd->where('*', 'vestibular_situation', NULL, NULL)->result(),
+    //             'campus' => $this->bd->where('*', 'campus', NULL, array('id' => $vestibularSituation->idCampus))->row()
+    //         )
+    //     );
+    //     $this->load->view('templates/layoutPainelAdm', $data);
+    // }
+
 
     public function editarInformacoesVestibular($idVestibular)
     {
@@ -150,22 +232,23 @@ class Painel_vestibular Extends CI_Controller
             'campus.city as cityCampus',
             'vestibular.datecreated',
             'vestibular.datemodified',
-            'vestibular_situation.name as vestibularSituation', 'vestibular_situation.id as idSituation');
+            'vestibular_situation.name as vestibularSituation', 'vestibular_situation.id as idSituation'
+        );
         $dataJoin = array(
             'vestibular' => 'vestibular.campusid = campus.id',
             'vestibular_situation' => 'vestibular_situation.id = vestibular.vestibular_situationid',
-            'vestibular_files'=>'vestibular_files.vestibularid = vestibular.id'
+            'vestibular_files' => 'vestibular_files.vestibularid = vestibular.id'
         );
-        $whereBd = array('vestibular.id'=>$idVestibular,'vestibular_files.typesid'=>1);
+        $whereBd = array('vestibular.id' => $idVestibular, 'vestibular_files.typesid' => 1);
 
-        $vestibularSituation = $this->bd->where($fieldsBd, 'campus', $dataJoin, $whereBd)->row();
+        $vestibularSituation = $this->painelbd->where($fieldsBd, 'campus', $dataJoin, $whereBd)->row();
 
         $this->form_validation->set_rules('name', 'Nome do Vestibular ', 'required');
         $this->form_validation->set_rules('vestibular_situationid', 'Situação do Vestibular ', 'required');
 
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -185,26 +268,24 @@ class Painel_vestibular Extends CI_Controller
             $dadosLink = $vestibularSituation->link;
 
 
-            if ($link !='' and   $dadosLink != $link ) {
+            if ($link != '' and   $dadosLink != $link) {
                 $dados_form['link'] = $this->input->post('link');
             }
 
-            if(isset($dados_form)){
+            if (isset($dados_form)) {
                 $dados_form['datemodified'] = date('Y-m-d H:i:s');
-                $dados_form['id']=$vestibularSituation->id;
-                $dados_form['usersid']=$this->session->userdata('codusuario');
-                if ($this->bd->salvar('vestibular', $dados_form) == TRUE) {
+                $dados_form['id'] = $vestibularSituation->id;
+                $dados_form['usersid'] = $this->session->userdata('codusuario');
+                if ($this->painelbd->salvar('vestibular', $dados_form) == TRUE) {
                     setMsg('<p>Dados alterados com sucesso.</p>', 'success');
                     redirect('Painel_vestibular/informacoesVestibular');
                 } else {
                     setMsg('<p>Erro! Os dados não foi alterado.</p>', 'error');
                     redirect('Painel_vestibular/informacoesVestibular');
                 }
-            }else{
+            } else {
                 setMsg('<p>Atenção! Você não fez nenhuma alteração.</p>', 'alert');
             }
-
-
         }
 
         $data = array(
@@ -214,9 +295,9 @@ class Painel_vestibular Extends CI_Controller
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'listagem' => $vestibularSituation,
                 'tipo' => 'provaGab',
-                'locaisCampus'=>$this->bd->where('*','campus',NULL,array('visible'=>'SIM'))->result(),
-                'situation' => $this->bd->where('*','vestibular_situation',NULL,NULL)->result(),
-                'campus'=>$this->bd->where('*','campus',NULL, array('id'=>$vestibularSituation->idCampus))->row()
+                'locaisCampus' => $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result(),
+                'situation' => $this->painelbd->where('*', 'vestibular_situation', NULL, NULL)->result(),
+                'campus' => $this->painelbd->where('*', 'campus', NULL, array('id' => $vestibularSituation->idCampus))->row()
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
@@ -236,15 +317,19 @@ class Painel_vestibular Extends CI_Controller
         }
         if ($tipo == 'provaGab') {
             //banco de dados
-            $fieldsBd = array(" vestibular_exams.id", "vestibular_exams.title as name" ,"vestibular_exams.status",
-                "vestibular_exams.files", "vestibular_exams.datacreated as datecreated","vestibular_exams.datemodified",
-		"vestibular.name as vestname","vestibular_exams_types.title");
+            $fieldsBd = array(
+                " vestibular_exams.id", "vestibular_exams.title as name", "vestibular_exams.status",
+                "vestibular_exams.files", "vestibular_exams.datacreated as datecreated", "vestibular_exams.datemodified",
+                "vestibular.name as vestname", "vestibular_exams_types.title"
+            );
             $table = 'vestibular_exams';
-            $dataJoin = array('vestibular'=>'vestibular_exams.vestibularid = vestibular.id ',
-                'vestibular_exams_types' => 'vestibular_exams.typeid= vestibular_exams_types.id');
-            
-                $whereBD = "vestibular_exams.status = 1 ";
-            
+            $dataJoin = array(
+                'vestibular' => 'vestibular_exams.vestibularid = vestibular.id ',
+                'vestibular_exams_types' => 'vestibular_exams.typeid= vestibular_exams_types.id'
+            );
+
+            $whereBD = "vestibular_exams.status = 1 ";
+
             $order['campo'] = 'vestibular_exams.id';
             $order['ordem'] = 'DESC';
             //view
@@ -257,8 +342,10 @@ class Painel_vestibular Extends CI_Controller
                 'vestibular' => 'vestibular_files.vestibularid = vestibular.id'
             );
 
-            $fieldsBd = array('vestibular_files.id', ' vestibular_files.name', 'vestibular_files.datecreated','vestibular_files.status',
-                'vestibular_files.datemodified', 'vestibular_exams_types.title', 'vestibular.name as vestname', 'vestibular_files.files');
+            $fieldsBd = array(
+                'vestibular_files.id', ' vestibular_files.name', 'vestibular_files.datecreated', 'vestibular_files.status',
+                'vestibular_files.datemodified', 'vestibular_exams_types.title', 'vestibular.name as vestname', 'vestibular_files.files'
+            );
             $whereBD = null;
             $order['campo'] = 'vestibular_files.id';
             $order['ordem'] = 'DESC';
@@ -302,7 +389,7 @@ class Painel_vestibular Extends CI_Controller
             //tabela do banco de dados
             $table = 'vestibular_exams';
         }
-        if($tipo == 'files'){
+        if ($tipo == 'files') {
             //view
             $titulo = 'Arquivos do Vestibular';
             //caminho de upload
@@ -313,7 +400,6 @@ class Painel_vestibular Extends CI_Controller
             $nameBD = 'name';
             //tabela do banco de dados
             $table = 'vestibular_files';
-
         }
         $this->form_validation->set_rules('title', 'Titulo', 'required');
         $this->form_validation->set_rules('nome', 'Tipo', 'required');
@@ -326,7 +412,7 @@ class Painel_vestibular Extends CI_Controller
         }
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'erro');
             endif;
         } else {
@@ -341,8 +427,8 @@ class Painel_vestibular Extends CI_Controller
 
             if ($upload) {
                 //upload efetuado
-                $dados_form['status'] = $this->input->post('status')-1;
-                $dados_form [$nameBD] = $this->input->post('title');
+                $dados_form['status'] = $this->input->post('status') - 1;
+                $dados_form[$nameBD] = $this->input->post('title');
                 $dados_form['files'] = base_url($path . '/' . $upload['file_name']);
                 $dados_form[$userBD] = $this->session->userdata('codusuario');
                 $dados_form[$typeBD] = $this->input->post('nome');
@@ -351,21 +437,17 @@ class Painel_vestibular Extends CI_Controller
 
                 if ($this->painelbd->salvar($table, $dados_form) == TRUE) {
                     setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
-                    redirect('Painel_vestibular/vestfiles/'.$tipo);
+                    redirect('Painel_vestibular/vestfiles/' . $tipo);
                 } else {
                     setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
-                    redirect('Painel_vestibular/vestfiles/'.$tipo);
+                    redirect('Painel_vestibular/vestfiles/' . $tipo);
                 }
-
-
             } else {
                 //erro no upload
                 $msg = $this->upload->display_erros();
                 $msg .= '<p> São Permetidos arquivos' . $types . '.</p>';
                 setMsg($msg, 'erro');
             }
-
-
         }
 
 
@@ -373,7 +455,7 @@ class Painel_vestibular Extends CI_Controller
         $tiposems = $this->painelbd->getWhere('vestibular_exams_types')->result();
         $vestibular = $this->painelbd->getWhere('vestibular')->result();
         $data = array(
-            'titulo' => 'Cadastro -'.$titulo,
+            'titulo' => 'Cadastro -' . $titulo,
             'conteudo' => 'paineladm/vestibular/vestfiles/cadastrar',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
@@ -381,7 +463,8 @@ class Painel_vestibular Extends CI_Controller
                 'tipos' => $tiposems,
                 'vestibular' => $vestibular,
                 'tipo' => $tipo,
-                'titulo'=> $titulo)
+                'titulo' => $titulo
+            )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
@@ -402,7 +485,7 @@ class Painel_vestibular Extends CI_Controller
             //tabela do banco de dados
             $table = 'vestibular_exams';
         }
-        if($tipo == 'files'){
+        if ($tipo == 'files') {
             //view
             $titulo = 'Arquivos do Vestibular';
             //caminho de upload
@@ -413,18 +496,17 @@ class Painel_vestibular Extends CI_Controller
             $nameBD = 'name';
             //tabela do banco de dados
             $table = 'vestibular_files';
-
         }
 
         $this->load->helper('file');
         $dados = $this->painelbd->getWhere($table, array('id' => $id))->row();
         $tiposems = $this->painelbd->getWhere('vestibular_exams_types')->result();
         $vestibular = $this->painelbd->getWhere('vestibular')->result();
-        if($tipo == 'files'){
+        if ($tipo == 'files') {
             $userDa  = $dados->name;
             $typeDa = $dados->typesid;
         }
-        if($tipo == 'provaGab'){
+        if ($tipo == 'provaGab') {
             $userDa  = $dados->title;
             $typeDa = $dados->typeid;
         }
@@ -436,8 +518,8 @@ class Painel_vestibular Extends CI_Controller
 
 
 
-       if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -453,22 +535,21 @@ class Painel_vestibular Extends CI_Controller
                     $name_tmp = noAccentuation($this->input->post('title'), $tipo);
                 }
                 $upload = $this->bd->uploadFiles('arquivo', $path, $types = 'jpg|JPG|png|jpeg|JPEG|pdf|PDF|doc|DOC|docx|DOCX', $name_tmp);
-
             }
 
 
-          if ($userDa != $this->input->post('title')) {
-              $dados_form[$userBD] = $this->input->post('title');
-          }
-          if ($typeDa != $this->input->post('type')) {
-              $dados_form[$typeBD] = $this->input->post('type');
-          }
-          if ($dados->vestibularid != $this->input->post('vestibularid')) {
-              $dados_form['vestibularid'] = $this->input->post('vestibularid');
-          }
-          if($dados->status != $this->input->post('status')){
-              $dados_form['status'] = $this->input->post('status');
-          }
+            if ($userDa != $this->input->post('title')) {
+                $dados_form[$userBD] = $this->input->post('title');
+            }
+            if ($typeDa != $this->input->post('type')) {
+                $dados_form[$typeBD] = $this->input->post('type');
+            }
+            if ($dados->vestibularid != $this->input->post('vestibularid')) {
+                $dados_form['vestibularid'] = $this->input->post('vestibularid');
+            }
+            if ($dados->status != $this->input->post('status')) {
+                $dados_form['status'] = $this->input->post('status');
+            }
 
             if (isset($upload)) {
                 if ($upload) {
@@ -476,10 +557,10 @@ class Painel_vestibular Extends CI_Controller
 
                     if ($this->bd->salvar($table, $dados_form) == TRUE) {
                         setMsg('<p>Arquivo alterado com sucesso.</p>', 'success');
-                        redirect('Painel_vestibular/vestfiles/'.$tipo);
+                        redirect('Painel_vestibular/vestfiles/' . $tipo);
                     } else {
                         setMsg('<p>Erro! O Arquivo não foi alterado.</p>', 'error');
-                        redirect('Painel_vestibular/vestfiles/'.$tipo);
+                        redirect('Painel_vestibular/vestfiles/' . $tipo);
                     }
                 } else {
                     //erro no upload
@@ -490,10 +571,10 @@ class Painel_vestibular Extends CI_Controller
             } elseif (isset($dados_form[$userBD]) || isset($dados_form[$typeBD]) || isset($dados_form['vestibularid']) || isset($dados_form['status'])) {
                 if ($this->bd->salvar($table, $dados_form) == TRUE) {
                     setMsg('<p>Dados alterados com sucesso.</p>', 'success');
-                    redirect('Painel_vestibular/vestfiles/'.$tipo);
+                    redirect('Painel_vestibular/vestfiles/' . $tipo);
                 } else {
                     setMsg('<p>Erro! Os dados não foi alterado.</p>', 'error');
-                    redirect('Painel_vestibular/vestfiles/'.$tipo);
+                    redirect('Painel_vestibular/vestfiles/' . $tipo);
                 }
             } else {
                 setMsg('<p>Atenção!Não houve alteração.</p>', 'alert');
@@ -502,7 +583,7 @@ class Painel_vestibular Extends CI_Controller
 
         $dados = $this->painelbd->getWhere($table, array('id' => $id))->row();
         $data = array(
-            'titulo' => 'Editar -'.$titulo ,
+            'titulo' => 'Editar -' . $titulo,
             'conteudo' => 'paineladm/vestibular/vestfiles/editar',
             'dados' => array(
                 'provaGab' => $dados,
@@ -517,21 +598,21 @@ class Painel_vestibular Extends CI_Controller
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function statusAlter($id = NULL, $status = null,$table = null,$redirec = null,$tipo = null)
+    public function statusAlter($id = NULL, $status = null, $table = null, $redirec = null, $tipo = null)
     {
         verificaLogin();
         $dados_form['status'] = $status;
-        if($tipo == null){
+        if ($tipo == null) {
             $dados_form['usersid'] = $this->session->userdata('codusuario');
         }
-        $redirec = str_replace('-','/',$redirec);
-        if($tipo == 'provaGab') {
+        $redirec = str_replace('-', '/', $redirec);
+        if ($tipo == 'provaGab') {
             $dados_form['userid'] = $this->session->userdata('codusuario');
-            $redirec = $redirec.'/'.$tipo;
+            $redirec = $redirec . '/' . $tipo;
         }
-        if($tipo == 'files'){
+        if ($tipo == 'files') {
             $dados_form['usersid'] = $this->session->userdata('codusuario');
-            $redirec = $redirec.'/'.$tipo;
+            $redirec = $redirec . '/' . $tipo;
         }
         $dados_form['datemodified'] = date('Y-m-d H:i:s');
         $dados_form['id'] = $id;
@@ -558,14 +639,14 @@ class Painel_vestibular Extends CI_Controller
         }
     }
 
-    public function deletaR1($id = NULL,$table = null,$redirec = null,$tipo = null)
+    public function deletaR1($id = NULL, $table = null, $redirec = null, $tipo = null)
     {
         verificaLogin();
         $table = base64_decode($table);
-        $redirec = str_replace('-','/',$redirec);
+        $redirec = str_replace('-', '/', $redirec);
         $destino = "assets/delete/vestfiles/";
-        if($tipo == 'files'|| $tipo == 'provaGab'){
-            $redirec = $redirec.'/'.$tipo;
+        if ($tipo == 'files' || $tipo == 'provaGab') {
+            $redirec = $redirec . '/' . $tipo;
             $destino = "assets/delete/vestfiles/$tipo/";
         }
         $dtemps = $this->painelbd->getWhere($table, array('id' => $id))->row();
@@ -585,15 +666,13 @@ class Painel_vestibular Extends CI_Controller
                 setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
                 redirect($redirec);
             }
-        }else if ($this->bd->deletar($table, $id) == TRUE){
+        } else if ($this->bd->deletar($table, $id) == TRUE) {
             unlink($origem);
-            setMsg("<p>O arquivo foi deletado sem copia. ERROR-011</p> ",'success');
+            setMsg("<p>O arquivo foi deletado sem copia. ERROR-011</p> ", 'success');
             redirect($redirec);
-        }
-        else{
-            setMsg('<p>Erro! não foi possivel deletar o arquivo. ERROR-023</p>','error');
+        } else {
+            setMsg('<p>Erro! não foi possivel deletar o arquivo. ERROR-023</p>', 'error');
             redirect($redirec);
         }
     }
-
 }

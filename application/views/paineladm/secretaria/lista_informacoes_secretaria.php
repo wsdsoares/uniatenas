@@ -89,6 +89,31 @@
                   </div>
                 </div>
               </div>
+              <div class="col-sm-2 text-center">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Calendadários</h5>
+                    <p class="card-text"><small>(Demais cursos e Internato)</small></p>
+
+                    <?php
+                    echo anchor("Painel_secretaria/calendarios_semestre/$campus->id/$paginaSecretaria->id", 'Ver links', array('class' => 'btn btn-primary'));
+                    ?>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-2 text-center">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Atividades Complementares</h5>
+                    <p class="card-text"><small>(Planilha - Excel)</small></p>
+
+                    <?php
+                    echo anchor("Painel_secretaria/lista_atividades_complementares/$campus->id/$paginaSecretaria->id", 'Ver arquivo', array('class' => 'btn btn-primary'));
+                    ?>
+                  </div>
+                </div>
+              </div>
 
               <div class="col-sm-2 text-center">
                 <div class="card">

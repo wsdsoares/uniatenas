@@ -1338,8 +1338,6 @@ and revistas.id =$id;
         }
 
         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
-
-
         $page = $this->bancosite->getWhere('pages', array('title' => 'secretariaacademica', 'campusid' => $dataCampus->id))->row();
 
         $queryItensSecretaria = "
@@ -1367,7 +1365,14 @@ and revistas.id =$id;
         $calendars = $this->bancosite->getWhere('campus_calendars', array('campusid' => $dataCampus->id, 'status' => 1, 'type' => 'demais_cursos'), array('campo' => 'semester', 'ordem' => 'desc'))->result();
         $calendarsMedicine = $this->bancosite->getWhere('campus_calendars', array('campusid' => $dataCampus->id, 'status' => 1, 'type' => 'medicina'), array('campo' => 'semester', 'ordem' => 'desc'))->result();
 
-        $horasComplementares = $this->bancosite->getWhere('files', array('campusid' => $dataCampus->id, 'typesfile' => 'cartilha'))->row();
+        $camposCartilha = array('files.name', 'files.files');
+        $joinCartilha = array(
+            'files_has_pages' => 'files_has_pages.filesid = files.id',
+            'campus' => 'files.campusid = campus.id'
+        );
+        $whereCartilha = array('files.campusid' => $dataCampus->id, 'files.typesfile' => 'cartilha', 'files.status' => 1);
+        // $horasComplementares = $this->bancosite->where($camposCartilha, 'files', array('campusid' => $dataCampus->id, 'typesfile' => 'cartilha'))->row();
+        $horasComplementares = $this->bancosite->where($camposCartilha, 'files', $joinCartilha, $whereCartilha)->row();
 
         //$pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 

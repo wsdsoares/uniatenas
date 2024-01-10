@@ -233,6 +233,21 @@ $permissionCampusArray = '';
           </ul>
         </li>
 
+        <li class="header">Portais</li>
+        <li>
+          <a href="javascript:void(0);" class="menu-toggle">
+            <i class="material-icons">view_list</i>
+            <span>Portal Aluno/ Professor</span>
+          </a>
+          <ul class="ml-menu">
+            <li>
+              <?php
+              echo anchor('Painel_portal_alunos/lista_campus_portal_alunos', '<span>Portais</span>');
+              ?>
+            </li>
+          </ul>
+        </li>
+
         <!-----------------------------------------------------------------------
           Menu para gestão dos menus de serviços - Todos os campus CPA, NAPP, NPA, NPAS
         ------------------------------------------------------------------------
@@ -278,9 +293,12 @@ $permissionCampusArray = '';
           </ul>
         </li> -->
         </li>
-        <?php //include_once('itens_header/item_h_financeiro.php');?>
-        <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); ?>
-        <?php //include_once('itens_header/item_h_vestibular.php');?>
+        <?php //include_once('itens_header/item_h_financeiro.php');
+        ?>
+        <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); 
+        ?>
+        <?php //include_once('itens_header/item_h_vestibular.php');
+        ?>
 
         <li class="header">Secretaria Acadêmica</li>
         <li>
@@ -301,7 +319,8 @@ $permissionCampusArray = '';
               <ul class="ml-menu">
                 <li>
 
-                  <?php //echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); ?>
+                  <?php //echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Calendários</span>'); 
+                  ?>
                   <?php echo anchor('Painel_secretaria/lista_campus_secretaria', '<span>Informações</span>'); ?>
                 </li>
               </ul>
@@ -309,10 +328,12 @@ $permissionCampusArray = '';
           </ul>
         </li>
         <li>
-          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');?>
+          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Laboratórios</span>');
+          ?>
         </li>
         <li>
-          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');?>
+          <?php //echo anchor('TrabalheConosco/areasSetores', '<span>Núcleos</span>');
+          ?>
         </li>
 
         <li class="header">Biblioteca</li>
@@ -474,12 +495,10 @@ $permissionCampusArray = '';
                                               <span>Anais</span>');*/
                   ?>
                 </li>
-
               </ul>
               <?php
               echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
               ?>
-
               <?php
               echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');
               ?>
@@ -494,28 +513,20 @@ $permissionCampusArray = '';
         </li>
         <li class="header"></li>
 
-        <!-- <li>
-          <li class="header">Gestão - Vestibular Medicina</li>
-          <a href="javascript:void(0);" class="menu-toggle">
-            <i class="material-icons">assignment</i>
-            <span>PROCESSO SELETIVO</span>
-          </a>
-          <ul class="ml-menu">
-            <li>
-              <a href="javascript:void(0);" class="menu-toggle">
-                <span>Inscrições</span>
-              </a>
-              <ul class="ml-menu">
-                <li>
-                  <?php echo anchor('ProcessoSeletivo/insricoesEad', '<span>EAD - Uniatenas</span>'); ?>
-                </li>
-                <li>
-                  <?php echo anchor('publicacoes/anais', '<span>Presenciais</span>'); ?>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li> -->
+        <li>
+        <li class="header">Gestão - Vestibular Medicina</li>
+        <a href="javascript:void(0);" class="menu-toggle">
+          <i class="material-icons">assignment</i>
+          <span>Vestibular Medicina</span>
+        </a>
+        <ul class="ml-menu">
+          <li>
+            <?php
+            echo anchor('Painel_vestibular/lista_campus_vestibular', '<span>Itens</span>');
+            ?>
+          </li>
+        </ul>
+        </li>
       </ul>
     </div>
 

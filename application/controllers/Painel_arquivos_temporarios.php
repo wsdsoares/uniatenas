@@ -15,45 +15,47 @@ class Painel_arquivos_temporarios extends CI_Controller
         $this->load->model('painel_model', 'painelbd');
         $this->load->model('Cpainel_model', 'bd');
         date_default_timezone_set('America/Sao_Paulo');
-    }   
+    }
 
     /************************************
      *  Modulo de arquivos e fotos temporarios  
      * ***********************************/
-    public function lista_campus_temps(){
+    public function lista_campus_temps()
+    {
         verificaLogin();
 
         $page = 'Lista de Campus';
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/temps/lista_campus_temps',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => 'Listagem de Arquivos temporários - Por Campus',
-                'campus'=> $listagemDosCampus,
-                'tipo'=>'tabelaDatatable'
+                'campus' => $listagemDosCampus,
+                'tipo' => 'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
-    
+
     public function tempArg()
     {
         verificaLogin();
         $uriCampus = $this->uri->segment(3);
-        $campus = $this->painelbd->where(array('campus.id','campus.name'),'campus',NULL, array('visible' => 'SIM','campus.id'=>$uriCampus))->row();
-        
-        $listagem = $this->painelbd->where('*', 'files_temp', NULL, array('status' => '1','campusid'=>$campus->id), array('campo' => 'id', 'ordem' => 'DESC'))->result();
-        
+        $campus = $this->painelbd->where(array('campus.id', 'campus.name'), 'campus', NULL, array('visible' => 'SIM', 'campus.id' => $uriCampus))->row();
+
+        $listagem = $this->painelbd->where('*', 'files_temp', NULL, array('status' => '1', 'campusid' => $campus->id), array('campo' => 'id', 'ordem' => 'DESC'))->result();
+
         $data = array(
             'titulo' => 'Arquivos -temporarios',
             'conteudo' => 'paineladm/temps/lista',
@@ -61,7 +63,7 @@ class Painel_arquivos_temporarios extends CI_Controller
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'listagem' => $listagem,
                 'campus' => $campus,
-                'tipo'=>'tabelaDatatable'
+                'tipo' => 'tabelaDatatable'
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
@@ -72,7 +74,7 @@ class Painel_arquivos_temporarios extends CI_Controller
         verificaLogin();
         $this->load->helper('file');
         $uriCampus = $this->uri->segment(3);
-        $campus = $this->painelbd->where(array('campus.id','campus.name','campus.city'),'campus',NULL, array('visible' => 'SIM','campus.id'=>$uriCampus))->row();
+        $campus = $this->painelbd->where(array('campus.id', 'campus.name', 'campus.city'), 'campus', NULL, array('visible' => 'SIM', 'campus.id' => $uriCampus))->row();
 
         $this->form_validation->set_rules('title', 'Titulo', 'required');
 
@@ -82,11 +84,11 @@ class Painel_arquivos_temporarios extends CI_Controller
         }
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-            
+
 
             $path = "assets/temps";
             is_way($path);
@@ -101,7 +103,7 @@ class Painel_arquivos_temporarios extends CI_Controller
 
             if ($upload) {
                 //upload efetuado          
-                $campusId =  $this->input->post('campusid');   
+                $campusId =  $this->input->post('campusid');
                 $dados_form = elements(array('title'), $this->input->post());
                 $dados_form['files'] = $path . '/' . $upload['file_name'];
                 $dados_form['link'] = base_url($dados_form['files']);
@@ -111,10 +113,10 @@ class Painel_arquivos_temporarios extends CI_Controller
 
                 if ($this->painelbd->salvar('files_temp', $dados_form)) {
                     setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
-                    redirect('Painel_arquivos_temporarios/tempArg/'.$campusId);
+                    redirect('Painel_arquivos_temporarios/tempArg/' . $campusId);
                 } else {
                     setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
-                    redirect('Painel_arquivos_temporarios/tempArg/'.$campusId);
+                    redirect('Painel_arquivos_temporarios/tempArg/' . $campusId);
                 }
             } else {
                 //erro no upload
@@ -133,12 +135,13 @@ class Painel_arquivos_temporarios extends CI_Controller
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'temps' => $dados,
                 'campus' => $campus,
-                'tipo' => '')
-            );
+                'tipo' => ''
+            )
+        );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_tempArg($campusId = NULL,$id = NULL)
+    public function editar_tempArg($campusId = NULL, $id = NULL)
     {
         verificaLogin();
         $this->load->helper('file');
@@ -146,7 +149,7 @@ class Painel_arquivos_temporarios extends CI_Controller
 
         $uriCampus = $campusId;
 
-        $campus = $this->painelbd->where(array('campus.id','campus.name','campus.city'),'campus',NULL, array('visible' => 'SIM','campus.id'=>$uriCampus))->row();
+        $campus = $this->painelbd->where(array('campus.id', 'campus.name', 'campus.city'), 'campus', NULL, array('visible' => 'SIM', 'campus.id' => $uriCampus))->row();
         $dados = $this->painelbd->getWhere('files_temp', array('id' => $id))->row();
 
         $this->form_validation->set_rules('title', 'Título', 'required');
@@ -154,11 +157,11 @@ class Painel_arquivos_temporarios extends CI_Controller
         $path = 'assets/temps';
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-            
+
 
             $dados_form['userid'] = $this->session->userdata('codusuario');
             $dados_form['dateupdate'] = date('Y-m-d H:i:s');
@@ -180,10 +183,10 @@ class Painel_arquivos_temporarios extends CI_Controller
 
                     if ($this->painelbd->salvar('files_temp', $dados_form)) {
                         setMsg('<p>Arquivo alterado com sucesso.</p>', 'success');
-                        redirect('Painel_arquivos_temporarios/tempArg/'.$campus->id);
+                        redirect('Painel_arquivos_temporarios/tempArg/' . $campus->id);
                     } else {
                         setMsg('<p>Erro! O Arquivo não foi alterado.</p>', 'error');
-                        redirect('Painel_arquivos_temporarios/tempArg/'.$campus->id);
+                        redirect('Painel_arquivos_temporarios/tempArg/' . $campus->id);
                     }
                 } else {
                     //erro no upload
@@ -192,7 +195,6 @@ class Painel_arquivos_temporarios extends CI_Controller
                     setMsg($msg, 'erro');
                 }
             } elseif (isset($dados_form['title'])) {
-                echo "<script>alert($id)</script>";
                 if ($this->painelbd->salvar('files_temp', $dados_form)) {
                     setMsg('<p>Apenas o título alterado com sucesso.</p>', 'success');
                     redirect("Painel_arquivos_temporarios/tempArg/$campusId/$id");
@@ -261,28 +263,24 @@ class Painel_arquivos_temporarios extends CI_Controller
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function d1elete_tempArg($id = NULL,$campusId = NULL)
+    public function delete_tempArg($campusId = NULL, $id = NULL)
     {
         verificaLogin();
-        $dtemps = $this->painelbd->getWhere('files_temp', array('id' => $id))->row();
+        // $dtemps = $this->painelbd->getWhere('files_temp', array('id' => $id))->row();
 
-        $origem = $dtemps->files;
-        $nome = explode('/', $origem);
-        $nome = end($nome);
+        $item = $this->painelbd->where('*', 'files_temp', NULL, array('files_temp.id' => $id))->row();
 
-        $destino = "assets/delete/temps/";
-        is_way($destino);
-        $destino = $destino . $nome;
-        if (copy($origem, $destino) || $nome == '<') {
-            if ($this->bd->deletar('files_temp', $id)) {
-                unlink($origem);
-                setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-                redirect("Painel_home/tempArg/$campusId");
-            } else {
-                setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-                redirect("Painel_home/tempArg/$campusId");
-            }
+        $arquivo = $item->files;
+
+        if ($this->painelbd->deletar('files_temp', $item->id)) {
+            unlink($arquivo);
+            setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+            redirect("Painel_arquivos_temporarios/tempArg/$campusId");
+        } else {
+            setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+            redirect("Painel_arquivos_temporarios/tempArg/$campusId");
         }
+
 
         $dados = $this->painelbd->getWhere('files_temp')->result();
         $data = array(

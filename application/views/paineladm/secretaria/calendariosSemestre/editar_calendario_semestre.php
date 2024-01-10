@@ -14,11 +14,11 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()):
-            echo $msg;
+        if ($msg = getMsg()) :
+          echo $msg;
         endif;
         ?>
-        <?php echo form_open_multipart("Painel_secretaria/editar_calendario_semestre/$campus->id/$id") ?>
+        <?php echo form_open_multipart("Painel_secretaria/editar_calendario_semestre/$campus->id/$id/$pagina->id") ?>
         <h2 class="card-inside-title">Informações</h2>
         <div class="row clearfix">
           <div class="col-sm-5">
@@ -26,51 +26,51 @@
               <div class="form-line">
                 <label for="title">Título</label>
                 <?php
-                  echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title',$listagem->name));
-                  ?>
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title', $listagem->name));
+                ?>
               </div>
             </div>
           </div>
           <div class="col-sm-3">
             <label for="campusid">Semestre</label>
             <?php
-              $optionStatus[0] = '-- Selecione --';
-              $optionStatus[1] = '1º Semestre';
-              $optionStatus[2] = '2º Semestre';
+            $optionStatus[0] = '-- Selecione --';
+            $optionStatus[1] = '1º Semestre';
+            $optionStatus[2] = '2º Semestre';
 
-              echo form_dropdown('semestre', $optionStatus, set_value('semestre',$listagem->semester), array('class' => 'form-control show-tick')); ?>
+            echo form_dropdown('semestre', $optionStatus, set_value('semestre', $listagem->semester), array('class' => 'form-control show-tick')); ?>
           </div>
           <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Ano</label>
                 <?php
-                  echo form_input(array('name' => 'year', 'type' => 'number', 'min' => '2000', 'max' => $ano+5, 'class' => 'form-control', 'placeholder' => 'Ano'), set_value('year',$listagem->year));
-                  ?>
+                echo form_input(array('name' => 'year', 'type' => 'number', 'min' => '2000', 'max' => $ano + 5, 'class' => 'form-control', 'placeholder' => 'Ano'), set_value('year', $listagem->year));
+                ?>
               </div>
             </div>
           </div>
           <div class="col-sm-3">
             <label for="campusid">Status</label>
             <?php
-               $optionSituation = array(
-                '1' => 'Visível - Ativo',
-                '0' => 'Oculto - Inativo'
-              );
+            $optionSituation = array(
+              '1' => 'Visível - Ativo',
+              '0' => 'Oculto - Inativo'
+            );
 
-              echo form_dropdown('status', $optionSituation, set_value('status',$listagem->status), array('class' => 'form-control show-tick')); 
-              ?>
+            echo form_dropdown('status', $optionSituation, set_value('status', $listagem->status), array('class' => 'form-control show-tick'));
+            ?>
           </div>
           <div class="col-sm-3">
             <label for="campusid">Tipo</label>
             <?php
-              $optionStatus[0] = '-- Selecione --';
-              $optionStatus[1] = 'Demais cursos';
-              $optionStatus[2] = 'Medicina (internato)';
-              //$optionStatus[3] = 'Medicina-Omega';
+            $optionStatus[0] = '-- Selecione --';
+            $optionStatus[1] = 'Demais cursos';
+            $optionStatus[2] = 'Medicina (internato)';
+            //$optionStatus[3] = 'Medicina-Omega';
 
-              echo form_dropdown('tipo', $optionStatus, set_value('tipo',$idtipo), array('class' => 'form-control show-tick')); 
-              ?>
+            echo form_dropdown('tipo', $optionStatus, set_value('tipo', $idtipo), array('class' => 'form-control show-tick'));
+            ?>
           </div>
         </div>
 
@@ -97,15 +97,15 @@
         <div class="row clearfix">
           <div class="col-sm-6">
             <?php
-                        echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
-                        echo anchor("Painel_secretaria/calendarios_semestre/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-                        ?>
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_secretaria/calendarios_semestre/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
 
         <?php
-                echo form_close();
-                ?>
+        echo form_close();
+        ?>
 
       </div>
     </div>

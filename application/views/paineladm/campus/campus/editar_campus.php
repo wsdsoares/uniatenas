@@ -13,11 +13,11 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
-            echo $msg;
+        if ($msg = getMsg()) {
+          echo $msg;
         }
         ?>
-        <?php echo form_open_multipart('Painel_Campus/editar_campus/'. $campus->id) ?>
+        <?php echo form_open_multipart('Painel_Campus/editar_campus/' . $campus->id) ?>
 
         <h2 class="card-inside-title">Informações do Campus</h2>
         <div class="row clearfix">
@@ -26,21 +26,21 @@
               <div class="form-line">
                 <label for="campusid">Tipo <small>(Faculdade, Centro Universitário)</small></label>
                 <?php
-                  if($campus->type =='centrouniversitario'){
-                    $tipoCampus  = 'Centro Universitário';
-                    $type = 'centrouniversitario';
-                  }
-                  if($campus->type =='faculdade'){
-                    $tipoCampus  = 'Faculdade';
-                    $type = 'faculdade';
-                  }
-                  $tipoCampus = array(
-                      $campus->type=>$tipoCampus,
-                      'faculdade' => 'Faculdade',
-                      'centrouniversitario' => 'Centro Universitário'
-                  );
-                  echo form_dropdown('type', $tipoCampus, set_value('type'), array('class' => 'form-control show-tick'));
-                  ?>
+                if ($campus->type == 'centrouniversitario') {
+                  $tipoCampus  = 'Centro Universitário';
+                  $type = 'centrouniversitario';
+                }
+                if ($campus->type == 'faculdade') {
+                  $tipoCampus  = 'Faculdade';
+                  $type = 'faculdade';
+                }
+                $tipoCampus = array(
+                  $campus->type => $tipoCampus,
+                  'faculdade' => 'Faculdade',
+                  'centrouniversitario' => 'Centro Universitário'
+                );
+                echo form_dropdown('type', $tipoCampus, set_value('type'), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => 'Ex.: Uniatenas'), set_value('city',$campus->name));
+                echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => 'Ex.: Uniatenas'), set_value('city', $campus->name));
                 ?>
               </div>
             </div>
@@ -66,7 +66,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Cidade'), set_value('city',$campus->city));
+                echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Cidade'), set_value('city', $campus->city));
                 ?>
               </div>
             </div>
@@ -80,36 +80,37 @@
               <div class="form-line">
                 <?php
                 $ufs = array(
-                  'default'=>$campus->uf,
-                  'AC'=>'AC',
-                  'AL'=> 'AL',
-                  'AP'=>'AP',
-                  'AM'=>'AM',
-                  'BA'=>'BA',
-                  'CE'=>'CE',
-                  'DF'=>'DF',
-                  'ES'=>'ES',
-                  'GO'=>'GO',
-                  'MA'=>'MA',
-                  'MS'=>'MS',
-                  'MT'=>'MT',
-                  'MG'=>'MG',
-                  'PA'=>'PA',
-                  'PB'=>'PB',
-                  'PR'=>'PR',
-                  'PE'=>'PE',
-                  'PI'=>'PI',
-                  'RJ'=>'RJ',
-                  'RN'=>'RN',
-                  'RS'=>'RS',
-                  'RO'=>'RO',
-                  'RR'=>'RR',
-                  'SC'=>'SC',
-                  'SP'=>'SP',
-                  'SE'=>'SE',
-                  'TO'=>'TO');
-              echo form_dropdown('uf', $ufs, set_value('uf',$campus->uf), array('class' => 'form-control show-tick'));
-                  // echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Nome da Cidade'), set_value('city'));
+                  'default' => $campus->uf,
+                  'AC' => 'AC',
+                  'AL' => 'AL',
+                  'AP' => 'AP',
+                  'AM' => 'AM',
+                  'BA' => 'BA',
+                  'CE' => 'CE',
+                  'DF' => 'DF',
+                  'ES' => 'ES',
+                  'GO' => 'GO',
+                  'MA' => 'MA',
+                  'MS' => 'MS',
+                  'MT' => 'MT',
+                  'MG' => 'MG',
+                  'PA' => 'PA',
+                  'PB' => 'PB',
+                  'PR' => 'PR',
+                  'PE' => 'PE',
+                  'PI' => 'PI',
+                  'RJ' => 'RJ',
+                  'RN' => 'RN',
+                  'RS' => 'RS',
+                  'RO' => 'RO',
+                  'RR' => 'RR',
+                  'SC' => 'SC',
+                  'SP' => 'SP',
+                  'SE' => 'SE',
+                  'TO' => 'TO'
+                );
+                echo form_dropdown('uf', $ufs, set_value('uf', $campus->uf), array('class' => 'form-control show-tick'));
+                // echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Nome da Cidade'), set_value('city'));
                 ?>
               </div>
             </div>
@@ -124,7 +125,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'phone', 'class' => 'form-control', 'placeholder' => 'Telefone Fixo'), set_value('phone',$campus->phone));
+                echo form_input(array('name' => 'phone', 'class' => 'form-control', 'placeholder' => 'Telefone Fixo'), set_value('phone', $campus->phone));
                 ?>
               </div>
             </div>
@@ -137,7 +138,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'whatsapp', 'class' => 'form-control', 'placeholder' => 'Número do Whatsapp'), set_value('whatsapp',$campus->whatsapp));
+                echo form_input(array('name' => 'whatsapp', 'class' => 'form-control', 'placeholder' => 'Número do Whatsapp'), set_value('whatsapp', $campus->whatsapp));
                 ?>
               </div>
             </div>
@@ -155,7 +156,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'email', 'class' => 'form-control', 'placeholder' => 'Email'), set_value('email',$campus->email));
+                echo form_input(array('name' => 'email', 'class' => 'form-control', 'placeholder' => 'Email'), set_value('email', $campus->email));
                 ?>
               </div>
             </div>
@@ -168,7 +169,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'facebook', 'class' => 'form-control', 'placeholder' => 'Perfil do Facebook.'), set_value('facebook',$campus->facebook));
+                echo form_input(array('name' => 'facebook', 'class' => 'form-control', 'placeholder' => 'Perfil do Facebook.'), set_value('facebook', $campus->facebook));
                 ?>
               </div>
             </div>
@@ -181,7 +182,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'instagram', 'class' => 'form-control', 'placeholder' => 'Perfil Instagram'), set_value('instagram',$campus->instagram));
+                echo form_input(array('name' => 'instagram', 'class' => 'form-control', 'placeholder' => 'Perfil Instagram'), set_value('instagram', $campus->instagram));
                 ?>
               </div>
             </div>
@@ -194,7 +195,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'youtube', 'class' => 'form-control', 'placeholder' => 'Perfil Youtube'), set_value('youtube',$campus->youtube));
+                echo form_input(array('name' => 'youtube', 'class' => 'form-control', 'placeholder' => 'Perfil Youtube'), set_value('youtube', $campus->youtube));
                 ?>
               </div>
             </div>
@@ -212,17 +213,17 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_textarea(array('name' => 'street', 'class' => 'form-control', 'placeholder' => 'Endereço do campus'), toHtml(set_value('street',$campus->street)));
+                echo form_textarea(array('name' => 'street', 'class' => 'form-control', 'placeholder' => 'Endereço do campus'), toHtml(set_value('street', $campus->street)));
                 ?>
               </div>
             </div>
           </div>
           <script type="text/javascript">
-          // replace: substitui o formato padrão do textarea (descricao)
-          // e aplica as configurações do CKEDitor através do arquivo config.js
-          var editor = CKEDITOR.replace('street', {
-            customConfig: 'config.js'
-          });
+            // replace: substitui o formato padrão do textarea (descricao)
+            // e aplica as configurações do CKEDitor através do arquivo config.js
+            var editor = CKEDITOR.replace('street', {
+              customConfig: 'config.js'
+            });
           </script>
           <div class="col-md-12">
             <label for="title">Link da Localização do GOOGLE MAPS (MAPS Frame)</label>
@@ -232,7 +233,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'mapsFrame', 'class' => 'form-control', 'placeholder' => 'Link do MAPS Frame'), set_value('mapsFrame',$campus->mapsFrame));
+                echo form_input(array('name' => 'mapsFrame', 'class' => 'form-control', 'placeholder' => 'Link do MAPS Frame'), set_value('mapsFrame', $campus->mapsFrame));
                 ?>
               </div>
             </div>
@@ -249,18 +250,18 @@
                   <small> (Explicação e inforamções pertinentes ao campus)</small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description',$campus->description)));
+                echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description', $campus->description)));
                 ?>
               </div>
             </div>
           </div>
         </div>
         <script type="text/javascript">
-        // replace: substitui o formato padrão do textarea (descricao)
-        // e aplica as configurações do CKEDitor através do arquivo config.js
-        var editor = CKEDITOR.replace('description', {
-          customConfig: 'config.js'
-        });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
         </script>
         <div class="separacao-forms"></div>
 
@@ -269,8 +270,7 @@
           <div class="col-md-8">
             <label for="title">
               Cor de fundo - Exibida na lista dos campus
-              <small> (A cor tem que ser em RGB) <br />Exemplo: cor vermelha rgb(255,0,0), caso não saiba clique no <a
-                  href="https://erikasarti.com/html/tabela-cores/" target="_blank">CLIQUE AQUI</a><br />
+              <small> (A cor tem que ser em RGB) <br />Exemplo: cor vermelha rgb(255,0,0), caso não saiba clique no <a href="https://erikasarti.com/html/tabela-cores/" target="_blank">CLIQUE AQUI</a><br />
                 ou digite no Google: <i>"Tabela de cores RGB"</i>
               </small>
             </label>
@@ -280,7 +280,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'cor_fundo_lista_campusRGBA', 'class' => 'form-control', 'placeholder' => 'Ex.: 201,201,204'), set_value('cor_fundo_lista_campusRGBA',$campus->cor_fundo_lista_campusRGBA));
+                echo form_input(array('name' => 'cor_fundo_lista_campusRGBA', 'class' => 'form-control', 'placeholder' => 'Ex.: 201,201,204'), set_value('cor_fundo_lista_campusRGBA', $campus->cor_fundo_lista_campusRGBA));
                 ?>
               </div>
             </div>
@@ -300,11 +300,11 @@
           <div class="col-sm-6">
             <div class="informacoes-cadastradas">
               <?php
-              if($campus->logo!='' and !empty($campus->logo)){
+              if ($campus->logo != '' and !empty($campus->logo)) {
                 echo anchor(base_url(verifyImg($campus->logo)), '<img src="' . base_url(verifyImg($campus->logo)) . '" class="thumbnail">', array('target' => '_blank'));
-                }else{
-                  echo '<span> Sem imagem cadastrada. <span>';
-                }
+              } else {
+                echo '<span> Sem imagem cadastrada. <span>';
+              }
               ?>
             </div>
           </div>
@@ -323,11 +323,11 @@
           <div class="col-sm-6">
             <div class="informacoes-cadastradas">
               <?php
-              if($campus->logo!='' and !empty($campus->logoBranca)){
+              if ($campus->logo != '' and !empty($campus->logoBranca)) {
                 echo anchor(base_url(verifyImg($campus->logoBranca)), '<img src="' . base_url(verifyImg($campus->logoBranca)) . '" class="thumbnail">', array('target' => '_blank'));
-                }else{
-                  echo '<span> Sem imagem cadastrada. <span>';
-                }
+              } else {
+                echo '<span> Sem imagem cadastrada. <span>';
+              }
               ?>
             </div>
           </div>
@@ -346,11 +346,11 @@
           <div class="col-sm-6">
             <div class="informacoes-cadastradas">
               <?php
-              if($campus->logo!='' and !empty($campus->iconeCampus)){
+              if ($campus->logo != '' and !empty($campus->iconeCampus)) {
                 echo anchor(base_url(verifyImg($campus->iconeCampus)), '<img src="' . base_url(verifyImg($campus->iconeCampus)) . '" class="thumbnail">', array('target' => '_blank'));
-                }else{
-                  echo '<span> Sem imagem cadastrada. <span>';
-                }
+              } else {
+                echo '<span> Sem imagem cadastrada. <span>';
+              }
               ?>
             </div>
           </div>
@@ -369,11 +369,11 @@
           <div class="col-sm-6">
             <div class="informacoes-cadastradas">
               <?php
-              if($campus->logo!='' and !empty($campus->backgroundPrincipal)){
+              if ($campus->logo != '' and !empty($campus->backgroundPrincipal)) {
                 echo anchor(base_url(verifyImg($campus->backgroundPrincipal)), '<img src="' . base_url(verifyImg($campus->backgroundPrincipal)) . '" class="thumbnail">', array('target' => '_blank'));
-                }else{
-                  echo '<span> Sem imagem cadastrada. <span>';
-                }
+              } else {
+                echo '<span> Sem imagem cadastrada. <span>';
+              }
               ?>
             </div>
           </div>
@@ -387,12 +387,12 @@
               <div class="form-line">
                 <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$campus->status), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status', $campus->status), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -402,12 +402,12 @@
                 <label for="campusid">Exibir na página principal dos CAMPUS
                   <small>(www.atenas.edu.br/uniatenas)</small></label>
                 <?php
-                    $optionSituation = array(
-                        'SIM' => 'Visível - SIM',
-                        'NÃO' => 'Invisível - NÂO'
-                    );
-                    echo form_dropdown('visible', $optionSituation, set_value('visible',$campus->visible), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  'SIM' => 'Visível - SIM',
+                  'NÃO' => 'Invisível - NÂO'
+                );
+                echo form_dropdown('visible', $optionSituation, set_value('visible', $campus->visible), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -415,9 +415,9 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor('Painel_Campus/lista_campus', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor('Painel_Campus/lista_campus', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
 
@@ -430,44 +430,44 @@
 </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function() {
-  $("#idcampus").change(function() {
-    var campus_id = $('#idcampus').val();
-    if (campus_id != '') {
-      $.ajax({
-        url: "<?php echo base_url();?>Painel_home/getBannerPositionbyCampus",
-        method: "POST",
-        data: {
-          campus_id: campus_id
-        },
-        success: function(data) {
-          var opts = $.parseJSON(data);
-          $('#selectOrder').empty();
-          $.each(opts, function(i, position) {
-            $('#selectOrder').append($('<option>', {
-              value: position.priority,
-              text: position.priority
-            }));
-
-            if (opts.length == i + 1) {
+  $(document).ready(function() {
+    $("#idcampus").change(function() {
+      var campus_id = $('#idcampus').val();
+      if (campus_id != '') {
+        $.ajax({
+          url: "<?php echo base_url(); ?>Painel_home/getBannerPositionbyCampus",
+          method: "POST",
+          data: {
+            campus_id: campus_id
+          },
+          success: function(data) {
+            var opts = $.parseJSON(data);
+            $('#selectOrder').empty();
+            $.each(opts, function(i, position) {
               $('#selectOrder').append($('<option>', {
-                value: (+(position.priority) + +(1)),
-                text: (+(position.priority) + +(1))
+                value: position.priority,
+                text: position.priority
               }));
-            }
-            $('#selectOrder').selectpicker('refresh');
-          })
-        }
-      })
-    }
-    if ('select') {
-      $('#selectOrder').empty();
-      $('#selectOrder').append($('<option>', {
-        text: 'Selecione o campus'
-      }));
-      $('#selectOrder').selectpicker('refresh');
-    }
-  });
 
-})
+              if (opts.length == i + 1) {
+                $('#selectOrder').append($('<option>', {
+                  value: (+(position.priority) + +(1)),
+                  text: (+(position.priority) + +(1))
+                }));
+              }
+              $('#selectOrder').selectpicker('refresh');
+            })
+          }
+        })
+      }
+      if ('select') {
+        $('#selectOrder').empty();
+        $('#selectOrder').append($('<option>', {
+          text: 'Selecione o campus'
+        }));
+        $('#selectOrder').selectpicker('refresh');
+      }
+    });
+
+  })
 </script>

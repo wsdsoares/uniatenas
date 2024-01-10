@@ -3,9 +3,11 @@
 if (!defined("BASEPATH"))
     exit("No direct script access allowed");
 
-class Painel_campus extends CI_Controller {
+class Painel_campus extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $this->load->model('acesso_model', 'acesso');
@@ -15,27 +17,29 @@ class Painel_campus extends CI_Controller {
 
         date_default_timezone_set('America/Sao_Paulo');
     }
-    
-    public function lista_campus() {
+
+    public function lista_campus()
+    {
         verificaLogin();
-        
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('status' => 1))->result();
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('status' => 1))->result();
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/lista_campus',
             'dados' => array(
                 'permissionCampusArray' => '',
-                'listagemDosCampus'=>$listagemDosCampus,
+                'listagemDosCampus' => $listagemDosCampus,
                 'page' => 'Todos os CAMPI - Grupo Uniatenas',
-                'tipo'=>'tabelaDatatable'
+                'tipo' => 'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_campus(){
+    public function cadastrar_campus()
+    {
         verificaLogin();
         $this->load->helper('file');
 
@@ -46,64 +50,62 @@ class Painel_campus extends CI_Controller {
         // $this->form_validation->set_rules('logoBranca', 'Logotipo cor Branca', 'required');
         // $this->form_validation->set_rules('iconeCampus', 'Icone Campus', 'required');
         // $this->form_validation->set_rules('street', 'Endereço do Campus', 'required');
-        
+
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
-        }else {
+        } else {
 
             $pathLogo = "assets/images/logos";
             is_way($pathLogo);
 
             if (isset($_FILES['logo']) && !empty($_FILES['logo']['name'])) {
-                
-                
+
+
                 $upload = $this->painelbd->uploadFiles('logo', $pathLogo, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', null);
-                if($upload){
-                    $dados_form['logo'] = $pathLogo.'/'.$upload['file_name'];
-                }else{
+                if ($upload) {
+                    $dados_form['logo'] = $pathLogo . '/' . $upload['file_name'];
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
                 }
-
             }
 
             if (!empty($_FILES['logoBranca']['name'])) {
-                
-                $upload = $this->painelbd->uploadFiles('logoBranca', $pathLogoBranca, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-                if($upload){
-                    $dados_form['logoBranca'] = $pathLogo.'/'.$upload['file_name'];
-                }else{
+                $upload = $this->painelbd->uploadFiles('logoBranca', $pathLogo, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
+
+                if ($upload) {
+                    $dados_form['logoBranca'] = $pathLogo . '/' . $upload['file_name'];
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
                 }
-            }        
-            
+            }
+
             if (!empty($_FILES['iconeCampus']['name'])) {
-                
+
                 $upload = $this->painelbd->uploadFiles('iconeCampus', $pathLogo, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-                if($upload){
-                    $dados_form['iconeCampus'] = $pathLogo.'/'.$upload['file_name'];
-                }else{
+                if ($upload) {
+                    $dados_form['iconeCampus'] = $pathLogo . '/' . $upload['file_name'];
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
                 }
-
-            }  
+            }
 
             if (!empty($_FILES['backgroundPrincipal']['name'])) {
-                
+
                 $upload = $this->painelbd->uploadFiles('backgroundPrincipal', $pathLogo, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-                if($upload){
-                    $dados_form['backgroundPrincipal'] = $pathLogo.'/'.$upload['file_name'];
-                }else{
+                if ($upload) {
+                    $dados_form['backgroundPrincipal'] = $pathLogo . '/' . $upload['file_name'];
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
@@ -111,29 +113,29 @@ class Painel_campus extends CI_Controller {
             }
 
             $shurtName = strtolower(noAccentuation($this->input->post('city')));
-          
+
             //aqui pega os dados dos formulários por meio do input
             //os nomes - names dos inputs devem ser iguais aos do BD.
-            $dados_form['name'] =$this->input->post('name');
-            $dados_form['phone'] =$this->input->post('phone');
-            $dados_form['cor_fundo_lista_campusRGBA'] =$this->input->post('cor_fundo_lista_campusRGBA');
-            $dados_form['email'] =$this->input->post('email');
-            $dados_form['facebook'] =$this->input->post('facebook');
-            $dados_form['instagram'] =$this->input->post('instagram');
-            $dados_form['youtube'] =$this->input->post('youtube');
-            $dados_form['locationMaps'] =$this->input->post('locationMaps');
-            $dados_form['mapsFrame'] =$this->input->post('mapsFrame');
-            $dados_form['street'] =$this->input->post('street');
-            $dados_form['uf'] =$this->input->post('uf');
-            $dados_form['city'] =$this->input->post('city');
-            $dados_form['type'] =$this->input->post('type');
-            $dados_form['description'] =$this->input->post('description');
-            $dados_form['visible'] =$this->input->post('visible');
-            $dados_form['status'] =$this->input->post('status');
+            $dados_form['name'] = $this->input->post('name');
+            $dados_form['phone'] = $this->input->post('phone');
+            $dados_form['cor_fundo_lista_campusRGBA'] = $this->input->post('cor_fundo_lista_campusRGBA');
+            $dados_form['email'] = $this->input->post('email');
+            $dados_form['facebook'] = $this->input->post('facebook');
+            $dados_form['instagram'] = $this->input->post('instagram');
+            $dados_form['youtube'] = $this->input->post('youtube');
+            $dados_form['locationMaps'] = $this->input->post('locationMaps');
+            $dados_form['mapsFrame'] = $this->input->post('mapsFrame');
+            $dados_form['street'] = $this->input->post('street');
+            $dados_form['uf'] = $this->input->post('uf');
+            $dados_form['city'] = $this->input->post('city');
+            $dados_form['type'] = $this->input->post('type');
+            $dados_form['description'] = $this->input->post('description');
+            $dados_form['visible'] = $this->input->post('visible');
+            $dados_form['status'] = $this->input->post('status');
             $dados_form['shurtName'] = $shurtName;
             $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-        
+
             if ($this->painelbd->salvar('campus', $dados_form) == TRUE) {
 
                 setMsg('<p>Campus cadastrado com sucesso.</p>', 'success');
@@ -154,8 +156,8 @@ class Painel_campus extends CI_Controller {
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => $page,
-                'listagem'=> $this->bd->getWhere('dirigentes')->result(),
-                'tipo'=>''
+                'listagem' => $this->bd->getWhere('dirigentes')->result(),
+                'tipo' => ''
             )
         );
 
@@ -163,11 +165,12 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_campus($uriCampus = NULL){
+    public function editar_campus($uriCampus = NULL)
+    {
         verificaLogin();
         $this->load->helper('file');
 
-        $campus = $this->painelbd->where('*','campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $campus = $this->painelbd->where('*', 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         //Validaçãoes via Form Validation
         $this->form_validation->set_rules('name', 'Nome do Campus', 'required');
@@ -181,12 +184,12 @@ class Painel_campus extends CI_Controller {
         //     $this->form_validation->set_rules('logo', 'Logo do Campus', 'callback_file_check');
         //     $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPG ou PNG.');
         // }
-          
+
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
-        }else {
+        } else {
 
             if ($campus->name != $this->input->post('name')) {
                 $dados_form['name'] = $this->input->post('name');
@@ -206,7 +209,7 @@ class Painel_campus extends CI_Controller {
             if ($campus->email != $this->input->post('email')) {
                 $dados_form['email'] = $this->input->post('email');
             }
-            
+
             if ($campus->cor_fundo_lista_campusRGBA != $this->input->post('cor_fundo_lista_campusRGBA')) {
                 $dados_form['cor_fundo_lista_campusRGBA'] = $this->input->post('cor_fundo_lista_campusRGBA');
             }
@@ -249,23 +252,9 @@ class Painel_campus extends CI_Controller {
                     unlink($campus->logo);
                 }
                 $upload = $this->painelbd->uploadFiles('logo', $pathLogos, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-                if ($upload){
+                if ($upload) {
                     $dados_form['logo'] = $pathLogos . '/' . $upload['file_name'];
-                }else{
-                    $msg = $this->upload->display_errors();
-                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-                    setMsg($msg, 'erro');
-                }
-            }
-            
-            if (isset($_FILES['logoBranca']) && !empty($_FILES['logoBranca']['name'])) {
-                if (file_exists($campus->logoBranca)) {
-                    unlink($campus->logoBranca);
-                }
-                $upload = $this->painelbd->uploadFiles('logoBranca', $pathLogos, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-                if ($upload){
-                    $dados_form['logoBranca'] = $pathLogos . '/' . $upload['file_name'];
-                }else{
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
@@ -277,9 +266,23 @@ class Painel_campus extends CI_Controller {
                     unlink($campus->logoBranca);
                 }
                 $upload = $this->painelbd->uploadFiles('logoBranca', $pathLogos, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-                if ($upload){
+                if ($upload) {
                     $dados_form['logoBranca'] = $pathLogos . '/' . $upload['file_name'];
-                }else{
+                } else {
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
+            }
+
+            if (isset($_FILES['logoBranca']) && !empty($_FILES['logoBranca']['name'])) {
+                if (file_exists($campus->logoBranca)) {
+                    unlink($campus->logoBranca);
+                }
+                $upload = $this->painelbd->uploadFiles('logoBranca', $pathLogos, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
+                if ($upload) {
+                    $dados_form['logoBranca'] = $pathLogos . '/' . $upload['file_name'];
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
@@ -291,9 +294,9 @@ class Painel_campus extends CI_Controller {
                     unlink($campus->iconeCampus);
                 }
                 $upload = $this->painelbd->uploadFiles('iconeCampus', $pathLogos, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-                if ($upload){
+                if ($upload) {
                     $dados_form['iconeCampus'] = $pathLogos . '/' . $upload['file_name'];
-                }else{
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
@@ -305,25 +308,25 @@ class Painel_campus extends CI_Controller {
                     unlink($campus->backgroundPrincipal);
                 }
                 $upload = $this->painelbd->uploadFiles('backgroundPrincipal', $pathLogos, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-                if ($upload){
+                if ($upload) {
                     $dados_form['backgroundPrincipal'] = $pathLogos . '/' . $upload['file_name'];
-                }else{
+                } else {
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                     setMsg($msg, 'erro');
                 }
             }
-            
+
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['id'] = $campus->id;
 
-        
-            if ($this->painelbd->salvar('campus', $dados_form) == TRUE){
-              setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-              redirect(base_url("Painel_campus/lista_campus/$campus->id"));
-            }else{
-              setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+
+            if ($this->painelbd->salvar('campus', $dados_form) == TRUE) {
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect(base_url("Painel_campus/lista_campus/$campus->id"));
+            } else {
+                setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
         }
 
@@ -333,9 +336,9 @@ class Painel_campus extends CI_Controller {
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => "Edição Informações <strong><i> Campus - $campus->name ($campus->city) </i></strong>",
-                'listagem'=> '',
-                'campus'=>$campus,
-                'tipo'=>''
+                'listagem' => '',
+                'campus' => $campus,
+                'tipo' => ''
             )
         );
 
@@ -346,8 +349,8 @@ class Painel_campus extends CI_Controller {
     public function deletar_campus($id)
     {
         verifica_login();
-        
-        $item = $this->painelbd->where('*','campus', NULL, array('campus.id' => $id))->row();
+
+        $item = $this->painelbd->where('*', 'campus', NULL, array('campus.id' => $id))->row();
 
         if (file_exists($item->logo)) {
             unlink($item->logo);
@@ -369,113 +372,117 @@ class Painel_campus extends CI_Controller {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
             redirect("Painel_Campus/lista_campus");
         }
-
     }
 
     /*************************************************************************
      * Botões de acesso rápido - Página dos campus - Segunda Página
      * Página: www.atenas.edu.br/uniatenas/NOME_DO_CAMPUS
-    *************************************************************************/
+     *************************************************************************/
 
-    public function lista_campus_botoes_acessos(){
+    public function lista_campus_botoes_acessos()
+    {
         verificaLogin();
 
         $page = '';
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/botoes_acesso_rapido/lista_campus_acessos_rapido',
             'dados' => array(
                 'page' => 'Lista de Campus - Botões de acesso Rápido',
-                'campus'=> $listagemDosCampus,
-                'tipo'=>''
+                'campus' => $listagemDosCampus,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_botoes_acesso_rapido($uriCampus=NULL) {
+    public function lista_botoes_acesso_rapido($uriCampus = NULL)
+    {
         verificaLogin();
-        
+
         // $uriCampus = $this->uri->segment(3);
 
-        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        
-        $colunasResultadoConsulta = 
-            array('acessos_rapidos.id as idBotao',
-            'acessos_rapidos.title',
-            'acessos_rapidos.link_redirecionamento',
-            'acessos_rapidos.cor_hexadecimal',
-            'acessos_rapidos.status',
-            'acessos_rapidos.priority',
-            'acessos_rapidos.arquivo',
-            'acessos_rapidos.created_at',
-            'acessos_rapidos.updated_at',
-            'campus.id',
-            'campus.city',
-        );
+
+        $colunasResultadoConsulta =
+            array(
+                'acessos_rapidos.id as idBotao',
+                'acessos_rapidos.title',
+                'acessos_rapidos.link_redirecionamento',
+                'acessos_rapidos.cor_hexadecimal',
+                'acessos_rapidos.status',
+                'acessos_rapidos.priority',
+                'acessos_rapidos.arquivo',
+                'acessos_rapidos.created_at',
+                'acessos_rapidos.updated_at',
+                'campus.id',
+                'campus.city',
+            );
         $joinBotoesAcessoRapido = array(
             'campus' => 'campus.id = acessos_rapidos.campusid'
         );
-        $whereBotoesAcessoRapido = array('campus.id'=>$uriCampus);
-        $listaDosBotoesAcessoRapido = $this->painelbd->where($colunasResultadoConsulta,'acessos_rapidos',$joinBotoesAcessoRapido, $whereBotoesAcessoRapido)->result();
+        $whereBotoesAcessoRapido = array('campus.id' => $uriCampus);
+        $listaDosBotoesAcessoRapido = $this->painelbd->where($colunasResultadoConsulta, 'acessos_rapidos', $joinBotoesAcessoRapido, $whereBotoesAcessoRapido)->result();
 
         $data = array(
             'titulo' => 'Botões de Acesso Rápido - UniAtenas',
             'conteudo' => 'paineladm/botoes_acesso_rapido/lista_botoes_acesso_rapido',
             'dados' => array(
-                'listaDosBotoesAcessoRapido'=>$listaDosBotoesAcessoRapido,
-                'campus'=>$campus,
+                'listaDosBotoesAcessoRapido' => $listaDosBotoesAcessoRapido,
+                'campus' => $campus,
                 'page' => "Lista - Botões de acesso Rápido<strong><i> Campus - $campus->name ($campus->city) </i></strong>",
-                'tipo'=>'tabelaDatatable',
+                'tipo' => 'tabelaDatatable',
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_botoes_acesso_rapido($uriCampus=NULL){
+    public function cadastrar_botoes_acesso_rapido($uriCampus = NULL)
+    {
         verificaLogin();
         $this->load->helper('file');
-      
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         //Validaçãoes via Form Validation
         $this->form_validation->set_rules('title', 'Título do Botão', 'required');
         $this->form_validation->set_rules('cor_hexadecimal', 'Cor HEXADECIMAN do Botão', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
-        }else {
+        } else {
 
-            $dados_form = elements(array('title','cor_hexadecimal','status'), $this->input->post());
+            $dados_form = elements(array('title', 'cor_hexadecimal', 'status'), $this->input->post());
             $dados_form['link_redirecionamento'] = $this->input->post('link_redirecionamento');
             $dados_form['priority'] = $this->input->post('priority');
 
             if (isset($_FILES['arquivo']) && !empty($_FILES['arquivo']['name'])) {
-                
+
                 $path = "assets/arquivos_botoes_acesso_rapido/$campus->id";
                 is_way($path);
 
                 $upload = $this->painelbd->uploadFiles('arquivo', $path, $types = 'docx|pdf|PDF|jpg|JPG|png|PNG|jpeg|JPEG', NULL);
 
-                if ($upload){
+                if ($upload) {
                     //upload efetuado
                     $dados_form['arquivo'] = $path . '/' . $upload['file_name'];
-                }else{
+                } else {
                     //erro no upload
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
@@ -487,11 +494,11 @@ class Painel_campus extends CI_Controller {
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['campusid'] = $campus->id;
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
-            
-            if ($this->painelbd->salvar('acessos_rapidos', $dados_form) == TRUE){
+
+            if ($this->painelbd->salvar('acessos_rapidos', $dados_form) == TRUE) {
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_Campus/lista_botoes_acesso_rapido/$campus->id"));
-            }else{
+            } else {
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
         }
@@ -502,33 +509,34 @@ class Painel_campus extends CI_Controller {
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => "Cadastro de Botão de acesso rápido <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=> $campus,
-                'tipo'=>'tabelaDatatable'
+                'campus' => $campus,
+                'tipo' => 'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_botoes_acesso_rapido($uriCampus=NULL, $idBotao=NULL){
+    public function editar_botoes_acesso_rapido($uriCampus = NULL, $idBotao = NULL)
+    {
         verificaLogin();
         $this->load->helper('file');
-      
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        $botaoAcessoRapido = $this->painelbd->where('*','acessos_rapidos',NULL, array('acessos_rapidos.id'=>$idBotao))->row();
+
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+        $botaoAcessoRapido = $this->painelbd->where('*', 'acessos_rapidos', NULL, array('acessos_rapidos.id' => $idBotao))->row();
 
         //Validaçãoes via Form Validation
         $this->form_validation->set_rules('title', 'Título do Botão', 'required');
         $this->form_validation->set_rules('cor_hexadecimal', 'Cor HEXADECIMAN do Botão', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
-        }else {
+        } else {
 
-            $dados_form = elements(array('title','cor_hexadecimal','status'), $this->input->post());
+            $dados_form = elements(array('title', 'cor_hexadecimal', 'status'), $this->input->post());
             $dados_form['link_redirecionamento'] = $this->input->post('link_redirecionamento');
 
             if (isset($_FILES['arquivo']) && !empty($_FILES['arquivo']['name'])) {
@@ -542,10 +550,10 @@ class Painel_campus extends CI_Controller {
 
                 $upload = $this->painelbd->uploadFiles('arquivo', $path, $types = 'docx|pdf|PDF|jpg|JPG|png|PNG|jpeg|JPEG', NULL);
 
-                if ($upload){
+                if ($upload) {
                     //upload efetuado
                     $dados_form['arquivo'] = $path . '/' . $upload['file_name'];
-                }else{
+                } else {
                     //erro no upload
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
@@ -558,11 +566,11 @@ class Painel_campus extends CI_Controller {
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['campusid'] = $campus->id;
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
-            
-            if ($this->painelbd->salvar('acessos_rapidos', $dados_form) == TRUE){
+
+            if ($this->painelbd->salvar('acessos_rapidos', $dados_form) == TRUE) {
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_Campus/lista_botoes_acesso_rapido/$campus->id"));
-            }else{
+            } else {
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
         }
@@ -573,61 +581,64 @@ class Painel_campus extends CI_Controller {
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => "Edição de Botão de acesso rápido <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=> $campus,
-                'botaoAcessoRapido'=> $botaoAcessoRapido,
-                'tipo'=>''
+                'campus' => $campus,
+                'botaoAcessoRapido' => $botaoAcessoRapido,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
- /*************************************************************************
+    /*************************************************************************
      * Nossa história - Página da História do Uniatenas - Menu 
      * Página: www.atenas.edu.br/uniatenas/site/nossaHistoria/valenca
-    *************************************************************************/
+     *************************************************************************/
 
-    public function lista_campus_nossa_historia(){
+    public function lista_campus_nossa_historia()
+    {
         verificaLogin();
 
         $page = '';
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/historia/lista_campus_historia',
             'dados' => array(
                 'page' => 'Lista de Campus - História do Campus',
-                'campus'=> $listagemDosCampus,
-                'tipo'=>''
+                'campus' => $listagemDosCampus,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_historia($uriCampus=NULL) {
+    public function lista_historia($uriCampus = NULL)
+    {
         verificaLogin();
 
 
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        
-        $pagina = 'nossaHistoria';
-        $verificaExistePaginaNossaHistoria = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
+        $pagina = 'nossaHistoria';
+        $verificaExistePaginaNossaHistoria = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.title' => $pagina))->row();
+
+        $wherePagina = array('pages.title' => $pagina, 'pages.campusid' => $campus->id);
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.id = page_contents.pages_id',
+            'pages' => 'pages.id = page_contents.pages_id',
             'campus' => 'campus.id= pages.campusid'
-            
+
         );
 
         $colunaResultadPagina = array(
@@ -635,57 +646,58 @@ class Painel_campus extends CI_Controller {
             'page_contents.title',
             'page_contents.status',
             'page_contents.title_short',
-            'page_contents.description', 
-            'page_contents.order', 
-            'page_contents.created_at', 
-            'page_contents.updated_at', 
-            'page_contents.user_id', 
+            'page_contents.description',
+            'page_contents.order',
+            'page_contents.created_at',
+            'page_contents.updated_at',
+            'page_contents.user_id',
 
             'campus.city'
         );
-        
-        $listaInformmacoesHistoria = $this->painelbd->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->result();
+
+        $listaInformmacoesHistoria = $this->painelbd->where($colunaResultadPagina, 'page_contents', $joinConteudoPagina, $wherePagina, null)->result();
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/historia/lista_historia',
             'dados' => array(
-                'conteudosPagina'=>$listaInformmacoesHistoria,
+                'conteudosPagina' => $listaInformmacoesHistoria,
                 'page' => "Cadastro de História - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=>$campus,
-                'paginaNossaHistoria'=> $verificaExistePaginaNossaHistoria = isset($verificaExistePaginaNossaHistoria) ? $verificaExistePaginaNossaHistoria : '',
-                'tipo'=>''
+                'campus' => $campus,
+                'paginaNossaHistoria' => $verificaExistePaginaNossaHistoria = isset($verificaExistePaginaNossaHistoria) ? $verificaExistePaginaNossaHistoria : '',
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_historia($uriCampus=NULL) {
+    public function cadastrar_historia($uriCampus = NULL)
+    {
         verificaLogin();
 
 
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        
-        $pagina = 'nossaHistoria';
-        $wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        $colunasTabelaPages = array('pages.id','pages.title');
+        $pagina = 'nossaHistoria';
+        $wherePagina = array('pages.title' => $pagina, 'pages.campusid' => $campus->id);
+
+        $colunasTabelaPages = array('pages.id', 'pages.title');
         $joinConteudoPagina = array(
             'campus' => 'campus.id= pages.campusid'
-            
+
         );
-        $listaItemPages = $this->painelbd->where($colunasTabelaPages,'pages',$joinConteudoPagina, $wherePagina,null)->row();
+        $listaItemPages = $this->painelbd->where($colunasTabelaPages, 'pages', $joinConteudoPagina, $wherePagina, null)->row();
 
-           //Validaçãoes via Form Validation
-       $this->form_validation->set_rules('description', 'Descrição', 'required');
+        //Validaçãoes via Form Validation
+        $this->form_validation->set_rules('description', 'Descrição', 'required');
 
-       if ($this->form_validation->run() == FALSE) {
-           if (validation_errors()):
-               setMsg(validation_errors(), 'error');
-           endif;
-       }else {
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()) :
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
 
             $dados_form['description'] = $this->input->post('description');
             $dados_form['title'] = $this->input->post('title');
@@ -698,44 +710,45 @@ class Painel_campus extends CI_Controller {
             echo '<pre>';
             print_r($dados_form);
             echo '</pre>';
-            
+
             /*if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_campus/lista_historia/$campus->id"));
             }else{
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }*/
-       }
+        }
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/historia/cadastrar_historia',
             'dados' => array(
-                'conteudosPagina'=>'',
+                'conteudosPagina' => '',
                 'page' => "Cadastro de Informações História - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=>$campus,
-                'tipo'=>''
+                'campus' => $campus,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_historia($uriCampus=NULL,$paginaId) {
+    public function editar_historia($uriCampus = NULL, $paginaId)
+    {
         verificaLogin();
 
         //echo '<script>alert('.$paginaId.')</script>';
 
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        
-        $pagina = 'nossaHistoria';
-        $wherePagina = array('page_contents.id'=>$paginaId);
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-       
+        $pagina = 'nossaHistoria';
+        $wherePagina = array('page_contents.id' => $paginaId);
+
+
 
         $joinConteudoPagina = array(
-            'pages'=>'pages.id = page_contents.pages_id',
+            'pages' => 'pages.id = page_contents.pages_id',
             'campus' => 'campus.id = pages.campusid',
         );
 
@@ -744,25 +757,25 @@ class Painel_campus extends CI_Controller {
             'page_contents.title',
             'page_contents.status',
             'page_contents.title_short',
-            'page_contents.description', 
-            'page_contents.order', 
-            'page_contents.created_at', 
-            'page_contents.updated_at', 
-            'page_contents.user_id', 
+            'page_contents.description',
+            'page_contents.order',
+            'page_contents.created_at',
+            'page_contents.updated_at',
+            'page_contents.user_id',
 
             'campus.city'
         );
-        
-        $listaInformmacoesHistoria = $this->painelbd->where($colunaResultadPagina,'page_contents',$joinConteudoPagina, $wherePagina,null)->row();
 
-       //Validaçãoes via Form Validation
-       $this->form_validation->set_rules('description', 'Descrição e informações do curso', 'required');
+        $listaInformmacoesHistoria = $this->painelbd->where($colunaResultadPagina, 'page_contents', $joinConteudoPagina, $wherePagina, null)->row();
 
-       if ($this->form_validation->run() == FALSE) {
-           if (validation_errors()):
-               setMsg(validation_errors(), 'error');
-           endif;
-       }else {
+        //Validaçãoes via Form Validation
+        $this->form_validation->set_rules('description', 'Descrição e informações do curso', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()) :
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
 
             if ($listaInformmacoesHistoria->description != $this->input->post('description')) {
                 $dados_form['description'] = $this->input->post('description');
@@ -778,23 +791,23 @@ class Painel_campus extends CI_Controller {
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
-            
-            if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE){
+
+            if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_campus/lista_historia/$campus->id"));
-            }else{
+            } else {
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
-       }
+        }
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/historia/editar_historia',
             'dados' => array(
-                'conteudosPagina'=>$listaInformmacoesHistoria,
+                'conteudosPagina' => $listaInformmacoesHistoria,
                 'page' => "Edição de Informações - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=>$campus,
-                'tipo'=>''
+                'campus' => $campus,
+                'tipo' => ''
             )
         );
 
@@ -805,40 +818,43 @@ class Painel_campus extends CI_Controller {
     /*************************************************************************
      * Indicadores que são exibidos no rodapé das páginas
      * Página: todas as páginas - Informações no RODAPÉ DO SITE
-    *************************************************************************/
+     *************************************************************************/
 
-    public function lista_campus_indicadores() {
+    public function lista_campus_indicadores()
+    {
         verificaLogin();
 
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/indicadores/lista_campus_indicadores',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => 'Lista de Indicadores (Itens exibidos no rodapé) - <strong>Gestão Por Campus</strong>',
-                'campus'=> $listagemDosCampus,
-                'tipo'=> '' 
+                'campus' => $listagemDosCampus,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_indicadores($uriCampus) {
+    public function lista_indicadores($uriCampus)
+    {
         verificaLogin();
 
         $uriCampus = $this->uri->segment(3);
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
         $joinIndicadoresComCampus = array(
             'campus' => 'campus.id = campus_indicadores.campusid'
         );
@@ -855,44 +871,45 @@ class Painel_campus extends CI_Controller {
             'campus_indicadores.updated_at',
             'campus_indicadores.user_id',
         );
-        
-        $listaDosIndicadores = $this->painelbd->where($colunasIndicadores,'campus_indicadores',$joinIndicadoresComCampus, array('campus_indicadores.campusid'=>$uriCampus))->result();
+
+        $listaDosIndicadores = $this->painelbd->where($colunasIndicadores, 'campus_indicadores', $joinIndicadoresComCampus, array('campus_indicadores.campusid' => $uriCampus))->result();
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/indicadores/lista_indicadores',
             'dados' => array(
-                'listaDosIndicadores'=>$listaDosIndicadores,
-                'campus'=>$campus,
+                'listaDosIndicadores' => $listaDosIndicadores,
+                'campus' => $campus,
                 'page' => "Gestão de Indicadores <i>(Exibido no Rodapé)</i> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'tipo'=>'tabelaDatatable'
+                'tipo' => 'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_indicador($uriCampus=NULL) {
+    public function cadastrar_indicador($uriCampus = NULL)
+    {
         verificaLogin();
 
         $uriCampus = $this->uri->segment(3);
 
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
         //Validaçãoes via Form Validation
-       $this->form_validation->set_rules('nome', 'Nome', 'required');
-    
+        $this->form_validation->set_rules('nome', 'Nome', 'required');
+
         if (empty($_FILES['arquivo']['name'])) {
             $this->form_validation->set_rules('arquivo', 'Arquivo', 'callback_file_check');
             $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPG ou PNG.');
         }
 
-       if ($this->form_validation->run() == FALSE) {
-           if (validation_errors()):
-               setMsg(validation_errors(), 'error');
-           endif;
-       }else {
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()) :
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
 
             $path = "assets/images/indicadores/$campus->id";
             is_way($path);
@@ -906,36 +923,37 @@ class Painel_campus extends CI_Controller {
             $dados_form['user_id'] = $this->session->userdata('codusuario');
 
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
-           if ($this->painelbd->salvar('campus_indicadores', $dados_form) == TRUE){
+            if ($this->painelbd->salvar('campus_indicadores', $dados_form) == TRUE) {
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_campus/lista_indicadores/$campus->id"));
-            }else{
+            } else {
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
-       }
+        }
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/indicadores/cadastrar_indicador',
             'dados' => array(
                 'page' => "Cadastro de Indicadores <i>(Exibido no Rodapé)</i> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=>$campus,
-                'tipo'=>''
+                'campus' => $campus,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_indicador($uriCampus=NULL,$idIndicador=NULL) {
+    public function editar_indicador($uriCampus = NULL, $idIndicador = NULL)
+    {
         verificaLogin();
 
         $uriCampus = $this->uri->segment(3);
         $idIndicador = $this->uri->segment(4);
 
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-       
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
         $joinIndicadoresComCampus = array(
             'campus' => 'campus.id = campus_indicadores.campusid'
         );
@@ -952,23 +970,23 @@ class Painel_campus extends CI_Controller {
             'campus_indicadores.updated_at',
             'campus_indicadores.user_id',
         );
-        
-        $indicador = $this->painelbd->where($colunasIndicadores,'campus_indicadores',$joinIndicadoresComCampus, array('campus_indicadores.id'=>$idIndicador))->row();
+
+        $indicador = $this->painelbd->where($colunasIndicadores, 'campus_indicadores', $joinIndicadoresComCampus, array('campus_indicadores.id' => $idIndicador))->row();
 
         // $indicador = $this->painelbd->where('*','campus_indicadores',NULL, array('campus_indicadores.id'=>$idIndicador))->row();
 
         //Validaçãoes via Form Validation
-       $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('nome', 'Nome', 'required');
         if (empty($_FILES['arquivo']['name']) and !isset($indicador->arquivo)) {
             $this->form_validation->set_rules('arquivo', 'Arquivo', 'callback_file_check');
             $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPG ou PNG.');
         }
 
-       if ($this->form_validation->run() == FALSE) {
-           if (validation_errors()):
-               setMsg(validation_errors(), 'error');
-           endif;
-       }else {
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()) :
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
 
             if ($indicador->nome != $this->input->post('nome')) {
                 $dados_form['nome'] = $this->input->post('nome');
@@ -976,7 +994,7 @@ class Painel_campus extends CI_Controller {
             if ($indicador->status != $this->input->post('status')) {
                 $dados_form['status'] = $this->input->post('status');
             }
-            
+
             if (isset($_FILES['arquivo']) && !empty($_FILES['arquivo']['name'])) {
 
                 if (file_exists($indicador->arquivo)) {
@@ -988,10 +1006,10 @@ class Painel_campus extends CI_Controller {
 
                 $upload = $this->painelbd->uploadFiles('arquivo', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
 
-                if ($upload){
+                if ($upload) {
                     //upload efetuado
                     $dados_form['arquivo'] = $path . '/' . $upload['file_name'];
-                }else{
+                } else {
                     //erro no upload
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
@@ -999,46 +1017,46 @@ class Painel_campus extends CI_Controller {
                 }
             }
 
-           
+
             $dados_form['campusid'] = $campus->id;
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['id'] = $indicador->id;
 
             // //Se o resultado da inserção for igual a TRUE, mostra uma mensagem
-            if ($this->painelbd->salvar('campus_indicadores', $dados_form) == TRUE){
+            if ($this->painelbd->salvar('campus_indicadores', $dados_form) == TRUE) {
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_campus/lista_indicadores/$campus->id"));
-            }else{
+            } else {
                 setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
             }
-       }
+        }
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/indicadores/editar_indicador',
             'dados' => array(
                 'page' => "Edição Indicador <i>(Exibido no Rodapé)</i> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'campus'=>$campus,
-                'indicador'=>$indicador,
-                'tipo'=>''
+                'campus' => $campus,
+                'indicador' => $indicador,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function delete_indicador($uriCampus=NULL,$id)
+    public function delete_indicador($uriCampus = NULL, $id)
     {
         verifica_login();
-        
+
 
         $uriCampus = $this->uri->segment(3);
-        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        $id=$this->uri->segment(4);
-        $item = $this->painelbd->where('*','campus_indicadores', NULL, array('campus_indicadores.id' => $id))->row();
+        $id = $this->uri->segment(4);
+        $item = $this->painelbd->where('*', 'campus_indicadores', NULL, array('campus_indicadores.id' => $id))->row();
 
         if (file_exists($item->arquivo)) {
             unlink($item->arquivo);
@@ -1051,92 +1069,94 @@ class Painel_campus extends CI_Controller {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
             redirect("Painel_Campus/lista_indicadores/$campus->id");
         }
-
     }
 
     /*************************************************************************
      * Indicadores que são exibidos no rodapé das páginas
      * Página: todas as dirigentes - Informações no link
      * uniatenas/site/dirigentes/NOME_DO_CAMPUS
-    *************************************************************************/
+     *************************************************************************/
 
-    public function lista_dirigentes() {
+    public function lista_dirigentes()
+    {
         verificaLogin();
-      
-        $listaDosDirigentes = $this->painelbd->where('*','dirigentes',NULL, array('dirigentes.perfil'=>'diretor'))->result();
+
+        $listaDosDirigentes = $this->painelbd->where('*', 'dirigentes', NULL, array('dirigentes.perfil' => 'diretor'))->result();
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/dirigentes/lista_dirigentes',
             'dados' => array(
-                'dirigentes'=>$listaDosDirigentes,
+                'dirigentes' => $listaDosDirigentes,
                 'page' => 'Gestão de Dirigentes <strong> (Diretor/Reitores)</strong> - TODOS OS CAMPUS',
 
-                'tipo'=>'tabelaDatatable'
+                'tipo' => 'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_dirigente(){
+    public function cadastrar_dirigente()
+    {
         verificaLogin();
-       
+
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_rules('cargo', 'Cargo', 'required');
         $this->form_validation->set_rules('cargo2', 'Cargo 2', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-            $dados_form = elements(array('nome', 'email', 'status','cargo','cargo2'), $this->input->post());
-            
+            $dados_form = elements(array('nome', 'email', 'status', 'cargo', 'cargo2'), $this->input->post());
+
             $path = "assets/images/dirigentes";
             is_way($path);
 
             if (!empty($_FILES['photo']['name'])) {
-              $upload = $this->painelbd->uploadFiles('photo', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
+                $upload = $this->painelbd->uploadFiles('photo', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-              if($upload){
-                $dados_form['photo'] = $path.'/'.$upload['file_name'];
-              }else{
-                $msg = $this->upload->display_errors();
-                $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-                setMsg($msg, 'erro');
-              }
+                if ($upload) {
+                    $dados_form['photo'] = $path . '/' . $upload['file_name'];
+                } else {
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
             }
 
             $dados_form['user_id'] = $this->session->userdata('codusuario');;
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['perfil'] = 'diretor';
 
-           
-            if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
-              setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
-              redirect("Painel_Campus/lista_dirigentes");
+
+            if ($this->painelbd->salvar('dirigentes', $dados_form) == TRUE) {
+                setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
+                redirect("Painel_Campus/lista_dirigentes");
             } else {
-              setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
-              redirect("Painel_Campus/lista_dirigentes");
+                setMsg('<p>Erro! Erro no cadastro.</p>', 'error');
+                redirect("Painel_Campus/lista_dirigentes");
             }
         }
         $data = array(
             'conteudo' => 'paineladm/campus/dirigentes/cadastrar_dirigentes',
             'titulo' => 'Dirigentes - UniAtenas',
             'dados' => array(
-              'tipo' => '',
-              'page'=> "<span>Cadastro de dirigente.</span>",
+                'tipo' => '',
+                'page' => "<span>Cadastro de dirigente.</span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_dirigente($dirigenteId=NULL){
+    public function editar_dirigente($dirigenteId = NULL)
+    {
         verificaLogin();
 
-        $dirigente = $this->painelbd->where('*','dirigentes',NULL, array('dirigentes.id'=>$dirigenteId))->row();
+        $dirigente = $this->painelbd->where('*', 'dirigentes', NULL, array('dirigentes.id' => $dirigenteId))->row();
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required');
@@ -1144,7 +1164,7 @@ class Painel_campus extends CI_Controller {
         $this->form_validation->set_rules('cargo2', 'Cargo 2', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -1165,28 +1185,28 @@ class Painel_campus extends CI_Controller {
             if ($dirigente->cargo2 != $this->input->post('cargo2')) {
                 $dados_form['cargo2'] = $this->input->post('cargo2');
             }
-            
+
             $path = "assets/images/dirigentes";
             is_way($path);
             if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'])) {
-              $upload = $this->painelbd->uploadFiles('backgroundPrincipal', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
+                $upload = $this->painelbd->uploadFiles('backgroundPrincipal', $path, $types = 'jpg|JPG|png|jpeg|JPEG|PNG', null);
 
-              if($upload){
-                $dados_form['photo'] = $path.'/'.$upload['file_name'];
-              }else{
-                $msg = $this->upload->display_errors();
-                $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-                setMsg($msg, 'erro');
-              }
+                if ($upload) {
+                    $dados_form['photo'] = $path . '/' . $upload['file_name'];
+                } else {
+                    $msg = $this->upload->display_errors();
+                    $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+                    setMsg($msg, 'erro');
+                }
             }
-            
+
             $dados_form['user_id'] = $this->session->userdata('codusuario');;
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
             $dados_form['perfil'] = 'diretor';
 
             $dados_form['id'] = $dirigenteId;
 
-            if ($this->painelbd->salvar('dirigentes', $dados_form)== TRUE ) {
+            if ($this->painelbd->salvar('dirigentes', $dados_form) == TRUE) {
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect("Painel_Campus/lista_dirigentes");
             } else {
@@ -1200,7 +1220,7 @@ class Painel_campus extends CI_Controller {
             'dados' => array(
                 'tipo' => '',
                 'dirigente' => $dirigente,
-                'page'=> "<span>Edição de dirigente.</span>",
+                'page' => "<span>Edição de dirigente.</span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
@@ -1210,46 +1230,49 @@ class Painel_campus extends CI_Controller {
      * Indicadores que são exibidos no rodapé das páginas
      * Página: Página infraestrutura - Informações no link
      * uniatenas/site/infraestrutura/NOME_DO_CAMPUS
-    *************************************************************************/
-    
-    public function lista_campus_infraestrutura() {
+     *************************************************************************/
+
+    public function lista_campus_infraestrutura()
+    {
         verificaLogin();
 
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/infraestrutura/lista_campus_infraestrutura',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => 'Infraestrutura do Campus - <strong>Gestão Por Campus</strong>',
-                'campus'=> $listagemDosCampus,
-                'tipo'=>'',
+                'campus' => $listagemDosCampus,
+                'tipo' => '',
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function lista_infraestrutura($uriCampus) {
+    public function lista_infraestrutura($uriCampus)
+    {
         verificaLogin();
 
         $uriCampus = $this->uri->segment(3);
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         $page = $this->painelbd->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
 
         $pagina = 'infraestrutura';
-        $verificaExistePaginaInfraestrutura = $this->painelbd->where('*','pages',null,array('pages.campusid'=>$uriCampus,'pages.title'=> $pagina))->row();
-    
-        if($page !=null){
+        $verificaExistePaginaInfraestrutura = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.title' => $pagina))->row();
+
+        if ($page != null) {
             $joinCategoriasInfraestruturaCampus = array(
                 'campus' => 'campus.id = pages.campusid',
                 'page_contents' => "page_contents.pages_id = $page->id",
@@ -1257,106 +1280,107 @@ class Painel_campus extends CI_Controller {
             $colunasResultadoInfraestrutura = array(
                 'page_contents.id',
                 'page_contents.title',
-                'page_contents.description', 
-                'page_contents.img_destaque', 
-                'page_contents.pages_id', 
-                'page_contents.status', 
-                'page_contents.created_at', 
-                'page_contents.updated_at', 
-                'page_contents.user_id', 
+                'page_contents.description',
+                'page_contents.img_destaque',
+                'page_contents.pages_id',
+                'page_contents.status',
+                'page_contents.created_at',
+                'page_contents.updated_at',
+                'page_contents.user_id',
 
             );
-            $whereCategoriasInfraestrutura= array(
-                'pages.id'=>$page->id,
+            $whereCategoriasInfraestrutura = array(
+                'pages.id' => $page->id,
             );
-            
-            $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura,'pages',$joinCategoriasInfraestruturaCampus,$whereCategoriasInfraestrutura, null, null)->result();     
+
+            $listaInfraestrutura = $this->painelbd->where($colunasResultadoInfraestrutura, 'pages', $joinCategoriasInfraestruturaCampus, $whereCategoriasInfraestrutura, null, null)->result();
         }
-        
+
 
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/campus/infraestrutura/lista_infraestrutura',
             'dados' => array(
-                'listaInfraestrutura'=>$listaInfraestrutura  = isset($listaInfraestrutura) ? $listaInfraestrutura : '',
-                'campus'=>$campus,
+                'listaInfraestrutura' => $listaInfraestrutura  = isset($listaInfraestrutura) ? $listaInfraestrutura : '',
+                'campus' => $campus,
                 'page' => "itens da infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'paginaInfraestrutura'=> $verificaExistePaginaInfraestrutura = isset($verificaExistePaginaInfraestrutura) ? $verificaExistePaginaInfraestrutura : '',
-                'tipo'=>'tabelaDatatable'
+                'paginaInfraestrutura' => $verificaExistePaginaInfraestrutura = isset($verificaExistePaginaInfraestrutura) ? $verificaExistePaginaInfraestrutura : '',
+                'tipo' => 'tabelaDatatable'
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function cadastrar_pagina_infraestrutura($uriCampus=NULL)
+    public function cadastrar_pagina_infraestrutura($uriCampus = NULL)
     {
-      verifica_login();
-  
-      $colunasCampus = array('campus.id','campus.name','campus.city');
-      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        verifica_login();
 
-      $verificaExistePagina = $this->painelbd->where('*','pages',null, array('pages.title'=>'infraestrutura','pages.campusid'=>$campus->id))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-      $this->form_validation->set_rules('status', 'Situação', 'required'); 
+        $verificaExistePagina = $this->painelbd->where('*', 'pages', null, array('pages.title' => 'infraestrutura', 'pages.campusid' => $campus->id))->row();
 
-      if ($this->form_validation->run() == FALSE) {
-          if (validation_errors()):
-              setMsg(validation_errors(), 'error');
-          endif;
-      }else {
-        
-        $dados_form['title'] = 'infraestrutura';
-        $dados_form['status'] = $this->input->post('status');
-        $dados_form['campusid'] = $campus->id;
+        $this->form_validation->set_rules('status', 'Situação', 'required');
 
-        $dados_form['user_id'] = $this->session->userdata('codusuario');
+        if ($this->form_validation->run() == FALSE) {
+            if (validation_errors()) :
+                setMsg(validation_errors(), 'error');
+            endif;
+        } else {
 
-        if(isset($verificaExistePagina)){
-          $dados_form['id'] = $verificaExistePagina->id;
-          if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) infraestrutura atualizado com sucesso.</p>', 'success');
-            redirect(base_url("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id"));
-          }else{
-            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-          }
-        }else{
-          if ($this->painelbd->salvar('pages', $dados_form) == TRUE){
-            setMsg('<p>Dados da página (menu) infraestrutura cadastrada com sucesso.</p>', 'success');
-            redirect(base_url("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id"));
-          }else{
-            setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-          }
+            $dados_form['title'] = 'infraestrutura';
+            $dados_form['status'] = $this->input->post('status');
+            $dados_form['campusid'] = $campus->id;
+
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+            if (isset($verificaExistePagina)) {
+                $dados_form['id'] = $verificaExistePagina->id;
+                if ($this->painelbd->salvar('pages', $dados_form) == TRUE) {
+                    setMsg('<p>Dados da página (menu) infraestrutura atualizado com sucesso.</p>', 'success');
+                    redirect(base_url("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id"));
+                } else {
+                    setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+                }
+            } else {
+                if ($this->painelbd->salvar('pages', $dados_form) == TRUE) {
+                    setMsg('<p>Dados da página (menu) infraestrutura cadastrada com sucesso.</p>', 'success');
+                    redirect(base_url("Painel_Campus/cadastrar_pagina_infraestrutura/$campus->id"));
+                } else {
+                    setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+                }
+            }
         }
-      }
 
-      $data = array(
-        'titulo' => 'UniAtenas',
-        'conteudo' => 'paineladm/campus/infraestrutura/pagina_menu_infraestrutura/cadastrar_pagina_infraestrutura',
-        'dados' => array(
-          'verificaExistePagina'=>$verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
-          'page' => "Cadastro de pagina (menu do site) do infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-          'campus'=>$campus,
-          'tipo'=>''
-        )
-      );
+        $data = array(
+            'titulo' => 'UniAtenas',
+            'conteudo' => 'paineladm/campus/infraestrutura/pagina_menu_infraestrutura/cadastrar_pagina_infraestrutura',
+            'dados' => array(
+                'verificaExistePagina' => $verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
+                'page' => "Cadastro de pagina (menu do site) do infraestrutura - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+                'campus' => $campus,
+                'tipo' => ''
+            )
+        );
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+        $this->load->view('templates/layoutPainelAdm', $data);
     }
 
 
-    public function cadastrar_infraestrutura($uriCampus=NULL){
+    public function cadastrar_infraestrutura($uriCampus = NULL)
+    {
         verificaLogin();
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        $page = $this->painelbd->where('*','pages', null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
-        
+        $page = $this->painelbd->where('*', 'pages', null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
+
         $this->form_validation->set_rules('title', 'Nome da área', 'required');
         $this->form_validation->set_rules('description', 'Descrição da área', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -1370,7 +1394,7 @@ class Painel_campus extends CI_Controller {
             $dados_form['order'] = $this->input->post('order');
 
 
-            if ($id=$this->painelbd->salvar('page_contents', $dados_form)) {
+            if ($id = $this->painelbd->salvar('page_contents', $dados_form)) {
                 setMsg('<p>Informações da infraestrutura cadastradas com sucesso.</p>', 'success');
                 redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
             } else {
@@ -1390,10 +1414,11 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_infraestrutura($idCoteudoPaginaInfraestrutura=NULL,$uriCampus=NULL){
+    public function editar_infraestrutura($idCoteudoPaginaInfraestrutura = NULL, $uriCampus = NULL)
+    {
         verificaLogin();
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         $page = $this->painelbd->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
 
@@ -1401,27 +1426,27 @@ class Painel_campus extends CI_Controller {
             'page_contents.id',
             'page_contents.title',
             'page_contents.order',
-            'page_contents.description', 
-            'page_contents.title_short', 
-            'page_contents.img_destaque', 
-            'page_contents.pages_id', 
-            'page_contents.status', 
-            'page_contents.created_at', 
-            'page_contents.updated_at', 
-            'page_contents.user_id', 
+            'page_contents.description',
+            'page_contents.title_short',
+            'page_contents.img_destaque',
+            'page_contents.pages_id',
+            'page_contents.status',
+            'page_contents.created_at',
+            'page_contents.updated_at',
+            'page_contents.user_id',
 
         );
-        $wherePaginaInfraestrutura= array(
-            'page_contents.id'=>$idCoteudoPaginaInfraestrutura,
+        $wherePaginaInfraestrutura = array(
+            'page_contents.id' => $idCoteudoPaginaInfraestrutura,
         );
-        
-        $dadosInfraestrutura = $this->painelbd->where($colunasPaginaInfraestrutura,'page_contents',null,$wherePaginaInfraestrutura)->row();     
+
+        $dadosInfraestrutura = $this->painelbd->where($colunasPaginaInfraestrutura, 'page_contents', null, $wherePaginaInfraestrutura)->row();
 
         $this->form_validation->set_rules('title', 'Nome da área', 'required');
         $this->form_validation->set_rules('description', 'Descrição da área', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -1465,11 +1490,11 @@ class Painel_campus extends CI_Controller {
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function deletar_infraestrutura($uriCampus=NULL,$id = NULL)
+    public function deletar_infraestrutura($uriCampus = NULL, $id = NULL)
     {
         verifica_login();
-    
-        $item = $this->painelbd->where('*','page_contents', NULL, array('page_contents.id' => $id))->row(); 
+
+        $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
 
         if ($this->painelbd->deletar('page_contents', $item->id)) {
             setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
@@ -1478,19 +1503,18 @@ class Painel_campus extends CI_Controller {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
             redirect("Painel_Campus/lista_infraestrutura/$uriCampus");
         }
-
     }
-    
-    public function lista_fotos_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL)
+
+    public function lista_fotos_infraestrutura($idConteudoPaginaInfraestrutura = NULL, $uriCampus = NULL)
     {
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         $colunaPagina = array('pages.id');
 
-        $pagina = $this->painelbd->where($colunaPagina,'pages',Null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
+        $pagina = $this->painelbd->where($colunaPagina, 'pages', Null, array('title' => 'infraestrutura', 'campusid' => $campus->id))->row();
 
-     
+
         $colunasFotosInfraestrutura = array(
             'page_contents_photos.id',
             'page_contents_photos.id_page_contents',
@@ -1502,21 +1526,21 @@ class Painel_campus extends CI_Controller {
             'page_contents_photos.user_id',
         );
 
-        $whereFotosInfraestrutura= array(
-            'page_contents_photos.id_page_contents'=>$idConteudoPaginaInfraestrutura,
+        $whereFotosInfraestrutura = array(
+            'page_contents_photos.id_page_contents' => $idConteudoPaginaInfraestrutura,
         );
-        
-        $listaFotosInfraestrutura = $this->painelbd->where($colunasFotosInfraestrutura,'page_contents_photos',NULL,$whereFotosInfraestrutura)->result();     
 
-        $whereInfraestrutura= array(
-            'page_contents.id'=>$idConteudoPaginaInfraestrutura,
+        $listaFotosInfraestrutura = $this->painelbd->where($colunasFotosInfraestrutura, 'page_contents_photos', NULL, $whereFotosInfraestrutura)->result();
+
+        $whereInfraestrutura = array(
+            'page_contents.id' => $idConteudoPaginaInfraestrutura,
         );
         $colunaInfraestrutura = array(
             'page_contents.id',
             'page_contents.title',
         );
-        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();         
-        
+        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura, 'page_contents', NULL, $whereInfraestrutura, null, null)->row();
+
         $data = array(
             'conteudo' => 'paineladm/campus/infraestrutura/fotos_infra/lista_fotos_infra',
             'titulo' => 'Fotos da Infraestrutura',
@@ -1524,23 +1548,23 @@ class Painel_campus extends CI_Controller {
                 'page' => "Fotos da infraestrutura  <strong>  $categoriaInfraestrutura->title <i>Campus - $campus->name ($campus->city) </i></strong>",
                 'tipo' => 'tabelaDatatable',
                 'fotosInfraestrutura' => $listaFotosInfraestrutura,
-                'pagina'=>$pagina,
-                'categoriaInfraestrutura'=>$categoriaInfraestrutura,
+                'pagina' => $pagina,
+                'categoriaInfraestrutura' => $categoriaInfraestrutura,
                 'campus' => $campus,
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
-    
-    public function cadastrar_fotos_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL)
+
+    public function cadastrar_fotos_infraestrutura($idConteudoPaginaInfraestrutura = NULL, $uriCampus = NULL)
     {
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-       
-        $colunaInfraestrutura = array('page_contents.id','page_contents.title');
-        $whereInfraestrutura= array('page_contents.id'=>$idConteudoPaginaInfraestrutura);
-        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();         
-                
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+        $colunaInfraestrutura = array('page_contents.id', 'page_contents.title');
+        $whereInfraestrutura = array('page_contents.id' => $idConteudoPaginaInfraestrutura);
+        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura, 'page_contents', NULL, $whereInfraestrutura, null, null)->row();
+
         $this->form_validation->set_rules('title', 'Título', 'required');
 
         if (empty($_FILES['file'])) {
@@ -1553,28 +1577,28 @@ class Painel_campus extends CI_Controller {
         }
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-            
+
             $path = "assets/images/gallery/$campus->id/$categoriaInfraestrutura->id";
             is_way($path);
             $number_of_files = count($_FILES['file']['name']);
             $files = $_FILES;
 
-           for ($i = 0; $i < $number_of_files; $i++) {
+            for ($i = 0; $i < $number_of_files; $i++) {
                 $_FILES['file']['name'] = $files['file']['name'][$i];
                 $_FILES['file']['type'] = $files['file']['type'][$i];
                 $_FILES['file']['tmp_name'] = $files['file']['tmp_name'][$i];
                 $_FILES['file']['error'] = $files['file']['error'][$i];
                 $_FILES['file']['size'] = $files['file']['size'][$i];
-            
+
                 $upload = $this->painelbd->uploadFiles('file', $path, $types = 'jpg|JPG|jpeg|JPEG|png|PNG', NULL);
-            
+
                 if ($upload) {
                     $dados_form['user_id'] = $this->session->userdata('codusuario');
-                    $dados_form['file'] = $path . '/' . $upload['file_name']; 
+                    $dados_form['file'] = $path . '/' . $upload['file_name'];
                     $dados_form['title'] = $this->input->post('title');
                     $dados_form['status'] = $this->input->post('status');
                     // $dados_form['categoria'] = trim($categoriaInfraestrutura->title);
@@ -1603,28 +1627,28 @@ class Painel_campus extends CI_Controller {
             'dados' => array(
                 'tipo' => '',
                 'campus' => $campus,
-                'categoriaFoto'=>$categoriaInfraestrutura,
-                'page'=> "<span>Cadastro Fotos: <strong> $categoriaInfraestrutura->title <i>$campus->name - $campus->city</i></strong></span>",
+                'categoriaFoto' => $categoriaInfraestrutura,
+                'page' => "<span>Cadastro Fotos: <strong> $categoriaInfraestrutura->title <i>$campus->name - $campus->city</i></strong></span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function editar_foto_infraestrutura($idConteudoPaginaInfraestrutura=NULL,$uriCampus=NULL,$id=NULL)
+    public function editar_foto_infraestrutura($idConteudoPaginaInfraestrutura = NULL, $uriCampus = NULL, $id = NULL)
     {
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-        
-        $colunaInfraestrutura = array('page_contents.id','page_contents.title');
-        $whereInfraestrutura= array('page_contents.id'=>$idConteudoPaginaInfraestrutura);
-        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura)->row();         
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        $fotoInfraestrutura = $this->painelbd->where('*','page_contents_photos',null,array('page_contents_photos.id'=>$id))->row();     
-        
+        $colunaInfraestrutura = array('page_contents.id', 'page_contents.title');
+        $whereInfraestrutura = array('page_contents.id' => $idConteudoPaginaInfraestrutura);
+        $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura, 'page_contents', NULL, $whereInfraestrutura)->row();
+
+        $fotoInfraestrutura = $this->painelbd->where('*', 'page_contents_photos', null, array('page_contents_photos.id' => $id))->row();
+
         $this->form_validation->set_rules('title', 'Título', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -1635,10 +1659,10 @@ class Painel_campus extends CI_Controller {
             if ($fotoInfraestrutura->status != $this->input->post('status')) {
                 $dados_form['status'] = $this->input->post('status');
             }
-            
+
 
             if (isset($_FILES['file']) and !empty($_FILES['file']['name'])) {
-                
+
                 $path = "assets/images/gallery/$campus->id/$categoriaInfraestrutura->id";
 
                 is_way($path);
@@ -1646,13 +1670,13 @@ class Painel_campus extends CI_Controller {
                 if (file_exists($fotoInfraestrutura->file)) {
                     unlink($fotoInfraestrutura->file);
                 }
-                
+
                 $upload = $this->painelbd->uploadFiles('file', $path, $types = 'jpg|JPG|jpeg|JPEG|png|PNG', NULL);
 
-                if ($upload){
+                if ($upload) {
                     //upload efetuado
                     $dados_form['file'] = $path . '/' . $upload['file_name'];
-                }else{
+                } else {
                     //erro no upload
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
@@ -1663,13 +1687,13 @@ class Painel_campus extends CI_Controller {
             $dados_form['id'] = $fotoInfraestrutura->id;
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
-           
-            if ($this->painelbd->salvar('page_contents_photos', $dados_form) == TRUE){
+
+            if ($this->painelbd->salvar('page_contents_photos', $dados_form) == TRUE) {
                 setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
                 redirect("Painel_Campus/lista_fotos_infraestrutura/$idConteudoPaginaInfraestrutura/$campus->id");
-            }else{
+            } else {
                 setMsg('<p>Erro! A foto não pode ser cadastrada.</p>', 'error');
-            }   
+            }
         }
 
         $data = array(
@@ -1679,20 +1703,20 @@ class Painel_campus extends CI_Controller {
                 'tipo' => '',
                 'campus' => $campus,
                 'fotoInfraestrutura' => $fotoInfraestrutura,
-                'categoriaInfraestrutura'=>$categoriaInfraestrutura,
-                'page'=> "<span>Edição dados foto: <strong>$categoriaInfraestrutura->title <i>$campus->name - $campus->city</i></strong></span>",
+                'categoriaInfraestrutura' => $categoriaInfraestrutura,
+                'page' => "<span>Edição dados foto: <strong>$categoriaInfraestrutura->title <i>$campus->name - $campus->city</i></strong></span>",
             )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function deletar_foto_infra($idCategoriaInfraestrutura=NULL,$uriCampus=NULL,$id = NULL)
+    public function deletar_foto_infra($idCategoriaInfraestrutura = NULL, $uriCampus = NULL, $id = NULL)
     {
         verifica_login();
-    
-        $uriCampus=$this->uri->segment(4);
-        $id=$this->uri->segment(5);
-        $item = $this->painelbd->where('*','page_contents_photos', NULL, array('page_contents_photos.id' => $id))->row(); 
+
+        $uriCampus = $this->uri->segment(4);
+        $id = $this->uri->segment(5);
+        $item = $this->painelbd->where('*', 'page_contents_photos', NULL, array('page_contents_photos.id' => $id))->row();
 
         if (file_exists($item->file)) {
             unlink($item->file);
@@ -1705,6 +1729,5 @@ class Painel_campus extends CI_Controller {
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
             redirect("Painel_Campus/lista_fotos_curso/$idCategoriaInfraestrutura/$uriCampus");
         }
-
-    }    
+    }
 }

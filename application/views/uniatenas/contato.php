@@ -15,8 +15,7 @@ $uricampus = $this->uri->segment(3);
         <div class="row">
           <div class="col-xs-9">
             <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="<?php echo $campus->mapsFrame ?>" frameborder="0"
-                style="border:0" allowfullscreen></iframe>
+              <iframe class="embed-responsive-item" src="<?php echo $campus->mapsFrame ?>" frameborder="0" style="border:0" allowfullscreen></iframe>
             </div>
           </div>
           <div class="col-xs-12">
@@ -24,48 +23,48 @@ $uricampus = $this->uri->segment(3);
               <h3><strong>Nossas informações</strong></h3>
             </div>
             <div class="row iconesFa">
-              <?php 
-                if(isset($campus->street)){
+              <?php
+              if (isset($campus->street)) {
               ?>
-              <div class="form-group">
-                <span><i class="fa fa-map-marker-alt"></i> <?php echo $campus->street; ?></span>
-              </div>
-              <?php 
-                }
-                if(isset($campus->phone) and $campus->phone != null){
-                ?>
-              <div class="form-group">
-                <span><i class="fas fa-phone-volume"></i>
-                  <?php
-                      echo $campus->phone;
-                      ?>
-                </span>
-              </div>
+                <div class="form-group">
+                  <span><i class="fa fa-map-marker-alt"></i> <?php echo $campus->street; ?></span>
+                </div>
               <?php
               }
-            
-            if(isset($campus->email)){
-            ?>
-              <div class="form-group">
-                <span><i class="fas fa-envelope"></i>
-                  <?php echo $campus->email; ?>
-                  <?php
-                                  if ($campus->id == 1) {
-                                      ?>
-                  <br>
-                  <span><i class="fas fa-envelope"></i>
+              if (isset($campus->phone) and $campus->phone != null) {
+              ?>
+                <div class="form-group">
+                  <span><i class="fas fa-phone-volume"></i>
                     <?php
-                                        echo "ouvidoria@atenas.edu.br";
-                                        ?>
+                    echo $campus->phone;
+                    ?>
                   </span>
-                  <?php
-                        }
-
-                        ?>
-              </div>
+                </div>
               <?php
-            }
-            ?>
+              }
+
+              if (isset($campus->email)) {
+              ?>
+                <div class="form-group">
+                  <span><i class="fas fa-envelope"></i>
+                    <?php echo $campus->email; ?>
+                    <?php
+                    if ($campus->id == 1) {
+                    ?>
+                      <br>
+                      <span><i class="fas fa-envelope"></i>
+                        <?php
+                        echo "ouvidoria@atenas.edu.br";
+                        ?>
+                      </span>
+                    <?php
+                    }
+
+                    ?>
+                </div>
+              <?php
+              }
+              ?>
             </div>
 
           </div>
@@ -74,26 +73,27 @@ $uricampus = $this->uri->segment(3);
 
       <div class="col-md-6 col-sm-6 col-xs-12">
         <?php
-          if ($msg = getMsg()){
-            echo $msg;
-          }
-          ?>
+        if ($msg = getMsg()) {
+          echo $msg;
+        }
+        ?>
 
         <?php
-          echo form_open("Site/contato/$uricampus");
-          ?>
+        $atributos = array('role' => 'form');
+        //echo form_open("Site/contato/$uricampus", $atributos);
+        ?>
         <div class="form-group">
           <span>Nome</span>
           <?php
-            echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => "Nome"), set_value('name'));
-            ?>
+          echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => "Nome"), set_value('name'));
+          ?>
 
         </div>
         <div class="form-group">
           <span>Email</span>
           <?php
-            echo form_input(array('name' => 'email', 'type' => 'email', 'class' => 'form-control', 'placeholder' => "E-mail"), set_value('email'));
-            ?>
+          echo form_input(array('name' => 'email', 'type' => 'email', 'class' => 'form-control', 'placeholder' => "E-mail"), set_value('email'));
+          ?>
 
         </div>
         <div class="form-group">
@@ -105,13 +105,13 @@ $uricampus = $this->uri->segment(3);
         <div class="form-group">
           <span>Mensagem</span>
           <?php
-          echo form_textarea(array('name' => 'message', 'class' => 'form-control', 'placeholder' => "Mensagem"), set_value('message'));
+          echo form_textarea(array('name' => 'message', 'class' => 'form-control', 'placeholder' => "Mensagem", 'pattern' => "[a-zA-Z0-9]+"), set_value('message'));
           ?>
         </div>
-        <?php $key = "6Lc1NxEmAAAAAHN54LwwjpRzBWsM3dPEyXh22xJI";?>
-        <div class="g-recaptcha" data-sitekey="<?php echo $key?>"></div>
-        <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar"
-          onclick="return validaFormularioRecaptcha()">
+
+        <?php $key = "6Lc1NxEmAAAAAHN54LwwjpRzBWsM3dPEyXh22xJI"; ?>
+        <div class="g-recaptcha" data-sitekey="<?php echo $key ?>"></div>
+        <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar" onclick="return validaFormularioRecaptcha()">
         <?php
         echo form_close();
         ?>
@@ -121,9 +121,9 @@ $uricampus = $this->uri->segment(3);
   </div>
 </section>
 <script type="text/javascript">
-function validaFormularioRecaptcha() {
-  if (grecaptcha.getResponse() == "") {
+  function validaFormularioRecaptcha() {
+    if (grecaptcha.getResponse() == "") {
       return false;
+    }
   }
-}
 </script>

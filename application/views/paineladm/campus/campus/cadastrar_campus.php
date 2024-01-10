@@ -11,8 +11,8 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
-            echo $msg;
+        if ($msg = getMsg()) {
+          echo $msg;
         }
         ?>
         <?php echo form_open_multipart('Painel_campus/cadastrar_campus') ?>
@@ -24,12 +24,12 @@
               <div class="form-line">
                 <label for="campusid">Tipo <small>(Faculdade, Centro Universitário)</small></label>
                 <?php
-                  $tipoCampus = array(
-                      'faculdade' => 'Faculdade',
-                      'centrouniversitario' => 'Centro Universitário'
-                  );
-                  echo form_dropdown('type', $tipoCampus, set_value('type'), array('class' => 'form-control show-tick'));
-                  ?>
+                $tipoCampus = array(
+                  'faculdade' => 'Faculdade',
+                  'centrouniversitario' => 'Centro Universitário'
+                );
+                echo form_dropdown('type', $tipoCampus, set_value('type'), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => 'Ex.: Uniatenas'), set_value('city'));
+                echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => 'Ex.: Uniatenas'), set_value('city'));
                 ?>
               </div>
             </div>
@@ -55,7 +55,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Cidade'), set_value('city'));
+                echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Cidade'), set_value('city'));
                 ?>
               </div>
             </div>
@@ -69,35 +69,36 @@
               <div class="form-line">
                 <?php
                 $ufs = array(
-                  'AC'=>'AC',
-                  'AL'=> 'AL',
-                  'AP'=>'AP',
-                  'AM'=>'AM',
-                  'BA'=>'BA',
-                  'CE'=>'CE',
-                  'DF'=>'DF',
-                  'ES'=>'ES',
-                  'GO'=>'GO',
-                  'MA'=>'MA',
-                  'MS'=>'MS',
-                  'MT'=>'MT',
-                  'MG'=>'MG',
-                  'PA'=>'PA',
-                  'PB'=>'PB',
-                  'PR'=>'PR',
-                  'PE'=>'PE',
-                  'PI'=>'PI',
-                  'RJ'=>'RJ',
-                  'RN'=>'RN',
-                  'RS'=>'RS',
-                  'RO'=>'RO',
-                  'RR'=>'RR',
-                  'SC'=>'SC',
-                  'SP'=>'SP',
-                  'SE'=>'SE',
-                  'TO'=>'TO');
-              echo form_dropdown('uf', $ufs, set_value('uf'), array('class' => 'form-control show-tick'));
-                  // echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Nome da Cidade'), set_value('city'));
+                  'AC' => 'AC',
+                  'AL' => 'AL',
+                  'AP' => 'AP',
+                  'AM' => 'AM',
+                  'BA' => 'BA',
+                  'CE' => 'CE',
+                  'DF' => 'DF',
+                  'ES' => 'ES',
+                  'GO' => 'GO',
+                  'MA' => 'MA',
+                  'MS' => 'MS',
+                  'MT' => 'MT',
+                  'MG' => 'MG',
+                  'PA' => 'PA',
+                  'PB' => 'PB',
+                  'PR' => 'PR',
+                  'PE' => 'PE',
+                  'PI' => 'PI',
+                  'RJ' => 'RJ',
+                  'RN' => 'RN',
+                  'RS' => 'RS',
+                  'RO' => 'RO',
+                  'RR' => 'RR',
+                  'SC' => 'SC',
+                  'SP' => 'SP',
+                  'SE' => 'SE',
+                  'TO' => 'TO'
+                );
+                echo form_dropdown('uf', $ufs, set_value('uf'), array('class' => 'form-control show-tick'));
+                // echo form_input(array('name' => 'city', 'class' => 'form-control', 'placeholder' => 'Nome da Cidade'), set_value('city'));
                 ?>
               </div>
             </div>
@@ -112,7 +113,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'phone', 'class' => 'form-control', 'placeholder' => 'Telefone Fixo'), set_value('phone'));
+                echo form_input(array('name' => 'phone', 'class' => 'form-control', 'placeholder' => 'Telefone Fixo'), set_value('phone'));
                 ?>
               </div>
             </div>
@@ -125,7 +126,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'whatsapp', 'class' => 'form-control', 'placeholder' => 'Número do Whatsapp'), set_value('whatsapp'));
+                echo form_input(array('name' => 'whatsapp', 'class' => 'form-control', 'placeholder' => 'Número do Whatsapp'), set_value('whatsapp'));
                 ?>
               </div>
             </div>
@@ -143,7 +144,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'email', 'class' => 'form-control', 'placeholder' => 'Email'), set_value('email'));
+                echo form_input(array('name' => 'email', 'class' => 'form-control', 'placeholder' => 'Email'), set_value('email'));
                 ?>
               </div>
             </div>
@@ -156,7 +157,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'facebook', 'class' => 'form-control', 'placeholder' => 'Perfil do Facebook.'), set_value('facebook'));
+                echo form_input(array('name' => 'facebook', 'class' => 'form-control', 'placeholder' => 'Perfil do Facebook.'), set_value('facebook'));
                 ?>
               </div>
             </div>
@@ -169,7 +170,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'instagram', 'class' => 'form-control', 'placeholder' => 'Perfil Instagram'), set_value('instagram'));
+                echo form_input(array('name' => 'instagram', 'class' => 'form-control', 'placeholder' => 'Perfil Instagram'), set_value('instagram'));
                 ?>
               </div>
             </div>
@@ -182,7 +183,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'youtube', 'class' => 'form-control', 'placeholder' => 'Perfil Youtube'), set_value('youtube'));
+                echo form_input(array('name' => 'youtube', 'class' => 'form-control', 'placeholder' => 'Perfil Youtube'), set_value('youtube'));
                 ?>
               </div>
             </div>
@@ -200,17 +201,17 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_textarea(array('name' => 'street', 'class' => 'form-control', 'placeholder' => 'Endereço do campus'), toHtml(set_value('street')));
+                echo form_textarea(array('name' => 'street', 'class' => 'form-control', 'placeholder' => 'Endereço do campus'), toHtml(set_value('street')));
                 ?>
               </div>
             </div>
           </div>
           <script type="text/javascript">
-          // replace: substitui o formato padrão do textarea (descricao)
-          // e aplica as configurações do CKEDitor através do arquivo config.js
-          var editor = CKEDITOR.replace('street', {
-            customConfig: 'config.js'
-          });
+            // replace: substitui o formato padrão do textarea (descricao)
+            // e aplica as configurações do CKEDitor através do arquivo config.js
+            var editor = CKEDITOR.replace('street', {
+              customConfig: 'config.js'
+            });
           </script>
           <div class="col-md-12">
             <label for="title">Link da Localização do GOOGLE MAPS (MAPS Frame)</label>
@@ -220,7 +221,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'mapsFrame', 'class' => 'form-control', 'placeholder' => 'Link do MAPS Frame'), set_value('mapsFrame'));
+                echo form_input(array('name' => 'mapsFrame', 'class' => 'form-control', 'placeholder' => 'Link do MAPS Frame'), set_value('mapsFrame'));
                 ?>
               </div>
             </div>
@@ -237,18 +238,18 @@
                   <small> (Explicação e inforamções pertinentes ao campus)</small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description')));
+                echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description')));
                 ?>
               </div>
             </div>
           </div>
         </div>
         <script type="text/javascript">
-        // replace: substitui o formato padrão do textarea (descricao)
-        // e aplica as configurações do CKEDitor através do arquivo config.js
-        var editor = CKEDITOR.replace('description', {
-          customConfig: 'config.js'
-        });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
         </script>
         <div class="separacao-forms"></div>
 
@@ -257,8 +258,7 @@
           <div class="col-md-8">
             <label for="title">
               Cor de fundo - Exibida na lista dos campus
-              <small> (A cor tem que ser em RGB) <br />Exemplo: cor vermelha rgb(255,0,0), caso não saiba clique no <a
-                  href="https://erikasarti.com/html/tabela-cores/" target="_blank">CLIQUE AQUI</a><br />
+              <small> (A cor tem que ser em RGB) <br />Exemplo: cor vermelha rgb(255,0,0), caso não saiba clique no <a href="https://erikasarti.com/html/tabela-cores/" target="_blank">CLIQUE AQUI</a><br />
                 ou digite no Google: <i>"Tabela de cores RGB"</i>
               </small>
             </label>
@@ -268,7 +268,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'cor_fundo_lista_campusRGB', 'class' => 'form-control', 'placeholder' => 'Ex.: 201,201,204'), set_value('cor_fundo_lista_campusRGBA'));
+                echo form_input(array('name' => 'cor_fundo_lista_campusRGBA', 'class' => 'form-control', 'placeholder' => 'Ex.: 201,201,204'), set_value('cor_fundo_lista_campusRGBA'));
                 ?>
               </div>
             </div>
@@ -334,12 +334,12 @@
               <div class="form-line">
                 <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small><br /></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Ativo',
-                        '0' => 'Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Ativo',
+                  '0' => 'Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -350,12 +350,12 @@
                 <label for="campusid">Exibir na página principal dos CAMPUS
                   <small>(www.atenas.edu.br/uniatenas)</small></label>
                 <?php
-                    $optionSituation = array(
-                        'SIM' => 'Visível - SIM',
-                        'NÃO' => 'Invisível - NÂO'
-                    );
-                    echo form_dropdown('visible', $optionSituation, set_value('visible'), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  'SIM' => 'Visível - SIM',
+                  'NÃO' => 'Invisível - NÂO'
+                );
+                echo form_dropdown('visible', $optionSituation, set_value('visible'), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -363,9 +363,9 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor('Painel_Campus/lista_campus', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor('Painel_Campus/lista_campus', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
 
@@ -378,44 +378,44 @@
 </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function() {
-  $("#idcampus").change(function() {
-    var campus_id = $('#idcampus').val();
-    if (campus_id != '') {
-      $.ajax({
-        url: "<?php echo base_url();?>Painel_home/getBannerPositionbyCampus",
-        method: "POST",
-        data: {
-          campus_id: campus_id
-        },
-        success: function(data) {
-          var opts = $.parseJSON(data);
-          $('#selectOrder').empty();
-          $.each(opts, function(i, position) {
-            $('#selectOrder').append($('<option>', {
-              value: position.priority,
-              text: position.priority
-            }));
-
-            if (opts.length == i + 1) {
+  $(document).ready(function() {
+    $("#idcampus").change(function() {
+      var campus_id = $('#idcampus').val();
+      if (campus_id != '') {
+        $.ajax({
+          url: "<?php echo base_url(); ?>Painel_home/getBannerPositionbyCampus",
+          method: "POST",
+          data: {
+            campus_id: campus_id
+          },
+          success: function(data) {
+            var opts = $.parseJSON(data);
+            $('#selectOrder').empty();
+            $.each(opts, function(i, position) {
               $('#selectOrder').append($('<option>', {
-                value: (+(position.priority) + +(1)),
-                text: (+(position.priority) + +(1))
+                value: position.priority,
+                text: position.priority
               }));
-            }
-            $('#selectOrder').selectpicker('refresh');
-          })
-        }
-      })
-    }
-    if ('select') {
-      $('#selectOrder').empty();
-      $('#selectOrder').append($('<option>', {
-        text: 'Selecione o campus'
-      }));
-      $('#selectOrder').selectpicker('refresh');
-    }
-  });
 
-})
+              if (opts.length == i + 1) {
+                $('#selectOrder').append($('<option>', {
+                  value: (+(position.priority) + +(1)),
+                  text: (+(position.priority) + +(1))
+                }));
+              }
+              $('#selectOrder').selectpicker('refresh');
+            })
+          }
+        })
+      }
+      if ('select') {
+        $('#selectOrder').empty();
+        $('#selectOrder').append($('<option>', {
+          text: 'Selecione o campus'
+        }));
+        $('#selectOrder').selectpicker('refresh');
+      }
+    });
+
+  })
 </script>

@@ -61,7 +61,6 @@ class Graduacao extends CI_Controller
     $ColunasTabelaCampus = array('campus.name', 'campus.id', 'campus.city', 'campus.shurtName');
     $dataCampus = $this->bancosite->where($ColunasTabelaCampus, 'campus', NULL, array('shurtName' => $campus))->row();
 
-
     $sql = "SELECT 
                 courses.id as id,
                 courses.name as name, 
@@ -88,12 +87,8 @@ class Graduacao extends CI_Controller
             order by courses.name";
 
     $cursos = $this->bancosite->getQuery($sql)->result();
-
-
     $campusCursos = array();
-
     count($cursos);
-
     for ($i = 0; $i < count($cursos); $i++) {
       $sqlCampus = '
                         SELECT
@@ -145,7 +140,6 @@ class Graduacao extends CI_Controller
     );
     $this->output->cache(14.400);
     $this->load->view('templates/master', $data);
-
   }
 
   public function presencial($uricampus, $idCourse = NULL)
@@ -160,10 +154,8 @@ class Graduacao extends CI_Controller
                     courses.id, 
                     courses.name, 
                     campus_has_courses.id as idCourseCampus,
-                    
                     courses_pages.capa,
                     courses_pages.link_vestibular,
-                   
                     courses_pages.description,
                     courses_pages.filesGrid,
                     courses_pages.matriz_visivel,
@@ -250,7 +242,20 @@ class Graduacao extends CI_Controller
       'dirigentes.id_course_campus'
     );
 
-
+    $queryAutorizacaoReconhecimento =
+      "SELECT 
+          courses_autorizacao_reconhecimento.id as idAutorizacaoReconhecimento,
+          courses_autorizacao_reconhecimento.files,
+          courses_autorizacao_reconhecimento.tipo_arquivo,         
+          courses_autorizacao_reconhecimento.status         
+      FROM
+          at_site.courses_autorizacao_reconhecimento
+      INNER JOIN campus_has_courses ON campus_has_courses.id = courses_autorizacao_reconhecimento.campus_has_courses_id
+      INNER JOIN campus ON campus.id = campus_has_courses.campus_id
+      WHERE
+        courses_autorizacao_reconhecimento.status = 1 and
+        campus_has_courses.id = $idCourse
+        group by (courses_autorizacao_reconhecimento.tipo_arquivo)";
 
     $pageCourse = $this->bancosite->getQuery($query)->row();
     $whereCoordenador = array('dirigentes.id_course_campus' => $pageCourse->idCourseCampus);
@@ -258,11 +263,11 @@ class Graduacao extends CI_Controller
     $coordenadorCurso = $this->bancosite->where($colunasDirigentes, 'dirigentes', null, $whereCoordenador)->result();
 
     $courseCampus = $this->bancosite->getQuery($queryCourseCampus)->row();
+    $autorizacaoReconhecimento = $this->bancosite->getQuery($queryAutorizacaoReconhecimento)->result();
     //$dirigetesCourse = $this->bancosite->getQuery($queryDirigentes)->result();
     $categoria = $this->bancosite->getQuery($categoryPhotos)->result();
     $curricularGrid = $this->bancosite->getQuery($queryGrid)->result();
     $coursePeriod = $this->bancosite->getQuery($queryPeriod)->result();
-
 
     $filedCont = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "dirigentes.email", "contatos_setores.phonesetor");
     $tableCont = "campus_has_setores";
@@ -303,6 +308,7 @@ class Graduacao extends CI_Controller
         'dadosCurso' => array(
           'curso' => $courseCampus,
           'dirigentes' => $coordenadorCurso,
+          'autorizacaoReconhecimento' => $autorizacaoReconhecimento,
           'informacoesCurso' => $pageCourse,
           'gradeCurricular' => $curricularGrid,
           'cursoPeriodos' => $coursePeriod,
@@ -500,9 +506,9 @@ class Graduacao extends CI_Controller
     if ($uricampus == null) {
       redirect("");
     }
+    $idCursoCampus = $idCourse;
     $colunasTabelaCampus = array('campus.name', 'campus.id', 'campus.city', 'campus.shurtName', 'campus.phone');
     $dataCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NULL, array('shurtName' => $uricampus))->row();
-
 
     if ($idCourse == '') {
       redirect('graduacao/ead');
@@ -541,10 +547,8 @@ class Graduacao extends CI_Controller
 
     $informacoesCurso = $this->bancosite->where($colunasInformacoesCurso, 'courses_pages', $joinInformacoesCurso, $whereInformacoesCurso)->row();
 
-
     $idCoursecampus = $this->bancosite->getwhere('campus_has_courses', array('courses_id' => $idCourse))->row();
     $idCourse = $idCoursecampus->id;
-
 
     $queryGrid = "SELECT 
                            courses_curricular_grid.id, 
@@ -584,8 +588,23 @@ class Graduacao extends CI_Controller
       'courses.id'
     );
 
-    $curso = $this->bancosite->where($colunasDadosCurso, 'courses', null, array('modalidade' => 'ead', 'types' => 'ead', 'id' => $idCourse))->row();
+    $queryAutorizacaoReconhecimento =
+      "SELECT 
+          courses_autorizacao_reconhecimento.id as idAutorizacaoReconhecimento,
+          courses_autorizacao_reconhecimento.files,
+          courses_autorizacao_reconhecimento.tipo_arquivo,         
+          courses_autorizacao_reconhecimento.status         
+      FROM
+          at_site.courses_autorizacao_reconhecimento
+      INNER JOIN campus_has_courses ON campus_has_courses.id = courses_autorizacao_reconhecimento.campus_has_courses_id
+      INNER JOIN campus ON campus.id = campus_has_courses.campus_id
+      WHERE
+        courses_autorizacao_reconhecimento.status = 1 and
+        campus_has_courses.id = $idCursoCampus
+        group by (courses_autorizacao_reconhecimento.tipo_arquivo)";
 
+    $curso = $this->bancosite->where($colunasDadosCurso, 'courses', null, array('modalidade' => 'ead', 'types' => 'ead', 'id' => $idCourse))->row();
+    $autorizacaoReconhecimento = $this->bancosite->getQuery($queryAutorizacaoReconhecimento)->result();
     $coursePeriod = $this->bancosite->getQuery($queryPeriod)->result();
     $curricularGrid = $this->bancosite->getQuery($queryGrid)->result();
     //Logica da divição da area de atuação
@@ -605,6 +624,7 @@ class Graduacao extends CI_Controller
       'dados' => array(
         // 'curso' => $curso,
         'campus' => $dataCampus,
+        'autorizacaoReconhecimento' => $autorizacaoReconhecimento,
         'informacoesCurso' => $informacoesCurso,
         'coordenadorCurso' => $coordenadorCurso,
         'gradeCurricular' => $curricularGrid,

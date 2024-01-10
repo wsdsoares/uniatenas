@@ -203,11 +203,12 @@ $linkprofessor = 'http://177.69.195.4/Corpore.Net/Login.aspx';
             ?>
 
             <?php
+
             if (!empty($dados['conteudoLinksUteis']) and $dados['conteudoLinksUteis'] !== '') {
             ?>
                 <div class="widget-sidebar col-xs-12">
 
-                    <h2 class="title-widget-sidebar">#Links Úteis</h2>
+                    <h2 class="title-widget-sidebar"># UNITENAS - Links Úteis</h2>
                     <?php
                     foreach ($dados['conteudoLinksUteis'] as $linksUteis) {
                     ?>
@@ -222,39 +223,6 @@ $linkprofessor = 'http://177.69.195.4/Corpore.Net/Login.aspx';
             <?php
             }
             ?>
-        </div>
-        <!--div class="col-lg-4">
-            <div class="widget-sidebar">
-                <h2 class="title-widget-sidebar">#LINKS UTEIS</h2>
-                <div class="content-widget-sidebar">
-                    <ul>
-                        <li class="recent-post-alunos" style="background: #f1f1f1">
-                            <div class="col-sm-3 col-xs-4">
-                                <a href="<?php echo $linkprofessor; ?>" target="_blank">
-                                    <div class="ico-wrap">
-                                        <span class="mbr-iconfont fas fa-chalkboard fa"></span>
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="col-sm-9 col-xs-8">
-                                <?php
-                                echo anchor("PortalAlunos/portal/$uricampus", 'Portal Acadêmico');
-                                ?>
-                                <p>
-                                    <small><i class="fa fa-pager" data-original-title="" title=""></i>
-                                        Avisos, informações, links uteis, entre outros.
-                                        <?php echo $campus->name . '. ' . $campus->city; ?>
-                                    </small>
-                                </p>
-
-                            </div>
-                        </li>
-
-                        <br />
-                    </ul>
-                </div>
-            </div>
             <?php
             if (!empty($dados['horasComplementares'])) {
             ?>
@@ -270,7 +238,8 @@ $linkprofessor = 'http://177.69.195.4/Corpore.Net/Login.aspx';
             <?php
             }
             ?>
-        </div-->
+        </div>
+
     </div>
 </div>
 <br />

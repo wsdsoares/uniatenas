@@ -54,14 +54,14 @@ $uricampus = $this->uri->segment(3);
         </div>
         <?php
         if (!empty($dadosCurso['cursoPeriodos'])) {
-          ?>
+        ?>
           <div class="btn-group" role="group">
             <a type="button" href="#services" class="btn btn-default-course" data-toggle="tab">
               <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
               <div class="hidden-xs">Grade Curricular</div>
             </a>
           </div>
-          <?php
+        <?php
         }
         ?>
         <div class="btn-group" role="group">
@@ -86,11 +86,11 @@ $uricampus = $this->uri->segment(3);
 <div class="container">
   <?php
   if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
-    ?>
+  ?>
     <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="">
       <img src="<?= base_url('assets/images/financing/inscreva-se-geral.jpg') ?>" class="img-fluid">
     </a>
-    <?php
+  <?php
   }
   ?>
 </div>
@@ -145,14 +145,13 @@ $uricampus = $this->uri->segment(3);
         </div>
         <?php
         if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
-          ?>
+        ?>
           <div class="col-sm-12 col-md-12 text-center">
-            <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank"
-              class="btn btns btn-lg">
+            <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
               VESTIBULAR ONLINE
             </a>
           </div>
-          <?php
+        <?php
         }
         ?>
       </div>
@@ -168,20 +167,20 @@ $uricampus = $this->uri->segment(3);
   <div class="container wow fadeIn">
     <?php
     if (!empty($dadosCurso['cursoPeriodos'])) {
-      ?>
+    ?>
       <div class="section-header">
         <h3 class="section-title">Grade Curricular</h3>
         <p class="section-description">Visualize abaixo, os conteúdos que serão estudados no curso.</p>
       </div>
-      <?php
+    <?php
     } else {
-      ?>
+    ?>
 
       <div class="section-header">
         <h3 class="section-title"></h3>
         <p class="section-description"></p>
       </div>
-      <?php
+    <?php
     }
     ?>
 
@@ -190,7 +189,7 @@ $uricampus = $this->uri->segment(3);
         <?php
         $i = 0;
         foreach ($dadosCurso['cursoPeriodos'] as $periodos) {
-          ?>
+        ?>
           <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.<?php echo $i; ?>s">
             <div class="box" style="background:rgba(211,211,211,0.3);min-height:280px;margin-bottom:3rem;">
 
@@ -215,34 +214,33 @@ $uricampus = $this->uri->segment(3);
                 <?php
                 foreach ($dadosCurso['gradeCurricular'] as $disciplina)
                   if ($periodos->period == $disciplina->period) {
-                    ?>
-                  <p>
-                    <i class="fas fa-caret-right"></i>
-                    <?php
-                    echo $disciplina->discipline;
-                    ?>
-                  </p>
-                  <?php
-                  }
                 ?>
-
-              </p>
-              <?php
-              if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
-                ?>
-                <div class="col-sm-12 col-md-12 text-center">
-                  <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank"
-                    class="btn btns btn-lg">
-                    VESTIBULAR ONLINE
-                  </a>
-                </div>
+              <p>
+                <i class="fas fa-caret-right"></i>
                 <?php
-              }
-              ?>
+                    echo $disciplina->discipline;
+                ?>
+              </p>
+            <?php
+                  }
+            ?>
+
+            </p>
+            <?php
+            if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
+            ?>
+              <div class="col-sm-12 col-md-12 text-center">
+                <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
+                  VESTIBULAR ONLINE
+                </a>
+              </div>
+            <?php
+            }
+            ?>
 
             </div>
           </div>
-          <?php
+        <?php
           $i = $i + 2;
         }
         ?>
@@ -250,49 +248,45 @@ $uricampus = $this->uri->segment(3);
       <div class="col-sm-12">
         <?php
         if ($dados['dadosCurso']['curso']->idCourseCampus == 51) {
-          ?>
+        ?>
           <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
             <div class="boxcoordenador boxitens" style="height: 100px;">
               <div class="icon">
-                <a href="http://www.atenas.edu.br/uniatenas/assets/temps/temp_Edital_Vestibular_Odontologia___PASSOS.pdf"
-                  target="_blank"><i class="fas fa-file-alt"></i></a>
+                <a href="http://www.atenas.edu.br/uniatenas/assets/temps/temp_Edital_Vestibular_Odontologia___PASSOS.pdf" target="_blank"><i class="fas fa-file-alt"></i></a>
               </div>
               <h4 class="title">
-                <a href="http://www.atenas.edu.br/uniatenas/assets/temps/temp_Edital_Vestibular_Odontologia___PASSOS.pdf"
-                  target="_blank">Edital Vestibular Odontologia</a>
+                <a href="http://www.atenas.edu.br/uniatenas/assets/temps/temp_Edital_Vestibular_Odontologia___PASSOS.pdf" target="_blank">Edital Vestibular Odontologia</a>
               </h4>
-              <a href="http://www.atenas.edu.br/uniatenas/assets/temps/temp_Edital_Vestibular_Odontologia___PASSOS.pdf"
-                target="_blank">
+              <a href="http://www.atenas.edu.br/uniatenas/assets/temps/temp_Edital_Vestibular_Odontologia___PASSOS.pdf" target="_blank">
                 <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
               </a>
             </div>
           </div>
-          <?php
+        <?php
         }
         ?>
+
         <?php
         if (
           !empty($dados['dadosCurso']['informacoesCurso']->filesGrid)
           and $dados['dadosCurso']['informacoesCurso']->matriz_visivel != NULL
           and $dados['dadosCurso']['informacoesCurso']->matriz_visivel != ''
         ) {
-          ?>
+        ?>
           <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
             <div class="boxcoordenador boxitens" style="height: 100px;">
               <div class="icon">
-                <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->filesGrid); ?>" target="_blank"><i
-                    class="fas fa-file-alt"></i></a>
+                <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->filesGrid); ?>" target="_blank"><i class="fas fa-file-alt"></i></a>
               </div>
               <h4 class="title">
-                <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->filesGrid); ?>"
-                  target="_blank">Arquivo - Grade Curricular</a>
+                <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->filesGrid); ?>" target="_blank">Arquivo - Grade Curricular</a>
               </h4>
               <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->filesGrid); ?>" target="_blank">
                 <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
               </a>
             </div>
           </div>
-          <?php
+        <?php
         }
         ?>
         <div class="col-lg-3 col-md-6 wow fadeInUp text-center" data-wow-delay="0.6s">
@@ -306,32 +300,30 @@ $uricampus = $this->uri->segment(3);
 
             </h4>
             <?php
-            if (isset($dados['dadosCurso']['informacoesCurso']->autorization)) {
-              ?>
-              <a href="<?php echo base_url($dados['dadosCurso']['informacoesCurso']->autorization); ?>" target="_blank">
-                <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
-              </a>
-              <?php
-            }
+            if (isset($dados['dadosCurso']['autorizacaoReconhecimento'])) {
+              foreach ($dados['dadosCurso']['autorizacaoReconhecimento'] as $arquivoAutorizacao) {
+                if ($arquivoAutorizacao->tipo_arquivo == 'autorizacao') {
             ?>
+                  <a href="<?php echo ($arquivoAutorizacao->files); ?>" target="_blank">
+                    <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+                  </a>
+                <?php
+                }
+                if ($arquivoAutorizacao->tipo_arquivo == 'reconhecimento') {
+                ?>
+                  <a href="<?php echo ($arquivoAutorizacao->files); ?>" target="_blank">
+                    <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+                  </a>
             <?php
-            if (isset($dados['dadosCurso']['informacoesCurso']->recognition)) {
-              ?>
-              <a href="<?php echo ($dados['dadosCurso']['informacoesCurso']->recognition); ?>" target="_blank">
-                <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
-              </a>
-              <?php
+                }
+              }
             }
             ?>
           </div>
         </div>
         <?php
-        // echo '<pre>';
-        // //print_r($dados['dadosCurso']['dirigentes']);
-        // echo '</pre>';
         foreach ($dados['dadosCurso']['dirigentes'] as $row) {
-
-          ?>
+        ?>
           <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
             <div class="boxcoordenador boxitens">
               <div class="icon"><a><i class="fas fa-graduation-cap"></i></a></div>
@@ -362,19 +354,18 @@ $uricampus = $this->uri->segment(3);
 
             </div>
           </div>
-          <?php
+        <?php
         }
         ?>
         <?php
         if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
-          ?>
+        ?>
           <div class="col-sm-12 col-md-12 text-center">
-            <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank"
-              class="btn btns btn-lg">
+            <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
               VESTIBULAR ONLINE
             </a>
           </div>
-          <?php
+        <?php
         }
         ?>
       </div>
@@ -473,7 +464,7 @@ $uricampus = $this->uri->segment(3);
     <div class="row" id="portfolio-wrapper">
       <?php
       for ($i = 0; $i < count($dadosCurso['categoriaFotos']); $i++) {
-        ?>
+      ?>
 
         <div class="col-lg-3">
           <div class="carbox">
@@ -496,7 +487,7 @@ $uricampus = $this->uri->segment(3);
           </div>
         </div>
 
-        <?php
+      <?php
       }
       ?>
     </div>
@@ -509,140 +500,138 @@ $uricampus = $this->uri->segment(3);
 ============================--->
 <?php
 if (!empty($dadosCurso['fotosCurso'])) {
-  ?>
-<section id="courseGallery">
-  <div class="container wow fadeInUp">
-    <div class="section-header">
-      <h3 class="section-title">Galeria de Fotos</h3>
-      <p class="section-description">Abaixo, você pode visualizar algumas fotos de eventos, atividades e ações
-        desenvolvidas pelo curso de <span class="SpanNameCourse"><strong>
-            <?php echo $dadosCurso['curso']->nameCourse; ?>
-          </strong></span>
-      </p>
-      <?php
-      if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
-        ?>
-      <div class="col-sm-12 col-md-12 text-center">
-        <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank"
-          class="btn btns btn-lg">
-          VESTIBULAR ONLINE
-        </a>
-      </div>
-      <?php
-      }
-      ?>
-    </div>
-  </div>
-
-  <div class="container wow fadeInUp mt-5">
-    <div class="tab-pane fade in" id="tab4">
-      <h3>Galeria de fotos do curso</h3>
-      <div class="row">
-
+?>
+  <section id="courseGallery">
+    <div class="container wow fadeInUp">
+      <div class="section-header">
+        <h3 class="section-title">Galeria de Fotos</h3>
+        <p class="section-description">Abaixo, você pode visualizar algumas fotos de eventos, atividades e ações
+          desenvolvidas pelo curso de <span class="SpanNameCourse"><strong>
+              <?php echo $dadosCurso['curso']->nameCourse; ?>
+            </strong></span>
+        </p>
         <?php
-        foreach ($dadosCurso['fotosCurso'] as $foto) {
+        if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
+        ?>
+          <div class="col-sm-12 col-md-12 text-center">
+            <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
+              VESTIBULAR ONLINE
+            </a>
+          </div>
+        <?php
+        }
+        ?>
+      </div>
+    </div>
+
+    <div class="container wow fadeInUp mt-5">
+      <div class="tab-pane fade in" id="tab4">
+        <h3>Galeria de fotos do curso</h3>
+        <div class="row">
+
+          <?php
+          foreach ($dadosCurso['fotosCurso'] as $foto) {
           ?>
-        <div class="col-lg-3 col-sm-5 col-xs-12">
-          <h5 class="text-center titlePhotosCourse">
-            <?php
-            echo $foto->title
-              ?>
+            <div class="col-lg-3 col-sm-5 col-xs-12">
+              <h5 class="text-center titlePhotosCourse">
+                <?php
+                echo $foto->title
+                ?>
 
-          </h5>
-          <div class="flip-box">
-            <div class="flip-box-inner">
-              <div class="flip-box-front">
-                <img class="img-responsive" src="<?php echo base_url($foto->files); ?>"
-                  alt="<?php echo $foto->subtitle; ?>" />
-              </div>
-              <div class="flip-box-back">
-                <h2>
-                  <?php
-                  echo $foto->title
-                    ?>
-                </h2>
+              </h5>
+              <div class="flip-box">
+                <div class="flip-box-inner">
+                  <div class="flip-box-front">
+                    <img class="img-responsive" src="<?php echo base_url($foto->files); ?>" alt="<?php echo $foto->subtitle; ?>" />
+                  </div>
+                  <div class="flip-box-back">
+                    <h2>
+                      <?php
+                      echo $foto->title
+                      ?>
+                    </h2>
 
+                  </div>
+                </div>
               </div>
             </div>
+
+          <?php
+          }
+          ?>
+        </div>
+        <br />
+        <div class="col-xs-offset-4 col-xs-4" style="margin-bottom: 10px;">
+          <div class="carbox-read-more">
+            <?php
+            echo anchor("graduacao/galeria_fotos_curso/$uricampus/" . $dadosCurso['curso']->idCourseCampus, ' Ver todas as fotos', array("class" => "btn btn-link btn-block"));
+            ?>
           </div>
         </div>
 
-        <?php
-        }
-        ?>
+        <style>
+          /* The flip box container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+          h5.titlePhotosCourse {
+            font-size: 15px;
+            color: #f4630b;
+            padding-top: 5px;
+            background: #f1f1f1;
+            height: 50px;
+          }
+
+          .flip-box {
+            background-color: transparent;
+            /*width: 310px;*/
+            min-height: 220px;
+            border: 1px solid #f1f1f1;
+            perspective: 1000px;
+            /* Remove this if you don't want the 3D effect */
+          }
+
+          .flip-box img {
+            text-align: center;
+            max-height: 220px;
+          }
+
+          /* This container is needed to position the front and back side */
+          .flip-box-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+          }
+
+          /* Do an horizontal flip when you move the mouse over the flip box container */
+          .flip-box:hover .flip-box-inner {
+            transform: rotateY(180deg);
+          }
+
+          /* Position the front and back side */
+          .flip-box-front,
+          .flip-box-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+          }
+
+          /* Style the front side (fallback if image is missing) */
+          .flip-box-front {
+            background-color: #bbb;
+            color: black;
+          }
+
+          /* Style the back side */
+          .flip-box-back {
+            background-color: #f1f1f1;
+            color: white;
+            transform: rotateY(180deg);
+          }
+        </style>
       </div>
-      <br />
-      <div class="col-xs-offset-4 col-xs-4" style="margin-bottom: 10px;">
-        <div class="carbox-read-more">
-          <?php
-          echo anchor("graduacao/galeria_fotos_curso/$uricampus/" . $dadosCurso['curso']->idCourseCampus, ' Ver todas as fotos', array("class" => "btn btn-link btn-block"));
-          ?>
-        </div>
-      </div>
-
-      <style>
-        /* The flip box container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
-        h5.titlePhotosCourse {
-          font-size: 15px;
-          color: #f4630b;
-          padding-top: 5px;
-          background: #f1f1f1;
-          height: 50px;
-        }
-
-        .flip-box {
-          background-color: transparent;
-          /*width: 310px;*/
-          min-height: 220px;
-          border: 1px solid #f1f1f1;
-          perspective: 1000px;
-          /* Remove this if you don't want the 3D effect */
-        }
-
-        .flip-box img {
-          text-align: center;
-          max-height: 220px;
-        }
-
-        /* This container is needed to position the front and back side */
-        .flip-box-inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          transition: transform 0.8s;
-          transform-style: preserve-3d;
-        }
-
-        /* Do an horizontal flip when you move the mouse over the flip box container */
-        .flip-box:hover .flip-box-inner {
-          transform: rotateY(180deg);
-        }
-
-        /* Position the front and back side */
-        .flip-box-front,
-        .flip-box-back {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-        }
-
-        /* Style the front side (fallback if image is missing) */
-        .flip-box-front {
-          background-color: #bbb;
-          color: black;
-        }
-
-        /* Style the back side */
-        .flip-box-back {
-          background-color: #f1f1f1;
-          color: white;
-          transform: rotateY(180deg);
-        }
-      </style>
     </div>
-  </div>
-</section>
+  </section>
 <?php
 }
 ?>
@@ -657,13 +646,13 @@ https://bootsnipp.com/snippets/40Z3Q
   <div class="container">
     <?php
     if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
-      ?>
+    ?>
       <div class="col-sm-12 col-md-12 text-center">
         <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
           VESTIBULAR ONLINE
         </a>
       </div>
-      <?php
+    <?php
     }
     ?>
     <div class="copyright">

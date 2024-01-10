@@ -2,51 +2,51 @@
 $uricampus = $this->uri->segment(3);
 ?>
 <style>
-.single-project-content h2 {
-  margin-bottom: 30px;
-}
+  .single-project-content h2 {
+    margin-bottom: 30px;
+  }
 
-.single-pro-main-content {
-  padding-top: 0px;
-}
+  .single-pro-main-content {
+    padding-top: 0px;
+  }
 
-.dados_gerais img {
-  float: left;
-  margin: 0 30px 15px 0;
-}
+  .dados_gerais img {
+    float: left;
+    margin: 0 30px 15px 0;
+  }
 
-.imgDescription {
-  float: left;
-  margin-bottom: 1px;
-}
+  .imgDescription {
+    float: left;
+    margin-bottom: 1px;
+  }
 
-div .classificationDuration {
-  width: 200px;
-}
+  div .classificationDuration {
+    width: 200px;
+  }
 
-.imagemCourseEad img {
-  margin-bottom: 10px;
-  display: block;
-}
+  .imagemCourseEad img {
+    margin-bottom: 10px;
+    display: block;
+  }
 
-.classificationDuration {
-  margin-top: 5px;
-  border: 5px solid #ffc718;
+  .classificationDuration {
+    margin-top: 5px;
+    border: 5px solid #ffc718;
 
-}
+  }
 
-.imgDescription p {
-  align-content: center;
-  text-align: center;
-}
+  .imgDescription p {
+    align-content: center;
+    text-align: center;
+  }
 
-p {
-  text-align: left !important;
-}
+  p {
+    text-align: left !important;
+  }
 
-.row.itensGradeCurricular {
-  margin-bottom: 3rem;
-}
+  .row.itensGradeCurricular {
+    margin-bottom: 3rem;
+  }
 </style>
 
 <?php
@@ -63,87 +63,90 @@ p {
           <div class="row">
 
             <?php
-              if ($msg = getMsg()){
-                echo $msg;
-              }
-              ?>
+            if ($msg = getMsg()) {
+              echo $msg;
+            }
+            ?>
             <div class="col-md-9 col-sm-10">
 
               <div class="single-project-content">
                 <?php
                 if (!empty($informacoesCurso->description)) {
                 ?>
-                <h2 class="text-center"><?php echo $informacoesCurso->name; ?></h2>
-                <div class="dados_gerais text-justify">
+                  <h2 class="text-center">
+                    <?php echo $informacoesCurso->name; ?>
+                  </h2>
+                  <div class="dados_gerais text-justify">
 
-                  <div class="imgDescription" style="float:left;">
-                    <?php 
-                    if(isset($informacoesCurso->capa)){
-                    ?>
-                    <div class="">
-                      <div class="imagemCourseEad">
-                        <img src="<?php echo base_url() . $informacoesCurso->capa; ?>" alt="courses"
-                          class="img-responsive" />
+                    <div class="imgDescription" style="float:left;">
+                      <?php
+                      if (isset($informacoesCurso->capa)) {
+                      ?>
+                        <div class="">
+                          <div class="imagemCourseEad">
+                            <img src="<?php echo base_url() . $informacoesCurso->capa; ?>" alt="courses" class="img-responsive" />
+                          </div>
+                        </div>
+                      <?php
+                      }
+                      if (isset($informacoesCurso->duration)) {
+                      ?>
+                        <h4>Duração</h4>
+                        <p class="classificationDuration">
+
+                          <span>
+                            <?php echo $informacoesCurso->duration; ?>
+                          </span>
+                        </p>
+                      <?php
+                      }
+                      ?>
+                    </div>
+                    <div class="descriptionCourse">
+                      <?php echo $informacoesCurso->description; ?>
+                    </div>
+                  </div>
+
+                  <?php
+                  if (!empty($informacoesCurso->actuation)) {
+
+                  ?>
+                    <h2>Áreas de Atuação</h2>
+                    <div class="icon-box wow fadeInUp">
+                      <div class="text-uppercase">
+                        <div class="col-sm-5">
+                          <h4 class="title">
+                            <?php
+                            $string = $informacoesCurso->actuation;
+                            $dadosC = explode('<li>', $string);
+                            $qtdeAction = count($dadosC);
+
+                            for ($i = 0; $i < ($qtdeAction / 2); $i++) {
+                              echo '<li>';
+                              echo "<p class='noJustify'>$dadosC[$i]</p>";
+                              echo '</li>';
+                            }
+                            //echo $dadosCurso['informacoesCurso']->actuation;
+                            ?>
+                          </h4>
+                        </div>
+                        <div class="col-sm-5">
+                          <h4 class="title">
+                            <?php
+                            for ($i; $i < $qtdeAction; $i++) {
+                              echo '<li>';
+                              echo "<p class='noJustify'>$dadosC[$i]</p>";
+                              echo '</li>';
+                            }
+                            ?>
+                          </h4>
+                        </div>
                       </div>
                     </div>
-                    <?php 
-                    }
-                    if(isset($informacoesCurso->duration)){
-                    ?>
-                    <h4>Duração</h4>
-                    <p class="classificationDuration">
-
-                      <span><?php echo $informacoesCurso->duration; ?></span>
-                    </p>
-                    <?php 
-                    }
-                    ?>
-                  </div>
-                  <div class="descriptionCourse">
-                    <?php echo $informacoesCurso->description; ?>
-                  </div>
-                </div>
-
                 <?php
-                if (!empty($informacoesCurso->actuation)) {
-
-                    ?>
-                <h2>Áreas de Atuação</h2>
-                <div class="icon-box wow fadeInUp">
-                  <div class="text-uppercase">
-                    <div class="col-sm-5">
-                      <h4 class="title">
-                        <?php
-                        $string = $informacoesCurso->actuation;
-                        $dadosC = explode('<li>', $string);
-                        $qtdeAction = count($dadosC);
-
-                        for ($i = 0; $i < ($qtdeAction / 2); $i++) {
-                          echo '<li>';
-                          echo "<p class='noJustify'>$dadosC[$i]</p>";
-                          echo '</li>';
-                        }
-                        //echo $dadosCurso['informacoesCurso']->actuation;
-                        ?>
-                      </h4>
-                    </div>
-                    <div class="col-sm-5">
-                      <h4 class="title">
-                        <?php
-                        for ($i; $i < $qtdeAction; $i++) {
-                          echo '<li>';
-                          echo "<p class='noJustify'>$dadosC[$i]</p>";
-                          echo '</li>';
-                        }
-                        ?>
-                      </h4>
-                    </div>
-                  </div>
-                </div>
-                <?php
+                  }
                 }
-              }
-              ?>
+                ?>
 
 
               </div>
@@ -158,12 +161,12 @@ p {
                                     <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>', array('class' => "download-btn"));
                                     ?-->
                   <?php
-                  
-                  if(isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular !='' ){
-                    ?>
-                  <a href="<?php echo $dados['informacoesCurso']->link_vestibular ?>" class="download-btn">
-                    VESTIBULAR ONLINE <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
-                  </a>
+
+                  if (isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular != '') {
+                  ?>
+                    <a href="<?php echo $dados['informacoesCurso']->link_vestibular ?>" class="download-btn">
+                      VESTIBULAR ONLINE <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                    </a>
                   <?php
                   }
                   ?>
@@ -189,11 +192,11 @@ p {
                                     <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>', array('class' => "download-btn"));
                                     ?-->
                   <?php
-                  if(isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular !='' ){
-                    ?>
-                  <a href="<?php echo $dados['informacoesCurso']->link_vestibular ?>" class="download-btn">
-                    VESTIBULAR ONLINE <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
-                  </a>
+                  if (isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular != '') {
+                  ?>
+                    <a href="<?php echo $dados['informacoesCurso']->link_vestibular ?>" class="download-btn">
+                      VESTIBULAR ONLINE <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                    </a>
 
                   <?php
                   }
@@ -207,16 +210,16 @@ p {
         </div>
         <div id="services">
           <?php
-          
-        if (!empty($dados['gradeCurricular'])) {
-        ?>
-          <div class="container wow fadeIn">
-            <!-- <div class="section-header" style="text-align:justify;">
+
+          if (!empty($dados['gradeCurricular'])) {
+          ?>
+            <div class="container wow fadeIn">
+              <!-- <div class="section-header" style="text-align:justify;">
               <h3 class="section-title">Grade Curricular</h3>
               <p class="section-description">Visualize abaixo, os conteúdos que serão estudados no curso.</p>
             </div> -->
 
-            <!-- <div class="row itensGradeCurricular">
+              <!-- <div class="row itensGradeCurricular">
               <div class="col-sm-12">
                 <div class="row">
                   <?php
@@ -227,160 +230,172 @@ p {
                   <div class="col-sm-3 wow fadeInUp" data-wow-delay="0.<?php echo $i; ?>s">
                     <div class="box" style="background:rgba(211,211,211,0.3);min-height:280px">
                       <h4 class="title"><i class="fa fa-book"></i> <?php
-                      echo $periodos->period;
-                    ?>º Período</h4>
+                                                                    echo $periodos->period;
+                                                                    ?>º Período</h4>
                       <div style="padding-left:10px;">
                         <?php
                         foreach ($dados['gradeCurricular'] as $disciplina)
-                        if ($periodos->period == $disciplina->period) {
+                          if ($periodos->period == $disciplina->period) {
                         ?>
                         <p>
                           <i class="fas fa-caret-right"></i>
                           <?php
-                        echo $disciplina->discipline;
-                        ?>
+                            echo $disciplina->discipline;
+                          ?>
                         </p>
                         <?php
-                      }
-                      ?>
+                          }
+                        ?>
                       </div>
                       <div class="text-center" style="margin-top:20px;margin-bottom:30px">
                         <?php
-                      if(isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular !='' ){
-                        echo anchor($dados['informacoesCurso']->link_vestibular, 'INSCREVA-SE <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>', array('class' => "download-btn"));
-                      }
-                      ?>
+                        if (isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular != '') {
+                          echo anchor($dados['informacoesCurso']->link_vestibular, 'INSCREVA-SE <span><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>', array('class' => "download-btn"));
+                        }
+                        ?>
                       </div>
                     </div>
                   </div>
 
                   <?php
-                  $i = $i + 2;
+                    $i = $i + 2;
                   }
-                ?>
+                  ?>
                 </div>
               </div>
             </div> -->
-            <div class="row">
-              <div class="col-sm-12">
+              <div class="row">
+                <div class="col-sm-12">
+                  <?php
+                  if (empty($dados['informacoesCurso']->filesGrid)) {
+
+                  ?>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+                      <div class="boxcoordenador boxitens" style="height: 100px;">
+                        <div class="icon">
+                          <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">
+                            <i class="fas fa-file-alt"></i>
+                          </a>
+                        </div>
+                        <h4 class="title">
+                          <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">Arquivo
+                            -
+                            Grade Curricular</a>
+                        </h4>
+                        <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">
+                          <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+                        </a>
+                      </div>
+                    </div>
+                  <?php
+                  }
+                }
+                if (!empty($dados['autorizacaoReconhecimento'])) {
+                  ?>
+                  <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="boxcoordenador boxitens text-center" style="background:#F8F8FF	">
+                      <h4 class="title">
+                        <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank">Ato
+                          de
+                          Autorização / Reconhecimento</a>
+                      </h4>
+                      <?php
+                      if (isset($dados['autorizacaoReconhecimento'])) {
+                        foreach ($dados['autorizacaoReconhecimento'] as $arquivoAutorizacao) {
+                          if ($arquivoAutorizacao->tipo_arquivo == 'autorizacao') {
+                      ?>
+                            <a href="<?php echo ($arquivoAutorizacao->files); ?>" target="_blank">
+                              <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+                            </a>
+                          <?php
+                          }
+                          if ($arquivoAutorizacao->tipo_arquivo == 'reconhecimento') {
+                          ?>
+                            <a href="<?php echo ($arquivoAutorizacao->files); ?>" target="_blank">
+                              <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
+                            </a>
+                      <?php
+                          }
+                        }
+                      }
+                      ?>
+
+                    </div>
+                  </div>
                 <?php
-              if (empty($dados['informacoesCurso']->filesGrid)) {
-                
-                ?>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
-                  <div class="boxcoordenador boxitens" style="height: 100px;">
-                    <div class="icon">
-                      <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">
-                        <i class="fas fa-file-alt"></i>
-                      </a>
-                    </div>
-                    <h4 class="title">
-                      <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">Arquivo
-                        -
-                        Grade Curricular</a>
-                    </h4>
-                    <a href="<?php echo base_url($dados['informacoesCurso']->filesGrid); ?>" target="_blank">
-                      <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
-                    </a>
-                  </div>
-                </div>
-                <?php 
-              } 
-             
-            }
-            if (!empty($dados['informacoesCurso']->recognition)) {
-            ?>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-                  <div class="boxcoordenador boxitens text-center" style="background:#F8F8FF	">
-                    <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"></a>
-                    <div class="icon">
-                      <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank"><i
-                          class="fas fa-gavel"></i></a>
-                    </div>
-                    <h4 class="title">
-                      <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank">Ato
-                        de
-                        Autorização / Reconhecimento</a>
-                    </h4>
-                    <a href="<?php echo base_url($dados['informacoesCurso']->recognition); ?>" target="_blank">
-                      <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
-                    </a>
-                  </div>
-                </div>
-                <?php 
                 }
                 if (!empty($dados['informacoesCurso']->ppc)) {
-                  ?>
+                ?>
                   <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
                     <div class="boxcoordenador boxitens text-center" style="background:#F5F5F5;padding-bottom:2rem">
                       <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank"></a>
                       <div class="icon">
-                        <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank"><i
-                            class="fas fa-gavel"></i></a>
+                        <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank"><i class="fas fa-gavel"></i></a>
                       </div>
                       <h4 class="title">
-                        <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank">Plano Pedagógico de Curso</a>
-                        <br/>
+                        <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank">Plano
+                          Pedagógico de Curso</a>
+                        <br />
                       </h4>
                       <a href="<?php echo base_url($dados['informacoesCurso']->ppc); ?>" target="_blank">
                         <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
                       </a>
-                      
+
                     </div>
                   </div>
-                  <?php 
+                <?php
                 }
                 foreach ($dados['coordenadorCurso'] as $row) {
                 ?>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
-                  <div class="boxcoordenador boxitens">
-                    <div class="icon"><a><i class="fas fa-graduation-cap"></i></a></div>
-                    <?php 
-                    if(!empty($row->nome) and ($row->nome != null)){
-                    ?>
-                    <h4 class="title">
-                      <?php echo $row->cargo; ?>
-                    </h4>
-                    <h4>
-                      <?php echo $row->nome; ?>
-                    </h4>
-                    <h4>
+                  <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="boxcoordenador boxitens">
+                      <div class="icon"><a><i class="fas fa-graduation-cap"></i></a></div>
                       <?php
-                      if(!empty($row->email) and $row->email != null){
-                        echo 'Email: '.$row->email;
+                      if (!empty($row->nome) and ($row->nome != null)) {
+                      ?>
+                        <h4 class="title">
+                          <?php echo $row->cargo; ?>
+                        </h4>
+                        <h4>
+                          <?php echo $row->nome; ?>
+                        </h4>
+                        <h4>
+                          <?php
+                          if (!empty($row->email) and $row->email != null) {
+                            echo 'Email: ' . $row->email;
+                          }
+                          ?>
+                        </h4>
+                        <h4>
+                          <?php
+                          if (!empty($row->telefone) and $row->telefone != null) {
+                            echo 'Telefone(s): ' . $row->telefone;
+                          }
+                          ?>
+                        </h4>
+                      <?php
                       }
                       ?>
-                    </h4>
-                    <h4>
-                      <?php
-                      if(!empty($row->telefone) and $row->telefone != null){
-                        echo 'Telefone(s): '.$row->telefone;
-                      }
-                      ?>
-                    </h4>
-                    <?php 
-                    } 
-                    ?>
+                    </div>
                   </div>
-                </div>
-                <?php 
-                } 
+                <?php
+                }
                 if (!empty($dados['gradeCurricular'])) {
                 ?>
-                <div class="col-sm-12 col-md-12 text-center">
-                  <?php
-                  if(isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular !='' ){
-                    echo anchor($dados['informacoesCurso']->link_vestibular, 'Inscreva-se agora!', array('class' => "btn btns btn-lg"));
-                  }
-                  ?>
-                </div>
+                  <div class="col-sm-12 col-md-12 text-center">
+                    <?php
+                    if (isset($dados['informacoesCurso']->link_vestibular) and $dados['informacoesCurso']->link_vestibular != '') {
+                      echo anchor($dados['informacoesCurso']->link_vestibular, 'Inscreva-se agora!', array('class' => "btn btns btn-lg"));
+                    }
+                    ?>
+                  </div>
                 <?php
                 }
                 ?>
+                </div>
               </div>
-            </div>
 
-          </div>
+            </div>
         </div>
       </div>
     </div>

@@ -11,21 +11,21 @@
         <div class="container">
           <div class="col-xs-6">
             <?php
-            echo anchor("Painel_secretaria/cadastrar_calendarios_semestre/$campus->id", '<i class = "material-icons">
+            echo anchor("Painel_secretaria/cadastrar_calendarios_semestre/$campus->id/$pagina->id", '<i class = "material-icons">
             add
-            </i> <span>Cadastrar</span>', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+            </i> <span>Cadastrar Calendário</span>', array('class' => 'btn btn-primary m-t-15 waves-effect'));
             ?>
           </div>
           <div class="col-xs-6">
-            <?php 
-            echo anchor('Painel_secretaria/lista_campus_secretaria', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            <?php
+            echo anchor("Painel_secretaria/lista_informacoes_secretaria/$campus->id/$pagina->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
             ?>
           </div>
         </div>
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
+        if ($msg = getMsg()) {
           echo $msg;
         }
         ?>
@@ -63,14 +63,14 @@
               <?php
               foreach ($listagem as $row) {
               ?>
-              <tr>
-                <td class="center">
-                  <?php
+                <tr>
+                  <td class="center">
+                    <?php
                     echo anchor($row->files, '<i class="material-icons">picture_as_pdf</i>', array('title' => "arquivo"));
                     //if (in_array("regProvasGab", $permissionCampusArray['campus-1'])) {
-                    echo '<a href=' . base_url("Painel_secretaria/editar_calendario_semestre/$campus->id/$row->id") . '>'
-                        . '<i class="material-icons">edit</i>'
-                        . '</a> ';
+                    echo '<a href=' . base_url("Painel_secretaria/editar_calendario_semestre/$campus->id/$row->id/$pagina->id") . '>'
+                      . '<i class="material-icons">edit</i>'
+                      . '</a> ';
                     echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $row->name . '" data-id="' . $row->id . '" >'
                       . '<i class="material-icons">delete</i>'
                       . '</a>';
@@ -86,26 +86,29 @@
 
                     //}
                     ?>
-                </td>
-                <td><?php echo $row->id; ?></td>
+                  </td>
+                  <td><?php echo $row->id; ?></td>
 
-                <td><?php echo $row->name; ?></td>
-                <td>
-                  <?php
+                  <td><?php echo $row->name; ?></td>
+                  <td>
+                    <?php
                     echo date('d/m/Y H:i:s', strtotime($row->datacreated));
-                  ?>
-                </td>
-                <td>
-                  <?php
-                  echo date('d/m/Y H:i:s', strtotime($row->datemodified)).'/ '.$row->usersid;
-                  ?>
-                </td>
-                <td><?php echo $row->year; ?></td>
-                <td><?php echo $row->semester; ?></td>
-                <td><?php echo $row->type; if($row->type == 'medicina'){echo ' (internato)';}?></td>
-                <td><?php echo $row->city; ?></td>
+                    ?>
+                  </td>
+                  <td>
+                    <?php
+                    echo date('d/m/Y H:i:s', strtotime($row->datemodified)) . '/ ' . $row->usersid;
+                    ?>
+                  </td>
+                  <td><?php echo $row->year; ?></td>
+                  <td><?php echo $row->semester; ?></td>
+                  <td><?php echo $row->type;
+                      if ($row->type == 'medicina') {
+                        echo ' (internato)';
+                      } ?></td>
+                  <td><?php echo $row->city; ?></td>
 
-              </tr>
+                </tr>
               <?php
               }
               ?>
@@ -143,11 +146,11 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_secretaria/deletar_calendario_semestre/$campus->id/"); ?>' + id);
-});
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_secretaria/deletar_calendario_semestre/$campus->id/$pagina->id/"); ?>' + id);
+  });
 </script>

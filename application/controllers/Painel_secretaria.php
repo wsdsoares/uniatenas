@@ -320,11 +320,16 @@ class Painel_secretaria extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function calendarios_semestre($uriCampus = null)
+  public function calendarios_semestre($uriCampus = null, $pageId = null)
   {
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
 
     $field = array(
       'campus_calendars.id',
@@ -354,6 +359,7 @@ class Painel_secretaria extends CI_Controller
         // 'namecity' => $namecity,
         'listagem' => $listagem,
         'campus' => $campus,
+        'pagina' => $pagina,
         'page' => "Calendários Semestre - $campus->name $campus->city",
         'tipo' => 'tabelaDatatable',
         'table' => $table
@@ -362,11 +368,16 @@ class Painel_secretaria extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_calendarios_semestre($uriCampus = null)
+  public function cadastrar_calendarios_semestre($uriCampus = null, $pageId = NULL)
   {
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
 
     $this->load->helper('file');
     verificaLogin();
@@ -422,10 +433,10 @@ class Painel_secretaria extends CI_Controller
         //salvando
         if ($this->painelbd->salvar('campus_calendars', $dados_form) == TRUE) {
           setMsg('<p>Calendário  cadastrada com sucesso.</p>', 'success');
-          redirect("Painel_secretaria/calendarios_semestre/$campus->id");
+          redirect("Painel_secretaria/calendarios_semestre/$campus->id/$pagina->id");
         } else {
           setMsg('<p>Erro! O calendário  não foi cadastrada.</p>', 'error');
-          redirect("Painel_secretaria/calendarios_semestre/$campus->id");
+          redirect("Painel_secretaria/calendarios_semestre/$campus->id/$pagina->id");
         }
       } else {
         //erro no upload
@@ -445,6 +456,7 @@ class Painel_secretaria extends CI_Controller
         //'table' => $tableD,
         'ano' => $ano->ano,
         'campus' => $campus,
+        'pagina' => $pagina,
         //'namecity' => $namecity,
         'tipo' => 'calendario',
         'page' => "Cadastro de calendários $campus->name $campus->city"
@@ -453,7 +465,7 @@ class Painel_secretaria extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_calendario_semestre($uriCampus = null, $id = NULL)
+  public function editar_calendario_semestre($uriCampus = null, $id = NULL, $pageId = NULL)
   {
     $this->load->helper('file');
     date_default_timezone_set('America/Sao_Paulo');
@@ -461,6 +473,11 @@ class Painel_secretaria extends CI_Controller
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
 
     $field = array(
       'campus_calendars.id',
@@ -541,10 +558,10 @@ class Painel_secretaria extends CI_Controller
 
       if ($this->painelbd->salvar($table, $dados_form) == TRUE) {
         setMsg('<p>Dados alterados com sucesso.</p>', 'success');
-        redirect("Painel_secretaria/calendarios_semestre/$campus->id");
+        redirect("Painel_secretaria/calendarios_semestre/$campus->id/$pagina->id");
       } else {
         setMsg('<p>Erro! Os dados não foi alterado.</p>', 'error');
-        redirect("Painel_secretaria/calendarios_semestre/$campus->id");
+        redirect("Painel_secretaria/calendarios_semestre/$campus->id/$pagina->id");
       }
     }
 
@@ -571,6 +588,7 @@ class Painel_secretaria extends CI_Controller
         'listagem' => $listagem,
         'ano' => $ano->ano,
         'campus' => $campus,
+        'pagina' => $pagina,
         'page' => "Edição de informações Calendário Acadêmico",
         'tipo' => 'calendario',
       )
@@ -579,16 +597,289 @@ class Painel_secretaria extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletar_calendario_semestre($campusId = NULL, $idCalendario = NULL)
+  public function deletar_calendario_semestre($campusId = NULL, $pageId = NULL, $idCalendario = NULL)
   {
     verifica_login();
     $item = $this->painelbd->where('*', 'campus_calendars', NULL, array('campus_calendars.id' => $idCalendario))->row();
     if ($this->painelbd->deletar('campus_calendars', $item->id)) {
       setMsg('<p>O item foi deletado com sucesso.</p>', 'success');
-      redirect(base_url("Painel_secretaria/calendarios_semestre/$campusId"));
+      redirect(base_url("Painel_secretaria/calendarios_semestre/$campusId/$pageId"));
     } else {
       setMsg('<p>Erro! O item foi não deletado.</p>', 'error');
-      redirect(base_url("Painel_secretaria/calendarios_semestre/$campusId"));
+      redirect(base_url("Painel_secretaria/calendarios_semestre/$campusId/$pageId"));
+    }
+  }
+  /*Arqujivo -  Atividades compplementares*/
+  public function lista_atividades_complementares($uriCampus = null, $pageId = null)
+  {
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $field = array(
+      'files.id',
+      'files.name',
+      'files.files',
+      'files.status',
+      'files.typesfile',
+      'files.user_id',
+      'files.created_at',
+      'files.updated_at',
+      'files.campusid',
+      'campus.city'
+    );
+    $table = 'files_has_pages';
+    $datajoin = array(
+
+      'files' => 'files_has_pages.filesid = files.id',
+      'campus' => 'files.campusid = campus.id'
+    );
+    $where = array(
+      'files.campusid' => $campus->id,
+      'files.typesfile' => 'cartilha'
+    );
+
+    $listagem = $this->painelbd->Where($field, $table, $datajoin, $where, null)->result();
+
+    $data = array(
+      'titulo' => 'Arquivo Atividades Complementares ',
+      'conteudo' => 'paineladm/secretaria/atividadesComplementares/lista_atividades_complementares',
+      'dados' => array(
+        // 'permissionCampusArray' => $_SESSION['permissionCampus'],
+        // 'namecity' => $namecity,
+        'listagem' => $listagem,
+        'campus' => $campus,
+        'pagina' => $pagina,
+        'page' => "Atividades Complementares - $campus->name $campus->city",
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function cadastrar_arquivo_atividades_complementares($uriCampus = null, $pageId = NULL)
+  {
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $this->load->helper('file');
+    verificaLogin();
+    if ($uriCampus == null) {
+      redirect('painel');
+    }
+
+    $this->form_validation->set_rules('name', 'Nome arquivo', 'required');
+    $this->form_validation->set_rules('status', 'Status', 'required');
+
+    if (empty($_FILES['files']['name'])) {
+      $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+      $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+    }
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'erro');
+      endif;
+    } else {
+      $path = "assets/files/secretaria/arquivoAtividadesComplementares/$campus->id/";
+      is_way($path);
+
+      if (unique_name_args(noAccentuation($this->input->post('name')), $path)) {
+        $name_tmp = null;
+      } else {
+        $name_tmp = noAccentuation($this->input->post('name'));
+      }
+      $upload = $this->painelbd->uploadFiles('files', $path, $types = '*', $name_tmp);
+
+      if ($upload) {
+        //coleta de dados
+        $dados_form['campusid'] = $campus->id;
+        $dados_form['name'] = $this->input->post('name');
+        $dados_form['status'] = $this->input->post('status');
+        $dados_form['files'] = $path . $upload['file_name'];
+        $dados_form['user_id'] = $this->session->userdata('codusuario');
+        $dados_form['typesfile'] = 'cartilha';
+        //salvando
+        if ($idInsercao = $this->painelbd->salvar('files', $dados_form, 'exibirIdInsert')) {
+          $dados_form_2['filesid'] = $idInsercao;
+          $dados_form_2['pagesid'] = $pagina->id;
+
+          if ($this->painelbd->salvar('files_has_pages', $dados_form_2)) {
+            setMsg('<p>Calendário  cadastrada com sucesso.</p>', 'success');
+            redirect("Painel_secretaria/lista_atividades_complementares/$campus->id/$pagina->id");
+          }
+        } else {
+          setMsg('<p>Erro! O calendário  não foi cadastrada.</p>', 'error');
+          redirect("Painel_secretaria/lista_atividades_complementares/$campus->id/$pagina->id");
+        }
+      } else {
+        //erro no upload
+        $msg = $this->upload->display_erros();
+        $msg .= '<p> São Permetidos arquivos' . $types . '.</p>';
+        setMsg($msg, 'erro');
+      }
+    }
+
+    //devolvendo o formulario
+    $data = array(
+      'titulo' => "Cadastro Arquivo Atividade Complementares ",
+      'conteudo' => 'paineladm/secretaria/atividadesComplementares/cadastrar_arquivo_atividades_complementares',
+      'dados' => array(
+        //'permissionCampusArray' => $_SESSION['permissionCampus'],
+
+        'campus' => $campus,
+        'pagina' => $pagina,
+        'tipo' => 'calendario',
+        'page' => "Atividades Complementares - $campus->name $campus->city",
+      )
+    );
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function editar_arquivo_atividades_complementares($uriCampus = null, $id = NULL,  $pageId = NULL)
+  {
+    $this->load->helper('file');
+    date_default_timezone_set('America/Sao_Paulo');
+    verificaLogin();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $pageId);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $field = array(
+      'files.id',
+      'files.name',
+      'files.files',
+      'files.status',
+      'files.typesfile',
+      'files.user_id',
+      'files.created_at',
+      'files.updated_at',
+      'files.campusid',
+      'campus.city'
+    );
+    $table = 'files_has_pages';
+    $datajoin = array(
+      'files' => 'files_has_pages.filesid = files.id',
+      'campus' => 'files.campusid = campus.id'
+    );
+    $where = array(
+      'files.id' => $id,
+    );
+
+    $arquivoCartilha = $this->painelbd->Where($field, $table, $datajoin, $where, null)->row();
+
+    // $listagem = $this->bd->Where($field, $table, $datajoin, $where)->row();
+    $this->form_validation->set_rules('name', 'Nome do Arquivo', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+      if ($arquivoCartilha->name != $this->input->post('name')) {
+        $dados_form['name'] = $this->input->post('name');
+      }
+      if ($arquivoCartilha->status != $this->input->post('status')) {
+        $dados_form['status'] = $this->input->post('status');
+      }
+
+      if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
+        $path = "assets/files/secretaria/arquivoAtividadesComplementares/$campus->id/";
+        is_way($path);
+
+        if (unique_name_args(noAccentuation($this->input->post('name')), $path)) {
+          $name_tmp = null;
+        } else {
+          $name_tmp = noAccentuation($this->input->post('name'));
+        }
+        $upload = $this->painelbd->uploadFiles('files', $path, $types = '*', $name_tmp);
+
+        if ($upload) {
+          //upload efetuado
+          $dados_form['files'] = $path . '/' . $upload['file_name'];
+        } else {
+          //erro no upload
+          $msg = $this->upload->display_errors();
+          $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+          setMsg($msg, 'erro');
+        }
+      }
+
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+      $dados_form['updated_at'] = date('Y-m-d H:i:s');
+      $dados_form['id'] = $id;
+
+      if ($this->painelbd->salvar('files', $dados_form) == TRUE) {
+        setMsg('<p>Dados alterados com sucesso.</p>', 'success');
+        redirect("Painel_secretaria/lista_atividades_complementares/$campus->id/$pagina->id");
+      } else {
+        setMsg('<p>Erro! Os dados não foi alterado.</p>', 'error');
+        redirect("Painel_secretaria/lista_atividades_complementares/$campus->id/$pagina->id");
+      }
+    }
+
+    //devolvendo o formulario
+    $data = array(
+      'titulo' => "Edição Arquivo Atividades Complementares ",
+      'conteudo' => 'paineladm/secretaria/atividadesComplementares/editar_arquivo_atividades_complementares',
+      'dados' => array(
+        //'permissionCampusArray' => $_SESSION['permissionCampus'],
+        'arquivoCartilha' => $arquivoCartilha,
+        'campus' => $campus,
+        'pagina' => $pagina,
+        'tipo' => '',
+        'page' => "Atividades Complementares - $campus->name $campus->city",
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function deletar_atividades_complementares($campusId = NULL, $pageId = NULL, $idArquivo = NULL)
+  {
+    verifica_login();
+
+    $field = array(
+      'files_has_pages.id'
+    );
+    $table = 'files_has_pages';
+    $datajoin = array(
+      'files' => 'files_has_pages.filesid = files.id',
+      'campus' => 'files.campusid = campus.id'
+    );
+    $where = array(
+      'files.id' => $idArquivo,
+    );
+
+    $filesHasPage = $this->painelbd->where($field, $table, $datajoin, $where, null)->row();
+
+    $item = $this->painelbd->where('*', 'files', NULL, array('files.id' => $idArquivo))->row();
+
+    $this->painelbd->deletar('files_has_pages', $filesHasPage->id);
+
+    if ($this->painelbd->deletar('files', $item->id)) {
+
+      setMsg('<p>O item foi deletado com sucesso.</p>', 'success');
+      redirect(base_url("Painel_secretaria/lista_atividades_complementares/$campusId/$pageId"));
+    } else {
+      setMsg('<p>Erro! O item foi não deletado.</p>', 'error');
+      redirect(base_url("Painel_secretaria/lista_atividades_complementares/$campusId/$pageId"));
     }
   }
 
@@ -790,7 +1081,4 @@ class Painel_secretaria extends CI_Controller
       redirect("Painel_secretaria/lista_links_uteis_secretaria/$uriCampus/$pagina");
     }
   }
-
-
-
 }
