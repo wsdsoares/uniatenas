@@ -46,9 +46,6 @@
 </style>
 <?php
 $uricampus = $this->uri->segment(3);
-$linkportalAluno = 'http://177.69.195.6:8080/portalatenas/usuarios/login';
-$linkportalEaD = 'https://atenas.brightspace.com/';
-$linkprofessor = 'http://177.69.195.4/Corpore.Net/Login.aspx';
 ?>
 <div class="container">
     <div class="row">
@@ -128,10 +125,11 @@ $linkprofessor = 'http://177.69.195.4/Corpore.Net/Login.aspx';
                 </div>
             </div>
         </div>
-        <?php
-        if (!empty($dados['conteudoContato']->description)) {
-        ?>
-            <div class="col-lg-4 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
+            <?php
+            if (!empty($dados['conteudoContato']->description)) {
+            ?>
+
 
                 <div class="widget-sidebar">
                     <h2 class="title-widget-sidebar"><?php echo $dados['conteudoContato']->title; ?></h2>
@@ -154,10 +152,11 @@ $linkprofessor = 'http://177.69.195.4/Corpore.Net/Login.aspx';
                         </ul>
                     </div>
                 </div>
-            </div>
-        <?php
-        }
-        ?>
+
+            <?php
+            }
+            ?>
+        </div>
         <div class="col-lg-4">
 
             <style>

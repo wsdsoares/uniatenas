@@ -46,7 +46,10 @@ class Painel_portal_alunos extends CI_Controller
     verificaLogin();
 
     $pagina = 'portalalunos';
-    $verificaExistePaginaPortalAlunos = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.title' => $pagina))->row();
+    $colunasDadosPagina = array(
+      'pages.id', 'pages.title', 'pages.status',
+    );
+    $verificaExistePaginaPortalAlunos = $this->painelbd->where($colunasDadosPagina, 'pages', null, array('pages.campusid' => $uriCampus, 'pages.title' => $pagina))->row();
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
@@ -76,16 +79,13 @@ class Painel_portal_alunos extends CI_Controller
     $wherePagina = array('pages.id' => $pageId);
     $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
 
-
-    $queryItensSecretaria = "
+    $queryItensPortalAcademico = "
     SELECT 
     page_contents.id,
     page_contents.title,
-    page_contents.title_short,
+    page_contents.img_destaque,
     page_contents.status,
-    page_contents.tipo,
     page_contents.order,
-    page_contents.description,
     page_contents.link_redir,
     page_contents.created_at,
     page_contents.updated_at,
@@ -96,12 +96,11 @@ class Painel_portal_alunos extends CI_Controller
         JOIN campus ON campus.id = pages.campusid
     WHERE
         page_contents.pages_id = $pagina->id AND 
-        page_contents.tipo = 'informacoesPagina' AND
-        page_contents.order NOT IN ('linkComutacao','comutacao')
+        page_contents.order NOT IN ('linksUteis')
     ORDER BY page_contents.title ASC
     ";
 
-    $listaItensPaginaPortalAlunos = $this->painelbd->getQuery($queryItensSecretaria)->result();
+    $listaItensPaginaPortalAlunos = $this->painelbd->getQuery($queryItensPortalAcademico)->result();
 
     $data = array(
       'titulo' => 'Portal Alunos - Uniatenas',
@@ -146,12 +145,13 @@ class Painel_portal_alunos extends CI_Controller
 
       $name_tmp = noAccentuation($this->input->post('title'));
 
-      $upload = $this->painelbd->uploadFiles('capa', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', $name_tmp);
+      $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', $name_tmp);
 
-      $dados_form['capa'] = $path . '/' . $upload['file_name'];
+      $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
       $dados_form['title'] = $this->input->post('title');
       $dados_form['status'] = $this->input->post('status');
       $dados_form['order'] = $this->input->post('order');
+      $dados_form['link_redir'] = $this->input->post('link_redir');
       $dados_form['tipo'] = 'informacoesPagina';
       $dados_form['pages_id'] = $pagina->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
@@ -165,7 +165,7 @@ class Painel_portal_alunos extends CI_Controller
     }
 
     $data = array(
-      'titulo' => 'UniAtenas',
+      'titulo' => 'Cadastro de Links - Portal Alunos',
       'conteudo' => 'paineladm/portalalunos/itens/cadastrar_itens_portal_alunos',
       'dados' => array(
         'page' => "Cadastro de Links de Portais -  PORTAL ALUNOS- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
@@ -190,39 +190,50 @@ class Painel_portal_alunos extends CI_Controller
     $wherePagina = array('pages.id' => $pageId);
     $pagina = $this->painelbd->where($colunaResultadoPagina, 'pages', $joinPagina, $wherePagina)->row();
 
-    $informacoesSecretaria = $this->painelbd->where("*", 'page_contents', null, array('page_contents.id' => $idInformacao))->row();
+    $informacoesPortalAcademico = $this->painelbd->where("*", 'page_contents', null, array('page_contents.id' => $idInformacao))->row();
 
     //Validaçãoes via Form Validation
     $this->form_validation->set_rules('title', 'Titulo', 'required');
-    //$this->form_validation->set_rules('title_short', 'Subtítulo', 'required');
-    $this->form_validation->set_rules('description', 'Descrição', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
-    //$this->form_validation->set_rules('order', 'Ordem', 'required');
+    $this->form_validation->set_rules('order', 'Ordem', 'required');
 
     if ($this->form_validation->run() == FALSE) {
       if (validation_errors()) :
         setMsg(validation_errors(), 'error');
       endif;
     } else {
-      if ($informacoesSecretaria->description !== $this->input->post('description')) {
-        $dados_form['description'] = $this->input->post('description');
-      }
-      if ($informacoesSecretaria->title_short !== $this->input->post('title_short') and !empty($this->input->post('title_short'))) {
-        $dados_form['title_short'] = $this->input->post('title_short');
-      }
-      if ($informacoesSecretaria->title !== $this->input->post('title') and !empty($this->input->post('title'))) {
-        $dados_form['title'] = $this->input->post('title');
-      }
-      if ($informacoesSecretaria->status !== $this->input->post('status')) {
-        $dados_form['status'] = $this->input->post('status');
+
+      if (isset($_FILES['img_destaque']) && !empty($_FILES['img_destaque']['name'])) {
+
+        if (file_exists($informacoesPortalAcademico->img_destaque)) {
+          unlink($informacoesPortalAcademico->img_destaque);
+        }
+
+        $path = "assets/images/portalalunos/$campus->id";
+        is_way($path);
+
+        $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
+        if ($upload) {
+          //upload efetuado
+          $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
+        }
       }
 
-      if ($informacoesSecretaria->order !== $this->input->post('order')) {
+      if ($informacoesPortalAcademico->link_redir !== $this->input->post('link_redir') and !empty($this->input->post('link_redir'))) {
+        $dados_form['link_redir'] = $this->input->post('link_redir');
+      }
+      if ($informacoesPortalAcademico->title !== $this->input->post('title') and !empty($this->input->post('title'))) {
+        $dados_form['title'] = $this->input->post('title');
+      }
+      if ($informacoesPortalAcademico->status !== $this->input->post('status')) {
+        $dados_form['status'] = $this->input->post('status');
+      }
+      if ($informacoesPortalAcademico->order !== $this->input->post('order')) {
         $dados_form['order'] = $this->input->post('order');
       }
 
       $dados_form['user_id'] = $this->session->userdata('codusuario');
-      $dados_form['id'] = $informacoesSecretaria->id;
+      $dados_form['id'] = $informacoesPortalAcademico->id;
       $dados_form['updated_at'] = date('Y-m-d H:i:s');
 
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
@@ -237,8 +248,8 @@ class Painel_portal_alunos extends CI_Controller
       'titulo' => 'UniAtenas',
       'conteudo' => 'paineladm/portalalunos/itens/editar_itens_portal_alunos',
       'dados' => array(
-        'informacoesSecretaria' => $informacoesSecretaria,
-        'page' => "Edição de informações SECRETARIA ACADÊMICA- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'informacoesPortalAcademico' => $informacoesPortalAcademico,
+        'page' => "Edição de informações PORTAL ACADÊMICO- <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         'pagina' => $pagina,
         'tipo' => ''
@@ -254,7 +265,10 @@ class Painel_portal_alunos extends CI_Controller
 
     $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
 
+    $arquivo = $item->img_destaque;
+
     if ($this->painelbd->deletar('page_contents', $item->id)) {
+      unlink($arquivo);
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
       redirect("Painel_portal_alunos/lista_itens_portal_alunos/$uriCampus/$pagina");
     } else {
@@ -262,7 +276,6 @@ class Painel_portal_alunos extends CI_Controller
       redirect("Painel_portal_alunos/lista_itens_portal_alunos/$uriCampus/$pagina");
     }
   }
-
 
   public function cadastrar_pagina_portal_alunos($uriCampus = NULL)
   {
@@ -318,8 +331,6 @@ class Painel_portal_alunos extends CI_Controller
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
-
-
 
   /** Gerenciamento de links uteis */
   public function lista_links_uteis_portal_alunos($uriCampus = NULL, $pageId = null)

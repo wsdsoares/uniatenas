@@ -36,7 +36,7 @@
               <div class="form-line">
                 <label for="title">Link</label>
                 <?php
-                echo form_input(array('name' => 'Link', 'class' => 'form-control', 'placeholder' => 'Ex.: http://www.portalaluno.com.br'), set_value('link_redir'));
+                echo form_input(array('name' => 'link_redir', 'class' => 'form-control', 'placeholder' => 'Ex.: http://www.portalaluno.com.br'), set_value('link_redir'));
                 ?>
               </div>
             </div>
@@ -50,7 +50,7 @@
             <div class="form-group">
               <div class="form-line">
                 <label for="title">Imagem </label>
-                <?php echo form_input(array('name' => 'files', 'type' => 'file', 'class' => 'form-control', 'placeholder' => 'Ano'), set_value('file')); ?>
+                <?php echo form_input(array('name' => 'img_destaque', 'type' => 'file', 'class' => 'form-control'), set_value('img_destaque')); ?>
               </div>
             </div>
           </div>

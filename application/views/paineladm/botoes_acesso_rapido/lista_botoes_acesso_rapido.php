@@ -6,8 +6,8 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
-          echo $msg;
+      if ($msg = getMsg()) {
+        echo $msg;
       }
       ?>
       <div class="header">
@@ -19,12 +19,12 @@
       <div class="botoes-acoes-formularios">
         <div class="container">
           <div class="col-xs-6">
-            <?php echo anchor("Painel_campus/cadastrar_botoes_acesso_rapido/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR Botões de Acesso Rápido', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_campus/cadastrar_botoes_acesso_rapido/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR Botões de Acesso Rápido', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
           <div class="col-xs-6">
-            <?php 
-          echo anchor('Painel_campus/lista_campus_botoes_acessos', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
-          ?>
+            <?php
+            echo anchor('Painel_campus/lista_campus_botoes_acessos', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            ?>
           </div>
         </div>
       </div>
@@ -62,15 +62,15 @@
             </tfoot>
             <tbody>
               <?php
-                        foreach ($dados['listaDosBotoesAcessoRapido'] as $item):
-                            ?>
-              <tr>
-                <td class="center">
-                  <?php 
+              foreach ($dados['listaDosBotoesAcessoRapido'] as $item) :
+              ?>
+                <tr>
+                  <td class="center">
+                    <?php
 
                     echo '<a href=' . base_url("Painel_Campus/editar_botoes_acesso_rapido/$campus->id/$item->idBotao") . '>'
-                        . '<i class="material-icons">edit</i>'
-                        . '</a> ';
+                      . '<i class="material-icons">edit</i>'
+                      . '</a> ';
                     /*echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
@@ -86,51 +86,49 @@
                               . '</a>';
                       }
                       */
-                  ?>
-                </td>
-                <td><?php echo $item->idBotao; ?></td>
-                <td><?php echo $item->title;?></td>
-                <td><?php echo $item->priority;?></td>
-                <td>
-                  <?php 
-                  if($item->link_redirecionamento !=''){
-                    echo anchor($item->link_redirecionamento,'ACESSAR LINK',array('target'=>'_blank')).' - '.$item->link_redirecionamento;
-                  }elseif($item->arquivo !=''){
-                    echo anchor(base_url($item->arquivo),'<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>',array('target' => '_blank'));
-                  }
-                  ?>
-                <td>
-                  <div style="background-color:<?php echo $item->cor_hexadecimal;?>;height:2rem;width:2rem;"></div>
-                  <?php echo $item->cor_hexadecimal;?>
-                </td>
-                </td>
-                <td>
-                  <?php
-                    if($item->status =='0'){
-                        $situacao = 'Inativo';
-                    }else{
-                        $situacao = 'Ativo';
+                    ?>
+                  </td>
+                  <td><?php echo $item->idBotao; ?></td>
+                  <td><?php echo $item->title; ?></td>
+                  <td><?php echo $item->priority; ?></td>
+                  <td>
+                    <?php
+                    if ($item->link_redirecionamento != '') {
+                      echo anchor($item->link_redirecionamento, 'ACESSAR LINK', array('target' => '_blank')) . ' - ' . $item->link_redirecionamento;
+                    } elseif ($item->arquivo != '') {
+                      echo anchor(base_url($item->arquivo), '<button type="button" class="btn btn-info"><i class="material-icons">archive</i> Ver Arquivo</button>', array('target' => '_blank'));
+                    }
+                    ?>
+                  <td>
+                    <div style="background-color:<?php echo $item->cor_hexadecimal; ?>;height:2rem;width:2rem;"></div>
+                    <?php echo $item->cor_hexadecimal; ?>
+                  </td>
+                  </td>
+                  <td>
+                    <?php
+                    if ($item->status == '0') {
+                      $situacao = 'Inativo';
+                    } else {
+                      $situacao = 'Ativo';
                     }
 
                     echo $situacao;
                     ?>
-                </td>
+                  </td>
 
-                <td><?php echo $item->city;?></td>
+                  <td><?php echo $item->city; ?></td>
 
-                <td> <?php echo date("d/m/Y",strtotime($item->created_at)); ?></td>
-                <td>
-                  <?php 
+                  <td> <?php echo date("d/m/Y", strtotime($item->created_at)); ?></td>
+                  <td>
+                    <?php
                     $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo date("d/m/Y",strtotime($dateModification)); 
+                    echo date("d/m/Y H:m:s", strtotime($dateModification)) . ' - ' . $item->userid;
                     ?>
-                </td>
-
-
-              </tr>
+                  </td>
+                </tr>
               <?php
-                endforeach;
-                ?>
+              endforeach;
+              ?>
             </tbody>
           </table>
         </div>
@@ -150,8 +148,7 @@
       <div class="modal-body">
         <p>Você tem certeza que deseja realizar essa ação de deletar o item abaixo?</p>
         <p>Essa ação é <span class="text-danger" style="font-weight: bold">IRREVERSÍVEL</span> e todos os dados
-          ligados a esse item serão removidos <span class="text-danger"
-            style="font-weight: bold">PERMANENTEMENTE</span>.
+          ligados a esse item serão removidos <span class="text-danger" style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
         <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
       </div>
@@ -165,14 +162,14 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
 
-  console.log()
+    console.log()
 
-});
+  });
 </script>

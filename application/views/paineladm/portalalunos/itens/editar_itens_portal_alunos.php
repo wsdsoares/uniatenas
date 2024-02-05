@@ -14,11 +14,11 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()):
+        if ($msg = getMsg()) :
           echo $msg;
         endif;
         ?>
-        <?php echo form_open_multipart("Painel_secretaria/editar_itens_secretaria/$campus->id/$pagina->id/$informacoesSecretaria->id") ?>
+        <?php echo form_open_multipart("Painel_portal_alunos/editar_itens_portal_alunos/$campus->id/$pagina->id/$informacoesPortalAcademico->id") ?>
         <h2 class="card-inside-title">Informações</h2>
         <div class="row clearfix">
           <div class="col-sm-6">
@@ -26,7 +26,7 @@
               <div class="form-line">
                 <label for="title">Título *</label>
                 <?php
-                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Ex.: Apresentação'), set_value('title', $informacoesSecretaria->title));
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Ex.: Apresentação'), set_value('title', $informacoesPortalAcademico->title));
                 ?>
               </div>
             </div>
@@ -34,39 +34,44 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
-                <label for="title">Sub Título</label>
+                <label for="title">Link</label>
                 <?php
-                echo form_input(array('name' => 'title_short', 'class' => 'form-control', 'placeholder' => 'Ex.: Apresentação do setor '), set_value('title_short', $informacoesSecretaria->title_short));
+                echo form_input(array('name' => 'link_redir', 'class' => 'form-control', 'placeholder' => 'Ex.: http://www.portalaluno.com.br'), set_value('link_redir', $informacoesPortalAcademico->link_redir));
                 ?>
               </div>
             </div>
           </div>
         </div>
-
-
         <div class="row clearfix">
-          <!-- <div class="col-xs-3">
+
+          <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
-                <label for="status">Item da Comutação</label>
-                <?php
-                if ($informacoesSecretaria->order == 'comutacao') {
-                  $checkedComutacao = TRUE;
-                } else {
-                  $checkedComutacao = FALSE;
-                }
-                echo form_checkbox('order', 'comutacao', $checkedComutacao);
-                ?>
+                <label for="title">Imagem </label>
+                <?php echo form_input(array('name' => 'img_destaque', 'type' => 'file', 'class' => 'form-control'), set_value('img_destaque')); ?>
               </div>
             </div>
-          </div> -->
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <div class="form-line ">
+                <label for="title ">Imagem Atual</label>
+                <img src="<?php echo base_url(verifyImg($informacoesPortalAcademico->img_destaque)); ?>" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row clearfix">
+
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
                 <label for="priority">Ordem <small> (Exibido dentro da página)</small>
                   <br /><small>A ordem será sequencial. </small></label>
                 <?php
-                echo form_input(array('name' => 'order', 'type' => 'number', 'min' => '1', 'class' => 'form-control'), set_value('order', $informacoesSecretaria->order));
+                echo form_input(array('name' => 'order', 'type' => 'number', 'min' => '1', 'class' => 'form-control'), set_value('order', $informacoesPortalAcademico->order));
                 ?>
               </div>
             </div>
@@ -81,7 +86,7 @@
                   '0' => 'Oculto - Inativo'
                 );
 
-                echo form_dropdown('status', $optionSituation, set_value('status', $informacoesSecretaria->status), array('class' => 'form-control show-tick'));
+                echo form_dropdown('status', $optionSituation, set_value('status', $informacoesPortalAcademico->status), array('class' => 'form-control show-tick'));
                 ?>
               </div>
             </div>
@@ -89,28 +94,10 @@
         </div>
 
         <div class="row clearfix">
-          <div class="col-sm-12">
-            <label for="title">Descrição do item da página Secretaria Acadêmica
-              <small> (Explicação e inforamções)</small>
-            </label>
-            <?php
-            echo form_textarea('description', to_html(set_value('description', $informacoesSecretaria->description)));
-            ?>
-          </div>
-          <script type="text/javascript">
-            // replace: substitui o formato padrão do textarea (descricao)
-            // e aplica as configurações do CKEDitor através do arquivo config.js
-            var editor = CKEDITOR.replace('description', {
-              customConfig: 'config.js'
-            });
-          </script>
-        </div>
-
-        <div class="row clearfix">
           <div class="col-sm-6">
             <?php
             echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-            echo anchor("Painel_secretaria/lista_itens_secretaria/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo anchor("Painel_portal_alunos/lista_itens_portal_alunos/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
             ?>
           </div>
         </div>

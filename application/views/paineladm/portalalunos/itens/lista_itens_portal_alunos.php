@@ -33,7 +33,7 @@
       <br />
       <?php
 
-      if (isset($listaItensPaginaSecretaria) and $listaItensPaginaSecretaria != '') {
+      if (isset($listaItensPaginaPortalAlunos) and $listaItensPaginaPortalAlunos != '') {
       ?>
         <div class="body">
           <div class="table-responsive">
@@ -43,9 +43,9 @@
                   <th>Ações</th>
                   <th>#</th>
                   <th>Título</th>
-                  <th>Sub Título</th>
+                  <th>Imagem</th>
+                  <th>Link</th>
                   <th>Situação</th>
-                  <th>Descrição...</th>
                   <th>Modificado em, por:</th>
                 </tr>
               </thead>
@@ -54,15 +54,15 @@
                   <th>Ações</th>
                   <th>#</th>
                   <th>Título</th>
-                  <th>Sub Título</th>
+                  <th>Imagem</th>
+                  <th>Link</th>
                   <th>Situação</th>
-                  <th>Descrição...</th>
                   <th>Modificado em, por:</th>
                 </tr>
               </tfoot>
               <tbody>
                 <?php
-                foreach ($dados['listaItensPaginaSecretaria'] as $item) :
+                foreach ($dados['listaItensPaginaPortalAlunos'] as $item) :
                 ?>
                   <tr>
                     <td class="center">
@@ -84,12 +84,25 @@
                     </td>
                     <td>
                       <?php
-                      if ($item->tipo == 'informacoesPagina' and $item->order == 'comutacao') {
-                        echo 'ITEM - Comutação';
+
+                      if ($item->img_destaque != '') {
+                        echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
+                      } else {
+                        echo '<span class="alert alert-danger">SEM IMAGEM</span>';
                       }
                       ?>
                     </td>
-
+                    <td>
+                      <span>
+                        <?php
+                        if ($item->link_redir != '') {
+                          echo anchor($item->link_redir, 'ACESSAR LINK', array('target' => '_blank')) . '<br/>';
+                        } else {
+                          echo '!************* SEM LINK CADASTRADO ************!</span>';
+                        }
+                        ?>
+                      </span>
+                    </td>
                     <td>
                       <?php
                       if ($item->status == '0') {
@@ -102,18 +115,11 @@
                       ?>
                     </td>
                     <td>
-                      <?php echo substr($item->description, 0, 150) . '...'; ?>
-                    </td>
-
-
-                    <td>
                       <?php
                       $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
                       echo $dateModification . ' - ' . $item->user_id;
                       ?>
                     </td>
-
-
                   </tr>
                 <?php
                 endforeach;

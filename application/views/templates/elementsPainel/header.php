@@ -233,7 +233,7 @@ $permissionCampusArray = '';
           </ul>
         </li>
 
-        <li class="header">Portais</li>
+        <li class="header">Menu - Serviços - Portais</li>
         <li>
           <a href="javascript:void(0);" class="menu-toggle">
             <i class="material-icons">view_list</i>
@@ -390,7 +390,7 @@ $permissionCampusArray = '';
             </li>
             <li>
               <?php
-              echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
+              //echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
               ?>
             </li>
             <li>

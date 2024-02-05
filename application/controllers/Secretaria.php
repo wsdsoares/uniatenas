@@ -185,7 +185,7 @@ class Secretaria extends CI_Controller
     {
         $this->load->helper('file');
         $page = $this->uri->segment(3);
-
+s
         $this->form_validation->set_rules('name', 'Título', 'required');
 
         if ($this->input->post('campusid') == '0') {

@@ -415,7 +415,6 @@ class Painel_campus extends CI_Controller
         $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf');
         $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-
         $colunasResultadoConsulta =
             array(
                 'acessos_rapidos.id as idBotao',
@@ -427,6 +426,7 @@ class Painel_campus extends CI_Controller
                 'acessos_rapidos.arquivo',
                 'acessos_rapidos.created_at',
                 'acessos_rapidos.updated_at',
+                'acessos_rapidos.userid',
                 'campus.id',
                 'campus.city',
             );
