@@ -2,24 +2,28 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class IniciacaoCientifica extends CI_Controller {
+class IniciacaoCientifica extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         header('Access-Control-Allow-Origin: *');
         parent::__construct();
         $this->load->model('Site_model', 'bancosite');
         $this->load->model('Cpainel_model', 'sitebank');
     }
 
-    public function index() {
+    public function index()
+    {
         $this->inicio_pesquisa();
     }
 
-    public function comite_etica($uricampus = NULL) {
+    public function comite_etica($uricampus = NULL)
+    {
 
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.instagram', 'campus.city', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaComiteEticaPesquisa', 'campusid'=>$dataCampus->id))->row();
+        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaComiteEticaPesquisa', 'campusid' => $dataCampus->id))->row();
 
 
         //$page = $this->bancosite->getWhere('pages', array('title' => 'cep','campusid'=>$dataCampus->id))->row();
@@ -34,16 +38,16 @@ class IniciacaoCientifica extends CI_Controller {
 
         //$pages_content = $this->bancosite->getQuery($consulta)->result();
 
-        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina','page_contents.status'=> 1);
-        $pages_content = $this->bancosite->where('*','page_contents',null, $whereConteudoPagina )->result();
+        $whereConteudoPagina = array('page_contents.pages_id' => $page->id, 'page_contents.tipo' => 'informacoesPagina', 'page_contents.status' => 1);
+        $pages_content = $this->bancosite->where('*', 'page_contents', null, $whereConteudoPagina)->result();
         // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
-        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'contatos'))->row();
 
-        $colunasResultadoAtendimento = array('page_contents.id','page_contents.title','page_contents.description','page_contents.status','page_contents.pages_id');
-        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento,'page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'atendimento'))->row();
+        $colunasResultadoAtendimento = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento, 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'atendimento'))->row();
 
-        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
-        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis'))->result();
+        $colunasResultadoLinksUteis = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis, 'page_contents', null, array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis'))->result();
 
 
         //$conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
@@ -80,37 +84,38 @@ class IniciacaoCientifica extends CI_Controller {
         $this->load->view('templates/master', $data);
     }
 
-    public function inicio_pesquisa($uricampus = NULL) {
-        if($uricampus == null){
+    public function inicio_pesquisa($uricampus = NULL)
+    {
+        if ($uricampus == null) {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.instagram', 'campus.city', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao', 'campusid'=>$dataCampus->id))->row();
+        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao', 'campusid' => $dataCampus->id))->row();
 
         // $consulta = "SELECT *
         //                 FROM
         //                     at_site.page_contents
         //                 where page_contents.tipo like 'informacoesPagina'
         //                 and page_contents.pages_id = $page->id";
-// $consulta = "SELECT *
-// FROM
-//     at_site.page_contents
-// where page_contents.order like 'texto%'
-// and page_contents.pages_id = $page->id";                        
+        // $consulta = "SELECT *
+        // FROM
+        //     at_site.page_contents
+        // where page_contents.order like 'texto%'
+        // and page_contents.pages_id = $page->id";                        
 
         // $pages_content = $this->bancosite->getQuery($consulta)->result();
-        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina' );
-        $pages_content = $this->bancosite->where('*','page_contents',null, $whereConteudoPagina )->result();
+        $whereConteudoPagina = array('page_contents.pages_id' => $page->id, 'page_contents.tipo' => 'informacoesPagina');
+        $pages_content = $this->bancosite->where('*', 'page_contents', null, $whereConteudoPagina)->result();
         // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
-        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'contatos'))->row();
 
-        $colunasResultadoAtendimento = array('page_contents.id','page_contents.title','page_contents.description','page_contents.status','page_contents.pages_id');
-        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento,'page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'atendimento'))->row();
+        $colunasResultadoAtendimento = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento, 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'atendimento'))->row();
 
-        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
-        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis'))->result();
+        $colunasResultadoLinksUteis = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis, 'page_contents', null, array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis'))->result();
 
         //$filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
         //$tablePhones = "campus_has_setores";
@@ -133,21 +138,21 @@ class IniciacaoCientifica extends CI_Controller {
                 'conteudoAtendimento' => $conteudoAtendimento = isset($conteudoAtendimento) ? $conteudoAtendimento : '',
                 'conteudoLinksUteis' => $conteudoLinksUteis = isset($conteudoLinksUteis) ? $conteudoLinksUteis : '',
                 'contatos' => '',
-                //'contatos' => $phones,
             )
         );
         $this->output->cache(14400);
         $this->load->view('templates/master', $data);
     }
 
-    public function revista_cientifica($uricampus = NULL, $idRevista) {
-      if($uricampus == null){
-        redirect("");
-      }
+    public function revista_cientifica($uricampus = NULL, $idRevista)
+    {
+        if ($uricampus == null) {
+            redirect("");
+        }
 
-      $dataCampus = $this->bancosite->where(array('campus.id','campus.name','campus.shurtName','campus.instagram','campus.city','campus.uf','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.name', 'campus.shurtName', 'campus.instagram', 'campus.city', 'campus.uf', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-      $sql = "SELECT * FROM at_site.publicacoes
+        $sql = "SELECT * FROM at_site.publicacoes
             where revistas_id =$idRevista
             order by year desc";
 
@@ -158,7 +163,7 @@ class IniciacaoCientifica extends CI_Controller {
 
         $publicacoes = $this->bancosite->getQuery($sql)->result();
         $years = $this->bancosite->getQuery($sqlYear)->result();
-        $revistas = $this->bancosite->getWhere('revistas', array('id'=>$idRevista))->row();
+        $revistas = $this->bancosite->getWhere('revistas', array('id' => $idRevista))->row();
 
         $data = array(
             'head' => array(
@@ -171,26 +176,27 @@ class IniciacaoCientifica extends CI_Controller {
             'dados' => array(
                 'publicacoes' => $publicacoes,
                 'campus' => $dataCampus,
-                'revistas'=>$revistas,
+                'revistas' => $revistas,
                 'years' => $years,
                 'revista_id' => $idRevista,
             )
-                //'news' => $news
+
         );
         $this->load->view('templates/master', $data);
     }
 
-    public function revistas($uricampus = NULL) {
-        if($uricampus == null){
+    public function revistas($uricampus = NULL)
+    {
+        if ($uricampus == null) {
             redirect("");
         }
-        
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.name','campus.shurtName','campus.instagram','campus.city','campus.uf','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
 
-        $page = $this->bancosite->getWhere('pages', array('title' => 'revistas','campusid'=>$dataCampus->id))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.name', 'campus.shurtName', 'campus.instagram', 'campus.city', 'campus.uf', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
+
+        $page = $this->bancosite->getWhere('pages', array('title' => 'revistas', 'campusid' => $dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
 
-		$revistas = $this->bancosite->getQuery("SELECT * FROM revistas where capa<>'null' and status =1 and campus_id=$dataCampus->id")->result();
+        $revistas = $this->bancosite->getQuery("SELECT * FROM revistas where capa<>'null' and status =1 and campus_id=$dataCampus->id")->result();
 
 
         $data = array(
@@ -210,30 +216,31 @@ class IniciacaoCientifica extends CI_Controller {
         $this->output->cache(14400);
         $this->load->view('templates/master', $data);
     }
-    
-    
-    public function trabalho_conclusao_curso($uricampus = NULL) {
-        if($uricampus == null){
+
+
+    public function trabalho_conclusao_curso($uricampus = NULL)
+    {
+        if ($uricampus == null) {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.shurtName','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.instagram', 'campus.city', 'campus.shurtName', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaTcc', 'campusid'=>$dataCampus->id))->row();
+        $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaTcc', 'campusid' => $dataCampus->id))->row();
 
-        $whereConteudoPagina = array('page_contents.pages_id'=>$page->id, 'page_contents.tipo'=> 'informacoesPagina','page_contents.status'=>1);
-        $pages_content = $this->bancosite->where('*','page_contents',null, $whereConteudoPagina )->result();
-        
-        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+        $whereConteudoPagina = array('page_contents.pages_id' => $page->id, 'page_contents.tipo' => 'informacoesPagina', 'page_contents.status' => 1);
+        $pages_content = $this->bancosite->where('*', 'page_contents', null, $whereConteudoPagina)->result();
 
-        $colunasResultadoAtendimento = array('page_contents.id','page_contents.title','page_contents.description','page_contents.status','page_contents.pages_id');
-        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento,'page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'atendimento'))->row();
+        $pages_content_contato = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'contatos'))->row();
 
-        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
-        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis'))->result();
+        $colunasResultadoAtendimento = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento, 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'atendimento'))->row();
 
-   
-        
+        $colunasResultadoLinksUteis = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis, 'page_contents', null, array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis'))->result();
+
+
+
         // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
         // $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal","contatos_setores.visiblepage","contatos_setores.email","contatos_setores.phonesetor");
         // $tablePhones = "campus_has_setores";
@@ -242,7 +249,7 @@ class IniciacaoCientifica extends CI_Controller {
         // $phones = $this->sitebank->where($filedPhones,$tablePhones,$dataJoinPhones,$wherePhones)->result();
 
         $revistas = $this->bancosite->getQuery('SELECT * FROM revistas where id in(2,3)')->result();
-        
+
         $queryConteudoCursosTCCs = "
         SELECT 
           campus_has_courses.id as idCursoCampus,
@@ -294,15 +301,16 @@ class IniciacaoCientifica extends CI_Controller {
         $this->load->view('templates/master', $data);
     }
 
-    public function artigos_cientificos($uricampus=NULL,$idRevista=NULL, $year=NULL) {
-        if($uricampus == null){
+    public function artigos_cientificos($uricampus = NULL, $idRevista = NULL, $year = NULL)
+    {
+        if ($uricampus == null) {
             redirect("");
         }
         if (!isset($idRevista) and $revista == NULL) {
             redirect("iniciacaoCientifica/revistas/$uricampus");
         }
-        
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.name','campus.shurtName','campus.instagram','campus.city','campus.uf','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.name', 'campus.shurtName', 'campus.instagram', 'campus.city', 'campus.uf', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
 
         $sql = "SELECT * FROM at_site.publicacoes
             where revistas_id =$idRevista
@@ -329,31 +337,33 @@ class IniciacaoCientifica extends CI_Controller {
         $this->output->cache(6200);
         $this->load->view('templates/master', $data);
     }
-    
-    public function listaSemestresTCC($uricampus = NULL,$courseId=NULL) {
-        if($uricampus == null){
+
+    public function listaSemestresTCC($uricampus = NULL, $courseId = NULL)
+    {
+        if ($uricampus == null) {
             redirect("");
         }
         $colunasCampus = array(
-          'campus.id',
-          'campus.name',
-          'campus.city',
-          'campus.shurtName');
-        $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
-        
+            'campus.id',
+            'campus.name',
+            'campus.city',
+            'campus.shurtName'
+        );
+        $dataCampus = $this->bancosite->where($colunasCampus, 'campus', NULL, array('shurtName' => $uricampus))->row();
+
         $colunaResultadosCursos = array(
-          'campus_has_courses.id','courses.name','courses.types','courses.icone'
+            'campus_has_courses.id', 'courses.name', 'courses.types', 'courses.icone'
         );
         $joinCursosCampus = array(
-          'courses'=>'courses.id = campus_has_courses.courses_id',
-          'campus'=>'campus.id = campus_has_courses.campus_id'
+            'courses' => 'courses.id = campus_has_courses.courses_id',
+            'campus' => 'campus.id = campus_has_courses.campus_id'
         );
 
         $whereCusosCampus = array(
-          'campus_has_courses.id'=>$courseId,
-          'campus.id' => $dataCampus->id
+            'campus_has_courses.id' => $courseId,
+            'campus.id' => $dataCampus->id
         );
-        $cursos = $this->bancosite->where($colunaResultadosCursos,'campus_has_courses',$joinCursosCampus, $whereCusosCampus)->row();
+        $cursos = $this->bancosite->where($colunaResultadosCursos, 'campus_has_courses', $joinCursosCampus, $whereCusosCampus)->row();
 
         // $consultaAnosTCC =
         //   "SELECT 
@@ -365,7 +375,7 @@ class IniciacaoCientifica extends CI_Controller {
         //     group by(year) order by 1 desc";
 
         $consultaAnosTCC =
-        "SELECT 
+            "SELECT 
           monography.year
         FROM
             `campus_has_courses`
@@ -384,8 +394,8 @@ class IniciacaoCientifica extends CI_Controller {
 		group by ( monography.year)
         ORDER BY 1 desc";
 
-      
-         $yearsTCC = $this->bancosite->getQuery($consultaAnosTCC)->result();
+
+        $yearsTCC = $this->bancosite->getQuery($consultaAnosTCC)->result();
         //$yearsTCC = $this->bancosite->getQuery("SELECT year FROM monography where coursesid =$courseId group by(year) order by 1 desc")->result();
 
         $data = array(
@@ -406,32 +416,34 @@ class IniciacaoCientifica extends CI_Controller {
         $this->load->view('templates/master', $data);
     }
 
-    public function listaMonografias($uricampus = NULL,$courseId=NULL,$yearMonography=NULL) {
-        if($uricampus == null){
+    public function listaMonografias($uricampus = NULL, $courseId = NULL, $yearMonography = NULL)
+    {
+        if ($uricampus == null) {
             redirect("");
         }
-       
+
         $colunasCampus = array(
-          'campus.id',
-          'campus.name',
-          'campus.city',
-          'campus.shurtName');
-        $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
-        
+            'campus.id',
+            'campus.name',
+            'campus.city',
+            'campus.shurtName'
+        );
+        $dataCampus = $this->bancosite->where($colunasCampus, 'campus', NULL, array('shurtName' => $uricampus))->row();
+
         $colunaResultadosCursos = array(
-          'campus_has_courses.id','courses.name','courses.types','courses.icone'
+            'campus_has_courses.id', 'courses.name', 'courses.types', 'courses.icone'
         );
         $joinCursosCampus = array(
-          'courses'=>'courses.id = campus_has_courses.courses_id',
-          'campus'=>'campus.id = campus_has_courses.campus_id'
+            'courses' => 'courses.id = campus_has_courses.courses_id',
+            'campus' => 'campus.id = campus_has_courses.campus_id'
         );
 
         $whereCusosCampus = array(
-          'campus_has_courses.id'=>$courseId,
-          'campus.id' => $dataCampus->id
+            'campus_has_courses.id' => $courseId,
+            'campus.id' => $dataCampus->id
         );
-        $cursos = $this->bancosite->where($colunaResultadosCursos,'campus_has_courses',$joinCursosCampus, $whereCusosCampus)->row();
-        
+        $cursos = $this->bancosite->where($colunaResultadosCursos, 'campus_has_courses', $joinCursosCampus, $whereCusosCampus)->row();
+
         $consultaMonografia = "
         select 
           monography.id, 
@@ -445,7 +457,7 @@ class IniciacaoCientifica extends CI_Controller {
           and monography.files not like '%/<'
           and monography.status = 1
         ";
-        $monographys = $this->bancosite->getQuery($consultaMonografia)->result();           
+        $monographys = $this->bancosite->getQuery($consultaMonografia)->result();
 
         $data = array(
             'head' => array(
@@ -458,13 +470,11 @@ class IniciacaoCientifica extends CI_Controller {
             'dados' => array(
                 'campus' => $dataCampus,
                 'curso' => $cursos,
-                'year'=>$yearMonography,
+                'year' => $yearMonography,
                 'listasMonografias' => $monographys,
             )
         );
         $this->output->cache(14400);
         $this->load->view('templates/master', $data);
     }
-
-
 }

@@ -15,7 +15,7 @@
       <div class="body">
         <div class="container">
           <div class="row">
-            <div style="background">
+            <div>
               <span>
                 <i><?php echo "Local para gestão de itens Gerais no menu Serviços do Site: 
             <br> <u>Itens Gerais</u> (Biblioteca, Secretaria, Portal Aluno e Portal Professor) 
@@ -35,7 +35,7 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
+      if ($msg = getMsg()) {
         echo $msg;
       }
       ?>

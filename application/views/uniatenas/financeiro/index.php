@@ -47,11 +47,6 @@
   }
 </style>
 
-
-<?php
-//$campus = $this->uri->segment(3);
-?>
-
 <div class="container sectionFinanciamentos">
   <div class="sectionFinanciamentos-header">
     <h3>

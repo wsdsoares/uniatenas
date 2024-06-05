@@ -6,8 +6,8 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
-          echo $msg;
+      if ($msg = getMsg()) {
+        echo $msg;
       }
       ?>
       <div class="header">
@@ -19,23 +19,23 @@
       <br />
       <div class="body">
         <div class="row">
-          <?php 
+          <?php
 
-          foreach($dados['campus'] as $campus){
+          foreach ($dados['campus'] as $campus) {
           ?>
 
-          <div class="col-md-3">
-            <div class="card" style="height:10rem;padding-top:1rem;">
-              <div class="center">
-                <h4 class="card-title"><?php echo $campus->name.'<br/> '.$campus->city.'('.$campus->uf.')'; ?></h4>
+            <div class="col-md-3">
+              <div class="card" style="height:10rem;padding-top:1rem;">
+                <div class="center">
+                  <h4 class="card-title"><?php echo $campus->name . '<br/> ' . $campus->city . '(' . $campus->uf . ')'; ?></h4>
 
-                <?php
-                echo anchor("Painel_pesquisa_revistas/lista_informacoes_revistas/$campus->id", '<span>Ver Revistas</span>','class="btn btn-lg btn-block btn-info"');
-                ?>
+                  <?php
+                  echo anchor("Painel_publicacoes/lista_revistas/$campus->id", '<span>Ver Revistas</span>', 'class="btn btn-lg btn-block btn-info"');
+                  ?>
+                </div>
               </div>
             </div>
-          </div>
-          <?php 
+          <?php
           }
           ?>
           <br />

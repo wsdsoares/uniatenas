@@ -90,8 +90,7 @@ class Graduacao extends CI_Controller
     $campusCursos = array();
     count($cursos);
     for ($i = 0; $i < count($cursos); $i++) {
-      $sqlCampus = '
-                        SELECT
+      $sqlCampus = ' SELECT
                             campus.id, 
                             campus.name,
                             campus.city,

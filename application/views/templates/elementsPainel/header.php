@@ -398,6 +398,11 @@ $permissionCampusArray = '';
               echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
               ?>
             </li>
+            <li>
+              <?php
+              echo anchor('Painel_estagios_convenios/lista_campus_estagios_convenios', '<span>Estágio e Convênios</span>');
+              ?>
+            </li>
           </ul>
 
         </li>
@@ -497,7 +502,7 @@ $permissionCampusArray = '';
                 </li>
               </ul>
               <?php
-              echo anchor('Painel_pesquisa_revistas/lista_campus_revistas', '<span>Revistas</span>');
+              echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
               ?>
               <?php
               echo anchor('Painel_iniciacao_cientifica/lista_campus_iniciacao', '<span>Itens Iniação</span>');

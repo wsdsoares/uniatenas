@@ -21,7 +21,14 @@ class Painel_graduacao extends CI_Controller
     {
 
         $uriModalidade = $this->uri->segment(3);
-        $listagemDosCursos = $this->painelbd->where('*', 'courses', NULL, array('courses.modalidade' => $uriModalidade))->result();
+        $array_where = null;
+        if ($uriModalidade == 'ead') {
+            $array_where = array('courses.modalidade' => $uriModalidade, 'types' => 'ead');
+        }
+        if ($uriModalidade == 'presencial') {
+            $array_where = array('courses.modalidade' => $uriModalidade);
+        }
+        $listagemDosCursos = $this->painelbd->where('*', 'courses', NULL, $array_where)->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/cursos/todos_cursos',

@@ -1,11 +1,13 @@
 <?php
 
 if (!defined("BASEPATH"))
-    exit("No direct script access allowed");
+  exit("No direct script access allowed");
 
-class Painel_publicacoes extends CI_Controller {
+class Painel_publicacoes extends CI_Controller
+{
 
-  public function __construct() {
+  public function __construct()
+  {
     parent::__construct();
     verificaLogin();
     $this->load->model('painel_model', 'painelbd');
@@ -14,82 +16,87 @@ class Painel_publicacoes extends CI_Controller {
     $this->load->helper('file');
   }
 
-  public function lista_campus_revistas() {
-      verificaLogin();
+  public function lista_campus_revistas()
+  {
+    verificaLogin();
 
-      $colunasCampus = 
-          array('campus.id',
-          'campus.name',
-          'campus.city',
-          'campus.uf'
-      );
-  
-      $listagemDosCampus = $this->painelbd->where($colunasCampus,'campus',NULL, array('visible' => 'SIM'))->result();
-      $data = array(
-          'titulo' => 'UniAtenas',
-          'conteudo' => 'paineladm/itens_iniciacao/lista_campus_revistas',
-          'dados' => array(
-              'page' => "Informações Revistas Científicas",
-              'campus'=> $listagemDosCampus,
-              'tipo'=>''
-          )
+    $colunasCampus =
+      array(
+        'campus.id',
+        'campus.name',
+        'campus.city',
+        'campus.uf'
       );
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+    $listagemDosCampus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('visible' => 'SIM'))->result();
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/itens_iniciacao/lista_campus_revistas',
+      'dados' => array(
+        'page' => "Informações Revistas Científicas",
+        'campus' => $listagemDosCampus,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function lista_revistas($uriCampus=NULL) {
-    
-      $colunasResultadoRevistas = array(
-        'revistas.id',
-        'revistas.id as pagina_id',
-        'revistas.titulo',
-        'revistas.status', 
-        'revistas.capa', 
-        'revistas.modalidade',
-        'revistas.linkRedirect',
-        'revistas.user_id', 
-        'revistas.created_at',
-        'revistas.updated_at'
-      );
-      
-      $colunasCampus = array('campus.id','campus.name','campus.city');
-      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+  public function lista_revistas($uriCampus = NULL)
+  {
 
-      $dadosRevistas = $this->painelbd->where($colunasResultadoRevistas,'revistas',null,array('revistas.campus_id'=>$campus->id))->result();
-      $data = array(
-        'titulo' => 'Início',
-        'conteudo' => 'paineladm/itens_iniciacao/publicacoes/lista_revistas',
-        'dados' => array(
-          'page'=> "Lista de Revistas <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-          'revistas' => $dadosRevistas,
-          'campus'=>$campus,
-          'tipo' => 'tabelaDatatable')
-      );
-
-      $this->load->view('templates/layoutPainelAdm', $data);
-  }
-
-  public function registro_revistas($uriCampus=NULL,$itemRevista=NULL) {
-    
     $colunasResultadoRevistas = array(
       'revistas.id',
       'revistas.id as pagina_id',
       'revistas.titulo',
-      'revistas.status', 
-      'revistas.capa', 
+      'revistas.status',
+      'revistas.capa',
       'revistas.modalidade',
       'revistas.linkRedirect',
-      'revistas.user_id', 
+      'revistas.user_id',
       'revistas.created_at',
       'revistas.updated_at'
     );
-    
-    $colunasCampus = array('campus.id','campus.name','campus.city');
-    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $dadosRevistas = $this->painelbd->where($colunasResultadoRevistas,'revistas',null,array('revistas.campus_id'=>$campus->id))->result();
-    
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $dadosRevistas = $this->painelbd->where($colunasResultadoRevistas, 'revistas', null, array('revistas.campus_id' => $campus->id))->result();
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/lista_revistas',
+      'dados' => array(
+        'page' => "Lista de Revistas <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'revistas' => $dadosRevistas,
+        'campus' => $campus,
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function registro_revistas($uriCampus = NULL, $itemRevista = NULL)
+  {
+
+    $colunasResultadoRevistas = array(
+      'revistas.id',
+      'revistas.id as pagina_id',
+      'revistas.titulo',
+      'revistas.status',
+      'revistas.capa',
+      'revistas.modalidade',
+      'revistas.linkRedirect',
+      'revistas.user_id',
+      'revistas.created_at',
+      'revistas.updated_at'
+    );
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $dadosRevistas = $this->painelbd->where($colunasResultadoRevistas, 'revistas', null, array('revistas.campus_id' => $campus->id))->result();
+
     $this->form_validation->set_rules('titulo', 'Título', 'required');
     $this->form_validation->set_rules('modalidade', 'Modalidade', 'required');
     $this->form_validation->set_rules('description', 'Descrição', 'required');
@@ -101,11 +108,11 @@ class Painel_publicacoes extends CI_Controller {
     }
 
     if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()):
-          setMsg(validation_errors(), 'error');
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
       endif;
-    }else {
-      
+    } else {
+
       $path = "assets/images/revistas/$campus->id";
       is_way($path);
 
@@ -113,64 +120,65 @@ class Painel_publicacoes extends CI_Controller {
 
       $upload = $this->painelbd->uploadFiles('capa', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', $name_tmp);
 
-      $dados_form['capa'] = $path.'/'.$upload['file_name'];
+      $dados_form['capa'] = $path . '/' . $upload['file_name'];
       $dados_form['titulo'] = $this->input->post('titulo');
       $dados_form['modalidade'] = $this->input->post('modalidade');
       $dados_form['description'] = $this->input->post('description');
       $dados_form['status'] = $this->input->post('status');
       $dados_form['campus_id'] = $campus->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
-      
-      if($this->input->post('modalidade')=='EXTERNA' and $this->input->post('linkRedirect') != ''){
+
+      if ($this->input->post('modalidade') == 'EXTERNA' and $this->input->post('linkRedirect') != '') {
         $dados_form['linkRedirect'] = $this->input->post('linkRedirect');
       }
-      if($this->input->post('issn') != ''){
+      if ($this->input->post('issn') != '') {
         $dados_form['issn'] = $this->input->post('issn');
       }
 
-      if ($this->painelbd->salvar('revistas', $dados_form) == TRUE){
+      if ($this->painelbd->salvar('revistas', $dados_form) == TRUE) {
         setMsg('<p>Revista incluída com sucesso.</p>', 'success');
         redirect(base_url("Painel_publicacoes/lista_revistas/$campus->id"));
-      }else{
+      } else {
         setMsg('<p>Erro! Houve erro no cadastro.</p>', 'error');
       }
-
     }
     $data = array(
       'titulo' => 'Cadastro de Revistas',
       'conteudo' => 'paineladm/itens_iniciacao/revistas/registro_revistas',
       'dados' => array(
-        'page'=> "Cadastro de Revista <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Cadastro de Revista <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         // /'revistas' => $dadosRevistas,
-        'campus'=>$campus,
-        'tipo' => '')
+        'campus' => $campus,
+        'tipo' => ''
+      )
     );
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_registro_revistas($uriCampus=NULL,$idRevista=NULL) {
-      
+  public function editar_registro_revistas($uriCampus = NULL, $idRevista = NULL)
+  {
+
     $colunasResultadoRevistas = array(
       'revistas.id',
       'revistas.id as pagina_id',
       'revistas.titulo',
-      'revistas.status', 
-      'revistas.capa', 
-      'revistas.description', 
-      'revistas.issn', 
+      'revistas.status',
+      'revistas.capa',
+      'revistas.description',
+      'revistas.issn',
       'revistas.modalidade',
       'revistas.linkRedirect',
-      'revistas.user_id', 
+      'revistas.user_id',
       'revistas.created_at',
       'revistas.updated_at'
     );
-    
-    $colunasCampus = array('campus.id','campus.name','campus.city');
-    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $revista = $this->painelbd->where($colunasResultadoRevistas,'revistas',null,array('revistas.id'=>$idRevista))->row();
-    
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $revista = $this->painelbd->where($colunasResultadoRevistas, 'revistas', null, array('revistas.id' => $idRevista))->row();
+
     $this->form_validation->set_rules('titulo', 'Título', 'required');
     $this->form_validation->set_rules('modalidade', 'Modalidade', 'required');
     $this->form_validation->set_rules('description', 'Descrição', 'required');
@@ -182,22 +190,22 @@ class Painel_publicacoes extends CI_Controller {
     }
 
     if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()):
-          setMsg(validation_errors(), 'error');
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
       endif;
-    }else {
+    } else {
       if (isset($_FILES['capa']) && !empty($_FILES['capa']['name'])) {
         if (file_exists($revista->capa)) {
           unlink($revista->capa);
         }
         $path = "assets/images/revistas/$campus->id";
         is_way($path);
-        
+
         $name_tmp = noAccentuation($this->input->post('titulo'));
 
         $upload = $this->painelbd->uploadFiles('capa', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', $name_tmp);
-        
-        $dados_form['capa'] = $path.'/'.$upload['file_name'];
+
+        $dados_form['capa'] = $path . '/' . $upload['file_name'];
       }
 
       if ($revista->titulo != $this->input->post('titulo')) {
@@ -215,91 +223,98 @@ class Painel_publicacoes extends CI_Controller {
       if ($revista->status != $this->input->post('status')) {
         $dados_form['status'] = $this->input->post('status');
       }
-      
-      if($this->input->post('modalidade')=='EXTERNA' and $this->input->post('linkRedirect') != '' and $revista->linkRedirect != $this->input->post('linkRedirect')){
+
+      if ($this->input->post('modalidade') == 'EXTERNA' and $this->input->post('linkRedirect') != '' and $revista->linkRedirect != $this->input->post('linkRedirect')) {
         $dados_form['linkRedirect'] = $this->input->post('linkRedirect');
       }
-      if($this->input->post('issn') != '' and $revista->issn != $this->input->post('issn')){
+      if ($this->input->post('issn') != '' and $revista->issn != $this->input->post('issn')) {
         $dados_form['issn'] = $this->input->post('issn');
       }
-      
+
       $dados_form['id'] = $revista->id;
       $dados_form['campus_id'] = $campus->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
 
-      if ($this->painelbd->salvar('revistas', $dados_form) == TRUE){
+      if ($this->painelbd->salvar('revistas', $dados_form) == TRUE) {
         setMsg('<p>Revista editada com sucesso.</p>', 'success');
         redirect(base_url("Painel_publicacoes/lista_revistas/$campus->id"));
-      }else{
+      } else {
         setMsg('<p>Erro! Houve erro no cadastro.</p>', 'error');
       }
-
     }
     $data = array(
       'titulo' => 'Cadastro de Revistas',
       'conteudo' => 'paineladm/itens_iniciacao/revistas/editar_registro_revistas',
       'dados' => array(
-        'page'=> "Edição dados de Revista <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Edição dados de Revista <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'revista' => $revista,
-        'campus'=>$campus,
-        'tipo' => '')
+        'campus' => $campus,
+        'tipo' => ''
+      )
     );
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletar_item_revista($uriCampus=NULL,$id = NULL)
+  public function deletar_item_revista($uriCampus = NULL, $id = NULL)
   {
-      verifica_login();
-  
-      $item = $this->painelbd->where('*','page_contents', NULL, array('page_contents.id' => $id))->row(); 
+    verifica_login();
 
-      if ($this->painelbd->deletar('page_contents', $item->id)) {
-          setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-          redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
-      } else {
-          setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-          redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+    $item = $this->painelbd->where('*', 'revistas', NULL, array('revistas.id' => $id))->row();
+    $imagem = $item->capa;
+
+    if ($this->painelbd->deletar('revistas', $item->id)) {
+      if (file_exists($imagem)) {
+        unlink($imagem);
       }
-  }
-  
-  public function revistas($uriCampus=NULL) {
-  
-      $colunasResultadoRevistas = array(
-        'revistas.id',
-        'revistas.id as pagina_id',
-        'revistas.titulo',
-        'revistas.status', 
-        'revistas.created_at'
-      );
-      
-      $colunasCampus = array('campus.id','campus.name','campus.city');
-      $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
-
-      $dadosRevistas = $this->painelbd->where($colunasResultadoRevistas,'revistas',null,array('revistas.status'=>1,'revistas.campus_id'))->result();
-      $data = array(
-        'titulo' => 'Início',
-        'conteudo' => 'paineladm/itens_iniciacao/publicacoes/revistas',
-        'dados' => array(
-          'revistas' => $dadosRevistas,
-          'campus'=>$campus,
-          'tipo' => '')
-      );
-
-      $this->load->view('templates/layoutPainelAdm', $data);
+      setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
+      redirect("Painel_publicacoes/lista_revistas/$uriCampus");
+    } else {
+      setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
+      redirect("Painel_publicacoes/lista_revistas/$uriCampus");
+    }
   }
 
-  public function lista_artigos_revistas($uriCampus=NULL, $idRevista=null) {
-    
-    $colunasCampus = array('campus.id','campus.name','campus.city');
-    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+  public function revistas($uriCampus = NULL)
+  {
+
+    $colunasResultadoRevistas = array(
+      'revistas.id',
+      'revistas.id as pagina_id',
+      'revistas.titulo',
+      'revistas.status',
+      'revistas.created_at'
+    );
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $dadosRevistas = $this->painelbd->where($colunasResultadoRevistas, 'revistas', null, array('revistas.status' => 1, 'revistas.campus_id'))->result();
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/revistas',
+      'dados' => array(
+        'revistas' => $dadosRevistas,
+        'campus' => $campus,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function lista_artigos_revistas($uriCampus = NULL, $idRevista = null)
+  {
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
     if (empty($idRevista)) {
       //redirect('painel/index');
     }
 
-    $revista = $this->painelbd->where('*','revistas', null,array('id' => $idRevista))->row();
+    $revista = $this->painelbd->where('*', 'revistas', null, array('id' => $idRevista))->row();
 
     $aql = "SELECT 
               publicacoes.id,
@@ -333,62 +348,64 @@ class Painel_publicacoes extends CI_Controller {
       'conteudo' => 'paineladm/itens_iniciacao/revistas/lista_artigos_revistas',
       'dados' => array(
         'publicacoes' => $dados,
-        'campus'=>$campus,
+        'campus' => $campus,
         // 'cursos' => 'teste',
-        'page'=> "Lista de Artigos: <u> $revista->titulo</u> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Lista de Artigos: <u> $revista->titulo</u> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'revista' => $revista,
-        'tipo' => 'revistas')
+        'tipo' => 'revistas'
+      )
     );
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_artigo_revista($uriCampus=NULL, $idRevista=NULL) {
+  public function cadastrar_artigo_revista($uriCampus = NULL, $idRevista = NULL)
+  {
     $this->load->helper('file');
-    
-    $colunasCampus = array('campus.id','campus.name','campus.city');
-    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $revista = $this->painelbd->where("*",'revistas', null, array('revistas.id' => $idRevista))->row();
-    
-    $colunaCursos = array('courses.name','courses.id');
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $revista = $this->painelbd->where("*", 'revistas', null, array('revistas.id' => $idRevista))->row();
+
+    $colunaCursos = array('courses.name', 'courses.id');
     $joinCursosCampus = array(
-      'campus_has_courses'=> 'campus_has_courses.courses_id = courses.id',
-      'campus'=> "campus.id = campus_has_courses.campus_id",
+      'campus_has_courses' => 'campus_has_courses.courses_id = courses.id',
+      'campus' => "campus.id = campus_has_courses.campus_id",
     );
-    $cursos = $this->painelbd->where($colunaCursos,"courses",$joinCursosCampus,array('campus.id'=>$campus->id,'courses.modalidade'=>'presencial'),array('campo' => 'name', 'ordem' => 'ASC'))->result();
-    
+    $cursos = $this->painelbd->where($colunaCursos, "courses", $joinCursosCampus, array('campus.id' => $campus->id, 'courses.modalidade' => 'presencial'), array('campo' => 'name', 'ordem' => 'ASC'))->result();
+
     $this->form_validation->set_rules('title', 'Título', 'required');
 
     if ($this->input->post('courses_id') == '0') {
-        $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
-        $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
+      $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
+      $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
     } else {
-        $this->form_validation->set_rules('courses_id', 'Curso');
+      $this->form_validation->set_rules('courses_id', 'Curso');
     }
 
     $this->form_validation->set_rules('year', 'Ano', 'required');
     if (empty($_FILES['files']['name'])) {
-        $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-        $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+      $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+      $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
     }
     $this->form_validation->set_rules('volume', 'Volume', 'required');
     $this->form_validation->set_rules('number_vol', 'Número do Volume', 'required');
 
     if ($this->form_validation->run() == FALSE) {
-        if (validation_errors()):
-            setMsg(validation_errors(), 'error');
-        endif;
-    }else {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
       $path = "assets/files/magazines/$campus->id";
       is_way($path);
 
       $name_tmp = noAccentuation($this->input->post('title'));
 
       $upload = $this->painelbd->uploadFiles('files', $path, $types = 'PDF|pdf', $name_tmp);
-      
-      if ($upload){
-        $dados_form['files'] = $path.'/'.$upload['file_name'];
+
+      if ($upload) {
+        $dados_form['files'] = $path . '/' . $upload['file_name'];
       }
 
       //$dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol','status'), $this->input->post());
@@ -403,69 +420,71 @@ class Painel_publicacoes extends CI_Controller {
       $dados_form['revistas_id'] = $revista->id;
       $dados_form['types'] = 'magazines';
       $dados_form['typepublicationid'] = '1';
-      
 
-      if ($this->painelbd->salvar('publicacoes', $dados_form)){
+
+      if ($this->painelbd->salvar('publicacoes', $dados_form)) {
         setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
         redirect(base_url("Painel_publicacoes/lista_artigos_revistas/$campus->id/$revista->id"));
-      }else{
+      } else {
         setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
       }
     }
-      
+
     $data = array(
       'titulo' => 'Início',
       'conteudo' => 'paineladm/itens_iniciacao/revistas/artigos/cadastrar_artigo_revista',
       'dados' => array(
         // 'publicacoes' => '$dados',
-        'page'=> "Cadastro de Artigo na <u> $revista->titulo</u> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'campus'=>$campus,
+        'page' => "Cadastro de Artigo na <u> $revista->titulo</u> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
         'cursos' => $cursos,
         'revista' => $revista,
-        'tipo' => '')
+        'tipo' => ''
+      )
     );
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  
-  public function editar_artigo_revista($uriCampus=NULL, $idRevista=NULL, $idArtigo = NULL) {
-    $this->load->helper('file');
-    
-    $colunasCampus = array('campus.id','campus.name','campus.city');
-    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
 
-    $revista = $this->painelbd->where("*",'revistas', null, array('revistas.id' => $idRevista))->row();
-    $artigoRevista = $this->painelbd->where("*",'publicacoes', null, array('publicacoes.id' => $idArtigo))->row();
-    
-    $colunaCursos = array('courses.name','courses.id');
+  public function editar_artigo_revista($uriCampus = NULL, $idRevista = NULL, $idArtigo = NULL)
+  {
+    $this->load->helper('file');
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $revista = $this->painelbd->where("*", 'revistas', null, array('revistas.id' => $idRevista))->row();
+    $artigoRevista = $this->painelbd->where("*", 'publicacoes', null, array('publicacoes.id' => $idArtigo))->row();
+
+    $colunaCursos = array('courses.name', 'courses.id');
     $joinCursosCampus = array(
-      'campus_has_courses'=> 'campus_has_courses.courses_id = courses.id',
-      'campus'=> "campus.id = campus_has_courses.campus_id",
+      'campus_has_courses' => 'campus_has_courses.courses_id = courses.id',
+      'campus' => "campus.id = campus_has_courses.campus_id",
     );
-    $cursos = $this->painelbd->where($colunaCursos,"courses",$joinCursosCampus,array('campus.id'=>$campus->id,'courses.modalidade'=>'presencial'),array('campo' => 'name', 'ordem' => 'ASC'))->result();
-    
+    $cursos = $this->painelbd->where($colunaCursos, "courses", $joinCursosCampus, array('campus.id' => $campus->id, 'courses.modalidade' => 'presencial'), array('campo' => 'name', 'ordem' => 'ASC'))->result();
+
     $this->form_validation->set_rules('title', 'Título', 'required');
 
     if ($this->input->post('courses_id') == '0') {
-        $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
-        $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
+      $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
+      $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
     } else {
-        $this->form_validation->set_rules('courses_id', 'Curso');
+      $this->form_validation->set_rules('courses_id', 'Curso');
     }
 
     $this->form_validation->set_rules('year', 'Ano', 'required');
     if (empty($_FILES['files']['name'])) {
-        $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-        $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+      $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+      $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
     }
     $this->form_validation->set_rules('volume', 'Volume', 'required');
     $this->form_validation->set_rules('number_vol', 'Número do Volume', 'required');
 
     if ($this->form_validation->run() == FALSE) {
-        if (validation_errors()):
-            setMsg(validation_errors(), 'error');
-        endif;
-    }else {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
 
       if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
 
@@ -479,8 +498,8 @@ class Painel_publicacoes extends CI_Controller {
         $name_tmp = noAccentuation($this->input->post('title'));
         $upload = $this->painelbd->uploadFiles('files', $path, $types = 'PDF|pdf', $name_tmp);
 
-        if ($upload){
-          $dados_form['files'] = $path.'/'.$upload['file_name'];
+        if ($upload) {
+          $dados_form['files'] = $path . '/' . $upload['file_name'];
         }
       }
 
@@ -508,37 +527,39 @@ class Painel_publicacoes extends CI_Controller {
       //$dados_form['types'] = 'magazines';
       //$dados_form['typepublicationid'] = '1';
       $dados_form['id'] = $artigoRevista->id;
-      
 
-      if ($this->painelbd->salvar('publicacoes', $dados_form)){
+
+      if ($this->painelbd->salvar('publicacoes', $dados_form)) {
         setMsg('<p>Publicação editada com sucesso.</p>', 'success');
         redirect(base_url("Painel_publicacoes/lista_artigos_revistas/$campus->id/$revista->id"));
-      }else{
+      } else {
         setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
       }
     }
-      
+
     $data = array(
       'titulo' => 'Início',
       'conteudo' => 'paineladm/itens_iniciacao/revistas/artigos/editar_artigo_revista',
       'dados' => array(
         // 'publicacoes' => '$dados',
-        'page'=> "Edição de artigo da <u> $revista->titulo</u> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'campus'=>$campus,
+        'page' => "Edição de artigo da <u> $revista->titulo</u> - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
         'cursos' => $cursos,
         'revista' => $revista,
         'artigoRevista' => $artigoRevista,
-        'tipo' => '')
+        'tipo' => ''
+      )
     );
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletarMagazine($uriCampus = NULL, $id = NULL) {
+  public function deletarMagazine($uriCampus = NULL, $id = NULL)
+  {
 
-    $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf','campus.shurtName');
-    $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
- 
-    $dados = $this->painelbd->where('*','publicacoes',null, array('id' => $id))->row();
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf', 'campus.shurtName');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $dados = $this->painelbd->where('*', 'publicacoes', null, array('id' => $id))->row();
     $arquivo = $dados->files;
 
     if ($id != NULL && $dados) {
@@ -560,15 +581,16 @@ class Painel_publicacoes extends CI_Controller {
     }
   }
 
-  public function editarMagazine($id = NULL, $idPage = NULL) {
+  public function editarMagazine($id = NULL, $idPage = NULL)
+  {
 
-      if (empty($id)) {
-          redirect('publicacoes/publicacoes/magazine');
-      }
-      $this->load->helper('file');
+    if (empty($id)) {
+      redirect('publicacoes/publicacoes/magazine');
+    }
+    $this->load->helper('file');
 
-      $campus = '1'; //campus Paracatu
-      $sql = "SELECT 
+    $campus = '1'; //campus Paracatu
+    $sql = "SELECT 
                   publicacoes.id,
                   publicacoes.title,
                   publicacoes.volume,
@@ -592,135 +614,139 @@ class Painel_publicacoes extends CI_Controller {
                       AND campus.id = 1
                       AND publicacoes.id=" . $idPage;
 
-      $this->form_validation->set_rules('title', 'Título', 'required');
+    $this->form_validation->set_rules('title', 'Título', 'required');
 
-      if ($this->input->post('courses_id') == '0') {
-          $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
-          $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
-      } else {
-          $this->form_validation->set_rules('courses_id', 'Curso');
-      }
+    if ($this->input->post('courses_id') == '0') {
+      $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
+      $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
+    } else {
+      $this->form_validation->set_rules('courses_id', 'Curso');
+    }
 
-      /* if (isset($_FILES['files']) && empty($_FILES['files']['name'])) {
+    /* if (isset($_FILES['files']) && empty($_FILES['files']['name'])) {
         $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
         $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
         } */
-      $this->form_validation->set_rules('year', 'Ano', 'required');
-      $this->form_validation->set_rules('volume', 'Volume', 'required');
-      $this->form_validation->set_rules('number_vol', 'Número do Volume', 'required');
+    $this->form_validation->set_rules('year', 'Ano', 'required');
+    $this->form_validation->set_rules('volume', 'Volume', 'required');
+    $this->form_validation->set_rules('number_vol', 'Número do Volume', 'required');
 
-      if ($this->form_validation->run() == FALSE) {
-          if (validation_errors()):
-              setMsg(validation_errors(), 'error');
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+
+      $publicacoes = $this->painelbd->getQuery($sql)->row();
+
+      if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
+        $path = 'assets/files/magazines';
+        $file_antigo = $publicacoes->files;
+
+        $name_tmp = preg_replace(array(
+          "/(á|à|ã|â|ä)/",
+          "/(Á|À|Ã|Â|Ä)/",
+          "/(é|è|ê|ë)/",
+          "/(É|È|Ê|Ë)/",
+          "/(í|ì|î|ï)/",
+          "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"
+        ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('title'));
+
+        $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º');
+
+        // matriz de saída
+        $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_');
+
+        // devolver a string
+        $name_tmp = str_replace($what, $by, $name_tmp);
+
+        $upload = $this->painelbd->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
+
+        if ($upload) :
+          //upload efetuado
+          unlink($file_antigo);
+          $dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol', 'revistas_id'), $this->input->post());
+
+          $dados_form['files'] = $path . '/' . $upload['file_name'];
+          $dados_form['campus_id'] = $campus;
+          $dados_form['users_id'] = $this->session->userdata('codusuario');
+          $dados_form['types'] = 'magazines';
+          $dados_form['status'] = '1';
+          $dados_form['id'] = $publicacoes->id;
+
+          if ($this->painelbd->salvar('publicacoes', $dados_form) == TRUE) :
+            setMsg('<p>Publicação editada com sucesso.</p>', 'success');
+            redirect('publicacoes/publicacoes/' . $id);
+          else :
+            setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
           endif;
-      }else {
+        else :
+          //erro no upload
+          $msg = $this->upload->display_errors();
+          $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+          setMsg($msg, 'erro');
+        endif;
 
-          $publicacoes = $this->painelbd->getQuery($sql)->row();
+        //opção de quando não é enviado um novo arquivo para upload.
+      } else {
 
-          if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
-              $path = 'assets/files/magazines';
-              $file_antigo = $publicacoes->files;
+        $dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol', 'revistas_id'), $this->input->post());
 
-              $name_tmp = preg_replace(array(
-                  "/(á|à|ã|â|ä)/",
-                  "/(Á|À|Ã|Â|Ä)/",
-                  "/(é|è|ê|ë)/",
-                  "/(É|È|Ê|Ë)/",
-                  "/(í|ì|î|ï)/",
-                  "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post('title'));
-
-              $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º');
-
-              // matriz de saída
-              $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_');
-
-              // devolver a string
-              $name_tmp = str_replace($what, $by, $name_tmp);
-
-              $upload = $this->painelbd->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
-
-              if ($upload):
-                  //upload efetuado
-                  unlink($file_antigo);
-                  $dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol', 'revistas_id'), $this->input->post());
-
-                  $dados_form['files'] = $path . '/' . $upload['file_name'];
-                  $dados_form['campus_id'] = $campus;
-                  $dados_form['users_id'] = $this->session->userdata('codusuario');
-                  $dados_form['types'] = 'magazines';
-                  $dados_form['status'] = '1';
-                  $dados_form['id'] = $publicacoes->id;
-
-                  if ($this->painelbd->salvar('publicacoes', $dados_form) == TRUE):
-                      setMsg('<p>Publicação editada com sucesso.</p>', 'success');
-                      redirect('publicacoes/publicacoes/' . $id);
-                  else:
-                      setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
-                  endif;
-              else:
-                  //erro no upload
-                  $msg = $this->upload->display_errors();
-                  $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-                  setMsg($msg, 'erro');
-              endif;
-
-              //opção de quando não é enviado um novo arquivo para upload.
-          }else {
-
-              $dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol', 'revistas_id'), $this->input->post());
-
-              $dados_form['campus_id'] = $campus;
-              $dados_form['users_id'] = $this->session->userdata('codusuario');
-              $dados_form['types'] = 'magazines';
-              $dados_form['status'] = '1';
-              $dados_form['id'] = $publicacoes->id;
+        $dados_form['campus_id'] = $campus;
+        $dados_form['users_id'] = $this->session->userdata('codusuario');
+        $dados_form['types'] = 'magazines';
+        $dados_form['status'] = '1';
+        $dados_form['id'] = $publicacoes->id;
 
 
-              if ($this->painelbd->salvar('publicacoes', $dados_form) == TRUE):
-                  setMsg('<p>Publicação editada com sucesso.</p>', 'success');
-                  redirect('publicacoes/publicacoes/' . $id);
-              else:
-                  setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
-              endif;
-          }
+        if ($this->painelbd->salvar('publicacoes', $dados_form) == TRUE) :
+          setMsg('<p>Publicação editada com sucesso.</p>', 'success');
+          redirect('publicacoes/publicacoes/' . $id);
+        else :
+          setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
+        endif;
       }
+    }
 
 
-      $revistas = $this->painelbd->getQuery($sql)->row();
-      $tipoRevista = $this->painelbd->getWhere('revistas', array('id' => $id))->row();
+    $revistas = $this->painelbd->getQuery($sql)->row();
+    $tipoRevista = $this->painelbd->getWhere('revistas', array('id' => $id))->row();
 
 
 
-      $data = array(
-          'titulo' => 'Início',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/editar',
-          'dados' => array(
-              'cursos' => $this->painelbd->getCourses($campus)->result(),
-              'revista' => $revistas,
-              'revistas_titulo' => $tipoRevista->titulo,
-              'revistas_id' => $tipoRevista->id,
-              'tipo' => '')
-      );
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/editar',
+      'dados' => array(
+        'cursos' => $this->painelbd->getCourses($campus)->result(),
+        'revista' => $revistas,
+        'revistas_titulo' => $tipoRevista->titulo,
+        'revistas_id' => $tipoRevista->id,
+        'tipo' => ''
+      )
+    );
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function anaisMonografia() {
-      
-      $data = array(
-          'titulo' => 'Início',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/anaisMonografia',
-          'dados' => array(
-              'cursos' => $this->painelbd->getCourses()->result(),
-              'tipo' => 'anais'
-          )
-      );
+  public function anaisMonografia()
+  {
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/anaisMonografia',
+      'dados' => array(
+        'cursos' => $this->painelbd->getCourses()->result(),
+        'tipo' => 'anais'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
-  
-  public function cursosMonografia() {
-      
+
+  public function cursosMonografia()
+  {
+
     $data = array(
       'titulo' => 'Início',
       'conteudo' => 'paineladm/itens_iniciacao/tcc/publicacoes/cursosMonografia',
@@ -734,15 +760,16 @@ class Painel_publicacoes extends CI_Controller {
   }
 
 
-  public function publicacoesAnais() {
-      $campus = '1'; //campus Paracatu 
-      $id = $this->uri->segment(3);
-      if (empty($id)) {
-          redirect('publicacoes/publicacoes/anaisMonografia');
-      }
+  public function publicacoesAnais()
+  {
+    $campus = '1'; //campus Paracatu 
+    $id = $this->uri->segment(3);
+    if (empty($id)) {
+      redirect('publicacoes/publicacoes/anaisMonografia');
+    }
 
-      $tipoRevista = $this->painelbd->getWhere('revistas', array('id' => $id))->row();
-      $aql = "SELECT 
+    $tipoRevista = $this->painelbd->getWhere('revistas', array('id' => $id))->row();
+    $aql = "SELECT 
               publicacoes.id,
               publicacoes.title,
               publicacoes.volume,
@@ -767,215 +794,221 @@ class Painel_publicacoes extends CI_Controller {
               publicacoes.id DESC,
               publicacoes.created DESC";
 
-      $dados = $this->painelbd->get_query($aql)->result();
-      $data = array(
-          'titulo' => 'Início',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/anais/listaAnaisMonografia',
-          'dados' => array(
-              'curso' => $this->painelbd->getWhere('courses', array('id'=>$id))->row(),
-              'tipo' => 'anais'
-          )
-      );
+    $dados = $this->painelbd->get_query($aql)->result();
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/anais/listaAnaisMonografia',
+      'dados' => array(
+        'curso' => $this->painelbd->getWhere('courses', array('id' => $id))->row(),
+        'tipo' => 'anais'
+      )
+    );
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
-  
-  
-  public function publicacoesMonografia() {
-      $campus = '1'; //campus Paracatu 
-      $id = $this->uri->segment(3);
-      if (empty($id)) {
-          redirect('publicacoes/publicacoes/cursosMonografia');
-      }
 
-      
-      $aql = "SELECT 
+
+  public function publicacoesMonografia()
+  {
+    $campus = '1'; //campus Paracatu 
+    $id = $this->uri->segment(3);
+    if (empty($id)) {
+      redirect('publicacoes/publicacoes/cursosMonografia');
+    }
+
+
+    $aql = "SELECT 
                   *
               FROM
                   at_site.monography
               inner join courses on courses.id = monography.coursesid
               WHERE courses.id = $id";
 
-      $monografias = $this->painelbd->getQuery($aql)->result();
-      $data = array(
-          'titulo' => 'Início',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/monografias/listaMonografias',
-          'dados' => array(
-              'curso' => $this->painelbd->getWhere('courses', array('id'=>$id))->row(),
-              'monografias' => $monografias,
-              'tipo' => 'anais'
-          )
-      );
+    $monografias = $this->painelbd->getQuery($aql)->result();
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/monografias/listaMonografias',
+      'dados' => array(
+        'curso' => $this->painelbd->getWhere('courses', array('id' => $id))->row(),
+        'monografias' => $monografias,
+        'tipo' => 'anais'
+      )
+    );
 
-      $this->load->view('templates/layoutPainelAdm', $data);
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function salvarAnais() {
-      $this->load->helper('file');
-      $campus = '1'; //campus Paracatu 
-      $idCourse = $this->uri->segment(3);
+  public function salvarAnais()
+  {
+    $this->load->helper('file');
+    $campus = '1'; //campus Paracatu 
+    $idCourse = $this->uri->segment(3);
 
-      $this->form_validation->set_rules('title', 'Título', 'required');
+    $this->form_validation->set_rules('title', 'Título', 'required');
 
-      if ($this->input->post('courses_id') == '0') {
-          $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
-          $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
-      } else {
-          $this->form_validation->set_rules('courses_id', 'Curso');
-      }
+    if ($this->input->post('courses_id') == '0') {
+      $this->form_validation->set_rules('courses_id', 'Curso', 'select_validate');
+      $this->form_validation->set_message('select_validate', 'Você precisa selecionar ao menos um curso.');
+    } else {
+      $this->form_validation->set_rules('courses_id', 'Curso');
+    }
 
-      $this->form_validation->set_rules('year', 'Ano', 'required');
-      if (empty($_FILES['files']['name'])) {
-          $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-          $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
-      }
-      $this->form_validation->set_rules('volume', 'Volume', 'required');
-      $this->form_validation->set_rules('number_vol', 'Número do Volume', 'required');
+    $this->form_validation->set_rules('year', 'Ano', 'required');
+    if (empty($_FILES['files']['name'])) {
+      $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+      $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+    }
+    $this->form_validation->set_rules('volume', 'Volume', 'required');
+    $this->form_validation->set_rules('number_vol', 'Número do Volume', 'required');
 
-      if ($this->form_validation->run() == FALSE) {
-          if (validation_errors()):
-              setMsg(validation_errors(), 'error');
-          endif;
-      }else {
-          $path = 'assets/files/magazines';
-          $name_tmp = preg_replace(array(
-              "/(á|à|ã|â|ä)/",
-              "/(Á|À|Ã|Â|Ä)/",
-              "/(é|è|ê|ë)/",
-              "/(É|È|Ê|Ë)/",
-              "/(í|ì|î|ï)/",
-              "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post('title'));
-          $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+      $path = 'assets/files/magazines';
+      $name_tmp = preg_replace(array(
+        "/(á|à|ã|â|ä)/",
+        "/(Á|À|Ã|Â|Ä)/",
+        "/(é|è|ê|ë)/",
+        "/(É|È|Ê|Ë)/",
+        "/(í|ì|î|ï)/",
+        "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"
+      ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('title'));
+      $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
 
-          // matriz de saída
-          $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_');
+      // matriz de saída
+      $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_');
 
-          // devolver a string
-          $name_tmp = str_replace($what, $by, $name_tmp);
-
-
-          $upload = $this->painelbd->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
-
-          if ($upload):
-              //upload efetuado
-
-              $dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol', 'revistas_id'), $this->input->post());
-
-              $dados_form['files'] = $path . '/' . $upload['file_name'];
-              $dados_form['campus_id'] = $campus;
-              $dados_form['users_id'] = $this->session->userdata('codusuario');
-              $dados_form['types'] = 'anaisMonografia';
-              $dados_form['typepublicationid'] = '1';
-              $dados_form['status'] = '1';
-
-              if ($id = $this->painelbd->do_insert('publicacoes', $dados_form)):
-                  setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
-              else:
-                  setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
-              endif;
-          else:
-              //erro no upload
-              $msg = $this->upload->display_errors();
-              $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-              setMsg($msg, 'erro');
-          endif;
-      }
+      // devolver a string
+      $name_tmp = str_replace($what, $by, $name_tmp);
 
 
-      $condition = array('status' => 1, 'campus_id' => $campus);
-      $dados = $this->painelbd->getWhere('publicacoes', $condition)->result();
-      
+      $upload = $this->painelbd->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
+
+      if ($upload) :
+        //upload efetuado
+
+        $dados_form = elements(array('title', 'courses_id', 'year', 'volume', 'number_vol', 'revistas_id'), $this->input->post());
+
+        $dados_form['files'] = $path . '/' . $upload['file_name'];
+        $dados_form['campus_id'] = $campus;
+        $dados_form['users_id'] = $this->session->userdata('codusuario');
+        $dados_form['types'] = 'anaisMonografia';
+        $dados_form['typepublicationid'] = '1';
+        $dados_form['status'] = '1';
+
+        if ($id = $this->painelbd->do_insert('publicacoes', $dados_form)) :
+          setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
+        else :
+          setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
+        endif;
+      else :
+        //erro no upload
+        $msg = $this->upload->display_errors();
+        $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+        setMsg($msg, 'erro');
+      endif;
+    }
 
 
-      $data = array(
-          'titulo' => 'Início',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/anais/cadastrarAnais',
-          'dados' => array(
-              
-              'curso' => $this->painelbd->getWhere('courses',array('id'=>$idCourse))->row(),
-              
-              'tipo' => '')
-      );
-      $this->load->view('templates/layoutPainelAdm', $data);
-  }
-  
-  public function cadastrarMonografias() {
-      $this->load->helper('file');
-      $campus = '1'; //campus Paracatu 
-      $idCourse = $this->uri->segment(3);
-
-      $this->form_validation->set_rules('title', 'Título', 'required');
-
-      
-
-      $this->form_validation->set_rules('year', 'Ano', 'required');
-      if (empty($_FILES['files']['name'])) {
-          $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-          $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
-      }
-
-      if ($this->form_validation->run() == FALSE) {
-          if (validation_errors()):
-              setMsg(validation_errors(), 'error');
-          endif;
-      }else {
-          
-          $path = 'assets/files/spic/monography';
-          $name_tmp = preg_replace(array(
-              "/(á|à|ã|â|ä)/",
-              "/(Á|À|Ã|Â|Ä)/",
-              "/(é|è|ê|ë)/",
-              "/(É|È|Ê|Ë)/",
-              "/(í|ì|î|ï)/",
-              "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"), explode(" ", "a A e E i I o O u U n N"), $this->input->post('title'));
-          $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
-
-          // matriz de saída
-          $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_');
-
-          // devolver a string
-          $name_tmp = str_replace($what, $by, $name_tmp);
-
-
-          $upload = $this->painelbd->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
-
-          if ($upload):
-              $dados_form = elements(array('title', 'year', 'author','coursesid'), $this->input->post());
-              $user = $this->session->userdata('codusuario');
-
-              $dados_form['usersid'] = $user;
-              $dados_form['files'] = $path . '/' . $upload['file_name'];
-              $dados_form['status'] = '1';
+    $condition = array('status' => 1, 'campus_id' => $campus);
+    $dados = $this->painelbd->getWhere('publicacoes', $condition)->result();
 
 
 
-              if ($id = $this->painelbd->salvar('monography', $dados_form)):
-                  setMsg('<p>Monografia cadastrada com sucesso.</p>', 'success');
-                  redirect("publicacoes/publicacoesMonografia/".$idCourse);
-              else:
-                  setMsg('<p>Erro! A Monografia não foi cadastrada.</p>', 'error');
-                  redirect("publicacoes/publicacoesMonografia/".$idCourse);
-              endif;
-          else:
-              //erro no upload
-              $msg = $this->upload->display_errors();
-              $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-              setMsg($msg, 'erro');
-          endif;
-      }
+    $data = array(
+      'titulo' => 'Início',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/anais/cadastrarAnais',
+      'dados' => array(
 
+        'curso' => $this->painelbd->getWhere('courses', array('id' => $idCourse))->row(),
 
-    
-      $data = array(
-          'titulo' => 'Início - Painel UniaAtenas',
-          'conteudo' => 'paineladm/itens_iniciacao/publicacoes/monografias/CadastrarMonografias',
-          'dados' => array(
-              
-              'curso' => $this->painelbd->getWhere('courses',array('id'=>$idCourse))->row(),
-              
-              'tipo' => 'revistas')
-      );
-      $this->load->view('templates/layoutPainelAdm', $data);
+        'tipo' => ''
+      )
+    );
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
 
+  public function cadastrarMonografias()
+  {
+    $this->load->helper('file');
+    $campus = '1'; //campus Paracatu 
+    $idCourse = $this->uri->segment(3);
+
+    $this->form_validation->set_rules('title', 'Título', 'required');
+
+
+
+    $this->form_validation->set_rules('year', 'Ano', 'required');
+    if (empty($_FILES['files']['name'])) {
+      $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+      $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+    }
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+
+      $path = 'assets/files/spic/monography';
+      $name_tmp = preg_replace(array(
+        "/(á|à|ã|â|ä)/",
+        "/(Á|À|Ã|Â|Ä)/",
+        "/(é|è|ê|ë)/",
+        "/(É|È|Ê|Ë)/",
+        "/(í|ì|î|ï)/",
+        "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"
+      ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('title'));
+      $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
+
+      // matriz de saída
+      $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_');
+
+      // devolver a string
+      $name_tmp = str_replace($what, $by, $name_tmp);
+
+
+      $upload = $this->painelbd->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
+
+      if ($upload) :
+        $dados_form = elements(array('title', 'year', 'author', 'coursesid'), $this->input->post());
+        $user = $this->session->userdata('codusuario');
+
+        $dados_form['usersid'] = $user;
+        $dados_form['files'] = $path . '/' . $upload['file_name'];
+        $dados_form['status'] = '1';
+
+
+
+        if ($id = $this->painelbd->salvar('monography', $dados_form)) :
+          setMsg('<p>Monografia cadastrada com sucesso.</p>', 'success');
+          redirect("publicacoes/publicacoesMonografia/" . $idCourse);
+        else :
+          setMsg('<p>Erro! A Monografia não foi cadastrada.</p>', 'error');
+          redirect("publicacoes/publicacoesMonografia/" . $idCourse);
+        endif;
+      else :
+        //erro no upload
+        $msg = $this->upload->display_errors();
+        $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+        setMsg($msg, 'erro');
+      endif;
+    }
+
+
+
+    $data = array(
+      'titulo' => 'Início - Painel UniaAtenas',
+      'conteudo' => 'paineladm/itens_iniciacao/publicacoes/monografias/CadastrarMonografias',
+      'dados' => array(
+
+        'curso' => $this->painelbd->getWhere('courses', array('id' => $idCourse))->row(),
+
+        'tipo' => 'revistas'
+      )
+    );
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
 }

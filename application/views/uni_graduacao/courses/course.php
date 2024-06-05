@@ -300,18 +300,19 @@ $uricampus = $this->uri->segment(3);
 
             </h4>
             <?php
+
             if (isset($dados['dadosCurso']['autorizacaoReconhecimento'])) {
               foreach ($dados['dadosCurso']['autorizacaoReconhecimento'] as $arquivoAutorizacao) {
                 if ($arquivoAutorizacao->tipo_arquivo == 'autorizacao') {
             ?>
-                  <a href="<?php echo ($arquivoAutorizacao->files); ?>" target="_blank">
+                  <a href="<?php echo base_url($arquivoAutorizacao->files); ?>" target="_blank">
                     <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
                   </a>
                 <?php
                 }
                 if ($arquivoAutorizacao->tipo_arquivo == 'reconhecimento') {
                 ?>
-                  <a href="<?php echo ($arquivoAutorizacao->files); ?>" target="_blank">
+                  <a href="<?php echo base_url($arquivoAutorizacao->files); ?>" target="_blank">
                     <img src="<?php echo base_url('assets/images/icons/pdf.png'); ?>" />
                   </a>
             <?php

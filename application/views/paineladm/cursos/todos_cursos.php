@@ -6,17 +6,17 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-            if ($msg = getMsg()):
-                echo $msg;
-            endif;
-            ?>
+      if ($msg = getMsg()) :
+        echo $msg;
+      endif;
+      ?>
       <div class="header">
         <h2>
           Gestão de <?php echo $page; ?>
         </h2>
         <div class="col-sm-4">
           <?php
-          echo anchor("Painel_graduacao/cadastrar_curso/$modalidade", '<i class="material-icons">add_box</i> CADASTRAR - NOVO CURSO '.$modalidade, array('class' => 'btn btn-primary m-t-15 waves-effect'));
+          echo anchor("Painel_graduacao/cadastrar_curso/$modalidade", '<i class="material-icons">add_box</i> CADASTRAR - NOVO CURSO ' . $modalidade, array('class' => 'btn btn-primary m-t-15 waves-effect'));
           ?>
         </div>
 
@@ -32,7 +32,7 @@
                 <th>#</th>
                 <th>Campus</th>
                 <th>Situação</th>
-                <th>Cidade</th>
+                <th>Imagem Capa</th>
                 <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
@@ -43,57 +43,57 @@
                 <th>#</th>
                 <th>Campus</th>
                 <th>Situação</th>
-                <th>Cidade</th>
+                <th>Imagem Capa</th>
                 <th>Criado em:</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-                        foreach ($dados['cursos'] as $item):
-                            ?>
-              <tr>
-                <td class="center">
-                  <?php 
+              foreach ($dados['cursos'] as $item) :
+              ?>
+                <tr>
+                  <td class="center">
+                    <?php
 
-                      echo '<a href=' . base_url("Painel_graduacao/editar_curso/$item->id/$modalidade") . '>'
-                          . '<i class="material-icons">edit</i>'
-                          . '</a> ';
-                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name . '" data-id="' . $item->id . '" >'
-                          . '<i class="material-icons">delete</i>'
-                          . '</a>';
+                    echo '<a href=' . base_url("Painel_graduacao/editar_curso/$item->id/$modalidade") . '>'
+                      . '<i class="material-icons">edit</i>'
+                      . '</a> ';
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name . '" data-id="' . $item->id . '" >'
+                      . '<i class="material-icons">delete</i>'
+                      . '</a>';
                     ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->name;?></td>
-                <td><?php
-                    if($item->status =='0'){
+                  </td>
+                  <td><?php echo $item->id; ?></td>
+                  <td><?php echo $item->name; ?></td>
+                  <td><?php
+                      if ($item->status == '0') {
                         $situacao = 'Inativo';
-                    }else{
+                      } else {
                         $situacao = 'Ativo';
-                    }
-                    echo $situacao;
+                      }
+                      echo $situacao;
+                      ?>
+                  </td>
+                  <td>
+                    <?php
+                    echo anchor(base_url(verifyImg($item->icone)), '<img src="' . base_url(verifyImg($item->icone)) . '" class="thumbnail">', array('target' => '_blank'));
                     ?>
-                </td>
-                <td>
-                  <?php
-                  echo anchor(base_url(verifyImg($item->icone)), '<img src="' . base_url(verifyImg($item->icone)) . '" class="thumbnail">', array('target' => '_blank'));
-                  ?>
-                </td>
+                  </td>
 
-                <td> <?php echo date("d/m/Y",strtotime($item->created_at)); ?></td>
-                <td>
-                  <?php 
-                   // $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
+                  <td> <?php echo date("d/m/Y", strtotime($item->created_at)); ?></td>
+                  <td>
+                    <?php
+                    // $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
                     //echo date("d/m/Y",strtotime($dateModification)); 
                     ?>
-                </td>
+                  </td>
 
 
-              </tr>
+                </tr>
               <?php
-                endforeach;
-                ?>
+              endforeach;
+              ?>
             </tbody>
           </table>
         </div>
@@ -113,8 +113,7 @@
       <div class="modal-body">
         <p>Você tem certeza que deseja realizar essa ação de deletar o item abaixo?</p>
         <p>Essa ação é <span class="text-danger" style="font-weight: bold">IRREVERSÍVEL</span> e todos os dados
-          ligados a esse item serão removidos <span class="text-danger"
-            style="font-weight: bold">PERMANENTEMENTE</span>.
+          ligados a esse item serão removidos <span class="text-danger" style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
         <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
       </div>
@@ -128,12 +127,12 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_graduacao/deletar_curso/$modalidade/"); ?>' + id);
-});
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_graduacao/deletar_curso/$modalidade/"); ?>' + id);
+  });
 </script>

@@ -13,8 +13,8 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
-            echo $msg;
+        if ($msg = getMsg()) {
+          echo $msg;
         }
         ?>
         <?php echo form_open("Painel_cpa/cadastrar_dados_cpa/$campus->id") ?>
@@ -29,7 +29,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Titulo'), set_value('tile'));
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Titulo'), set_value('tile'));
                 ?>
               </div>
             </div>
@@ -44,18 +44,18 @@
                   <small> (Explicação e inforamções pertinentes ao campus)</small>
                 </label>
                 <?php
-                  echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description')));
+                echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description')));
                 ?>
               </div>
             </div>
           </div>
         </div>
         <script type="text/javascript">
-        // replace: substitui o formato padrão do textarea (descricao)
-        // e aplica as configurações do CKEDitor através do arquivo config.js
-        var editor = CKEDITOR.replace('description', {
-          customConfig: 'config.js'
-        });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
         </script>
         <div class="separacao-forms"></div>
 
@@ -65,12 +65,12 @@
               <div class="form-line">
                 <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -78,10 +78,10 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
-              ?>
+            ?>
           </div>
         </div>
 
