@@ -17,7 +17,7 @@
           echo $msg;
         }
         ?>
-        <?php echo form_open("Painel_estagios_convenios/cadastrar_itens_estagios_convenios/$campus->id") ?>
+        <?php echo form_open("Painel_estagios_convenios/cadastrar_itens_estagios_convenios/$campus->id/$pagina->id") ?>
 
         <h2 class="card-inside-title"><?php echo 'Estágios e Convênios - CONTEÚDOS' ?> </h2>
         <div class="row clearfix">
@@ -89,7 +89,7 @@
           <div class="col-sm-12">
             <?php
             echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-            echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo anchor("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
             ?>
           </div>

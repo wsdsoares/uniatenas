@@ -17,7 +17,7 @@
           echo $msg;
         }
         ?>
-        <?php echo form_open("Painel_estagios_convenios/cadastrar_itens_estagios_convenios/$campus->id") ?>
+        <?php echo form_open("Painel_estagios_convenios/editar_itens_estagios_convenios/$campus->id/$pagina->id/$paginaEstagiosConvenios->id") ?>
 
         <h2 class="card-inside-title"><?php echo 'Estágios e Convênios - CONTEÚDOS' ?> </h2>
         <div class="row clearfix">
@@ -29,7 +29,7 @@
               </span>
               <div class="form-line">
                 <?php
-                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Titulo'), set_value('tile'));
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Titulo'), set_value('tile', $paginaEstagiosConvenios->title));
                 ?>
               </div>
             </div>
@@ -39,7 +39,7 @@
               <div class="form-line">
                 <label for="order">Ordem de Exibição na página <small>(1,2,3..)</small></label>
                 <?php
-                echo form_input(array('name' => 'order', 'type' => 'number', 'class' => 'form-control'), set_value('order'));
+                echo form_input(array('name' => 'order', 'type' => 'number', 'class' => 'form-control'), set_value('order', $paginaEstagiosConvenios->order));
                 ?>
               </div>
             </div>
@@ -54,7 +54,7 @@
                   <small> (Explicação e inforamções pertinentes ao campus)</small>
                 </label>
                 <?php
-                echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description')));
+                echo form_textarea(array('name' => 'description', 'class' => 'form-control', 'placeholder' => 'Explicação e inforamções pertinentes ao campus.'), toHtml(set_value('description', $paginaEstagiosConvenios->description)));
                 ?>
               </div>
             </div>
@@ -79,7 +79,7 @@
                   '1' => 'Visível - Ativo',
                   '0' => 'Oculto - Inativo'
                 );
-                echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                echo form_dropdown('status', $optionSituation, set_value('status', $paginaEstagiosConvenios->status), array('class' => 'form-control show-tick'));
                 ?>
               </div>
             </div>
@@ -89,7 +89,7 @@
           <div class="col-sm-12">
             <?php
             echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-            echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo anchor("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
             ?>
           </div>

@@ -107,73 +107,6 @@ class Painel_estagios_convenios extends CI_Controller
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
-
-  public function lista_itens_estagios_convenios($uriCampus = NULL, $pagina = NULL)
-  {
-    verificaLogin();
-    $verificaExistePaginaEstagiosConvenios = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.id' => $pagina))->row();
-    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
-
-    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
-
-    $listaInformmacoesPaginasEstagiosConvenios =  $this->painelbd->getQuery(
-      "SELECT 
-          page_contents.id,
-          page_contents.title,
-          page_contents.status,
-          page_contents.title_short,
-          page_contents.description, 
-          page_contents.order, 
-          page_contents.created_at, 
-          page_contents.updated_at, 
-          page_contents.user_id, 
-          campus.city
-        FROM 
-          page_contents
-        INNER JOIN pages ON pages.id = page_contents.pages_id
-        INNER JOIN campus ON campus.id= pages.campusid
-        WHERE 
-            pages.id = '$pagina'AND 
-            pages.campusid = $campus->id AND 
-            page_contents.order <>'contatos' AND 
-            page_contents.status=1 
-        ORDER BY page_contents.order ASC"
-    )->result();
-
-    $colunaResultadoContatoPagina = array(
-      'page_contents.id',
-      'page_contents.title',
-      'page_contents.status',
-      'page_contents.description',
-      'page_contents.order',
-      'page_contents.created_at',
-      'page_contents.updated_at',
-      'page_contents.user_id',
-      'campus.city'
-    );
-    $whereContatosPagina = array('pages.title' => $pagina, 'pages.campusid' => $campus->id, 'page_contents.order' => 'contatos');
-    $joinContatoPagina = array(
-      'pages' => 'pages.id = page_contents.pages_id',
-      'campus' => 'campus.id= pages.campusid'
-    );
-    $contatosPaginaEstagiosConvenios = $this->painelbd->where($colunaResultadoContatoPagina, 'page_contents', $joinContatoPagina, $whereContatosPagina)->result();
-
-    $data = array(
-      'titulo' => 'Estágios e Convênios - ITENS',
-      'conteudo' => 'paineladm/servicos/estagios_convenios/informacoes/lista_itens_estagios_convenios',
-      'dados' => array(
-        'conteudosPagina' => $listaInformmacoesPaginasEstagiosConvenios,
-        'contatosPaginaEstagiosConvenios' => $contatosPaginaEstagiosConvenios,
-        'page' => "Informações - Estágios e Convênios - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'campus' => $campus,
-        'paginaEstagiosConvenios' => $verificaExistePaginaEstagiosConvenios = isset($verificaExistePaginaEstagiosConvenios) ? $verificaExistePaginaEstagiosConvenios : '',
-        'tipo' => ''
-      )
-    );
-
-    $this->load->view('templates/layoutPainelAdm', $data);
-  }
-
   public function cadastrar_contato_pagina_estagios_convenios($uriCampus = NULL, $pageId = null)
   {
     verifica_login();
@@ -257,6 +190,71 @@ class Painel_estagios_convenios extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
+  public function lista_itens_estagios_convenios($uriCampus = NULL, $pagina = NULL)
+  {
+    verificaLogin();
+    $verificaExistePaginaEstagiosConvenios = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.id' => $pagina))->row();
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $listaInformmacoesPaginasEstagiosConvenios =  $this->painelbd->getQuery(
+      "SELECT 
+          page_contents.id,
+          page_contents.title,
+          page_contents.status,
+          page_contents.title_short,
+          page_contents.description, 
+          page_contents.order, 
+          page_contents.created_at, 
+          page_contents.updated_at, 
+          page_contents.user_id, 
+          campus.city
+        FROM 
+          page_contents
+        INNER JOIN pages ON pages.id = page_contents.pages_id
+        INNER JOIN campus ON campus.id= pages.campusid
+        WHERE 
+            pages.id = '$pagina'AND 
+            pages.campusid = $campus->id AND 
+            page_contents.order <>'contatos'
+        ORDER BY page_contents.order ASC"
+    )->result();
+
+    $colunaResultadoContatoPagina = array(
+      'page_contents.id',
+      'page_contents.title',
+      'page_contents.status',
+      'page_contents.description',
+      'page_contents.order',
+      'page_contents.created_at',
+      'page_contents.updated_at',
+      'page_contents.user_id',
+      'campus.city'
+    );
+    $whereContatosPagina = array('pages.title' => $pagina, 'pages.campusid' => $campus->id, 'page_contents.order' => 'contatos');
+    $joinContatoPagina = array(
+      'pages' => 'pages.id = page_contents.pages_id',
+      'campus' => 'campus.id= pages.campusid'
+    );
+    $contatosPaginaEstagiosConvenios = $this->painelbd->where($colunaResultadoContatoPagina, 'page_contents', $joinContatoPagina, $whereContatosPagina)->result();
+
+    $data = array(
+      'titulo' => 'Estágios e Convênios - ITENS',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/informacoes/lista_itens_estagios_convenios',
+      'dados' => array(
+        'conteudosPagina' => $listaInformmacoesPaginasEstagiosConvenios,
+        'contatosPaginaEstagiosConvenios' => $contatosPaginaEstagiosConvenios,
+        'page' => "Informações - Estágios e Convênios - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'paginaEstagiosConvenios' => $verificaExistePaginaEstagiosConvenios = isset($verificaExistePaginaEstagiosConvenios) ? $verificaExistePaginaEstagiosConvenios : '',
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
   public function cadastrar_pagina_estagios_convenios($uriCampus = NULL)
   {
     verifica_login();
@@ -312,22 +310,20 @@ class Painel_estagios_convenios extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_itens_estagios_convenios($uriCampus = NULL)
+  public function cadastrar_itens_estagios_convenios($uriCampus = NULL, $pageId = null)
   {
     verificaLogin();
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-    $pagina = 'estagiosConvenios';
-    $wherePagina = array('pages.title' => $pagina, 'pages.campusid' => $campus->id);
-
     $colunasTabelaPages = array('pages.id', 'pages.title');
     $joinConteudoPagina = array('campus' => 'campus.id= pages.campusid');
+    $wherePagina = array('pages.id' => $pageId, 'pages.campusid' => $campus->id);
 
-    $listaItemPages = $this->painelbd->where($colunasTabelaPages, 'pages', $joinConteudoPagina, $wherePagina, null)->row();
+    $pagina = $this->painelbd->where($colunasTabelaPages, 'pages', $joinConteudoPagina, $wherePagina, null)->row();
 
-    if (!isset($listaItemPages)) {
+    if (!isset($pagina)) {
       redirect(base_url("Painel_estagios_convenios/lista_informacoes_estagios_convenios/$campus->id"));
     }
 
@@ -346,12 +342,12 @@ class Painel_estagios_convenios extends CI_Controller
       $dados_form['title'] = $this->input->post('title');
       $dados_form['status'] = $this->input->post('status');
       $dados_form['order'] = $this->input->post('order');
-      $dados_form['pages_id'] = $listaItemPages->id;
+      $dados_form['pages_id'] = $pagina->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-        setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$listaItemPages->id"));
+        setMsg('<p>Dados do estágios e convênios cadastrado com sucesso.</p>', 'success');
+        redirect(base_url("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$pagina->id"));
       } else {
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -361,7 +357,7 @@ class Painel_estagios_convenios extends CI_Controller
       'titulo' => 'UniAtenas - Estágios e Convênios Cadastro',
       'conteudo' => 'paineladm/servicos/estagios_convenios/informacoes/cadastrar_itens_estagios_convenios',
       'dados' => array(
-        'conteudosPagina' => '',
+        'pagina' => $pagina,
         'page' => "Cadastro de informações - Estágios e Convênios - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         'tipo' => ''
@@ -371,7 +367,7 @@ class Painel_estagios_convenios extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_informacoes_estagios_convenios($uriCampus = NULL, $paginaId = NULL, $itemId = NULL)
+  public function editar_itens_estagios_convenios($uriCampus = NULL, $paginaId = NULL, $itemId = NULL)
   {
     verificaLogin();
 
@@ -382,9 +378,15 @@ class Painel_estagios_convenios extends CI_Controller
     $colunasTabelaPages = array('pages.id', 'pages.title');
     $joinConteudoPagina = array('campus' => 'campus.id = pages.campusid');
 
-    $listaItemPages = $this->painelbd->where($colunasTabelaPages, 'pages', $joinConteudoPagina, $wherePagina, null)->row();
+    $pagina = $this->painelbd->where($colunasTabelaPages, 'pages', $joinConteudoPagina, $wherePagina, null)->row();
 
-    if (!isset($listaItemPages)) {
+    $colunasTabelaPagesEstagiosConvenios = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.order', 'page_contents.img_destaque', 'page_contents.link_redir', 'page_contents.status');
+    $joinConteudoPagina = array('pages' => 'pages.id = page_contents.pages_id');
+    $wherePaginaEstagiosConvenios = array('page_contents.id' => $itemId);
+
+    $paginaEstagiosConvenios = $this->painelbd->where($colunasTabelaPagesEstagiosConvenios, 'page_contents', $joinConteudoPagina, $wherePaginaEstagiosConvenios, null)->row();
+
+    if (!isset($pagina)) {
       redirect(base_url("Painel_estagios_convenios/lista_informacoes_estagios_convenios/$campus->id"));
     }
 
@@ -398,17 +400,25 @@ class Painel_estagios_convenios extends CI_Controller
         setMsg(validation_errors(), 'error');
       endif;
     } else {
+      if ($paginaEstagiosConvenios->description != $this->input->post('description')) {
+        $dados_form['description'] = $this->input->post('description');
+      }
+      if ($paginaEstagiosConvenios->title != $this->input->post('title')) {
+        $dados_form['title'] = $this->input->post('title');
+      }
+      if ($paginaEstagiosConvenios->status != $this->input->post('status')) {
+        $dados_form['status'] = $this->input->post('status');
+      }
+      if ($paginaEstagiosConvenios->order != $this->input->post('order')) {
+        $dados_form['order'] = $this->input->post('order');
+      }
 
-      $dados_form['description'] = $this->input->post('description');
-      $dados_form['title'] = $this->input->post('title');
-      $dados_form['status'] = $this->input->post('status');
-      $dados_form['order'] = $this->input->post('order');
-      $dados_form['pages_id'] = $listaItemPages->id;
+      $dados_form['id'] = $paginaEstagiosConvenios->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
       if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-        setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$listaItemPages->id"));
+        setMsg('<p>Dados editados com sucesso.</p>', 'success');
+        redirect(base_url("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$pagina->id"));
       } else {
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -416,9 +426,10 @@ class Painel_estagios_convenios extends CI_Controller
 
     $data = array(
       'titulo' => 'UniAtenas - Estágios e Convênios Cadastro',
-      'conteudo' => 'paineladm/servicos/estagios_convenios/informacoes/cadastrar_itens_estagios_convenios',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/informacoes/editar_itens_estagios_convenios',
       'dados' => array(
-        'conteudosPagina' => '',
+        'paginaEstagiosConvenios' => $paginaEstagiosConvenios,
+        'pagina' => $pagina,
         'page' => "Cadastro de informações - Estágios e Convênios - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         'tipo' => ''
@@ -428,93 +439,7 @@ class Painel_estagios_convenios extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_informacoes_estagios_convenios_2($uriCampus = NULL, $itemId = null)
-  {
-    verificaLogin();
-
-    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
-    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
-
-    $pagina = 'financeiro';
-    //$wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
-
-    $colunasTabelaPagesFinanceiro = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.order', 'page_contents.img_destaque', 'page_contents.link_redir', 'page_contents.status');
-    $joinConteudoPagina = array('pages' => 'pages.id = page_contents.pages_id');
-    $wherePaginaEstagiosConvenios = array('page_contents.id' => $itemId);
-
-    $paginaEstagiosConvenios = $this->painelbd->where($colunasTabelaPagesFinanceiro, 'page_contents', $joinConteudoPagina, $wherePaginaEstagiosConvenios, null)->row();
-
-    $this->form_validation->set_rules('title', 'Titulo', 'required');
-
-    $this->form_validation->set_rules('status', 'Situação', 'required');
-    $this->form_validation->set_rules('order', 'Ordem', 'required');
-
-    if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()) :
-        setMsg(validation_errors(), 'error');
-      endif;
-    } else {
-
-      if ($paginaEstagiosConvenios->description != $this->input->post('description')) {
-        $dados_form['description'] = $this->input->post('description');
-      }
-
-      if ($paginaEstagiosConvenios->link_redir != $this->input->post('link_redir')) {
-        $dados_form['link_redir'] = $this->input->post('link_redir');
-      }
-
-      if ($paginaEstagiosConvenios->title != $this->input->post('title')) {
-        $dados_form['title'] = $this->input->post('title');
-      }
-
-      if ($paginaEstagiosConvenios->status != $this->input->post('status')) {
-        $dados_form['status'] = $this->input->post('status');
-      }
-      if ($paginaEstagiosConvenios->order != $this->input->post('order')) {
-        $dados_form['order'] = $this->input->post('order');
-      }
-
-
-      if (isset($_FILES['img_destaque']) && !empty($_FILES['img_destaque']['name'])) {
-
-        if (file_exists($paginaEstagiosConvenios->img_destaque)) {
-          unlink($paginaEstagiosConvenios->img_destaque);
-        }
-
-        $path = "assets/images/financing/$campus->id";
-        is_way($path);
-
-        $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-
-        $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
-      }
-
-      $dados_form['id'] = $paginaEstagiosConvenios->id;
-      $dados_form['user_id'] = $this->session->userdata('codusuario');
-
-      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-        setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_estagios_convenios/lista_informacoes_estagios_convenios/$campus->id"));
-      } else {
-        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-      }
-    }
-
-    $data = array(
-      'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/servicos/estagios_convenios/editar_informacoes_estagios_convenios',
-      'dados' => array(
-        'paginaEstagiosConvenios' => $paginaEstagiosConvenios,
-        'page' => "Edição de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'campus' => $campus,
-        'tipo' => ''
-      )
-    );
-
-    $this->load->view('templates/layoutPainelAdm', $data);
-  }
-
-  public function deletar_item_estagios_convenios($uriCampus = NULL, $id = NULL)
+  public function deletar_item_estagios_convenios($uriCampus = NULL, $paginaId = null, $id = NULL)
   {
     verifica_login();
 
@@ -522,10 +447,10 @@ class Painel_estagios_convenios extends CI_Controller
 
     if ($this->painelbd->deletar('page_contents', $item->id)) {
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-      redirect("Painel_estagios_convenios/lista_informacoes_estagios_convenios/$uriCampus");
+      redirect("Painel_estagios_convenios/lista_itens_estagios_convenios/$uriCampus/$paginaId");
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-      redirect("Painel_estagios_convenios/lista_informacoes_estagios_convenios/$uriCampus");
+      redirect("Painel_estagios_convenios/lista_itens_estagios_convenios/$uriCampus/$paginaId");
     }
   }
 

@@ -22,7 +22,7 @@
           if (isset($paginaEstagiosConvenios) and $paginaEstagiosConvenios != '') {
           ?>
             <div class="col-xs-6">
-              <?php echo anchor("Painel_estagios_convenios/cadastrar_itens_estagios_conveniosr/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
+              <?php echo anchor("Painel_estagios_convenios/cadastrar_itens_estagios_convenios/$campus->id/$paginaEstagiosConvenios->id", '<i class="material-icons">add_box</i> CADASTRAR item da página', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
             </div>
           <?php
           }
@@ -71,7 +71,7 @@
                     <td class="center">
                       <?php
 
-                      echo '<a href=' . base_url("Painel_estagios_convenios/editar_informacoes_estagios_convenios/$campus->id/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_estagios_convenios/editar_itens_estagios_convenios/$campus->id/$paginaEstagiosConvenios->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
                       echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
@@ -157,7 +157,7 @@
 
     $(this).find('.nomeItem').text(nomeItem);
     $(this).find('#btnCerteza').attr('href',
-      '<?php echo base_url("Painel_estagios_convenios/deletar_item_financeiro/$campus->id/"); ?>' +
+      '<?php echo base_url("Painel_estagios_convenios/deletar_item_estagios_convenios/$campus->id/$paginaEstagiosConvenios->id/"); ?>' +
       id);
   });
 </script>
