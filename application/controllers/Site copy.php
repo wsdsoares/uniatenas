@@ -24,7 +24,7 @@ class Site extends CI_Controller
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
         date_default_timezone_set('America/Sao_Paulo');
         $date = date('Y-m-d H:i:s');
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $cursos = $this->bancosite->getWhere('courses', array('modalidade' => 'presencial'), array('campo' => 'name', 'ordem' => 'asc'))->result();
 
@@ -93,7 +93,7 @@ class Site extends CI_Controller
                 'cursos' => $cursos,
                 'espacoeventos' => $eventSpace = $uricampus == 'paracatu' ? $eventSpace : '',
                 'fotos' => $catArray,
-            )
+            ),
         );
 
         $this->load->view('templates/master', $data);
@@ -106,13 +106,13 @@ class Site extends CI_Controller
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $dataOuthersCampus = $this->bancosite->getWhere('campus', array('visible' => 'sim'), array('campo' => 'city', 'ordem' => 'asc'))->result();
 
         $data = array(
             'head' => array(
-                'title' => 'Localização - '.$dataCampus->city,
+                'title' => 'Localização - ' . $dataCampus->city,
             ),
             'conteudo' => 'uniatenas/campus/localizacao',
             'dados' => array(
@@ -120,7 +120,7 @@ class Site extends CI_Controller
                 'outherCampus' => $dataOuthersCampus,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->output->cache(14.400);
         $this->load->view('templates/master', $data);
@@ -133,17 +133,17 @@ class Site extends CI_Controller
             redirect("");
         }
 
-        $colunaCampus = array('campus.name','campus.id','campus.city','campus.uf');
-        $dataCampus = $this->bancosite->where($colunaCampus,'campus',NULL, array('shurtName' => $uricampus))->row();
+        $colunaCampus = array('campus.name', 'campus.id', 'campus.city', 'campus.uf');
+        $dataCampus = $this->bancosite->where($colunaCampus, 'campus', null, array('shurtName' => $uricampus))->row();
 
         // $pages_content = $this->bancosite->getWhere('pages', array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
-        
-        $page = $this->bancosite->where('*','pages', NULL, array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
+
+        $page = $this->bancosite->where('*', 'pages', null, array('title' => 'biblioteca', 'campusid' => $dataCampus->id))->row();
 
         //$whereConteudoPrincipal = array('page_contents.pages_id' => $page->id,'page_contents.status'=>1,'page_contents.tipo'=> 'informacoesPagina');
 
         $queryItensBiblioteca = "
-        SELECT 
+        SELECT
           page_contents.id,
           page_contents.title,
           page_contents.title_short,
@@ -156,8 +156,8 @@ class Site extends CI_Controller
           JOIN pages ON pages.id = page_contents.pages_id
           JOIN campus ON campus.id = pages.campusid
         WHERE
-          page_contents.pages_id = $page->id AND 
-          page_contents.status = 1 AND 
+          page_contents.pages_id = $page->id AND
+          page_contents.status = 1 AND
           page_contents.tipo = 'informacoesPagina' AND
           page_contents.order NOT IN ('linkComutacao','comutacao')
         ORDER BY page_contents.title ASC
@@ -167,59 +167,59 @@ class Site extends CI_Controller
         $conteudoPrincipal = $this->bancosite->getQuery($queryItensBiblioteca)->result();
 
         // $pages_content_contato = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'order' => 'contatos'))->row();
-        $pages_content_contato = $this->bancosite->where('*','page_contents',null, array('pages_id' => $page->id, 'status'=>1,'order' => 'contatos'))->row();
+        $pages_content_contato = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'contatos'))->row();
 
-        $colunasResultadoLinksUteis = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
-        $whereLinksUteis = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis','page_contents.tipo'=>'linksUteis');
-        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis,'page_contents',null, $whereLinksUteis)->result();
+        $colunasResultadoLinksUteis = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $whereLinksUteis = array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis', 'page_contents.tipo' => 'linksUteis');
+        $conteudoLinksUteis = $this->bancosite->where($colunasResultadoLinksUteis, 'page_contents', null, $whereLinksUteis)->result();
 
-        $colunasResultadoAcessoRapido = array('page_contents.id','page_contents.title','page_contents.link_redir','page_contents.status','page_contents.pages_id');
-        $whereAcessoRapido = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.order' => 'linksUteis','page_contents.tipo'=>'acessoRapido');
-        $conteudoAcessoRapido = $this->bancosite->where($colunasResultadoAcessoRapido,'page_contents',null, $whereAcessoRapido)->result();
+        $colunasResultadoAcessoRapido = array('page_contents.id', 'page_contents.title', 'page_contents.link_redir', 'page_contents.status', 'page_contents.pages_id');
+        $whereAcessoRapido = array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.order' => 'linksUteis', 'page_contents.tipo' => 'acessoRapido');
+        $conteudoAcessoRapido = $this->bancosite->where($colunasResultadoAcessoRapido, 'page_contents', null, $whereAcessoRapido)->result();
 
-        $colunasResultadoComutacao = array('page_contents.title','page_contents.description');
-        $whereComutacao = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.tipo' => 'informacoesPagina','page_contents.order '=>'comutacao');
-        $conteudoComutacao = $this->bancosite->where($colunasResultadoComutacao,'page_contents',null, $whereComutacao)->row();
-        
-        $colunasResultadoLinkComutacao = array('page_contents.title','page_contents.description','page_contents.link_redir');
-        $whereLinkComutacao = array('page_contents.pages_id' => $page->id, 'page_contents.status'=>1,'page_contents.tipo' => 'informacoesPagina','page_contents.order '=>'linkComutacao');
-        $conteudoLinkComutacao = $this->bancosite->where($colunasResultadoLinkComutacao,'page_contents',null, $whereLinkComutacao, array('campo'=>'title','ordem'=>'ASC'))->result();
+        $colunasResultadoComutacao = array('page_contents.title', 'page_contents.description');
+        $whereComutacao = array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.tipo' => 'informacoesPagina', 'page_contents.order ' => 'comutacao');
+        $conteudoComutacao = $this->bancosite->where($colunasResultadoComutacao, 'page_contents', null, $whereComutacao)->row();
+
+        $colunasResultadoLinkComutacao = array('page_contents.title', 'page_contents.description', 'page_contents.link_redir');
+        $whereLinkComutacao = array('page_contents.pages_id' => $page->id, 'page_contents.status' => 1, 'page_contents.tipo' => 'informacoesPagina', 'page_contents.order ' => 'linkComutacao');
+        $conteudoLinkComutacao = $this->bancosite->where($colunasResultadoLinkComutacao, 'page_contents', null, $whereLinkComutacao, array('campo' => 'title', 'ordem' => 'ASC'))->result();
 
         $colunaFotosBiblioteca = array(
-          'photos_gallery.id',
-          'photos_gallery.id_page_contents',
-          'photos_gallery.campusid',
-          'photos_gallery.title',
-          'photos_gallery.file',
-          'photos_gallery.status', 
+            'photos_gallery.id',
+            'photos_gallery.id_page_contents',
+            'photos_gallery.campusid',
+            'photos_gallery.title',
+            'photos_gallery.file',
+            'photos_gallery.status',
         );
-        $joinFotosSlideBiblioteca  = array(
-          'page_contents'=>'page_contents.id = photos_gallery.id_page_contents',
-          'pages'=>'pages.id = page_contents.pages_id',
+        $joinFotosSlideBiblioteca = array(
+            'page_contents' => 'page_contents.id = photos_gallery.id_page_contents',
+            'pages' => 'pages.id = page_contents.pages_id',
         );
-    
-        $whereFotosSlideBiblioteca = array(
-          'page_contents.pages_id'=>$page->id,
-        );
-        
-        $conteudoFotosSlideBiblioteca = $this->bancosite->where($colunaFotosBiblioteca,'photos_gallery',$joinFotosSlideBiblioteca, $whereFotosSlideBiblioteca)->result();
 
-        $colunasResultadoLinkComutacao = array('page_contents.title','page_contents.description','page_contents.link_redir');
-        $joinLinksRevistaPeriodicos  = array(
-            'magazines_area'=>'magazines_area.id = magazines_links.magazines_areaid',
-            'campus'=>'campus.id = magazines_area.campus_id',
-          );
-        $whereLinksRevistaPeriodicos = array('magazines_area.status' => 1,'magazines_area.campus_id'=>$dataCampus->id);
-        
-        $conteudoLinksRevistaPeriodicos = $this->bancosite->where(array('magazines_links.id'),'magazines_links',$joinLinksRevistaPeriodicos, $whereLinksRevistaPeriodicos)->result();
-        
+        $whereFotosSlideBiblioteca = array(
+            'page_contents.pages_id' => $page->id,
+        );
+
+        $conteudoFotosSlideBiblioteca = $this->bancosite->where($colunaFotosBiblioteca, 'photos_gallery', $joinFotosSlideBiblioteca, $whereFotosSlideBiblioteca)->result();
+
+        $colunasResultadoLinkComutacao = array('page_contents.title', 'page_contents.description', 'page_contents.link_redir');
+        $joinLinksRevistaPeriodicos = array(
+            'magazines_area' => 'magazines_area.id = magazines_links.magazines_areaid',
+            'campus' => 'campus.id = magazines_area.campus_id',
+        );
+        $whereLinksRevistaPeriodicos = array('magazines_area.status' => 1, 'magazines_area.campus_id' => $dataCampus->id);
+
+        $conteudoLinksRevistaPeriodicos = $this->bancosite->where(array('magazines_links.id'), 'magazines_links', $joinLinksRevistaPeriodicos, $whereLinksRevistaPeriodicos)->result();
+
         $existeLinkRevistasPeriodicos = count($conteudoLinksRevistaPeriodicos);
-        
-        $pages_content_contato = $this->bancosite->where('*','page_contents', NULL, array('pages_id' => $page->id, 'order' => 'contatos'))->row();
+
+        $pages_content_contato = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'order' => 'contatos'))->row();
 
         $data = array(
             'head' => array(
-                'title' => 'Biblioteca - '.$dataCampus->name,
+                'title' => 'Biblioteca - ' . $dataCampus->name,
             ),
             'conteudo' => 'uniatenas/biblioteca/homeBiblioteca',
             'dados' => array(
@@ -234,11 +234,11 @@ class Site extends CI_Controller
                 'conteudoFotosSlideBiblioteca' => $conteudoFotosSlideBiblioteca = isset($conteudoFotosSlideBiblioteca) ? $conteudoFotosSlideBiblioteca : '',
                 'existeLinkRevistasPeriodicos' => $existeLinkRevistasPeriodicos = $existeLinkRevistasPeriodicos > 0 ? $existeLinkRevistasPeriodicos : '',
                 'conteudoContato' => '',
-                
+
                 'contatos' => '',
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
 
             //'news' => $news
         );
@@ -256,13 +256,12 @@ class Site extends CI_Controller
             'conteudo' => 'uniatenas/campus/inicioCampus',
             'dados' => array(),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
 
             //'news' => $news
         );
         $this->load->view('templates/master', $data);
     }
-
 
     /*     * ************
      * NOTICIAS
@@ -275,14 +274,14 @@ class Site extends CI_Controller
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         //$news = $this->Painelsite->where('*','news', '', array('campusid'=>$dataCampus->id), array('campo' => 'id', 'ordem' => 'desc'))->result(); //Table, orderm, campo, limit -Retorno do banco de dados
 
         $date = date('Y-m-d H:i:s');
         $queryNews = 'select *
-                        from news 
-                        where datestart <= "'.$date.'"                       
+                        from news
+                        where datestart <= "' . $date . '"
                         and campusid = ' . $dataCampus->id . '
                         and status = 1
                         order by id desc';
@@ -299,7 +298,7 @@ class Site extends CI_Controller
             'dados' => array(
                 'news' => $news,
                 'campus' => $dataCampus,
-            )
+            ),
         );
 
         $this->load->view('templates/master', $data);
@@ -315,7 +314,7 @@ class Site extends CI_Controller
             redirect('Site/noticias');
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $news = $this->bancosite->getWhere('news', array('id' => $id, 'status' => '1'), null, 1)->row();
 
@@ -336,7 +335,7 @@ class Site extends CI_Controller
         $data = array(
             'head' => array(
                 'title' => 'Visualizar Notícias - UniAtenas ' . $dataCampus->city,
-                'specific_CSS' => 'assets/plugins/lightbox/dist/css/lightbox.min.css'
+                'specific_CSS' => 'assets/plugins/lightbox/dist/css/lightbox.min.css',
             ),
             'conteudo' => 'uniatenas/noticias/ver_noticia',
             'footer' => array(
@@ -348,8 +347,8 @@ class Site extends CI_Controller
                 'news' => $news,
                 'campus' => $dataCampus,
                 'recentNews' => $recentNews,
-                'photosNews' => $photosNews
-            )
+                'photosNews' => $photosNews,
+            ),
         );
 
         $this->load->view('templates/master', $data);
@@ -359,14 +358,14 @@ class Site extends CI_Controller
      * ESPAÇO EVENTOS
      * **************/
 
-    public function espaco_eventos($uricampus = NULL)
+    public function espaco_eventos($uricampus = null)
     {
         if ($uricampus == null) {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
+
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'espacoeventos', 'campusid' => $dataCampus->id))->row();
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
         $eventSpace = $this->bancosite->getWhere('event_space', array('campusid' => $dataCampus->id))->result();
@@ -396,19 +395,19 @@ class Site extends CI_Controller
                 'conteudo' => $pages_content,
                 'conteudoPag' => $conteudoPrincipal,
                 'fotosEspaco' => $spacePhotosArray,
-            )
+            ),
         );
 
         $this->load->view('templates/master', $data);
     }
 
-    public function fotos_espaco_eventos($uricampus = NULL, $idspace = NULL)
+    public function fotos_espaco_eventos($uricampus = null, $idspace = null)
     {
         if ($uricampus == null) {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $pages_content = $this->bancosite->getWhere('pages', array('title' => 'espacoeventos', 'campusid' => $dataCampus->id))->row();
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
@@ -439,7 +438,7 @@ class Site extends CI_Controller
                 'conteudo' => $pages_content,
                 'conteudoPag' => $conteudoPrincipal,
                 'fotosEspaco' => $spacePhotosArray,
-            )
+            ),
         );
 
         $this->load->view('templates/master', $data);
@@ -454,7 +453,7 @@ class Site extends CI_Controller
         if ($uricampus == null) {
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $colunasFotosGaleria = array(
             'photos_gallery.id',
@@ -467,13 +466,13 @@ class Site extends CI_Controller
             'photos_gallery.user_id',
         );
 
-        $whereFotosGaleria= array(
+        $whereFotosGaleria = array(
             //'photos_gallery.id_page_contents'=>$idConteudoPaginaInfraestrutura,
         );
-        
-        $listaFotosInfraestrutura = $this->bancosite->where('*','photos_gallery',NULL,NULL)->result();     
-        
-        $whereInfraestrutura= array(
+
+        $listaFotosInfraestrutura = $this->bancosite->where('*', 'photos_gallery', null, null)->result();
+
+        $whereInfraestrutura = array(
             // 'page_contents.id'=>$idConteudoPaginaInfraestrutura,
         );
         $colunaInfraestrutura = array(
@@ -481,10 +480,8 @@ class Site extends CI_Controller
             'page_contents.title',
         );
 
-       
-        // $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();         
- 
-        
+        // $categoriaInfraestrutura = $this->painelbd->where($colunaInfraestrutura,'page_contents',NULL,$whereInfraestrutura, null, null)->row();
+
         $sqlCategoria = "
                      SELECT
                      photos_category.id,
@@ -507,10 +504,9 @@ class Site extends CI_Controller
             $catArray[$i]['id'] = $item->id;
             $catArray[$i]['title'] = $item->title;
             $catArray[$i]['categoria'] = $item->categoria;
-            $catArray[$i]['fotos'] = $this->bancosite->where('*','photos_gallery', null, array('photos_gallery.photoscategoryid' => $item->id), null, 3)->result();
+            $catArray[$i]['fotos'] = $this->bancosite->where('*', 'photos_gallery', null, array('photos_gallery.photoscategoryid' => $item->id), null, 3)->result();
             $i = $i + 1;
         }
-
 
         $data = array(
             'head' => array(
@@ -523,7 +519,7 @@ class Site extends CI_Controller
                 'city' => $uricampus,
                 'campus' => $dataCampus,
                 'catArray' => $catArray,
-            )
+            ),
         );
 
         $this->load->view('templates/master', $data);
@@ -533,12 +529,12 @@ class Site extends CI_Controller
      * Show Photograph
      * ************ */
 
-    public function galeria_fotos($uricampus = NULL, $idCategory = null, $breadcrump = null)
+    public function galeria_fotos($uricampus = null, $idCategory = null, $breadcrump = null)
     {
         if ($uricampus == null) {
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         if ($breadcrump != null) {
             if ($breadcrump == 'huna') {
@@ -549,26 +545,26 @@ class Site extends CI_Controller
         }
 
         $catArray[] = array();
-        
+
         $Category = $this->bancosite->getWhere('photos_category', array('id' => $idCategory))->row();
         $catArray['id'] = $Category->id;
         $catArray['title'] = $Category->title;
-        $catArray['fotos'] = $this->bancosite->where('*','photos_gallery', null, array('photos_gallery.photoscategoryid' => $Category->id,'photos_gallery.status'=>1))->result();
+        $catArray['fotos'] = $this->bancosite->where('*', 'photos_gallery', null, array('photos_gallery.photoscategoryid' => $Category->id, 'photos_gallery.status' => 1))->result();
         //  $catArray['fotos'] = $this->bancosite->getWhere('photos_gallery', array('photoscategoryid' => $Category->id), null)->result();
         $data = array(
             'head' => array(
                 'title' => 'Galeira - UniAtenas ' . $dataCampus->city,
-                'css' => base_url('assets/css/css_course/style-course.css')
+                'css' => base_url('assets/css/css_course/style-course.css'),
             ),
             'conteudo' => "uniatenas/galeriaFotos/fotosGaleria",
 
-            'js' => NULL,
+            'js' => null,
             'footer' => '',
             'dados' => array(
                 'campus' => $dataCampus,
                 'catArray' => $catArray,
-                'breadurl' => $breadurl
-            )
+                'breadurl' => $breadurl,
+            ),
         );
         $this->output->cache(9000);
         $this->load->view('templates/master', $data);
@@ -585,9 +581,9 @@ class Site extends CI_Controller
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
-        $areasLinks = $this->bancosite->where('*','magazines_area', null,  array('status' => 1,'magazines_area.campus_id'=>$dataCampus->id))->result();
+        $areasLinks = $this->bancosite->where('*', 'magazines_area', null, array('status' => 1, 'magazines_area.campus_id' => $dataCampus->id))->result();
 
         $data = array(
             'head' => array(
@@ -599,14 +595,13 @@ class Site extends CI_Controller
                 'areaslinks' => $areasLinks,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
 
             //'news' => $news
         );
         $this->output->cache(9400);
         $this->load->view('templates/master', $data);
     }
-
 
     public function links_revistas($uricampus, $cursoid)
     {
@@ -617,17 +612,17 @@ class Site extends CI_Controller
         if ($cursoid == null) {
             redirect('Site/revistas_periodicos');
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         //$areasLinks = $this->bancosite->where('magazines_links', array('status' => 1, ))->result();
         $joinAreaRevistaPeriodico = array(
-            'magazines_area'=> 'magazines_area.id = magazines_links.magazines_areaid',
+            'magazines_area' => 'magazines_area.id = magazines_links.magazines_areaid',
         );
         $whereAreaRevistaPeriodico = array(
             'magazines_links.magazines_areaid' => $cursoid,
             'magazines_links.status' => 1,
-            'magazines_links.campus_id'=>$dataCampus->id,
-            'magazines_area.status'=>1
+            'magazines_links.campus_id' => $dataCampus->id,
+            'magazines_area.status' => 1,
         );
         $colunasLinksRevistasPeriodicos = array(
             'magazines_links.id',
@@ -641,8 +636,7 @@ class Site extends CI_Controller
 
         );
 
-        $areasLinks = $this->bancosite->where($colunasLinksRevistasPeriodicos,'magazines_links', $joinAreaRevistaPeriodico,  $whereAreaRevistaPeriodico, array('campo'=>'magazines_links.title','ordem'=>'ASC'))->result();
-        
+        $areasLinks = $this->bancosite->where($colunasLinksRevistasPeriodicos, 'magazines_links', $joinAreaRevistaPeriodico, $whereAreaRevistaPeriodico, array('campo' => 'magazines_links.title', 'ordem' => 'ASC'))->result();
 
         //trocar função getWhere - TODO
         $areas = $this->bancosite->getWhere('magazines_area', array('magazines_area.id' => $cursoid))->row();
@@ -658,10 +652,10 @@ class Site extends CI_Controller
             'dados' => array(
                 'areaslinks' => $areasLinks,
                 'idArea' => $cursoid,
-                 'area' => $areas,
+                'area' => $areas,
                 // 'area' => '',
                 'campus' => $dataCampus,
-            )
+            ),
         );
         $this->output->cache(180);
         $this->load->view('templates/master', $data);
@@ -671,17 +665,16 @@ class Site extends CI_Controller
      *****CPA******
      **************/
 
-    public function CPA($uricampus = NULL)
+    public function CPA($uricampus = null)
     {
         if ($uricampus == null) {
             redirect("");
         }
         $page = $this->bancosite->getWhere('pages', array('title' => 'pesquisaIniciacao'))->row();
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
+
         $page = $this->bancosite->getWhere('pages', array('title' => 'cpa', 'campusid' => $dataCampus->id))->row();
-        
 
         $consulta = "SELECT
                             *
@@ -691,7 +684,6 @@ class Site extends CI_Controller
                         and status=1
                         and pages_id = $page->id";
 
-
         $banner = null;
         $consulta2 = $this->bancosite->getWhere('photos_category', array('title' => 'CPA', 'type' => 'banner', 'campusid' => $dataCampus->id))->result();
         if (!empty($consulta2)) {
@@ -699,15 +691,14 @@ class Site extends CI_Controller
         }
 
         $pages_content = $this->bancosite->getQuery($consulta)->result();
-        
+
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'page_contents.order' => 'description'))->result();
-        
+
         $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
         $tablePhones = "campus_has_setores";
         $dataJoinPhones = array("contatos_setores" => "contatos_setores.setoresidcamp = campus_has_setores.id");
         $wherePhones = array("campus_has_setores.id" => $page->setorcampid, "contatos_setores.visiblepage" => 1);
         $phones = $this->Painelsite->where($filedPhones, $tablePhones, $dataJoinPhones, $wherePhones)->result();
-
 
         $data = array(
             'head' => array(
@@ -721,10 +712,10 @@ class Site extends CI_Controller
                 'campus' => $dataCampus,
                 'conteudo' => $pages_content,
                 'conteudoPag' => $conteudoPrincipal,
-                
+
                 'page_banner' => $banner,
                 'contatos' => $phones,
-            )
+            ),
         );
         $this->load->view('templates/master', $data);
     }
@@ -735,36 +726,35 @@ class Site extends CI_Controller
 
     public function napp($uricampus = null)
     {
-      $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf','campus.shurtName');
-      $dataCampus = $this->bancosite->where($colunasCampus,'campus',NULL, array('campus.shurtName'=>$uricampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf', 'campus.shurtName');
+        $dataCampus = $this->bancosite->where($colunasCampus, 'campus', null, array('campus.shurtName' => $uricampus))->row();
 
-      $pages_content = $this->bancosite->where('*','pages', null, array('title' => 'napp','campusid'=>$dataCampus->id))->row();
-      $conteudoPrincipal =  $this->bancosite->getQuery("SELECT * FROM page_contents where page_contents.pages_id = $pages_content->id and page_contents.order <>'contatos' and page_contents.status=1 order by page_contents.order ASC")->result();
+        $pages_content = $this->bancosite->where('*', 'pages', null, array('title' => 'napp', 'campusid' => $dataCampus->id))->row();
+        $conteudoPrincipal = $this->bancosite->getQuery("SELECT * FROM page_contents where page_contents.pages_id = $pages_content->id and page_contents.order <>'contatos' and page_contents.status=1 order by page_contents.order ASC")->result();
 
-      $conteudoContato = $this->bancosite->getQuery("SELECT * FROM page_contents where page_contents.pages_id = $pages_content->id and page_contents.order ='contatos' and page_contents.status=1")->result();
-      
-      $data = array(
-        'head' => array(
-            'title' => 'NAPP ' . $dataCampus->city,
-        ),
-        'conteudo' => 'uniatenas/napp/principal',
-        'footer' => '',
-        'menu' => '',
-        'js' => null,
-        'dados' => array(
-          'campus' => $dataCampus,
-          'conteudoPaginaNapp' => $conteudoPrincipal,
-          'contatosPagina' => $conteudoContato,
-        )
-      );
-      $this->output->cache(14400);
-      $this->load->view('templates/master', $data);
+        $conteudoContato = $this->bancosite->getQuery("SELECT * FROM page_contents where page_contents.pages_id = $pages_content->id and page_contents.order ='contatos' and page_contents.status=1")->result();
+
+        $data = array(
+            'head' => array(
+                'title' => 'NAPP ' . $dataCampus->city,
+            ),
+            'conteudo' => 'uniatenas/napp/principal',
+            'footer' => '',
+            'menu' => '',
+            'js' => null,
+            'dados' => array(
+                'campus' => $dataCampus,
+                'conteudoPaginaNapp' => $conteudoPrincipal,
+                'contatosPagina' => $conteudoContato,
+            ),
+        );
+        $this->output->cache(14400);
+        $this->load->view('templates/master', $data);
     }
 
     /*     * ***********"*
      * NPA - Administração
      * ************ */
-
 
     public function npa($uricampus = null)
     {
@@ -773,7 +763,7 @@ class Site extends CI_Controller
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
         $page = $this->bancosite->getWhere('pages', array('title' => 'npa'))->row();
 
         $consulta = "SELECT
@@ -797,7 +787,7 @@ class Site extends CI_Controller
                 'city' => $dataCampus->city,
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
-            )
+            ),
         );
         $this->output->cache(14400);
         $this->load->view('templates/master', $data);
@@ -813,8 +803,8 @@ class Site extends CI_Controller
         if ($uricampus == null) {
             redirect("");
         }
-       
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'npas'))->row();
 
@@ -839,7 +829,7 @@ class Site extends CI_Controller
                 'city' => $dataCampus->city,
                 'campus' => $dataCampus,
                 'conteudoPag' => $conteudoPrincipal,
-            )
+            ),
         );
         $this->output->cache(14400);
         $this->load->view('templates/master', $data);
@@ -849,15 +839,14 @@ class Site extends CI_Controller
      * -----------------  NPJ
      * ************ */
 
-
     public function NPJ($uricampus = null)
     {
         if ($uricampus == null) {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
-        
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
+
         $page = $this->bancosite->getWhere('pages', array('title' => 'npj'))->row();
 
         $consulta = "SELECT
@@ -873,7 +862,7 @@ class Site extends CI_Controller
 
         $data = array(
             'head' => array(
-                'title' => 'NPJ ' .  $dataCampus->city,
+                'title' => 'NPJ ' . $dataCampus->city,
             ),
             'conteudo' => 'uniatenas/nucleos/npj',
             'footer' => '',
@@ -884,15 +873,15 @@ class Site extends CI_Controller
                 'conteudo' => $pages_content,
                 'conteudoPag' => $conteudoPrincipal,
                 'conteudoContatos' => $pages_content_contato,
-            )
+            ),
         );
         $this->output->cache(14400);
         $this->load->view('templates/master', $data);
     }
 
     /* ------------------------------------------------------------
-      --------------              Graduação
-      ------------------------------------------------------------ */
+    --------------              Graduação
+    ------------------------------------------------------------ */
 
     public function graduacao()
     {
@@ -914,8 +903,8 @@ class Site extends CI_Controller
             'footer' => '',
             'dados' => array(
                 'campus' => $local,
-                'revistas' => $revistas
-            )
+                'revistas' => $revistas,
+            ),
         );
         $this->load->view('templates/master', $data);
     }
@@ -933,7 +922,7 @@ class Site extends CI_Controller
     campus.id as campus_id,
     campus.name,
     campus.city
-    
+
 FROM
     revistas
 inner join campus on campus.id = revistas.campus_id
@@ -969,86 +958,84 @@ and revistas.id =$id;
                 'campus' => $campus,
                 'revistas' => $revistas,
                 'revista_id' => $id,
-            )
+            ),
         );
         $this->load->view('templates/master', $data);
     }
 
-    public function contato($uricampus = NULL)
+    public function contato($uricampus = null)
     {
 
         if ($uricampus == null) {
             redirect("");
         }
 
-        
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
         $this->form_validation->set_rules('email', 'E-mail', 'valid_email|required');
         $this->form_validation->set_rules('phone', 'Telefone', 'required|in');
         $this->form_validation->set_rules('message', 'Mensagem', 'required|min_length[50]');
 
-        if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()) :
+        if ($this->form_validation->run() == false) {
+            if (validation_errors()):
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-        
-            if( !empty($this->input->post('enviarForm')) ){
-                
+
+            if (!empty($this->input->post('enviarForm'))) {
+
                 $url = "https://www.google.com/recaptcha/api/siteverify";
                 $secret = "6Lc1NxEmAAAAADgQbDjiqScjBzvga54vmJt1jsmZ";
                 $response = $this->input->post('g-recaptcha-response');
-                $variaveis = "secret=".$secret."&response=".$response;
-                $ch=curl_init();
+                $variaveis = "secret=" . $secret . "&response=" . $response;
+                $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $variaveis);
-                $resposta=curl_exec($ch);
+                $resposta = curl_exec($ch);
                 curl_close($ch);
 
                 $resultado = json_decode($resposta);
 
-                if($resultado->success == 1){
+                if ($resultado->success == 1) {
                     if ($this->input->post('description') != '') {
                         $outhersInformation = $this->input->post('description');
                     } else {
                         $outhersInformation = '';
                     }
 
-    
                     $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
                     setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
                     date_default_timezone_set('America/Sao_Paulo');
-    
+
                     $date = date('Y-m-d H:i:s');
-    
+
                     $data['campusid'] = $dataCampus->id;
-    
+
                     $mensagem = "<p>O (A)" .
-                        "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
-                        "Email: " . $data['email'] . "<br/>" .
-                        "Celular: " . $data['phone'] . "<br/>" .
-                        "Mensagem: " . $data['message'] . "<br/>" .
-                        "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
-                        "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
-    
+                    "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
+                    "Email: " . $data['email'] . "<br/>" .
+                    "Celular: " . $data['phone'] . "<br/>" .
+                    "Mensagem: " . $data['message'] . "<br/>" .
+                    "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
+                    "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
+
                     $this->load->library('email');
-    
+
                     //Inicia o processo de configuração para o envio do email
                     $config['protocol'] = 'mail'; // define o protocolo utilizado
-                    $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-                    $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+                    $config['wordwrap'] = true; // define se haverá quebra de palavra no texto
+                    $config['validate'] = true; // define se haverá validação dos endereços de email
                     $config['mailtype'] = 'html';
                     $config['newline'] = '\r\n';
                     $config['charset'] = 'utf-8';
-    
+
                     //$email = 'soaresdev.wil@gmail.com';
                     $email = $dataCampus->email;
                     $this->email->initialize($config);
-    
+
                     $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;
                     $this->email->from('faleconosco@atenas.edu.br', 'Fale Conosco'); //quem mandou
                     $this->email->to($email); // Destinatário
@@ -1057,9 +1044,7 @@ and revistas.id =$id;
                     //$this->email->bcc($data['email']);
                     $this->email->subject($assunto);
                     $this->email->message($mensagem);
-    
-                    
-    
+
                     if ($this->email->send()) {
                         $data['message'] = toBd($this->input->post('message'));
                         $this->bancosite->salvar('campus_contacts', $data);
@@ -1070,10 +1055,10 @@ and revistas.id =$id;
                         redirect(base_url("site/contato/$dataCampus->shurtName"));
                         setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
                     }
-                }else{
+                } else {
                     setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
                 }
-            }else{
+            } else {
                 setMsg('<p>Erro! reCaptcha não foi validado; </p>', 'error');
             }
         }
@@ -1085,28 +1070,28 @@ and revistas.id =$id;
             'titulo' => 'Contato - UniAtenas',
             'conteudo' => 'uniatenas/contato',
             'dados' => array(
-                'campus' => $dataCampus
+                'campus' => $dataCampus,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
 
-    public function contatonapp($uricampus = NULL)
+    public function contatonapp($uricampus = null)
     {
         if ($uricampus == null) {
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
         $this->form_validation->set_rules('email', 'E-mail', 'valid_email|required');
         $this->form_validation->set_rules('phone', 'Telefone', 'required');
         $this->form_validation->set_rules('message', 'Mensagem', 'required');
 
-        if ($this->form_validation->run() == FALSE) {
-            if (validation_errors()) :
+        if ($this->form_validation->run() == false) {
+            if (validation_errors()):
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -1126,19 +1111,19 @@ and revistas.id =$id;
             $data['campusid'] = $dataCampus->id;
 
             $mensagem = "<p>O Sr.(Srª)" .
-                "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
-                "Email: " . $data['email'] . "<br/>" .
-                "Celular: " . $data['phone'] . "<br/>" .
-                "Mensagem: " . $data['message'] . "<br/>" .
-                "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
-                "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
+            "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
+            "Email: " . $data['email'] . "<br/>" .
+            "Celular: " . $data['phone'] . "<br/>" .
+            "Mensagem: " . $data['message'] . "<br/>" .
+            "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
+            "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
 
             $this->load->library('email');
 
             //Inicia o processo de configuração para o envio do email
             $config['protocol'] = 'mail'; // define o protocolo utilizado
-            $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-            $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+            $config['wordwrap'] = true; // define se haverá quebra de palavra no texto
+            $config['validate'] = true; // define se haverá validação dos endereços de email
             $config['mailtype'] = 'html';
             $config['newline'] = '\r\n';
             $config['charset'] = 'utf-8';
@@ -1172,14 +1157,13 @@ and revistas.id =$id;
             'titulo' => 'Napp - UniAtenas',
             'conteudo' => 'uniatenas/contatonapp',
             'dados' => array(
-                'campus' => $dataCampus
+                'campus' => $dataCampus,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
-
 
     public function erro_404()
     {
@@ -1187,7 +1171,6 @@ and revistas.id =$id;
 
     public function graduacaoEad($codEad = null)
     {
-
 
         $campus = '1'; //campus Paracatu
         $localidade = $this->bancosite->get_all('campus', $campus)->row();
@@ -1199,8 +1182,8 @@ and revistas.id =$id;
                 'conteudo' => 'uniatenas/graduacaoEad/eadUniatenas',
                 'dados' => array(
                     'campus' => $localidade,
-                    'curso' => $curso
-                )
+                    'curso' => $curso,
+                ),
             );
             $this->load->view('templates/layoutParacatu', $data);
         } elseif (isset($codEad) and $codEad == 'uniasselvi') {
@@ -1211,8 +1194,8 @@ and revistas.id =$id;
                 'conteudo' => 'uniatenas/graduacaoEad/uniasselvi',
                 'dados' => array(
                     'campus' => $localidade,
-                    'cursos' => $cursos
-                )
+                    'cursos' => $cursos,
+                ),
             );
             $this->load->view('templates/layoutParacatu', $data);
         } else {
@@ -1223,14 +1206,14 @@ and revistas.id =$id;
                 'conteudo' => 'uniatenas/graduacaoEad/cursos',
                 'dados' => array(
                     'campus' => $localidade,
-                    'cursos' => $cursos
-                )
+                    'cursos' => $cursos,
+                ),
             );
             $this->load->view('templates/layoutParacatu', $data);
         }
     }
 
-    public function infraestrutura($uricampus = NULL)
+    public function infraestrutura($uricampus = null)
     {
         // usar quando aprovado
         /*
@@ -1241,14 +1224,13 @@ and revistas.id =$id;
             redirect("");
         }
 
-
-        $dataCampus = $this->bancosite->where(array('campus.id','campus.instagram','campus.city','campus.facebook'),'campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.instagram', 'campus.city', 'campus.facebook'), 'campus', null, array('shurtName' => $uricampus))->row();
 
         //$dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'infraestrutura', 'campusid' => $dataCampus->id))->row();
-        
-        $pages_content = $this->bancosite->where('*','page_contents',NULL,array('pages_id'=>$page->id,'status'=>1),array('campo'=>'order','ordem'=>'asc'))->result();
+
+        $pages_content = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'status' => 1), array('campo' => 'order', 'ordem' => 'asc'))->result();
         $photosConted = array();
 
         // $datajoin = array(
@@ -1256,7 +1238,7 @@ and revistas.id =$id;
         //     'photos_gallery' => 'photos_gallery.photoscategoryid = photos_category.id'
         // );
         foreach ($pages_content as $contend) {
-            $where =  array("page_contents_photos.id_page_contents" => $contend->id);
+            $where = array("page_contents_photos.id_page_contents" => $contend->id);
             $campos = array("page_contents_photos.file", "page_contents_photos.id");
             $photos = array("photo" => $this->bancosite->where('*', "page_contents_photos", null, $where)->result());
             $contend->array_fotos = $photos;
@@ -1272,12 +1254,10 @@ and revistas.id =$id;
         //     $photos = array("photo" => $this->bancosite->where($campos, "page_contents", $datajoin, $where)->result());
         //     $contend->Fk_photosCat = $photos;
         // }
-        
+
         /*unset($where);
         unset($photos);
         unset($datajoin);*/
-        
-
 
         $data = array(
             'head' => array(
@@ -1290,21 +1270,20 @@ and revistas.id =$id;
                 'pages_content' => isset($pages_content) ? $pages_content : '',
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         //unset($photosConted);
         $this->output->cache(14.400);
         $this->load->view('templates/master', $data);
     }
 
-
-    public function nossaHistoria($uricampus = NULL)
+    public function nossaHistoria($uricampus = null)
     {
 
         if ($uricampus == null) {
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'nossaHistoria', 'campusid' => $dataCampus->id))->row();
         $pages_content = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id, 'status' => 1))->result();
@@ -1316,10 +1295,10 @@ and revistas.id =$id;
             'conteudo' => 'uniatenas/nossaHistoria',
             'dados' => array(
                 'campus' => $dataCampus,
-                'pages_content' => $pages_content
+                'pages_content' => $pages_content,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
 
             //'news' => $news
         );
@@ -1327,15 +1306,14 @@ and revistas.id =$id;
         $this->load->view('templates/master', $data);
     }
 
-    public function secretaria_academica($uricampus = NULL)
+    public function secretaria_academica($uricampus = null)
     {
 
         if ($uricampus == null) {
             redirect("");
         }
-        
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
 
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'secretariaacademica', 'campusid' => $dataCampus->id))->row();
 
@@ -1369,49 +1347,49 @@ and revistas.id =$id;
                 'contatos' => $phones,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
 
-    public function dirigentes($uricampus = NULL)
+    public function dirigentes($uricampus = null)
     {
-      if ($uricampus == null) {
-          redirect("");
-      }
+        if ($uricampus == null) {
+            redirect("");
+        }
 
-      $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
-      $dirigentes = $this->bancosite->getQuery("SELECT * FROM dirigentes WHERE cargo NOT LIKE '%coordenador%' ")->result();
+        $dirigentes = $this->bancosite->getQuery("SELECT * FROM dirigentes WHERE cargo NOT LIKE '%coordenador%' ")->result();
 
-      $data = array(
-          'head' => array(
-              'title' => 'Dirigentes ' . $dataCampus->city,
-          ),
-          'conteudo' => 'uniatenas/dirigentes',
-          'dados' => array(
-              'campus' => $dataCampus,
-              'dirigentes' => $dirigentes
-          ),
-          'js' => null,
-          'footer' => ''
+        $data = array(
+            'head' => array(
+                'title' => 'Dirigentes ' . $dataCampus->city,
+            ),
+            'conteudo' => 'uniatenas/dirigentes',
+            'dados' => array(
+                'campus' => $dataCampus,
+                'dirigentes' => $dirigentes,
+            ),
+            'js' => null,
+            'footer' => '',
         );
         $this->output->cache(14.400);
         $this->load->view('templates/master', $data);
     }
 
     /* ------------------------------------------------------------
-      --------------              Trabalhe Conosco
-      ------------------------------------------------------------ */
+    --------------              Trabalhe Conosco
+    ------------------------------------------------------------ */
 
-    public function trabalheConosco($uricampus = NULL)
+    public function trabalheConosco($uricampus = null)
     {
 
         if ($uricampus == null) {
             redirect("");
         }
 
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus))->row();
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'trabalheconosco', 'campusid' => $dataCampus->id))->row();
 
@@ -1442,19 +1420,19 @@ and revistas.id =$id;
                 'localidades' => $localidades,
                 'conteudoPag' => $conteudoPrincipal,
                 'vagasAbertas' => $vagasAbertas,
-                'contatos' => $phones
-            )
+                'contatos' => $phones,
+            ),
         );
         $this->load->view('templates/master', $data);
     }
 
-    public function envioCurriculo($uricampus = NULL, $vaga = NULL)
+    public function envioCurriculo($uricampus = null, $vaga = null)
     {
 
         if ($uricampus == null) {
             redirect("");
         }
-        $dataCampus = $this->bancosite->where('*','campus',NULL, array('shurtName' => $uricampus,'visible' => 'SIM'))->row();
+        $dataCampus = $this->bancosite->where('*', 'campus', null, array('shurtName' => $uricampus, 'visible' => 'SIM'))->row();
         $this->load->helper('file');
 
         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
@@ -1491,12 +1469,10 @@ and revistas.id =$id;
             $this->form_validation->set_rules('typeResume', 'Tipo de Currículo', 'required');
         }
 
-
         if (empty($_FILES['files']['name'])) {
             $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
             $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
         }
-
 
         if ($this->form_validation->run() == false) {
             if (validation_errors()) {
@@ -1511,7 +1487,7 @@ and revistas.id =$id;
                 "/(é|è|ê|ë)/",
                 "/(É|È|Ê|Ë)/",
                 "/(í|ì|î|ï)/",
-                "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"
+                "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/",
             ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('name'));
             $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
 
@@ -1528,7 +1504,7 @@ and revistas.id =$id;
                 $dadosForm = elements(array('name', 'email', 'gender', 'areacodecelphone', 'celphone', 'schoolingid', 'address', 'city', 'state'), $this->input->post());
 
                 $dadosForm['campusid'] = ($vaga == 1) ? $this->input->post('campusid') : $this->bancosite->getWhere('resume_job_vacancy', array('id' => $vaga))->row()->campusid;
-                $dadosForm['vacancyid'] = ($vaga <> 1) ? $vaga : 1;
+                $dadosForm['vacancyid'] = ($vaga != 1) ? $vaga : 1;
 
                 $dadosForm['files'] = $path . '/' . $upload['file_name'];
 
@@ -1549,7 +1525,6 @@ and revistas.id =$id;
                 }
                 //$dadosForm['areacode'] = !empty($this->input->post('areacode')) ? $this->input->post('areacode') : null;
 
-
                 if (!empty($dadosForm['phone'])) {
                     $dadosForm['phone'] = $this->input->post('phone');
                 } else {
@@ -1565,8 +1540,8 @@ and revistas.id =$id;
 
                 //Inicia o processo de configuração para o envio do email
                 $config['protocol'] = 'mail'; // define o protocolo utilizado
-                $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-                $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+                $config['wordwrap'] = true; // define se haverá quebra de palavra no texto
+                $config['validate'] = true; // define se haverá validação dos endereços de email
                 $config['mailtype'] = 'html';
                 $config['newline'] = '\r\n';
                 $config['charset'] = 'utf-8';
@@ -1636,7 +1611,7 @@ and revistas.id =$id;
                                     <tr style="border-collapse:collapse;">
                                         <td align="left" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;">
                                             <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                
+
                                             </table></td>
                                     </tr>
                                 </table></td>
@@ -1677,27 +1652,27 @@ and revistas.id =$id;
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">
                                                                 <td align="center" style="Margin:0;padding-bottom:5px;padding-top:10px;padding-left:20px;padding-right:20px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:roboto,    helvetica, arial, sans-serif;line-height:21px;color:#3F3D3D;">
-                                                                
-                                                                
+
+
                                                                 <img style="width: 700px;" src="http://www.atenas.edu.br/uniatenas/assets/images/uploads/img-email.png" >
                                                                 </td>
                                                             </tr>
                                                             <tr style="border-collapse:collapse;">
-                                                            
+
                                                                 <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#31CB4B none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:7px;width:auto;">
-                                                                
+
                                                                 </span>
 
                                                                 </td>
-                                                                
+
                                                             </tr>
                                                         </table></td>
-                                                        
+
                                                         <p>Esta é uma mensagem automática, favor não responder este e-mail.<br/></p>
                                                 </tr>
                                             </table>
                                             </td>
-                                             
+
                                     </tr>
                                 </table></td>
                         </tr>
@@ -1712,11 +1687,11 @@ and revistas.id =$id;
                                             <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
                                                 <tr style="border-collapse:collapse;">
                                                     <td width="520" valign="top" align="center" style="padding:0;Margin:0;">
-                                                        
+
                           </td>
                                                 </tr>
                                             </table>
-                                            
+
                                             <!--[if mso]></td></tr></table><![endif]--></td>
                                     </tr>
                                 </table></td>
@@ -1729,7 +1704,7 @@ and revistas.id =$id;
                                     <tr style="border-collapse:collapse;">
                                         <td align="left" style="Margin:0;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px;background-position:left top;">
                                             <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                
+
                                             </table>
                                         </td>
                                     </tr>
@@ -1738,9 +1713,8 @@ and revistas.id =$id;
                     </table></td>
             </tr>
         </table>
-    </div>  
+    </div>
 </div>';
-
 
                 $assunto = 'Inscrição - Trabalhe Conosco Site Uniatenas';
 
@@ -1756,7 +1730,6 @@ and revistas.id =$id;
 
                     $this->email->from('resposta@uniatenas.edu.br', 'Trabalhe Conosco'); //quem mandou
                     $this->email->to('rh.estrategico@uniatenas.edu.br');
-
 
                     $this->email->subject($assunto);
                     $arquivoPDF = $dadosForm['files'];
@@ -1783,7 +1756,6 @@ and revistas.id =$id;
                         "Interessado no Campus : " . $campusName . "<br/>";
 
                     $this->email->message($mensagemRH);
-
 
                     $this->email->send();
                     $this->email->clear();
@@ -1846,12 +1818,12 @@ and revistas.id =$id;
                 'infoVaga' => $infoVaga,
                 'areasAtuacaoDocente' => $areasAtuacaoDocente,
                 'areasAtuacaoTecnico' => $areasAtuacaoTecnico,
-            )
+            ),
         );
         $this->load->view('templates/master', $data);
     }
 
-    public function informanapp($uricampus = NULL)
+    public function informanapp($uricampus = null)
     {
 
         if ($uricampus == null) {
@@ -1868,17 +1840,16 @@ and revistas.id =$id;
                 'campus' => $dataCampus,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
 
     /* ------------------------------------------------------------
-      --------------              Comunicados
-      ------------------------------------------------------------ */
+    --------------              Comunicados
+    ------------------------------------------------------------ */
 
-
-    public function comunicados($uricampus = NULL)
+    public function comunicados($uricampus = null)
     {
         $dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
@@ -1891,19 +1862,18 @@ and revistas.id =$id;
                 'campus' => $dataCampus,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
 
-
-    public function processoSeletivo($uricampus = NULL)
+    public function processoSeletivo($uricampus = null)
     {
 
         if ($uricampus == null) {
             redirect("");
         }
-        
+
         $dataCampus = $this->bancosite->getWhere('campus', array('city' => $dataCampus->city))->row();
 
         $data = array(
@@ -1915,15 +1885,14 @@ and revistas.id =$id;
                 'campus' => $dataCampus,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
 
     /* ------------------------------------------------------------
-         --------------              Telefones uteis
-         ------------------------------------------------------------ */
-
+    --------------              Telefones uteis
+    ------------------------------------------------------------ */
 
     public function telefones($uricampus = 'paracatu')
     {
@@ -1934,7 +1903,7 @@ and revistas.id =$id;
         $table = 'contatos_setores';
         $datajoin = array(
             'campus_has_setores' => 'contatos_setores.setoresidcamp = campus_has_setores.id ',
-            'setores' => 'campus_has_setores.setores_id = setores.id'
+            'setores' => 'campus_has_setores.setores_id = setores.id',
         );
         $where = array('campus_id ' => $dataCampus->id, "contatos_setores.status" => 1);
         $order["campo"] = "setores.nome";
@@ -1958,10 +1927,10 @@ and revistas.id =$id;
             'js' => null,
             'dados' => array(
                 'campus' => $dataCampus,
-                'phones' => $result
+                'phones' => $result,
             ),
             'js' => null,
-            'footer' => ''
+            'footer' => '',
         );
         $this->load->view('templates/master', $data);
     }
