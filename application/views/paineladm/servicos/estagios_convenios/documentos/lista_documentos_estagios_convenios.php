@@ -1,12 +1,11 @@
 <div class="block-header">
   <h2>Painel Administrativo</h2>
 </div>
-
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
+      if ($msg = getMsg()) {
         echo $msg;
       }
       ?>
@@ -22,18 +21,18 @@
         <div class="container">
 
           <div class="col-xs-6">
-            <?php echo anchor("Painel_cpa/cadastrar_arquivos_cpa/$campus->id/$conteudoItemCPA->id", '<i class="material-icons">add_box</i> CADASTRAR Arquivos CPA', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_estagios_convenios/cadastrar_documentos_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id", '<i class="material-icons">add_box</i> CADASTRAR Documentos Estágios Convênios', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
 
           <div class="col-xs-6">
-            <?php echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_estagios_convenios/lista_itens_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->pages_id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
         </div>
       </div>
       <br />
       <?php
-      
-      if(isset($listaArquivosConteudosCpa) and $listaArquivosConteudosCpa != '' ){
+
+      if (isset($listaArquivosConteudosEstagiosConvenios) and $listaArquivosConteudosEstagiosConvenios != '') {
       ?>
       <div class="body">
         <div class="table-responsive">
@@ -60,49 +59,49 @@
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['listaArquivosConteudosCpa'] as $item):
+                foreach ($dados['listaArquivosConteudosEstagiosConvenios'] as $item) :
 
-                $verificaExistenciaArquivo= explode('.',$item->files );
-                $finalArquivo =  end($verificaExistenciaArquivo);
-                
-                if(!file_exists($item->files)){
-                  $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
-                }elseif($finalArquivo !== 'pdf'){
-                  $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
-                }else{
-                  $estiloAlerta = '';
-                }
-               ?>
+                  $verificaExistenciaArquivo = explode('.', $item->files);
+                  $finalArquivo =  end($verificaExistenciaArquivo);
+
+                  if (!file_exists($item->files)) {
+                    $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
+                  } elseif ($finalArquivo !== 'pdf') {
+                    $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
+                  } else {
+                    $estiloAlerta = '';
+                  }
+                ?>
 
 
               <tr style="<?php echo  $estiloAlerta; ?>">
                 <td class="center">
-                  <?php 
+                  <?php
 
-                    echo '<a href=' . base_url("Painel_cpa/editar_arquivos_cpa/$campus->id/$pagina->id/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_estagios_convenios/editar_documentos_estagios_convenios/$campus->id/$pagina->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-                  ?>
+                      ?>
                 </td>
                 <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->title;?></td>
+                <td><?php echo $item->title; ?></td>
                 <td>
                   <div class="btn-opcoes-curso">
                     <?php
 
-                      $verificaExistenciaArquivo= explode('.',$item->files );
-                      $finalArquivo =  end($verificaExistenciaArquivo);
-                      if(!file_exists($item->files)){
-                        echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
-                      }elseif($finalArquivo !== 'pdf'){
-                        echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
-                      }else{
-                        echo anchor($item->files, 'ACESSAR LINK <i class="material-icons">picture_as_pdf</i>', array("target" => 'blank'));
-                      }
-                     ?>
+                        $verificaExistenciaArquivo = explode('.', $item->files);
+                        $finalArquivo =  end($verificaExistenciaArquivo);
+                        if (!file_exists($item->files)) {
+                          echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
+                        } elseif ($finalArquivo !== 'pdf') {
+                          echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
+                        } else {
+                          echo anchor($item->files, 'ACESSAR LINK <i class="material-icons">picture_as_pdf</i>', array("target" => 'blank'));
+                        }
+                        ?>
                   </div>
                 </td>
 
@@ -110,22 +109,22 @@
 
                 <td>
                   <?php
-                    if($item->status =='0'){
+                      if ($item->status == '0') {
                         $situacao = 'Inativo';
-                    }else{
+                      } else {
                         $situacao = 'Ativo';
-                    }
+                      }
 
-                    echo $situacao;
-                    ?>
+                      echo $situacao;
+                      ?>
                 </td>
 
 
                 <td>
-                  <?php 
-                    $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo $dateModification . ' - ' . $item->user_id;
-                    ?>
+                  <?php
+                      $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
+                      echo $dateModification . ' - ' . $item->user_id;
+                      ?>
                 </td>
 
 
@@ -176,7 +175,7 @@ $('#modalDelete').on('show.bs.modal', function(e) {
 
   $(this).find('.nomeItem').text(nomeItem);
   $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_cpa/deletar_arquivo_cpa/$campus->id/$conteudoItemCPA->id/"); ?>' +
+    '<?php echo base_url("Painel_estagios_convenios/deletar_arquivo_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id/"); ?>' +
     id);
 });
 </script>

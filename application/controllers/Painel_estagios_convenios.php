@@ -463,21 +463,18 @@ class Painel_estagios_convenios extends CI_Controller
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
-    $joinPagina = array('campus' => 'campus.id = pages.campusid');
-    $wherePagina = array('pages.id' => $idConteudoPagina);
-
-    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
-
     $coluntaResultadoConteudoItemEstagiosConvenios = array(
       'page_contents.title', 'page_contents.id', 'page_contents.pages_id'
     );
-
-    $whereConteudoItemEstagiosConvenios = array('page_contents.pages_id' => $pagina->id);
-
+    $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $idConteudoPagina);
     $conteudoItemEstagiosConvenios = $this->painelbd->where($coluntaResultadoConteudoItemEstagiosConvenios, 'page_contents', NULL, $whereConteudoItemEstagiosConvenios)->row();
 
-    $colunaResultadoArquivosItensEstagiosConvenios = array(
+    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status');
+    $joinPagina = array('campus' => 'campus.id = pages.campusid');
+    $wherePagina = array('pages.id' => $conteudoItemEstagiosConvenios->pages_id);
+    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
+
+    $colunaResultadoDocumentosEstagiosConvenios = array(
       'page_contents_files.id',
       'page_contents_files.title',
       'page_contents_files.id_page_contents',
@@ -489,18 +486,18 @@ class Painel_estagios_convenios extends CI_Controller
       'page_contents_files.user_id',
     );
 
-    $joinArquivosConteudosCpa = array(
+    $joinDocumentosEstagiosConvenios = array(
       'page_contents' => 'page_contents.id = page_contents_files.id_page_contents',
     );
-    $whereArquivosConteudosCpa = array('page_contents_files.id_page_contents' => $conteudoItemEstagiosConvenios->id);
-    $listaArquivosConteudosCpa = $this->painelbd->where($colunaResultadoArquivosItensEstagiosConvenios, 'page_contents_files', $joinArquivosConteudosCpa, $whereArquivosConteudosCpa,)->result();
+    $whereDocumentosEstagiosConvenios = array('page_contents_files.id_page_contents' => $conteudoItemEstagiosConvenios->id);
+    $listaArquivosConteudosEstagiosConvenios = $this->painelbd->where($colunaResultadoDocumentosEstagiosConvenios, 'page_contents_files', $joinDocumentosEstagiosConvenios, $whereDocumentosEstagiosConvenios,)->result();
 
     $data = array(
       'titulo' => 'Estágios e Convênios - Documentos',
       'conteudo' => 'paineladm/servicos/estagios_convenios/documentos/lista_documentos_estagios_convenios',
       'dados' => array(
         'page' => "Lista documentos <u><i> $conteudoItemEstagiosConvenios->title </i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'listaArquivosConteudosCpa' => $listaArquivosConteudosCpa,
+        'listaArquivosConteudosEstagiosConvenios' => $listaArquivosConteudosEstagiosConvenios,
         'conteudoItemEstagiosConvenios' => $conteudoItemEstagiosConvenios,
         'campus' => $campus,
         'pagina' => $pagina,
@@ -524,11 +521,6 @@ class Painel_estagios_convenios extends CI_Controller
     $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $idConteudoPagina);
     $conteudoItemEstagiosConvenios = $this->painelbd->where($coluntaResultadoConteudoItemEstagiosConvenios, 'page_contents', NULL, $whereConteudoItemEstagiosConvenios)->row();
 
-    // $colunaResultadPagina = array('pages.id','pages.title','pages.status');
-    // $joinPagina = array('campus' => 'campus.id = pages.campusid');
-    // $wherePagina = array('pages.id'=>$conteudoItemEstagiosConvenios->pages_id);
-    // $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
-
     $this->form_validation->set_rules('title', 'Título arquivo', 'required');
     $this->form_validation->set_rules('order', 'Ordem', 'required');
 
@@ -542,7 +534,7 @@ class Painel_estagios_convenios extends CI_Controller
         setMsg(validation_errors(), 'error');
       }
     } else {
-      $path = "assets/files/CPA/$campus->id";
+      $path = "assets/files/estagiosConvenios/$campus->id";
       is_way($path);
 
       if (unique_name_args(noAccentuation($this->input->post('title'), NULL), $path)) {
@@ -562,17 +554,17 @@ class Painel_estagios_convenios extends CI_Controller
 
         if ($this->painelbd->salvar('page_contents_files', $dados_form) == TRUE) {
           setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
-          redirect("Painel_cpa/lista_documentos_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id");
+          redirect("Painel_estagios_convenios/lista_documentos_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id");
         } else {
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
       }
     }
     $data = array(
-      'titulo' => 'Arquivos CPA - Painel ADM',
-      'conteudo' => 'paineladm/campus/cpa/arquivos/cadastrar_documentos_estagios_convenios',
+      'titulo' => 'Estágios e Convênios - Documentos',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/documentos/cadastrar_documentos_estagios_convenios',
       'dados' => array(
-        'page' => "Cadastro de Arquivos CPA >> ITEM <u><i> $conteudoItemEstagiosConvenios->title</i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Cadastro de Documentos CPA >> ITEM <u><i> $conteudoItemEstagiosConvenios->title</i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'conteudoItemEstagiosConvenios' => $conteudoItemEstagiosConvenios,
         'campus' => $campus,
         //'pagina'=>$pagina,
@@ -604,26 +596,18 @@ class Painel_estagios_convenios extends CI_Controller
     );
     $whereArquivo = array('page_contents_files.id' => $idArquivo);
 
-    $arquivoCpa = $this->painelbd->where($colunaResultadoArquivo, 'page_contents_files', $joinArquivo, $whereArquivo)->row();
+    $documentoEstagiosConvenios = $this->painelbd->where($colunaResultadoArquivo, 'page_contents_files', $joinArquivo, $whereArquivo)->row();
 
     $coluntaResultadoConteudoItemEstagiosConvenios = array(
       'page_contents.title', 'page_contents.id', 'page_contents.pages_id'
     );
-    $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $arquivoCpa->id_page_contents);
+    $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $documentoEstagiosConvenios->id_page_contents);
     $conteudoItemEstagiosConvenios = $this->painelbd->where($coluntaResultadoConteudoItemEstagiosConvenios, 'page_contents', NULL, $whereConteudoItemEstagiosConvenios)->row();
 
-    // $colunaResultadPagina = array('pages.id','pages.title','pages.status');
-    // $joinPagina = array('campus' => 'campus.id = pages.campusid');
-    // $wherePagina = array('pages.id'=>$conteudoItemEstagiosConvenios->pages_id);
-    // $pagina = $this->painelbd->where($colunaResultadPagina,'pages',$joinPagina, $wherePagina)->row();
 
     $this->form_validation->set_rules('title', 'Título do arquivo', 'required');
     $this->form_validation->set_rules('order', 'Ordem', 'required');
 
-    // if (empty($_FILES['files']['name'])) {
-    //     $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-    //     $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
-    // }
 
     if ($this->form_validation->run() == FALSE) {
       if (validation_errors()) {
@@ -632,14 +616,14 @@ class Painel_estagios_convenios extends CI_Controller
     } else {
       if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
 
-        $verificaExistenciaArquivo = explode('.', $arquivoCpa->files);
+        $verificaExistenciaArquivo = explode('.', $documentoEstagiosConvenios->files);
         $finalArquivo =  end($verificaExistenciaArquivo);
 
         if ($finalArquivo === 'pdf') {
-          unlink($arquivoCpa->files);
+          unlink($documentoEstagiosConvenios->files);
         }
 
-        $path = "assets/files/CPA/$campus->id";
+        $path = "assets/files/estagiosConvenios/$campus->id";
         is_way($path);
 
         if (unique_name_args(noAccentuation($this->input->post('title'), NULL), $path)) {
@@ -655,34 +639,35 @@ class Painel_estagios_convenios extends CI_Controller
         }
       }
 
-      if ($arquivoCpa->title != $this->input->post('title')) {
+      if ($documentoEstagiosConvenios->title != $this->input->post('title')) {
         $dados_form['title'] = $this->input->post('title');
       }
-      if ($arquivoCpa->status != $this->input->post('status')) {
+      if ($documentoEstagiosConvenios->status != $this->input->post('status')) {
         $dados_form['status'] = $this->input->post('status');
       }
-      if ($arquivoCpa->order != $this->input->post('order')) {
+      if ($documentoEstagiosConvenios->order != $this->input->post('order')) {
         $dados_form['order'] = $this->input->post('order');
       }
 
       $dados_form['user_id'] = $this->session->userdata('codusuario');
       $dados_form['updated_at'] = date('Y-m-d H:i:s');
-      $dados_form['id'] = $arquivoCpa->id;
+      $dados_form['id'] = $documentoEstagiosConvenios->id;
 
       if ($this->painelbd->salvar('page_contents_files', $dados_form) == TRUE) {
         setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
-        redirect("Painel_cpa/lista_documentos_estagios_convenios/$campus->id/$arquivoCpa->id_page_contents");
+        redirect("Painel_estagios_convenios/lista_documentos_estagios_convenios/$campus->id/$documentoEstagiosConvenios->id_page_contents");
       } else {
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
     }
+
     $data = array(
-      'titulo' => 'Arquivos CPA - Painel ADM',
-      'conteudo' => 'paineladm/campus/cpa/arquivos/editar_documentos_estagios_convenios',
+      'titulo' => 'Estágios e Convênios - Documentos',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/documentos/editar_documentos_estagios_convenios',
       'dados' => array(
         'page' => "Edição de Arquivos CPA >> ITEM <u><i> $conteudoItemEstagiosConvenios->title</i></u> <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'conteudoItemEstagiosConvenios' => $conteudoItemEstagiosConvenios,
-        'arquivoCpa' => $arquivoCpa,
+        'documentoEstagiosConvenios' => $documentoEstagiosConvenios,
         'campus' => $campus,
         //'pagina'=>$pagina,
         'tipo' => ''
@@ -693,7 +678,7 @@ class Painel_estagios_convenios extends CI_Controller
   }
 
 
-  public function deletar_arquivo_cpa($uriCampus = NULL, $idConteudoItemEstagiosConvenios = NULL, $id = null)
+  public function deletar_arquivo_estagios_convenios($uriCampus = NULL, $idConteudoItemEstagiosConvenios = NULL, $id = null)
   {
 
     $item = $this->painelbd->where('*', 'page_contents_files', NULL, array('page_contents_files.id' => $id))->row();
@@ -703,10 +688,10 @@ class Painel_estagios_convenios extends CI_Controller
     if ($this->painelbd->deletar('page_contents_files', $item->id)) {
       unlink($item->files);
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-      redirect("Painel_cpa/lista_documentos_estagios_convenios/$uriCampus/$idConteudoItemEstagiosConvenios");
+      redirect("Painel_estagios_convenios/lista_documentos_estagios_convenios/$uriCampus/$idConteudoItemEstagiosConvenios");
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-      redirect("Painel_cpa/lista_documentos_estagios_convenios/$uriCampus/$idConteudoItemEstagiosConvenios");
+      redirect("Painel_estagios_convenios/lista_documentos_estagios_convenios/$uriCampus/$idConteudoItemEstagiosConvenios");
     }
   }
 }

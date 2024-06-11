@@ -85,7 +85,7 @@
                     <td>
                       <div class="btn-opcoes-curso">
                         <?php
-                        echo anchor("Painel_cpa/lista_arquivos_cpa/$campus->id/$item->id", 'Lista Arquivos', array('class' => "btn-opcoes-curso btn btn-primary"));
+                        echo anchor("Painel_estagios_convenios/lista_documentos_estagios_convenios/$campus->id/$item->id", 'Lista Documentos', array('class' => "btn-opcoes-curso btn btn-primary"));
                         ?>
                       </div>
                     </td>
