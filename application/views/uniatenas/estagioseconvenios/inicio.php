@@ -79,11 +79,11 @@
 
                     foreach ($arquivosConteudosEstagiosConvenios as $itensArquivos) {
                     ?>
-                      <div class="col-xs-4">
+                      <div class="col-xs-4" style="min-height: 160px;">
                         <h4 class="text-center titleSPIC"><?php echo $itensArquivos->title; ?></h4>
                         <div class="card text-center boxSite" id="teste">
                           <a href="<?php echo base_url($itensArquivos->files) ?>" class="iconSPIC" target="_blank">
-                            <i class="fas fa-file-pdf fa-3x" aria-hidden="true"></i>
+                            <i class="fas fa-file fa-3x" aria-hidden="true"></i>
                             <p>Visualizar</p>
                           </a>
                         </div>
