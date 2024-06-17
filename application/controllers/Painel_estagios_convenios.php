@@ -543,6 +543,7 @@ class Painel_estagios_convenios extends CI_Controller
       //$name_tmp = noAccentuation($this->input->post('title').'-'.$this->input->post('year').'-'.date('h:i:s d/m/Y'));
       $upload = $this->painelbd->uploadFiles('files', $path, $types = 'pdf|PDF|doc|DOC|docx|DOCX|xlsx|XLSX|xls|XLS', $name_tmp);
 
+
       if ($upload) {
         //upload efetuado
         $dados_form = elements(array('title', 'order', 'status'), $this->input->post());
