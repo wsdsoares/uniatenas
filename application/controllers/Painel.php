@@ -24,10 +24,11 @@ class Painel extends CI_Controller
         $this->form_validation->set_rules('passwd', 'SENHA', 'required');
 
         if ($this->form_validation->run() == false) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 set_msg(validation_errors(), 'erro');
             endif;
         } else {
+
 
             $sdados_form = $this->input->post();
 
@@ -37,9 +38,11 @@ class Painel extends CI_Controller
             /** Primeira validação - verificar se os usuário que está tentando logar coincide com as informações
              * vindas do banco de dados e também com o formulário *
              */
-            if (isset($buscaUsuarioLogado->cod_user)
+            if (
+                isset($buscaUsuarioLogado->cod_user)
                 and $buscaUsuarioLogado->cod_user != false
-                and $buscaUsuarioLogado->cod_user == $dados_form['user']) {
+                and $buscaUsuarioLogado->cod_user == $dados_form['user']
+            ) {
                 $joinCampusVinculoUsuario = array(
                     'campus' => 'campus.id = users_has_campus.campus_id ',
                     'users' => 'users.id = users_has_campus.users_id',
@@ -81,7 +84,6 @@ class Painel extends CI_Controller
                     $this->session->set_userdata('arrayCampusVinculadosUsuario', $verificaVinculoUsuarioCampus);
 
                     redirect('painel');
-
                 } else {
                     set_msg('<br>Informações de Usuário e/ou senha não conferem. <br/> Ou seu usuário não está vinculado a nenhum campus.<br/> Entre em contato com um Admistrador!', 'erro');
                     redirect(current_url());
@@ -151,7 +153,7 @@ class Painel extends CI_Controller
             redirect('painel/biblioteca');
         }
 
-//^^^^^^^^ Seleciona os id dos contents para verificar se tem permissão para editar e não ocorrer do usuario digitar qualquer id na url ^^^^^^
+        //^^^^^^^^ Seleciona os id dos contents para verificar se tem permissão para editar e não ocorrer do usuario digitar qualquer id na url ^^^^^^
         $dados = $this->painelbd->getWhere('page_contents', array('id' => $idContent))->row();
         if (empty($dados)) {
             redirect('painel/index');
@@ -163,7 +165,7 @@ class Painel extends CI_Controller
         $this->form_validation->set_rules('description', $dados->title, 'required');
 
         if ($this->form_validation->run() == false) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -174,10 +176,10 @@ class Painel extends CI_Controller
             $data = date('Y-m-d h:i:s');
             $dados_form['data_modify'] = $data;
             $dados_form['description'] = $data;
-            if ($this->painelbd->salvar('dirigentes', $dados_form) == true):
+            if ($this->painelbd->salvar('dirigentes', $dados_form) == true) :
                 setMsg('<p>Informações atualizadas com sucesso.</p>', 'success');
                 redirect('painel/dirigentes');
-            else:
+            else :
                 setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
             endif;
         }
@@ -313,7 +315,7 @@ class Painel extends CI_Controller
         $this->form_validation->set_rules('cargo', 'Cargo', 'required');
 
         if ($this->form_validation->run() == false) {
-            if (validation_errors()):
+            if (validation_errors()) :
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
@@ -324,10 +326,10 @@ class Painel extends CI_Controller
             $dados_form['id'] = $this->input->post('idDiritente');
             $data = date('Y-m-d h:i:s');
             $dados_form['dataModificacao'] = $data;
-            if ($this->painelbd->salvar('dirigentes', $dados_form) == true):
+            if ($this->painelbd->salvar('dirigentes', $dados_form) == true) :
                 setMsg('<p>Informações atualizadas com sucesso.</p>', 'success');
                 redirect('painel/dirigentes');
-            else:
+            else :
                 setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
             endif;
         }
