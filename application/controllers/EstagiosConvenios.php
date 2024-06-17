@@ -33,12 +33,15 @@ class EstagiosConvenios extends CI_Controller
 
         $sqlVagas = "SELECT 
                 internship_companies.id as idcompany, 
-                internship_companies.name as namecompany, 
+                internship_companies.empresa, 
                 internship_city.name as namecity
                 
             FROM
                 at_site.internship_companies
-            inner join internship_city on internship_city.id = internship_companies.cityid";
+            inner join internship_city on internship_city.id = internship_companies.cityid
+            where internship_companies.status = 1
+              and internship_companies.campus_id = $dataCampus->id
+            ";
         $empresasEstagio = $this->bancosite->getQuery($sqlVagas)->result();
 
 
@@ -57,7 +60,7 @@ class EstagiosConvenios extends CI_Controller
                 'contatosPagina' => $conteudoContato,
                 'dadosEstagio' => array(
                     'empresas' => $empresasEstagio,
-                    'vagasEstagio' => $this->bancosite->getWhere('internship_vacancy', array('status' => 1))->result(),
+                    // 'vagasEstagio' => $this->bancosite->getWhere('internship_vacancy', array('status' => 1))->result(),
                 )
 
             )

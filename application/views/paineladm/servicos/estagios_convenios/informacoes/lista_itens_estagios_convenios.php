@@ -28,7 +28,7 @@
           }
           ?>
           <div class="col-xs-6">
-            <?php echo anchor('Painel_estagios_convenios/lista_campus_estagios_convenios', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
+            <?php echo anchor("Painel_estagios_convenios/lista_informacoes_estagios_convenios/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
         </div>
       </div>

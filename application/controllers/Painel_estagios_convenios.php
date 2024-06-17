@@ -454,8 +454,6 @@ class Painel_estagios_convenios extends CI_Controller
     }
   }
 
-
-
   /** Parte de Documentos */
   public function lista_documentos_estagios_convenios($uriCampus = NULL, $idConteudoPagina = NULL)
   {
@@ -677,7 +675,6 @@ class Painel_estagios_convenios extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-
   public function deletar_arquivo_estagios_convenios($uriCampus = NULL, $idConteudoItemEstagiosConvenios = NULL, $id = null)
   {
 
@@ -692,6 +689,175 @@ class Painel_estagios_convenios extends CI_Controller
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
       redirect("Painel_estagios_convenios/lista_documentos_estagios_convenios/$uriCampus/$idConteudoItemEstagiosConvenios");
+    }
+  }
+
+  /* EMPRESAS CONVENIADAS */
+
+
+  public function lista_empresas_conveniadas($uriCampus = NULL, $paginaID = NULL)
+  {
+    verificaLogin();
+    $pagina = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.id' => $paginaID))->row();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $sqlEmpresas = "SELECT 
+                internship_companies.id, 
+                internship_companies.status, 
+                internship_companies.empresa, 
+                campus.city, 
+                internship_city.name as cidade,
+                internship_companies.created_at,
+                internship_companies.updated_at,
+                internship_companies.user_id
+                 
+            FROM
+                at_site.internship_companies
+            inner join internship_city on internship_city.id = internship_companies.cityid
+            inner join campus on campus.id = internship_companies.campus_id
+            where internship_companies.campus_id = $campus->id";
+
+    $empresasConveniadas = $this->painelbd->getQuery($sqlEmpresas)->result();
+
+    $data = array(
+      'titulo' => 'Estágios e Convênios - ITENS',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/empresas_conveniadas/lista_empresas_conveniadas',
+      'dados' => array(
+        'page' => "Informações - Empresas Conveniadas <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'empresasConveniadas' => $empresasConveniadas,
+        'pagina' => $pagina = isset($pagina) ? $pagina : '',
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function cadastrar_empresas_conveniadas($uriCampus = NULL, $paginaId = NULL)
+  {
+    $pagina = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.id' => $paginaId))->row();
+
+    $cidadesConveniadas = $this->painelbd->where('*', 'internship_city', NULL, NULL, array('campo' => 'name', 'ordem' => 'ASC'))->result();
+
+    $opcoesCidadesConveniadas = array();
+    foreach ($cidadesConveniadas as $item) {
+      $opcoesCidadesConveniadas[$item->id] = "$item->name  ($item->uf)";
+    }
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $this->form_validation->set_rules('empresa', 'Nome da empresa', 'required');
+    $this->form_validation->set_rules('cityid', 'Cidade (UF)', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) {
+        setMsg(validation_errors(), 'error');
+      }
+    } else {
+
+      $dados_form = elements(array('empresa', 'status', 'cityid'), $this->input->post());
+      $dados_form['campus_id'] = $campus->id;
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+      if ($this->painelbd->salvar('internship_companies', $dados_form) == TRUE) {
+        setMsg('<p>Dados cadastrados com sucesso.</p>', 'success');
+        redirect("Painel_estagios_convenios/lista_empresas_conveniadas/$campus->id/$paginaId");
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+    $data = array(
+      'titulo' => 'Empresas Convêniadas - Estágios e Convênios',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/empresas_conveniadas/cadastrar_empresas_conveniadas',
+      'dados' => array(
+        'page' => "Cadastro Empresas Conveniadas >> Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'opcoesCidadesConveniadas' => $opcoesCidadesConveniadas,
+        'pagina' => $pagina,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function editar_empresas_conveniadas($uriCampus = NULL, $paginaId = NULL, $idEmpresa = NULL)
+  {
+    $pagina = $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.id' => $paginaId))->row();
+
+    $cidadesConveniadas = $this->painelbd->where('*', 'internship_city', NULL, NULL, array('campo' => 'name', 'ordem' => 'ASC'))->result();
+
+    $empresaConveniada = $this->painelbd->where('*', 'internship_companies', NULL, array('internship_companies.id' => $idEmpresa))->row();
+
+    $opcoesCidadesConveniadas = array();
+    foreach ($cidadesConveniadas as $item) {
+      $opcoesCidadesConveniadas[$item->id] = "$item->name  ($item->uf)";
+    }
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $this->form_validation->set_rules('empresa', 'Nome da empresa', 'required');
+    $this->form_validation->set_rules('cityid', 'Cidade (UF)', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) {
+        setMsg(validation_errors(), 'error');
+      }
+    } else {
+
+      if ($empresaConveniada->empresa != $this->input->post('empresa')) {
+        $dados_form['empresa'] = $this->input->post('empresa');
+      }
+      if ($empresaConveniada->status != $this->input->post('status')) {
+        $dados_form['status'] = $this->input->post('status');
+      }
+      if ($empresaConveniada->cityid != $this->input->post('cityid')) {
+        $dados_form['cityid'] = $this->input->post('cityid');
+      }
+
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+      $dados_form['updated_at'] = date('Y-m-d H:i:s');
+      $dados_form['id'] = $empresaConveniada->id;
+
+      if ($this->painelbd->salvar('internship_companies', $dados_form) == TRUE) {
+        setMsg('<p>Dados editados com sucesso.</p>', 'success');
+        redirect("Painel_estagios_convenios/lista_empresas_conveniadas/$campus->id/$paginaId");
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+    $data = array(
+      'titulo' => 'Empresas Convêniadas - Estágios e Convênios',
+      'conteudo' => 'paineladm/servicos/estagios_convenios/empresas_conveniadas/editar_empresas_conveniadas',
+      'dados' => array(
+        'page' => "Edição Empresas Conveniadas >> Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'empresaConveniada' => $empresaConveniada,
+        'opcoesCidadesConveniadas' => $opcoesCidadesConveniadas,
+        'pagina' => $pagina,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function deletar_empresa_conveniada($uriCampus = NULL, $idConteudoItemEstagiosConvenios = NULL, $id = null)
+  {
+
+    $item = $this->painelbd->where('*', 'internship_companies', NULL, array('internship_companies.id' => $id))->row();
+
+    if ($this->painelbd->deletar('internship_companies', $item->id)) {
+      setMsg('<p>Empresa deletada com sucesso.</p>', 'success');
+      redirect("Painel_estagios_convenios/lista_empresas_conveniadas/$uriCampus/$idConteudoItemEstagiosConvenios");
+    } else {
+      setMsg('<p>Erro! A empresa não pode ser deletada.</p>', 'error');
+      redirect("Painel_estagios_convenios/lista_empresas_conveniadas/$uriCampus/$idConteudoItemEstagiosConvenios");
     }
   }
 }

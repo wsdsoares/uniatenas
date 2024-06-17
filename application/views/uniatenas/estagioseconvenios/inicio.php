@@ -19,6 +19,7 @@ text.Orange-label {
             <a class="list-group-item active"></a>
             <ul class="nav nav-pills brand-pills nav-stacked sidebarList" role="tabpanel">
               <?php
+              $numeroMenuLaterl = count($conteudoPag);
               for ($i = 0; $i < count($conteudoPag); $i++) {
                 if ($i == 0) {
                   $active = "active";
@@ -33,6 +34,19 @@ text.Orange-label {
               <?php
               }
               ?>
+              <?php
+
+
+
+              if (!empty($dadosEstagio['empresas'])) {
+              ?>
+              <li role="presentation" class="brand-nav">
+                <a href="#tab<?php echo $numeroMenuLaterl; ?>" aria-controls="tab<?php echo $numeroMenuLaterl; ?>"
+                  role="tab" data-toggle="tab">Empresas</a>
+              </li>
+              <?php
+              }
+              ?>
             </ul>
           </div>
           <div class="col-sm-9">
@@ -43,6 +57,7 @@ text.Orange-label {
               }
               </style>
               <?php
+
               for ($i = 0; $i < count($conteudoPag); $i++) {
                 if ($i == 0) {
                   $active = "active";
@@ -60,14 +75,9 @@ text.Orange-label {
                 <div class="row">
                   <?php
 
-                    $consultaArquivos =
-                      "SELECT * FROM at_site.page_contents_files
-                                                where page_contents_files.status=1
-                                                    and page_contents_files.id_page_contents =" . $conteudoPag[$i]->id;
+                    $consultaArquivos = "SELECT * FROM at_site.page_contents_files where page_contents_files.status=1 and page_contents_files.id_page_contents =" .  $conteudoPag[$i]->id;
 
                     $arquivosConteudosEstagiosConvenios = $this->bancosite->getQuery($consultaArquivos)->result();
-
-
 
                     foreach ($arquivosConteudosEstagiosConvenios as $itensArquivos) {
                     ?>
@@ -89,7 +99,36 @@ text.Orange-label {
 
               <?php
               }
+
               ?>
+              <div role="tabpanel" class="tab-pane" id="tab<?php echo $numeroMenuLaterl; ?>">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Empresa</th>
+
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <?php
+                  // echo '<pre>';
+                  // print_r($dadosEstagio['empresas']);
+                  // echo '</pre>';
+                  for ($i = 0; $i < count($dadosEstagio['empresas']); $i++) {
+                  ?>
+                  <tr>
+                    <th scope="row"><?php echo $i + 1; ?></th>
+                    <td><?php echo $dadosEstagio['empresas'][$i]->empresa ?></td>
+
+                  </tr>
+                  <?php
+                  }
+                  ?>
+                  </tbody>
+                </table>
+              </div>
+
 
             </div>
           </div>
