@@ -31,6 +31,7 @@ $verificaPaginaFinanceiro = $this->bancosite->where('*', 'pages', null, array('t
 $verificaPaginaNapp = $this->bancosite->where('*', 'pages', null, array('title' => 'napp', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
 $verificaPaginaRevistas = $this->bancosite->where('*', 'pages', null, array('title' => 'revistas', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
 $verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id', 'pages.title'), 'pages', null, array('title' => 'comoingressar', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
+$verificaPaginaEstagiosConvenios = $this->bancosite->where('*', 'pages', null, array('title' => 'estagiosConvenios', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
 
 $joinCountCursosEad = array(
   'courses' => 'courses.id = campus_has_courses.courses_id',
@@ -236,7 +237,8 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                                 ?>
                               </li>
                               <?php
-                              if ($informacoesCampus->id == '2' || $informacoesCampus->id == '1') {
+                              // if ($informacoesCampus->id == '2' || $informacoesCampus->id == '1') {
+                              if (isset($verificaPaginaEstagiosConvenios)) {
                               ?>
                                 <li class="itensMenu">
                                   <?php echo anchor('EstagiosConvenios/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Estágios e convênios'); ?>
