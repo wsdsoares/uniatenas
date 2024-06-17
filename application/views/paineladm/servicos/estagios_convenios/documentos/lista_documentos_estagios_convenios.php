@@ -34,31 +34,31 @@
 
       if (isset($listaArquivosConteudosEstagiosConvenios) and $listaArquivosConteudosEstagiosConvenios != '') {
       ?>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-            <thead>
-              <tr>
-                <th>Ações</th>
-                <th>#</th>
-                <th>Título</th>
-                <th>Link PDF</th>
-                <th>Situação</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>Ações</th>
-                <th>#</th>
-                <th>Título</th>
-                <th>Link PDF</th>
-                <th>Situação</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <?php
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+              <thead>
+                <tr>
+                  <th>Ações</th>
+                  <th>#</th>
+                  <th>Título</th>
+                  <th>Link PDF</th>
+                  <th>Situação</th>
+                  <th>Modificado em, por:</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Ações</th>
+                  <th>#</th>
+                  <th>Título</th>
+                  <th>Link PDF</th>
+                  <th>Situação</th>
+                  <th>Modificado em, por:</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php
                 foreach ($dados['listaArquivosConteudosEstagiosConvenios'] as $item) :
 
                   $verificaExistenciaArquivo = explode('.', $item->files);
@@ -66,17 +66,15 @@
 
                   if (!file_exists($item->files)) {
                     $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
-                  } elseif ($finalArquivo !== 'pdf') {
-                    $estiloAlerta = 'background:#FFB6C1;color:#FF0000;border: 1px solid #000';
                   } else {
                     $estiloAlerta = '';
                   }
                 ?>
 
 
-              <tr style="<?php echo  $estiloAlerta; ?>">
-                <td class="center">
-                  <?php
+                  <tr style="<?php echo  $estiloAlerta; ?>">
+                    <td class="center">
+                      <?php
 
                       echo '<a href=' . base_url("Painel_estagios_convenios/editar_documentos_estagios_convenios/$campus->id/$pagina->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
@@ -85,30 +83,28 @@
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
                       ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->title; ?></td>
-                <td>
-                  <div class="btn-opcoes-curso">
-                    <?php
+                    </td>
+                    <td><?php echo $item->id; ?></td>
+                    <td><?php echo $item->title; ?></td>
+                    <td>
+                      <div class="btn-opcoes-curso">
+                        <?php
 
                         $verificaExistenciaArquivo = explode('.', $item->files);
                         $finalArquivo =  end($verificaExistenciaArquivo);
                         if (!file_exists($item->files)) {
                           echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - Arquivo não cadastrado no Banco de Dados</span>';
-                        } elseif ($finalArquivo !== 'pdf') {
-                          echo '****** <span class="alert-danger" style="color:#ffff;">ATENÇÃO - PDF INEXISTENTE OU ARQUIVO CORROMPIDO</span>';
                         } else {
                           echo anchor($item->files, 'ACESSAR LINK <i class="material-icons">picture_as_pdf</i>', array("target" => 'blank'));
                         }
                         ?>
-                  </div>
-                </td>
+                      </div>
+                    </td>
 
 
 
-                <td>
-                  <?php
+                    <td>
+                      <?php
                       if ($item->status == '0') {
                         $situacao = 'Inativo';
                       } else {
@@ -117,25 +113,25 @@
 
                       echo $situacao;
                       ?>
-                </td>
+                    </td>
 
 
-                <td>
-                  <?php
+                    <td>
+                      <?php
                       $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
                       echo $dateModification . ' - ' . $item->user_id;
                       ?>
-                </td>
+                    </td>
 
 
-              </tr>
-              <?php
+                  </tr>
+                <?php
                 endforeach;
                 ?>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
       <?php
       }
       ?>
@@ -154,8 +150,7 @@
       <div class="modal-body">
         <p>Você tem certeza que deseja realizar essa ação de deletar o item abaixo?</p>
         <p>Essa ação é <span class="text-danger" style="font-weight: bold">IRREVERSÍVEL</span> e todos os dados
-          ligados a esse item serão removidos <span class="text-danger"
-            style="font-weight: bold">PERMANENTEMENTE</span>.
+          ligados a esse item serão removidos <span class="text-danger" style="font-weight: bold">PERMANENTEMENTE</span>.
         </p>
         <p>O item selecionado é: <span class="text-info nomeItem" style="font-weight: bold"></span></p>
       </div>
@@ -169,13 +164,13 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_estagios_convenios/deletar_arquivo_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id/"); ?>' +
-    id);
-});
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_estagios_convenios/deletar_arquivo_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id/"); ?>' +
+      id);
+  });
 </script>

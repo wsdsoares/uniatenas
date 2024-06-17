@@ -4,11 +4,7 @@ $year = date('Y');
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
 </div>
-<?php
-echo '<pre>';
-print_r($dados);
-echo '</pre>';
-?>
+
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">

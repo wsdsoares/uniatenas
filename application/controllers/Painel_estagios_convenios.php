@@ -541,7 +541,7 @@ class Painel_estagios_convenios extends CI_Controller
         $name_tmp = noAccentuation($this->input->post('title'), NULL);
       }
       //$name_tmp = noAccentuation($this->input->post('title').'-'.$this->input->post('year').'-'.date('h:i:s d/m/Y'));
-      $upload = $this->painelbd->uploadFiles('files', $path, $types = 'PDF|pdf', $name_tmp);
+      $upload = $this->painelbd->uploadFiles('files', $path, $types = 'pdf|PDF|doc|DOC|docx|DOCX|xlsx|XLSX|xls|XLS', $name_tmp);
 
       if ($upload) {
         //upload efetuado
@@ -617,7 +617,7 @@ class Painel_estagios_convenios extends CI_Controller
         $verificaExistenciaArquivo = explode('.', $documentoEstagiosConvenios->files);
         $finalArquivo =  end($verificaExistenciaArquivo);
 
-        if ($finalArquivo === 'pdf') {
+        if ($finalArquivo === 'pdf' or $finalArquivo === 'doc' or $finalArquivo === 'xls' or $finalArquivo === 'docx' or $finalArquivo === 'xlsx') {
           unlink($documentoEstagiosConvenios->files);
         }
 
@@ -630,7 +630,7 @@ class Painel_estagios_convenios extends CI_Controller
           $name_tmp = noAccentuation($this->input->post('title'), NULL);
         }
 
-        $upload = $this->painelbd->uploadFiles('files', $path, $types = 'PDF|pdf', $name_tmp);
+        $upload = $this->painelbd->uploadFiles('files', $path, $types = 'pdf|PDF|doc|DOC|docx|DOCX|xlsx|XLSX|xls|XLS', $name_tmp);
 
         if ($upload) {
           $dados_form['files'] = $path . '/' . $upload['file_name'];
