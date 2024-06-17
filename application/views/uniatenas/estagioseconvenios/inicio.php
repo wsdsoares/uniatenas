@@ -1,11 +1,11 @@
 <style>
-text.Orange-label {
-  color: Orange;
-}
+  text.Orange-label {
+    color: Orange;
+  }
 
-.estagiosConvenios>p {
-  text-align: justify !important;
-}
+  .estagiosConvenios>p {
+    text-align: justify !important;
+  }
 </style>
 <section class="body-page">
   <div class="container">
@@ -27,10 +27,9 @@ text.Orange-label {
                   $active = "";
                 }
               ?>
-              <li role="presentation" class="brand-nav <?php echo $active; ?>">
-                <a href="#tab<?php echo $i; ?>" aria-controls="tab<?php echo $i; ?>" role="tab"
-                  data-toggle="tab"><?php echo $conteudoPag[$i]->title ?></a>
-              </li>
+                <li role="presentation" class="brand-nav <?php echo $active; ?>">
+                  <a href="#tab<?php echo $i; ?>" aria-controls="tab<?php echo $i; ?>" role="tab" data-toggle="tab"><?php echo $conteudoPag[$i]->title ?></a>
+                </li>
               <?php
               }
               ?>
@@ -40,10 +39,9 @@ text.Orange-label {
 
               if (!empty($dadosEstagio['empresas'])) {
               ?>
-              <li role="presentation" class="brand-nav">
-                <a href="#tab<?php echo $numeroMenuLaterl; ?>" aria-controls="tab<?php echo $numeroMenuLaterl; ?>"
-                  role="tab" data-toggle="tab">Empresas</a>
-              </li>
+                <li role="presentation" class="brand-nav">
+                  <a href="#tab<?php echo $numeroMenuLaterl; ?>" aria-controls="tab<?php echo $numeroMenuLaterl; ?>" role="tab" data-toggle="tab">Empresas</a>
+                </li>
               <?php
               }
               ?>
@@ -52,9 +50,9 @@ text.Orange-label {
           <div class="col-sm-9">
             <div class="tab-content">
               <style>
-              .conteudoPagina p {
-                text-align: justify !important;
-              }
+                .conteudoPagina p {
+                  text-align: justify !important;
+                }
               </style>
               <?php
 
@@ -66,14 +64,14 @@ text.Orange-label {
                 }
               ?>
 
-              <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="tab<?php echo $i; ?>">
-                <div class="row">
-                  <div class="col-xs-12 conteudoPagina">
-                    <?php echo $conteudoPag[$i]->description; ?>
+                <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="tab<?php echo $i; ?>">
+                  <div class="row">
+                    <div class="col-xs-12 conteudoPagina">
+                      <?php echo $conteudoPag[$i]->description; ?>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <?php
+                  <div class="row">
+                    <?php
 
                     $consultaArquivos = "SELECT * FROM at_site.page_contents_files where page_contents_files.status=1 and page_contents_files.id_page_contents =" .  $conteudoPag[$i]->id;
 
@@ -81,21 +79,21 @@ text.Orange-label {
 
                     foreach ($arquivosConteudosEstagiosConvenios as $itensArquivos) {
                     ?>
-                  <div class="col-xs-3">
-                    <h4 class="text-center titleSPIC"><?php echo $itensArquivos->title; ?></h4>
-                    <div class="card text-center boxSite" id="teste">
-                      <a href="<?php echo base_url($itensArquivos->files) ?>" class="iconSPIC" target="_blank">
-                        <i class="fas fa-file-pdf fa-3x" aria-hidden="true"></i>
-                        <p>Visualizar</p>
-                      </a>
-                    </div>
-                  </div>
-                  <?php
+                      <div class="col-xs-4">
+                        <h4 class="text-center titleSPIC"><?php echo $itensArquivos->title; ?></h4>
+                        <div class="card text-center boxSite" id="teste">
+                          <a href="<?php echo base_url($itensArquivos->files) ?>" class="iconSPIC" target="_blank">
+                            <i class="fas fa-file-pdf fa-3x" aria-hidden="true"></i>
+                            <p>Visualizar</p>
+                          </a>
+                        </div>
+                      </div>
+                    <?php
                     }
                     ?>
 
+                  </div>
                 </div>
-              </div>
 
               <?php
               }
@@ -117,11 +115,11 @@ text.Orange-label {
                   // echo '</pre>';
                   for ($i = 0; $i < count($dadosEstagio['empresas']); $i++) {
                   ?>
-                  <tr>
-                    <th scope="row"><?php echo $i + 1; ?></th>
-                    <td><?php echo $dadosEstagio['empresas'][$i]->empresa ?></td>
+                    <tr>
+                      <th scope="row"><?php echo $i + 1; ?></th>
+                      <td><?php echo $dadosEstagio['empresas'][$i]->empresa ?></td>
 
-                  </tr>
+                    </tr>
                   <?php
                   }
                   ?>
@@ -139,33 +137,33 @@ text.Orange-label {
         <?php
         if (!empty($dados['contatosPagina'])) {
         ?>
-        <div class="widget-sidebar">
-          <h2 class="title-widget-sidebar">Contatos</h2>
-          <div class="content-widget-sidebar">
-            <ul>
-              <li class="recent-post-alunos">
-                <div class="col-sm-2 col-xs-2">
-                  <i class="far fa-address-card fa-2x"></i>
-                  </a>
-                </div>
-                <div class="col-sm-12 col-xs-12 ">
-                  <?php
+          <div class="widget-sidebar">
+            <h2 class="title-widget-sidebar">Contatos</h2>
+            <div class="content-widget-sidebar">
+              <ul>
+                <li class="recent-post-alunos">
+                  <div class="col-sm-2 col-xs-2">
+                    <i class="far fa-address-card fa-2x"></i>
+                    </a>
+                  </div>
+                  <div class="col-sm-12 col-xs-12 ">
+                    <?php
                     // foreach ($contatos as $phone){
                     foreach ($contatosPagina as $informacoesContato) {
                     ?>
-                  <small>
-                    <?php
+                      <small>
+                        <?php
                         echo $informacoesContato->description;
                         ?>
-                  </small>
-                  <?php
+                      </small>
+                    <?php
                     }
                     ?>
-                </div>
-              </li>
-            </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
         <?php
         }
         ?>
