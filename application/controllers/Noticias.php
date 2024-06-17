@@ -1,7 +1,8 @@
 <?php
 
-if (!defined("BASEPATH"))
+if (!defined("BASEPATH")) {
     exit("No direct script access allowed");
+}
 
 class Noticias extends CI_Controller
 {
@@ -25,17 +26,17 @@ class Noticias extends CI_Controller
         redirect('Site/Noticias');
     }
 
-    public function noticias($idCampus = NULL)
+    public function noticias($idCampus = null)
     {
         verificaLogin();
-        $lista = $this->painelbd->getWhere('news', NULL, array('campo' => 'id', 'ordem' => 'desc'))->result();
+        $lista = $this->painelbd->getWhere('news', null, array('campo' => 'id', 'ordem' => 'desc'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/noticias/listaNoticias',
             'dados' => array(
                 'lista' => $lista,
-                'tipo' => 'revistas'
-            )
+                'tipo' => 'revistas',
+            ),
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
@@ -84,7 +85,6 @@ class Noticias extends CI_Controller
 
     //         // devolver a string
     //         $name_tmp = str_replace($what, $by, $name_tmp);
-
 
     //         $result = $this->painelbd->getQuery("Select max(id) as id from news")->row();
     //         $maxId = $result->id + 1;
@@ -149,7 +149,6 @@ class Noticias extends CI_Controller
     //     if (empty($_FILES['files'])) {
     //         $_FILES['files']['size'][0] = 0;
     //     }
-
 
     //     if ($_FILES['files']['size'][0] <= 0) {
     //         $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
@@ -246,7 +245,6 @@ class Noticias extends CI_Controller
     //         $_FILES['files']['size'][0] = 0;
     //     }
 
-
     //     if ($_FILES['files']['size'][0] <= 0) {
     //         $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
     //         $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato JPEG, PNG ou JPG.');
@@ -322,7 +320,6 @@ class Noticias extends CI_Controller
 
     //         if ($this->painelbd->delete($table, array('id' => $explodeId[1])) == TRUE) {
 
-
     //             $files = realpath($dados->file);
     //             $fileDeleted = current(array_reverse(explode('/', $dados->file)));
 
@@ -332,7 +329,6 @@ class Noticias extends CI_Controller
     //                 mkdir(FCPATH . "/assets/images/old/news/n$explodeId[0]", 0777, true);
     //                 $path = "assets/images/old/news/n$explodeId[0]";
     //             }
-
 
     //             if (copy($files, $path . '/' . date('d-m-y') . $fileDeleted)) {
     //                 $msg = "";
