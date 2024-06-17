@@ -30,7 +30,7 @@ class Painel extends CI_Controller
         } else {
 
 
-            $sdados_form = $this->input->post();
+            $dados_form = $this->input->post();
 
             /**BUSCA DADOS DO USUÁRIO NO BANCO DE DADOS */
             $buscaUsuarioLogado = $this->users->login(array('user' => $dados_form['user'], 'password' => hash('sha256', $dados_form['passwd'])))->row();
