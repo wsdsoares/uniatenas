@@ -13,24 +13,17 @@ class Painel_servicos extends CI_Controller
     date_default_timezone_set('America/Sao_Paulo');
   }
 
-  public function lista_campus_servicos($tipoPagina)
+  public function lista_campus_servicos()
   {
     verificaLogin();
-
-    $colunasResultadoCursos =
-      array(
-        'campus.id',
-        'campus.name',
-        'campus.city',
-        'campus.uf'
-      );
+    $tipoPagina = 'SERVIÇOS >>> Itens Gerais';
 
     $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
     $data = array(
       'titulo' => 'UniAtenas',
       'conteudo' => 'paineladm/servicos/lista_campus_servicos',
       'dados' => array(
-        'page' => "Informações Menu Serviços ($tipoPagina)",
+        'page' => "Informações Menu Serviços >> SUBMENU - Itens Gerais",
         'tipoPagina' => $tipoPagina,
         'campus' => $listagemDosCampus,
         'tipo' => ''
@@ -75,7 +68,7 @@ class Painel_servicos extends CI_Controller
       'conteudo' => 'paineladm/servicos/lista_informacoes_servicos',
       'dados' => array(
         'conteudosPaginaServicos' => $listaInformmacoesPaginaServicos,
-        'page' => "Informações do menu Serviço ($tipoPagina) - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Informações: Menu SERVIÇOS >> ITENS GERAIS <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         //'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
         'tipo' => ''

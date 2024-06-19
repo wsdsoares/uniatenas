@@ -13,32 +13,9 @@
         <div>
           <span>
             <i>
-              <?php echo "Caso não exista a página cadastrada, não será exibido o menu financeiro no site principal"; ?>
+              <?php echo "Caso não exista o ITEM GEAL cadastrado, não será exibido no SUBMENU de SERVIÇOS no site principal"; ?>
             </i>
           </span>
-        </div>
-      </div>
-      <div class="body">
-        <div class="container">
-          <div class="row">
-            <div class="col-xs-6">
-              <?php
-              if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
-                $tituloBotao = "EDITAR";
-              } else {
-                $tituloBotao = "CADASTRAR";
-              }
-              echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> ' . $tituloBotao . ' página ()', array('class' => 'btn alerts_info'));
-              ?>
-            </div>
-            <div class="col-xs-6">
-              <?php
-              if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
-                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaFinanceiro->id", '<i class="material-icons">contact_phone</i> ' . $tituloBotao . ' contatos (financeiro)', array('class' => 'btn btn-blue1'));
-              }
-              ?>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -61,17 +38,13 @@
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
-          <?php
-          if (isset($paginaFinanceiro) and $paginaFinanceiro != '') {
-          ?>
-            <div class="col-xs-6">
-              <?php echo anchor("Painel_financeiro/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Financeiro', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
-            </div>
-          <?php
-          }
-          ?>
+
           <div class="col-xs-6">
-            <?php echo anchor('Painel_financeiro/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
+            <?php echo anchor("Painel_servicos/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR: SUBMENU >> Itens Gerais', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
+          </div>
+
+          <div class="col-xs-6">
+            <?php echo anchor('Painel_servicos/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
         </div>
       </div>
@@ -113,7 +86,7 @@
                     <td class="center">
                       <?php
 
-                      echo '<a href=' . base_url("Painel_financeiro/editar_informacoes_financeiro/$campus->id/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_servicos/editar_informacoes_financeiro/$campus->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
                       echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
@@ -208,7 +181,7 @@
 
     $(this).find('.nomeItem').text(nomeItem);
     $(this).find('#btnCerteza').attr('href',
-      '<?php echo base_url("Painel_financeiro/deletar_item_financeiro/$campus->id/"); ?>' +
+      '<?php echo base_url("Painel_servicos/deletar_item_financeiro/$campus->id/"); ?>' +
       id);
   });
 </script>

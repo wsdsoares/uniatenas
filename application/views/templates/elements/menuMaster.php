@@ -237,7 +237,7 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                                 ?>
                               </li>
                               <?php
-                              // if ($informacoesCampus->id == '2' || $informacoesCampus->id == '1') {
+
                               if (isset($verificaPaginaEstagiosConvenios)) {
                               ?>
                                 <li class="itensMenu">
