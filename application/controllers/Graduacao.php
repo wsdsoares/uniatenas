@@ -102,7 +102,8 @@ class Graduacao extends CI_Controller
                         inner join courses on courses.id = campus_has_courses.courses_id
                         INNER JOIN courses_pages on courses_pages.campus_has_courses_id = campus_has_courses.id
                         
-                        WHERE courses.id =' . $cursos[$i]->id . " 
+                        WHERE courses.types not in ("PosGraduacao")
+                        and courses.id =' . $cursos[$i]->id . " 
                         order by campus.city";
 
       $campusCursos[$i]['id'] = $cursos[$i]->id;
