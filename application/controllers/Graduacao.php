@@ -102,8 +102,7 @@ class Graduacao extends CI_Controller
                         inner join courses on courses.id = campus_has_courses.courses_id
                         INNER JOIN courses_pages on courses_pages.campus_has_courses_id = campus_has_courses.id
                         
-                        WHERE courses.types ("PosGraduacao")
-                        and courses.id =' . $cursos[$i]->id . " 
+                        WHERE courses.id =' . $cursos[$i]->id . " 
                         order by campus.city";
 
       $campusCursos[$i]['id'] = $cursos[$i]->id;
@@ -454,7 +453,7 @@ class Graduacao extends CI_Controller
     $colunasTabelaCampus = array('campus.name', 'campus.id', 'campus.city', 'campus.shurtName');
     $dataCampus = $this->bancosite->where($colunasTabelaCampus, 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-    $queryCursos = "SELECT * FROM courses where modalidade = 'ead' and types = 'ead' and courses.types not in ('PosGraduacao') order by areas_id, name";
+    $queryCursos = "SELECT * FROM courses where modalidade = 'ead' and types = 'ead' order by areas_id, name";
 
     $cursos = $this->bancosite->getQuery($queryCursos)->result();
     $polosEad = $this->bancosite->getWhere('polos')->result();
