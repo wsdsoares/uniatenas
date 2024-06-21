@@ -30,11 +30,11 @@
                   <h4 class="card-title"><?php echo $campus->name . '<br/> ' . $campus->city . '(' . $campus->uf . ')'; ?>
                   </h4>
                   <span>
-                    <?php echo "Menu: <strong>$tipoPagina</strong>" ?>
+                    <?php echo "Menu: <strong>Serviços</strong>" ?>
                   </span>
 
                   <?php
-                  echo anchor("Painel_servicos/lista_informacoes_servicos/$campus->id/$tipoPagina", '<span>Ver (Itens Gerais)', 'class="btn btn-lg btn-block btn-info"');
+                  echo anchor("Painel_servicos/lista_itens_servicos/$campus->id", '<span>Acessar (Itens Gerais/Núcleos)', 'class="btn btn-lg btn-block btn-info"');
                   ?>
                 </div>
               </div>

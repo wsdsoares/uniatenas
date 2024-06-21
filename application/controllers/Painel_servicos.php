@@ -33,42 +33,41 @@ class Painel_servicos extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-
-  public function lista_informacoes_servicos($uriCampus = NULL, $tipoPagina = null)
+  public function lista_itens_servicos($uriCampus = NULL)
   {
     verificaLogin();
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-    $joinContatoPagina = array(
-      'pages' => 'pages.id = page_contents.pages_id',
-      'campus' => 'campus.id= pages.campusid'
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/servicos/lista_itens_servicos',
+      'dados' => array(
+        'page' => "Lista de Itens - Menu Serviços >> Campus - <b>$campus->name ($campus->city)</b>",
+        'campus' => $campus,
+        'tipo' => ''
+      )
     );
 
-    $colunaResultadoContatoPagina = array(
-      'page_contents.id',
-      'page_contents.title',
-      'page_contents.tipo_pagina',
-      'page_contents.status',
-      'page_contents.description',
-      'page_contents.order',
-      'page_contents.created_at',
-      'page_contents.updated_at',
-      'page_contents.user_id',
-      'campus.city'
-    );
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
 
-    $listaInformmacoesPaginaServicos =  $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.tipo_pagina' => $tipoPagina))->result();
+  public function lista_informacoes_servicos($uriCampus = NULL)
+  {
+    verificaLogin();
 
-    //$contatosPaginaFinanceiro = $this->painelbd->where($colunaResultadoContatoPagina,'page_contents',$joinContatoPagina, $whereContatosPagina,null)->result();
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $listaInformmacoesPaginaServicos =  $this->painelbd->where('*', 'pages', null, array('pages.campusid' => $uriCampus, 'pages.pagina' => 'servicos'))->result();
 
     $data = array(
       'titulo' => 'UniAtenas',
       'conteudo' => 'paineladm/servicos/lista_informacoes_servicos',
       'dados' => array(
         'conteudosPaginaServicos' => $listaInformmacoesPaginaServicos,
-        'page' => "Informações: Menu SERVIÇOS >> ITENS GERAIS <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Informações: Menu SERVIÇOS <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         //'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
         'tipo' => ''
@@ -78,40 +77,15 @@ class Painel_servicos extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_contato_pagina_financeiro($uriCampus = NULL, $pageId = null)
+  public function registro_item_pagina($uriCampus = NULL, $idPagina = NULL)
   {
     verifica_login();
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-    $colunaResultadPagina = array('pages.id', 'pages.title', 'pages.status',);
-    $joinPagina = array('campus' => 'campus.id= pages.campusid');
-    $wherePagina = array('pages.id' => $pageId,);
-    $pagina = $this->painelbd->where($colunaResultadPagina, 'pages', $joinPagina, $wherePagina)->row();
-
-    $colunaResultadContatoPaginaFinanceiro = array(
-      'page_contents.id',
-      'page_contents.title',
-      'page_contents.status',
-      'page_contents.description',
-      'page_contents.order',
-      'page_contents.created_at',
-      'page_contents.updated_at',
-      'page_contents.user_id',
-    );
-    $joinConteudoContatoPaginaFinanceiro = array(
-      'pages' => 'pages.id = page_contents.pages_id',
-      'campus' => 'campus.id= pages.campusid'
-    );
-    $whereContatoPaginaFinanceiro = array(
-      'page_contents.pages_id' => $pagina->id,
-      'page_contents.order' => 'contatos'
-    );
-
-    $contatoPaginaFinanceiro = $this->painelbd->where($colunaResultadContatoPaginaFinanceiro, 'page_contents', $joinConteudoContatoPaginaFinanceiro, $whereContatoPaginaFinanceiro)->row();
-
-    $this->form_validation->set_rules('description', 'Informações de contato', 'required');
+    $this->form_validation->set_rules('title', 'Página', 'required');
+    $this->form_validation->set_rules('tipo_pagina', 'Tipo Página', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
 
     if ($this->form_validation->run() == FALSE) {
@@ -120,150 +94,15 @@ class Painel_servicos extends CI_Controller
       endif;
     } else {
 
-      $dados_form['title'] = "Contatos " . $this->input->post('title');
-      $dados_form['status'] = $this->input->post('status');
-      $dados_form['description'] = $this->input->post('description');
-      $dados_form['order'] = 'contatos';
-      $dados_form['pages_id'] = $pagina->id;
-
-      $dados_form['user_id'] = $this->session->userdata('codusuario');
-
-      if (isset($contatoPaginaFinanceiro)) {
-        $dados_form['id'] = $contatoPaginaFinanceiro->id;
-        if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-          setMsg('<p>Dados da página (menu) financeiro atualizado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
-        } else {
-          setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-        }
-      } else {
-        if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-          setMsg('<p>Dados de contato cadastrado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$pagina->id"));
-        } else {
-          setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-        }
-      }
-    }
-
-    $data = array(
-      'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/financeiro/contatos/cadastrar_contato_pagina_financeiro',
-      'dados' => array(
-        'tituloPagina' => "Informações de contato página Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'pagina' => $pagina,
-        'contatoPaginaFinanceiro' => $contatoPaginaFinanceiro = isset($contatoPaginaFinanceiro) ? $contatoPaginaFinanceiro : '',
-        'campus' => $campus,
-        'tipo' => ''
-      )
-    );
-
-    $this->load->view('templates/layoutPainelAdm', $data);
-  }
-
-  public function cadastrar_pagina_financeiro($uriCampus = NULL)
-  {
-    verifica_login();
-
-    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
-    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
-
-    $verificaExistePagina = $this->painelbd->where('*', 'pages', null, array('pages.title' => 'financeiro', 'pages.campusid' => $campus->id))->row();
-
-    $this->form_validation->set_rules('status', 'Situação', 'required');
-
-    if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()) :
-        setMsg(validation_errors(), 'error');
-      endif;
-    } else {
-
-      $dados_form['title'] = $this->input->post('title');
+      $dados_form['title'] = '' . lcfirst(str_replace("_", '', noAccentuation($this->input->post('title'))));
+      $dados_form['tipo_pagina'] = 'item_geral';
       $dados_form['status'] = $this->input->post('status');
       $dados_form['campusid'] = $campus->id;
-
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-      if (isset($verificaExistePagina)) {
-        $dados_form['id'] = $verificaExistePagina->id;
-        if ($this->painelbd->salvar('pages', $dados_form) == TRUE) {
-          setMsg('<p>Dados da página (menu) financeiro atualizado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id"));
-        } else {
-          setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-        }
-      } else {
-        if ($this->painelbd->salvar('pages', $dados_form) == TRUE) {
-          setMsg('<p>Dados da página (menu) financeiro cadastra com sucesso.</p>', 'success');
-          redirect(base_url("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id"));
-        } else {
-          setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
-        }
-      }
-    }
-
-    $data = array(
-      'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/financeiro/pagina_menu_financeiro/cadastrar_pagina_financeiro',
-      'dados' => array(
-        'paginaFinanceiro' => $verificaExistePagina = isset($verificaExistePagina) ? $verificaExistePagina : '',
-        'page' => "Cadastro de pagina (menu do site) do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'campus' => $campus,
-        'tipo' => ''
-      )
-    );
-
-    $this->load->view('templates/layoutPainelAdm', $data);
-  }
-
-  public function cadastrar_informacoes_financeiro($uriCampus = NULL)
-  {
-    verificaLogin();
-
-    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
-    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
-
-    $pagina = 'financeiro';
-    $wherePagina = array('pages.title' => $pagina, 'pages.campusid' => $campus->id);
-
-    $colunasTabelaPages = array('pages.id', 'pages.title');
-    $joinConteudoPagina = array('campus' => 'campus.id= pages.campusid');
-
-    $listaItemPages = $this->painelbd->where($colunasTabelaPages, 'pages', $joinConteudoPagina, $wherePagina, null)->row();
-
-    if (!isset($listaItemPages)) {
-      redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
-    }
-
-    //Validaçãoes via Form Validation
-    $this->form_validation->set_rules('title', 'Titulo', 'required');
-    $this->form_validation->set_rules('description', 'Descrição', 'required');
-    $this->form_validation->set_rules('status', 'Situação', 'required');
-    $this->form_validation->set_rules('order', 'Ordem', 'required');
-
-    if ($this->form_validation->run() == FALSE) {
-      if (validation_errors()) :
-        setMsg(validation_errors(), 'error');
-      endif;
-    } else {
-
-      $path = "assets/images/financing/$campus->id";
-      is_way($path);
-
-      $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-
-      $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
-      $dados_form['description'] = $this->input->post('description');
-      $dados_form['link_redir'] = $this->input->post('link_redir');
-      $dados_form['title'] = $this->input->post('title');
-      $dados_form['status'] = $this->input->post('status');
-      $dados_form['order'] = $this->input->post('order');
-      $dados_form['pages_id'] = $listaItemPages->id;
-      $dados_form['user_id'] = $this->session->userdata('codusuario');
-
-      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-        setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+      if ($this->painelbd->salvar('pages', $dados_form) == TRUE) {
+        setMsg('<p>Dados da página registrado com sucesso.</p>', 'success');
+        redirect(base_url("Painel_servicos/lista_informacoes_servicos/$campus->id"));
       } else {
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -271,10 +110,9 @@ class Painel_servicos extends CI_Controller
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/financeiro/cadastrar_informacoes_financeiro',
+      'conteudo' => 'paineladm/servicos/pagina/registro_item_pagina',
       'dados' => array(
-        'conteudosPagina' => '',
-        'page' => "Cadastro de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Cadastro de Página Serviços >> (SUBMENU) Item Geral <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         'tipo' => ''
       )
@@ -369,18 +207,18 @@ class Painel_servicos extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletar_item_financeiro($uriCampus = NULL, $id = NULL)
+  public function deletar_registro_item_pagina($uriCampus = NULL, $id = NULL)
   {
     verifica_login();
 
-    $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
+    $item = $this->painelbd->where('*', 'pages', NULL, array('pages.id' => $id))->row();
 
-    if ($this->painelbd->deletar('page_contents', $item->id)) {
+    if ($this->painelbd->deletar('pages', $item->id)) {
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-      redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+      redirect("Painel_servicos/lista_informacoes_servicos/$uriCampus");
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-      redirect("Painel_financeiro/lista_informacoes_financeiro/$uriCampus");
+      redirect("Painel_servicos/lista_informacoes_servicos/$uriCampus");
     }
   }
 }

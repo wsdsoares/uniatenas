@@ -1,26 +1,6 @@
 <div class="block-header">
   <h2>Painel Administrativo</h2>
 </div>
-<!-- Exportable Table -->
-<div class="row clearfix">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="card">
-      <div class="header">
-        <h2>
-          <?php echo $page; ?>
-
-        </h2>
-        <div>
-          <span>
-            <i>
-              <?php echo "Caso não exista o ITEM GEAL cadastrado, não será exibido no SUBMENU de SERVIÇOS no site principal"; ?>
-            </i>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -34,18 +14,23 @@
         <h2>
           <?php echo $page; ?>
         </h2>
+        <p>
+          <?php echo "Caso não exista o ITEM GEAL cadastrado, não será exibido no SUBMENU de SERVIÇOS no site principal"; ?>
+        </p>
+        <br />
 
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
-
+          <br />
           <div class="col-xs-6">
-            <?php echo anchor("Painel_servicos/cadastrar_informacoes_financeiro/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR: SUBMENU >> Itens Gerais', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
+            <?php echo anchor("Painel_servicos/registro_item_pagina/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR: SUBMENU >> Itens Gerais', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
 
           <div class="col-xs-6">
-            <?php echo anchor('Painel_servicos/lista_campus_financeiro', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
+            <?php echo anchor("Painel_servicos/lista_itens_servicos/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
+
         </div>
       </div>
       <br />
@@ -61,9 +46,8 @@
                   <th>Ações</th>
                   <th>#</th>
                   <th>Título página</th>
-                  <th>Imagem</th>
                   <th>Situação</th>
-                  <th>Filial</th>
+                  <th>Tipo Serviço</th>
                   <th>Modificado em, por:</th>
                 </tr>
               </thead>
@@ -72,9 +56,8 @@
                   <th>Ações</th>
                   <th>#</th>
                   <th>Título página</th>
-                  <th>Imagem</th>
                   <th>Situação</th>
-                  <th>Filial</th>
+                  <th>Tipo Serviço</th>
                   <th>Modificado em, por:</th>
                 </tr>
               </tfoot>
@@ -94,23 +77,15 @@
                         . '</a>';
                       ?>
                     </td>
+
                     <td>
                       <?php echo $item->id; ?>
                     </td>
                     <td>
                       <?php echo $item->title; ?>
                     </td>
-                    <td>
 
-                      <?php
-                      // if($item->order==0){
-                      //   echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
-                      // }else{
-                      //   echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
-                      // }
-                      ?>
-                    </td>
-                    </td>
+
                     <td>
                       <?php
                       if ($item->status == '0') {
@@ -124,7 +99,15 @@
                     </td>
 
                     <td>
-                      <?php echo $item->city; ?>
+                      <?php
+                      if ($item->tipo_pagina == 'item_geral') {
+                        $tipoPagina = 'Geral';
+                      } else {
+                        $tipoPagina = 'Núcleo';
+                      }
+
+                      echo $tipoPagina;
+                      ?>
                     </td>
 
                     <td>
@@ -181,7 +164,7 @@
 
     $(this).find('.nomeItem').text(nomeItem);
     $(this).find('#btnCerteza').attr('href',
-      '<?php echo base_url("Painel_servicos/deletar_item_financeiro/$campus->id/"); ?>' +
+      '<?php echo base_url("Painel_servicos/deletar_registro_item_pagina/$campus->id/"); ?>' +
       id);
   });
 </script>
