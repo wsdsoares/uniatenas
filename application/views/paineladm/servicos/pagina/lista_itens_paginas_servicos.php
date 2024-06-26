@@ -31,7 +31,6 @@
       </div>
       <br />
       <?php
-
       if (isset($itensSubmenuPaginaServicos) and $itensSubmenuPaginaServicos != '') {
       ?>
         <div class="body">
