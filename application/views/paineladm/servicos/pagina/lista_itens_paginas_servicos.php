@@ -6,6 +6,7 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
+
       if ($msg = getMsg()) {
         echo $msg;
       }
@@ -37,11 +38,8 @@
 
           <div class="row">
             <?php
-            $i = 0;
-            echo $quantidadeItensMenu =  intdiv(count($itensSubmenuPaginaServicos), 2);
 
             foreach ($itensSubmenuPaginaServicos as $submenu) {
-              $i = $i + 1;
             ?>
               <div class="col-sm-2 text-center">
                 <div class="card">
@@ -50,7 +48,7 @@
                       contatos)</small>
                   </p>
                   <?php
-                  echo anchor("Painel_servicos/lista_informacoes_servicos/$campus->id/$submenu->id", 'Gerenciar', array('class' => 'btn btn-success'));
+                  echo anchor("Painel_servicos/lista_item_pagina_especifica/$campus->id/$submenu->id", 'Gerenciar', array('class' => 'btn btn-success'));
                   ?>
                 </div>
               </div>

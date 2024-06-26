@@ -18,7 +18,7 @@
           echo $msg;
         endif;
         ?>
-        <?php echo form_open_multipart("Painel_napp/cadastrar_informacoes_napp/$campus->id") ?>
+        <?php echo form_open_multipart("Painel_servicos/cadastrar_item_pagina_especifica/$campus->id/$pagina->id") ?>
         <h2 class="card-inside-title">Informações</h2>
         <div class="row clearfix">
           <div class="col-sm-6">
@@ -49,7 +49,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
-                <label for="priority">Ordem <small> (Exibido na página Financeiro)</small>
+                <label for="priority">Ordem <small> (Exibido na página)</small>
                   <br /><small>A ordem será sequencial. Ex.:1 (primeiro), 2 (segundo), etc... </small></label>
                 <?php
                 echo form_input(array('name' => 'order', 'type' => 'number', 'class' => 'form-control'), set_value('order'));
@@ -68,22 +68,12 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="separacao-forms"></div>
-          <div class="col-xs-12">
-            <div class="alert alert-warning">
-              <strong>Atenção!</strong> Se o campo abaixo (DESCRIÇÃO) não for preenchido, ou seja, estiver vazio,<br />
-              o item correspondente irá usar o <strong> Link de Redirecionamento</strong> e não terá página
-              intermediária.
-            </div>
-          </div>
-          <div class="separacao-forms"></div>
-        </div>
+
         <div class="row clearfix">
 
           <div class="col-sm-12">
-            <label for="title">Descrição do item do financeiro
-              <small> (Explicação e inforamções pertinentes ao item do financeiro)</small>
+            <label for="title">Descrição do item
+              <small> (Explicação e inforamções pertinentes ao item)</small>
             </label>
             <?php
             echo form_textarea('description', to_html(set_value('description')));
@@ -118,7 +108,7 @@
           <div class="col-sm-6">
             <?php
             echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
-            echo anchor("Painel_napp/lista_informacoes_napp/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo anchor("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
             ?>
           </div>
         </div>

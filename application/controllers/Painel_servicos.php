@@ -214,4 +214,135 @@ class Painel_servicos extends CI_Controller
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
+
+
+  public function lista_item_pagina_especifica($uriCampus = NULL, $idPagina = NuLL)
+  {
+
+    verificaLogin();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunasPagina = array(
+      'pages.id', 'pages.title'
+    );
+    $pagina =  $this->painelbd->where($colunasPagina, 'pages', null, array('pages.id' => $idPagina))->row();
+
+    $colunasConteudoPagina = array(
+      'page_contents.id',
+      'page_contents.title',
+      'page_contents.status',
+      'page_contents.img_destaque',
+      'page_contents.description',
+      'page_contents.order',
+      'page_contents.created_at',
+      'page_contents.updated_at',
+      'page_contents.user_id',
+      'campus.city'
+    );
+    $joinConteudoPagina = array(
+      'pages' => 'pages.id = page_contents.pages_id',
+      'campus' => 'campus.id= pages.campusid'
+    );
+    $whereConteudoPagina = array(
+      'page_contents.pages_id' => $pagina->id
+    );
+
+    $conteudosPagina = $this->painelbd->where($colunasConteudoPagina, 'page_contents', $joinConteudoPagina, $whereConteudoPagina)->result();
+
+    $data = array(
+      'titulo' => 'UniAtenas - Submenu Serviços',
+      'conteudo' => 'paineladm/servicos/pagina/itens_pagina/lista_item_pagina_especifica',
+      'dados' => array(
+        'conteudosPagina' => $conteudosPagina,
+        'page' => "Lista itens específicos do Menu >> (<b>$pagina->title</b>) << -<strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'pagina' => $pagina,
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function cadastrar_item_pagina_especifica($uriCampus = NULL, $idPagina)
+  {
+    verificaLogin();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $pagina = $this->painelbd->where('*', 'pages', null, array('pages.id' => $idPagina, 'pages.campusid' => $campus->id))->row();
+
+    //Validaçãoes via Form Validation
+    $this->form_validation->set_rules('title', 'Titulo', 'required');
+    $this->form_validation->set_rules('status', 'Situação', 'required');
+    $this->form_validation->set_rules('order', 'Ordem', 'required');
+
+    if ($this->form_validation->run() == FALSE) {
+      if (validation_errors()) :
+        setMsg(validation_errors(), 'error');
+      endif;
+    } else {
+
+      $path = "assets/images/servicos/$campus->id/$pagina->title";
+      is_way($path);
+
+      $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
+
+      $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
+      if (!empty($this->input->post('description')) and $this->input->post('description') != '') {
+        $dados_form['description'] = $this->input->post('description');
+      }
+      if (empty($this->input->post('link_redir')) and $this->input->post('link_redir') != '') {
+        $dados_form['link_redir'] = $this->input->post('link_redir');
+      }
+
+      $dados_form['title'] = $this->input->post('title');
+      $dados_form['status'] = $this->input->post('status');
+      $dados_form['order'] = $this->input->post('order');
+      $dados_form['pages_id'] = $pagina->id;
+      $dados_form['user_id'] = $this->session->userdata('codusuario');
+
+      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
+        setMsg('<p>Dados da página cadastrados com sucesso.</p>', 'success');
+        redirect(base_url("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id"));
+      } else {
+        setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
+      }
+    }
+
+
+    $data = array(
+      'titulo' => 'UniAtenas - Submenu - Serviços',
+      'conteudo' => 'paineladm/servicos/pagina/itens_pagina/cadastrar_item_pagina_especifica',
+      'dados' => array(
+        'pagina' => $pagina = isset($pagina) ? $pagina : '',
+        'page' => "Cadastro de dados da página (Menu) >> (<b>$pagina->title</b>) << -<strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function deletar_item_pagina_especifica($uriCampus = NULL, $idPagina = NULL, $id = NULL)
+  {
+    verifica_login();
+
+    $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
+    if (file_exists($item->img_destaque)) {
+      unlink($item->img_destaque);
+    }
+
+    if ($this->painelbd->deletar('page_contents', $item->id)) {
+      setMsg('<p>Informações deletadas com sucesso.</p>', 'success');
+      redirect("Painel_servicos/lista_item_pagina_especifica/$uriCampus/$idPagina");
+    } else {
+      setMsg('<p>Erro! Os dados não deletado.</p>', 'error');
+      redirect("Painel_servicos/lista_item_pagina_especifica/$uriCampus/$idPagina");
+    }
+  }
 }
