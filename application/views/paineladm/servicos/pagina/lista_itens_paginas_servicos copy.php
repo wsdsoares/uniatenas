@@ -43,9 +43,9 @@
             <table class="table table-bordered table-striped table-hover dataTable js-exportable">
               <thead>
                 <tr>
-                  <th>Ações</th>
+                  <th></th>
                   <th>#</th>
-                  <th>Título página</th>
+                  <th>SUBMENU</th>
                   <th>Situação</th>
                   <th>Tipo Serviço</th>
                   <th>Modificado em, por:</th>
@@ -53,9 +53,9 @@
               </thead>
               <tfoot>
                 <tr>
-                  <th>Ações</th>
+                  <th></th>
                   <th>#</th>
-                  <th>Título página</th>
+                  <th>SUBMENU</th>
                   <th>Situação</th>
                   <th>Tipo Serviço</th>
                   <th>Modificado em, por:</th>
@@ -67,15 +67,7 @@
                 ?>
                   <tr>
                     <td class="center">
-                      <?php
 
-                      echo '<a href=' . base_url("Painel_servicos/editar_registro_item_pagina/$campus->id/$item->id") . '>'
-                        . '<i class="material-icons">edit</i>'
-                        . '</a> ';
-                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
-                        . '<i class="material-icons">delete</i>'
-                        . '</a>';
-                      ?>
                     </td>
 
                     <td>

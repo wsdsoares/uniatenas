@@ -69,15 +69,14 @@ class Painel_servicos extends CI_Controller
         'conteudosPaginaServicos' => $listaInformmacoesPaginaServicos,
         'page' => "Informações: Menu SERVIÇOS <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
-        //'paginaFinanceiro'=> $verificaExistePaginaFinanceiro = isset($verificaExistePaginaFinanceiro) ? $verificaExistePaginaFinanceiro : '',
-        'tipo' => ''
+        'tipo' => 'tabelaDatatable'
       )
     );
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function registro_item_pagina($uriCampus = NULL, $idPagina = NULL)
+  public function registro_item_pagina($uriCampus = NULL)
   {
     verifica_login();
 
@@ -93,9 +92,9 @@ class Painel_servicos extends CI_Controller
         setMsg(validation_errors(), 'error');
       endif;
     } else {
-
       $dados_form['title'] = '' . lcfirst(str_replace("_", '', noAccentuation($this->input->post('title'))));
-      $dados_form['tipo_pagina'] = 'item_geral';
+      $dados_form['tipo_pagina'] = $this->input->post('tipo_pagina');
+      $dados_form['pagina'] = 'servicos';
       $dados_form['status'] = $this->input->post('status');
       $dados_form['campusid'] = $campus->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
@@ -121,73 +120,41 @@ class Painel_servicos extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function editar_informacoes_financeiro($uriCampus = NULL, $itemId = null)
+  public function editar_registro_item_pagina($uriCampus = NULL, $idPagina = NULL)
   {
-    verificaLogin();
+    verifica_login();
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+    $pagina = $this->painelbd->where('*', 'pages', NULL, array('pages.id' => $idPagina))->row();
 
-    $pagina = 'financeiro';
-    //$wherePagina = array('pages.title'=> $pagina,'pages.campusid'=>$campus->id);
-
-    $colunasTabelaPagesFinanceiro = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.order', 'page_contents.img_destaque', 'page_contents.link_redir', 'page_contents.status');
-    $joinConteudoPagina = array('pages' => 'pages.id = page_contents.pages_id');
-    $wherePaginaFinanceiro = array('page_contents.id' => $itemId);
-
-    $paginaFinanceiro = $this->painelbd->where($colunasTabelaPagesFinanceiro, 'page_contents', $joinConteudoPagina, $wherePaginaFinanceiro, null)->row();
-
-    $this->form_validation->set_rules('title', 'Titulo', 'required');
-    $this->form_validation->set_rules('description', 'Descrição', 'required');
+    $this->form_validation->set_rules('title', 'Página', 'required');
+    $this->form_validation->set_rules('tipo_pagina', 'Tipo Página', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
-    $this->form_validation->set_rules('order', 'Ordem', 'required');
 
     if ($this->form_validation->run() == FALSE) {
       if (validation_errors()) :
         setMsg(validation_errors(), 'error');
       endif;
     } else {
-
-      if ($paginaFinanceiro->description != $this->input->post('description')) {
-        $dados_form['description'] = $this->input->post('description');
+      if ($pagina->title != $this->input->post('title')) {
+        $dados_form['title'] = '' . lcfirst(str_replace("_", '', noAccentuation($this->input->post('title'))));
       }
-
-      if ($paginaFinanceiro->link_redir != $this->input->post('link_redir')) {
-        $dados_form['link_redir'] = $this->input->post('link_redir');
+      if ($pagina->tipo_pagina != $this->input->post('tipo_pagina')) {
+        $dados_form['tipo_pagina'] = $this->input->post('tipo_pagina');
       }
-
-      if ($paginaFinanceiro->title != $this->input->post('title')) {
-        $dados_form['title'] = $this->input->post('title');
-      }
-
-      if ($paginaFinanceiro->status != $this->input->post('status')) {
+      if ($pagina->status != $this->input->post('status')) {
         $dados_form['status'] = $this->input->post('status');
       }
-      if ($paginaFinanceiro->order != $this->input->post('order')) {
-        $dados_form['order'] = $this->input->post('order');
-      }
 
-
-      if (isset($_FILES['img_destaque']) && !empty($_FILES['img_destaque']['name'])) {
-
-        if (file_exists($paginaFinanceiro->img_destaque)) {
-          unlink($paginaFinanceiro->img_destaque);
-        }
-
-        $path = "assets/images/financing/$campus->id";
-        is_way($path);
-
-        $upload = $this->painelbd->uploadFiles('img_destaque', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', NULL);
-
-        $dados_form['img_destaque'] = $path . '/' . $upload['file_name'];
-      }
-
-      $dados_form['id'] = $paginaFinanceiro->id;
+      $dados_form['pagina'] = 'servicos';
+      $dados_form['campusid'] = $campus->id;
+      $dados_form['id'] = $pagina->id;
       $dados_form['user_id'] = $this->session->userdata('codusuario');
 
-      if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-        setMsg('<p>Dados do financeiro cadastrado com sucesso.</p>', 'success');
-        redirect(base_url("Painel_financeiro/lista_informacoes_financeiro/$campus->id"));
+      if ($this->painelbd->salvar('pages', $dados_form) == TRUE) {
+        setMsg('<p>Dados da página atualizados com sucesso.</p>', 'success');
+        redirect(base_url("Painel_servicos/lista_informacoes_servicos/$campus->id"));
       } else {
         setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
       }
@@ -195,10 +162,10 @@ class Painel_servicos extends CI_Controller
 
     $data = array(
       'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/financeiro/editar_informacoes_financeiro',
+      'conteudo' => 'paineladm/servicos/pagina/editar_registro_item_pagina',
       'dados' => array(
-        'paginaFinanceiro' => $paginaFinanceiro,
-        'page' => "Edição de informações do Financeiro - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Cadastro de Página Serviços >> (SUBMENU) Item Geral <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'informacoesPagina' => $pagina,
         'campus' => $campus,
         'tipo' => ''
       )
@@ -220,5 +187,31 @@ class Painel_servicos extends CI_Controller
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
       redirect("Painel_servicos/lista_informacoes_servicos/$uriCampus");
     }
+  }
+
+  public function lista_itens_paginas_servicos($uriCampus = NULL)
+  {
+    verificaLogin();
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+    $colunasItensSubmneu = array(
+      'pages.id', 'pages.title'
+    );
+    $listaItensSubmenuPaginaServicos =  $this->painelbd->where($colunasItensSubmneu, 'pages', null, array('pages.campusid' => $uriCampus, 'pages.pagina' => 'servicos'))->result();
+
+    $data = array(
+      'titulo' => 'UniAtenas - Submenu Serviços',
+      'conteudo' => 'paineladm/servicos/pagina/lista_itens_paginas_servicos',
+      'dados' => array(
+        'itensSubmenuPaginaServicos' => $listaItensSubmenuPaginaServicos,
+        'page' => "Lista dos Itens que compõe o menu Servicos -<strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'campus' => $campus,
+        'tipo' => 'tabelaDatatable'
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
   }
 }

@@ -43,7 +43,7 @@
       <div class="botoes-acoes-formularios">
         <div class="container">
           <div class="row">
-            <div class="col-sm-2 text-center">
+            <div class="col-sm-3 text-center">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Itens da Página</h5>
@@ -55,13 +55,13 @@
               </div>
             </div>
 
-            <div class="col-sm-2 text-center">
+            <div class="col-sm-3 text-center">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Instituições Convêniadas</h5>
-                  <p class="card-text"><small>(Empresas parceiras)</small></p>
+                  <h5 class="card-title">Lista conteúdos dos Itens da Página (SERVIÇOS)</h5>
+                  <p class="card-text"><small>(Gerencie aqui as informações de cada página cadastrada)</small></p>
                   <?php
-                  echo anchor("Painel_servicos/lista_empresas_conveniadas/$campus->id/$paginaEstagiosConvenios->id", 'Ver empresas', array('class' => 'btn btn-primary'));
+                  echo anchor("Painel_servicos/lista_itens_paginas_servicos/$campus->id", 'Ver páginas', array('class' => 'btn btn-primary'));
                   ?>
                 </div>
               </div>
