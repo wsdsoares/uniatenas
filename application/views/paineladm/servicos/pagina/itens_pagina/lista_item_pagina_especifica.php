@@ -100,7 +100,7 @@
                     <td class="center">
                       <?php
 
-                      echo '<a href=' . base_url("Painel_napp/editar_informacoes_napp/$campus->id/$item->id") . '>'
+                      echo '<a href=' . base_url("Painel_servicos/editar_item_pagina_especifica/$campus->id//$pagina->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
                       echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
