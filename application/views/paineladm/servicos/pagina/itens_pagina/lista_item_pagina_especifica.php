@@ -1,6 +1,17 @@
 <div class="block-header">
   <h2>Painel Administrativo</h2>
 </div>
+<style>
+  .icones-textos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card {
+    min-height: 170px;
+  }
+</style>
 <!-- Exportable Table -->
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -16,23 +27,42 @@
         </div>
       </div>
       <div class="body">
-        <div class="container">
+        <d class="container">
           <div class="row">
-            <div class="col-xs-6">
-
-              <?php echo anchor("Painel_servicos/registro_item_pagina/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR: Contatos página    >>    ' . strtoupper($pagina->title), array('class' => 'btn btn-success m-t-15 waves-effect')); ?>
-
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title icones-textos">
+                    <i class="material-icons">mail</i> Contatos
+                  </h5>
+                  <p class="card-text">
+                    <small>(Nessa área, é possível gerenciar os dados de telefones, email, etc)</small>
+                  </p>
+                  <?php
+                  echo anchor("Painel_servicos/cadastrar_contato_pagina_especifica/$campus->id/$pagina->id", 'Ver informações', array('class' => 'btn btn-primary'));
+                  ?>
+                </div>
+              </div>
             </div>
-            <!-- <div class="col-xs-6">
-              <?php
 
-              if (isset($paginaNapp) and $paginaNapp != '') {
-                echo anchor("Painel_napp/cadastrar_contato_pagina_napp/$campus->id/$paginaNapp->id", '<i class="material-icons">contact_phone</i> ' . $tituloBotao . ' contatos (Napp)', array('class' => 'btn btn-blue1'));
-              }
-              ?>
-            </div> -->
+            <div class="col-sm-2 text-center">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title icones-textos">
+                    <i class="material-icons">map</i> Atendimento
+                  </h5>
+                  <p class="card-text">
+                    <small>(Área para gerir informações de horários de atendimento, local de atendimento (endereço,
+                      sala, etc))
+                    </small>
+                  </p>
+                  <?php
+                  echo anchor("Painel_pesquisa_tcc/cadastrar_atendimento_pagina_tcc/$campus->id/$pagina->id", 'Ver informações', array('class' => 'btn btn-primary'));
+                  ?>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -47,18 +77,13 @@
         echo $msg;
       }
       ?>
-      <div class="header">
-        <h2>
-          <?php echo $page; ?>
-        </h2>
 
-      </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
-          <div class="col-xs-6">
+          <div class="col-md-6 col-xs-12">
             <?php echo anchor("Painel_servicos/cadastrar_item_pagina_especifica/$campus->id/$pagina->id", '<i class="material-icons">add_box</i> CADASTRAR item página -->>> ' . strtoupper($pagina->title), array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
-          <div class="col-xs-6">
+          <div class="col-md-6 col-xs-12">
             <?php echo anchor("Painel_servicos/lista_itens_paginas_servicos/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
         </div>
