@@ -349,6 +349,7 @@ class Painel_servicos extends CI_Controller
     $this->form_validation->set_rules('title', 'Titulo', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
     $this->form_validation->set_rules('order', 'Ordem', 'required');
+    $dados_form['updated_at'] = date('Y-m-d H:i:s');
 
     if ($this->form_validation->run() == FALSE) {
       if (validation_errors()) :
@@ -486,6 +487,7 @@ class Painel_servicos extends CI_Controller
 
       if (isset($contatoPaginaEspecifica)) {
         $dados_form['id'] = $contatoPaginaEspecifica->id;
+        $dados_form['updated_at'] = date('Y-m-d H:i:s');
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
           setMsg('<p>Dados da página (menu)' . strtoupper($pagina->title) . 'atualizado com sucesso.</p>', 'success');
           redirect(base_url("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id"));
@@ -517,7 +519,7 @@ class Painel_servicos extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function cadastrar_atendimento_pagina_tcc($uriCampus = NULL, $pageId = null)
+  public function cadastrar_atendimento_pagina_especifica($uriCampus = NULL, $pageId = null)
   {
     verifica_login();
 
@@ -535,8 +537,6 @@ class Painel_servicos extends CI_Controller
       'page_contents.status',
       'page_contents.description',
       'page_contents.order',
-      'page_contents.created_at',
-      'page_contents.updated_at',
       'page_contents.user_id',
     );
     $joinConteudoatendimentoPaginaEspecifica = array(
@@ -569,16 +569,17 @@ class Painel_servicos extends CI_Controller
 
       if (isset($atendimentoPaginaEspecifica)) {
         $dados_form['id'] = $atendimentoPaginaEspecifica->id;
+        $dados_form['updated_at'] = date('Y-m-d H:i:s');
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
-          setMsg('<p>Dados de Atendimento atualizado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_tcc/cadastrar_atendimento_pagina_tcc/$campus->id/$pagina->id"));
+          setMsg('<p>Dados de Atendimento atualizados com sucesso.</p>', 'success');
+          redirect(base_url("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id"));
         } else {
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
       } else {
         if ($this->painelbd->salvar('page_contents', $dados_form) == TRUE) {
           setMsg('<p>Dados de Atendimento cadastrado com sucesso.</p>', 'success');
-          redirect(base_url("Painel_pesquisa_tcc/cadastrar_atendimento_pagina_tcc/$campus->id/$pagina->id"));
+          redirect(base_url("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id"));
         } else {
           setMsg('<p>Erro! Algo de errado na validação dos dados.</p>', 'error');
         }
@@ -586,11 +587,11 @@ class Painel_servicos extends CI_Controller
     }
 
     $data = array(
-      'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/itens_iniciacao/tcc/trabalho/contatos/cadastrar_atendimento_pagina_tcc',
+      'titulo' => 'UniAtenas - Submenu - Serviços',
+      'conteudo' => 'paineladm/servicos/pagina/itens_pagina/contatos/cadastrar_atendimento_pagina_especifica',
       'dados' => array(
-        'tituloPagina' => "Informações de atendimento página Trabalho de Conclusão de Curso - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-        'pagina' => $pagina,
+        'pagina' => $pagina = isset($pagina) ? $pagina : '',
+        'page' => "Informações de atendimento da página (Menu) >> (<b>$pagina->title</b>) << -<strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'atendimentoPaginaEspecifica' => $atendimentoPaginaEspecifica = isset($atendimentoPaginaEspecifica) ? $atendimentoPaginaEspecifica : '',
         'campus' => $campus,
         'tipo' => ''

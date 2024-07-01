@@ -1,10 +1,10 @@
-<?php 
-$atendimentoPaginaTcc = $dados['atendimentoPaginaTcc'] !="" ? $dados['atendimentoPaginaTcc'] : '';
+<?php
+$atendimentoPaginaEspecifica = $dados['atendimentoPaginaEspecifica'] != "" ? $dados['atendimentoPaginaEspecifica'] : '';
 
-if($atendimentoPaginaTcc != ''){
-  $statusAtendimento = $dados['atendimentoPaginaTcc']->status; 
-  $descricaoAtendimento = $dados['atendimentoPaginaTcc']->description; 
-}else{
+if ($atendimentoPaginaEspecifica != '') {
+  $statusAtendimento = $dados['atendimentoPaginaEspecifica']->status;
+  $descricaoAtendimento = $dados['atendimentoPaginaEspecifica']->description;
+} else {
   $statusAtendimento = '';
   $descricaoAtendimento = '';
 }
@@ -18,18 +18,18 @@ if($atendimentoPaginaTcc != ''){
     <div class="card">
       <div class="header">
         <h2>
-          <?php echo $tituloPagina; ?>
+          <?php echo $page; ?>
         </h2>
       </div>
-      <?php 
+      <?php
       ?>
       <div class="body">
         <?php
-          if ($msg = getMsg()){
-            echo $msg;
-          }
-          ?>
-        <?php echo form_open("Painel_pesquisa_tcc/cadastrar_atendimento_pagina_tcc/$campus->id/$pagina->id") ?>
+        if ($msg = getMsg()) {
+          echo $msg;
+        }
+        ?>
+        <?php echo form_open("Painel_servicos/cadastrar_atendimento_pagina_especifica/$campus->id/$pagina->id") ?>
 
         <h2 class="card-inside-title">Informações: Atendimento
         </h2>
@@ -43,7 +43,7 @@ if($atendimentoPaginaTcc != ''){
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'title', 'class' => 'form-control','readonly'=>"readonly"), set_value('title','Pesquisa/ Trabalho de Conclusão de Curso'));
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'readonly' => "readonly"), set_value('title', 'Servicços /' . strtoupper($pagina->title)));
                 ?>
               </div>
             </div>
@@ -53,12 +53,12 @@ if($atendimentoPaginaTcc != ''){
               <div class="form-line">
                 <label for="status">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$statusAtendimento), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status', $statusAtendimento), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -68,7 +68,7 @@ if($atendimentoPaginaTcc != ''){
           <div class="col-sm-12">
             <label for="title">Informações a respeito das formas, horários, locais de atendimento, entre outros</label>
             <?php
-              echo form_textarea('description', to_html(set_value('description',$descricaoAtendimento)));
+            echo form_textarea('description', to_html(set_value('description', $descricaoAtendimento)));
             ?>
           </div>
           <script type="text/javascript">
@@ -82,15 +82,15 @@ if($atendimentoPaginaTcc != ''){
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_pesquisa_tcc/lista_informacoes_tcc/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
 
         <?php
-          echo form_close();
-          ?>
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>

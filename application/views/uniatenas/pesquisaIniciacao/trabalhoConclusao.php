@@ -1,26 +1,26 @@
 <style>
-  .ico-wrap {
-    margin: auto;
-  }
+.ico-wrap {
+  margin: auto;
+}
 
-  .mbr-iconfont {
-    font-size: 4.5rem !important;
-    color: #313131;
-    margin: 1rem;
-    padding-right: 1rem;
-  }
+.mbr-iconfont {
+  font-size: 4.5rem !important;
+  color: #313131;
+  margin: 1rem;
+  padding-right: 1rem;
+}
 
-  .titleSPIC {
-    min-height: 80px;
-  }
+.titleSPIC {
+  min-height: 80px;
+}
 
-  a.iconSPIC i {
-    margin-top: 20px;
-  }
+a.iconSPIC i {
+  margin-top: 20px;
+}
 
-  text.Orange-label {
-    color: Orange;
-  }
+text.Orange-label {
+  color: Orange;
+}
 </style>
 <div class="container">
   <div class="dados_gerais">
@@ -44,17 +44,19 @@
                   $active = "";
                 }
               ?>
-                <li role="presentation" class="brand-nav <?php echo $active; ?>">
-                  <a href="#tab<?php echo $i; ?>" aria-controls="tab<?php echo $i; ?>" role="tab" data-toggle="tab"><?php echo $conteudo[$i]->title ?></a>
-                </li>
+              <li role="presentation" class="brand-nav <?php echo $active; ?>">
+                <a href="#tab<?php echo $i; ?>" aria-controls="tab<?php echo $i; ?>" role="tab"
+                  data-toggle="tab"><?php echo $conteudo[$i]->title ?></a>
+              </li>
               <?php
 
               }
               if (!empty($dados['conteudoTrabalhoDeConclusaoCurso'])) {
               ?>
-                <li role="presentation" class="brand-nav">
-                  <a href="#tab<?php echo $i + 1; ?>" aria-controls="tab<?php echo $i + 1; ?>" role="tab" data-toggle="tab"><?php echo "Repositório Institucional"; ?></a>
-                </li>
+              <li role="presentation" class="brand-nav">
+                <a href="#tab<?php echo $i + 1; ?>" aria-controls="tab<?php echo $i + 1; ?>" role="tab"
+                  data-toggle="tab"><?php echo "Repositório Institucional"; ?></a>
+              </li>
               <?php
               }
               ?>
@@ -64,9 +66,9 @@
 
           if (!empty($dados['conteudo'])) {
           ?>
-            <div class="col-sm-9">
-              <div class="tab-content">
-                <?php
+          <div class="col-sm-9">
+            <div class="tab-content">
+              <?php
                 for ($i = 0; $i < count($conteudo); $i++) {
                   if ($i == 0) {
                     $active = "active";
@@ -74,80 +76,81 @@
                     $active = "";
                   }
                 ?>
-                  <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="tab<?php echo $i; ?>">
-                    <div class="row">
-                      <?php
+              <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="tab<?php echo $i; ?>">
+                <div class="row">
+                  <?php
                       if (!empty($dados['conteudo'][$i]->title_short)) {
                       ?>
-                        <h4 class="text-center">
-                          <?php echo $dados['conteudo'][$i]->title_short; ?>
-                        </h4>
-                      <?php
+                  <h4 class="text-center">
+                    <?php echo $dados['conteudo'][$i]->title_short; ?>
+                  </h4>
+                  <?php
                       }
 
                       ?>
-                      <div class="col-md-12">
-                        <?php
+                  <div class="col-md-12">
+                    <?php
                         echo $dados['conteudo'][$i]->description;
                         ?>
-                      </div>
-
-                    </div>
                   </div>
-                <?php
+
+                </div>
+              </div>
+              <?php
                 }
 
                 if (!empty($dados['conteudoTrabalhoDeConclusaoCurso'])) {
 
                 ?>
-                  <div role="tabpanel" class="tab-pane" id="tab<?php echo $i + 1; ?>">
-                    <style>
-                      .lista-cursos {
-                        min-height: 200px;
-                      }
+              <div role="tabpanel" class="tab-pane" id="tab<?php echo $i + 1; ?>">
+                <style>
+                .lista-cursos {
+                  min-height: 200px;
+                }
 
-                      .lista-cursos a:hover {
-                        cursor: pointer;
-                        filter: grayscale(100%);
-                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-                      }
+                .lista-cursos a:hover {
+                  cursor: pointer;
+                  filter: grayscale(100%);
+                  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+                }
 
-                      .lista-cursos h4 {
-                        font-size: 14px;
-                      }
-                    </style>
-                    <?php
+                .lista-cursos h4 {
+                  font-size: 14px;
+                }
+                </style>
+                <?php
                     //count($conteudoTrabalhoDeConclusaoCurso) > 0)
                     ?>
-                    <?php foreach ($dados['conteudoTrabalhoDeConclusaoCurso'] as $curso) { ?>
-                      <div class="col-xs-3 lista-cursos">
+                <?php foreach ($dados['conteudoTrabalhoDeConclusaoCurso'] as $curso) { ?>
+                <div class="col-xs-3 lista-cursos">
 
-                        <a href="<?php echo base_url("iniciacaoCientifica/listaSemestresTCC/$campus->shurtName/$curso->idCursoCampus") ?>">
-                          <h1 class="card-title">
-                            <img src="<?php echo  base_url($curso->icone); ?>" class="img-responsive">
-                          </h1>
-                          <h4 class="text-center" style="">
-                            <?php echo $curso->name . ' ACESSAR'; ?>
-                          </h4>
+                  <a
+                    href="<?php echo base_url("iniciacaoCientifica/listaSemestresTCC/$campus->shurtName/$curso->idCursoCampus") ?>">
+                    <h1 class="card-title">
+                      <img src="<?php echo  base_url($curso->icone); ?>" class="img-responsive">
+                    </h1>
+                    <h4 class="text-center" style="">
+                      <?php echo $curso->name . ' ACESSAR'; ?>
+                    </h4>
 
-                        </a>
-                      </div>
-                    <?php
+                  </a>
+                </div>
+                <?php
                     }
                     ?>
-                  <?php
+                <?php
                 }
                   ?>
 
 
 
-                  </div>
-                <?php
+              </div>
+              <?php
               }
                 ?>
-              </div>
             </div>
-            <?php
+          </div>
+          <?php
 
             ?>
         </div>
@@ -159,77 +162,78 @@
 
       if (!empty($dados['conteudoContato']->description)) {
       ?>
-        <div class="widget-sidebar">
-          <h2 class="title-widget-sidebar"><?php echo $dados['conteudoContato']->title; ?></h2>
-          <div class="content-widget-sidebar">
-            <ul>
-              <li class="recent-post-alunos">
-                <div class="col-sm-2 col-xs-4">
-                  <div class="ico-wrap">
-                    <i class="fas fa-mobile-alt fa-2x"></i>
-                  </div>
-                  </a>
+      <div class="widget-sidebar">
+        <h2 class="title-widget-sidebar"><?php echo $dados['conteudoContato']->title; ?></h2>
+        <div class="content-widget-sidebar">
+          <ul>
+            <li class="recent-post-alunos">
+              <div class="col-sm-2 col-xs-4">
+                <div class="ico-wrap">
+                  <i class="fas fa-mobile-alt fa-2x"></i>
                 </div>
-                <div class="col-sm-8 col-xs-8 ">
-                  <small>
-                    <div class=" "><?php echo $dados['conteudoContato']->description; ?></div>
-                  </small>
-                </div>
-              </li>
-            </ul>
-          </div>
+                </a>
+              </div>
+              <div class="col-sm-8 col-xs-8 ">
+                <small>
+                  <div class=" "><?php echo $dados['conteudoContato']->description; ?></div>
+                </small>
+              </div>
+            </li>
+          </ul>
         </div>
-        <br>
-        <br><br />
+      </div>
+      <br>
+      <br><br />
       <?php
       }
       ?>
       <?php
       if (!empty($dados['conteudoAtendimento']->description)) {
       ?>
-        <div class="widget-sidebar">
-          <h2 class="title-widget-sidebar">Atendimento</h2>
-          <div class="content-widget-sidebar">
-            <ul>
-              <li class="recent-post-alunos">
-                <div class="col-sm-2 col-xs-4">
-                  <div class="ico-wrap">
-                    <i class="fas far fa-address-card fa-2x"></i>
-                  </div>
-
+      <div class="widget-sidebar">
+        <h2 class="title-widget-sidebar">Atendimento</h2>
+        <div class="content-widget-sidebar">
+          <ul>
+            <li class="recent-post-alunos">
+              <div class="col-sm-2 col-xs-4">
+                <div class="ico-wrap">
+                  <i class="fas far fa-address-card fa-2x"></i>
                 </div>
 
-                <div class="col-sm-8 col-xs-8 ">
-                  <small>
-                    <div class=" "><?php echo $dados['conteudoAtendimento']->description; ?></div>
-                  </small>
-                </div>
-              </li>
-            </ul>
-          </div>
+              </div>
+
+              <div class="col-sm-8 col-xs-8 ">
+                <small>
+                  <div class=" "><?php echo $dados['conteudoAtendimento']->description; ?></div>
+                </small>
+              </div>
+            </li>
+          </ul>
         </div>
+      </div>
       <?php
       }
       ?>
       <?php
       if ($dados['conteudoLinksUteis'] !== '' and !empty($dados['conteudoLinksUteis'])) {
       ?>
-        <div class="widget-sidebar col-xs-12">
+      <div class="widget-sidebar col-xs-12">
 
-          <h2 class="title-widget-sidebar">#Links Úteis</h2>
-          <?php
+        <h2 class="title-widget-sidebar">#Links Úteis</h2>
+        <?php
           foreach ($dados['conteudoLinksUteis'] as $linksUteis) {
           ?>
-            <div class="last-post-aluno">
-              <a target="_blank" href="<?php echo $linksUteis->link_redir; ?>" class="accordionAluno"><?php echo $linksUteis->title; ?></a>
-            </div>
-            <hr>
-          <?php
+        <div class="last-post-aluno">
+          <a target="_blank" href="<?php echo $linksUteis->link_redir; ?>"
+            class="accordionAluno"><?php echo $linksUteis->title; ?></a>
+        </div>
+        <hr>
+        <?php
           }
           ?>
-        </div>
+      </div>
     </div>
-  <?php
+    <?php
       }
   ?>
   </div>
