@@ -983,13 +983,12 @@ and revistas.id =$id;
             redirect("");
         }
 
-
         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-        $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
-        $this->form_validation->set_rules('email', 'E-mail', 'required');
-        $this->form_validation->set_rules('phone', 'Telefone', 'required');
-        $this->form_validation->set_rules('message', 'Mensagem', 'required');
+        $this->form_validation->set_rules('eman', 'Nome', 'required|ucfirst');
+        $this->form_validation->set_rules('liame', 'E-mail', 'required');
+        $this->form_validation->set_rules('enohp', 'Telefone', 'required');
+        $this->form_validation->set_rules('megasnem', 'Mensagem', 'required');
 
         if ($this->form_validation->run() == FALSE) {
             if (validation_errors()) :
@@ -998,7 +997,6 @@ and revistas.id =$id;
         } else {
 
             if (!empty($this->input->post('enviarForm'))) {
-
 
                 $url = "https://www.google.com/recaptcha/api/siteverify";
                 $secret = "6Lc1NxEmAAAAADgQbDjiqScjBzvga54vmJt1jsmZ";
@@ -1014,67 +1012,79 @@ and revistas.id =$id;
 
                 $resultado = json_decode($resposta);
 
-                if ($resultado->success == 1) {
-                    if ($this->input->post('description') != '') {
-                        $outhersInformation = $this->input->post('description');
-                    } else {
-                        $outhersInformation = '';
-                    }
-
-
-                    $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
-                    setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
-                    date_default_timezone_set('America/Sao_Paulo');
-
-                    $date = date('Y-m-d H:i:s');
-
-                    $data['campusid'] = $dataCampus->id;
-
-                    $mensagem = "<p>O (A)" .
-                        "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
-                        "Email: " . $data['email'] . "<br/>" .
-                        "Celular: " . $data['phone'] . "<br/>" .
-                        "Mensagem: " . $data['message'] . "<br/>" .
-                        "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
-                        "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
-
-                    $this->load->library('email');
-
-                    //Inicia o processo de configuração para o envio do email
-                    $config['protocol'] = 'mail'; // define o protocolo utilizado
-                    $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-                    $config['validate'] = TRUE; // define se haverá validação dos endereços de email
-                    $config['mailtype'] = 'html';
-                    $config['newline'] = '\r\n';
-                    $config['charset'] = 'utf-8';
-
-                    //$email = 'soaresdev.wil@gmail.com';
-                    $email = $dataCampus->email;
-                    $this->email->initialize($config);
-
-                    $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;
-                    $this->email->from('faleconosco@atenas.edu.br', 'Fale Conosco'); //quem mandou
-                    $this->email->to($email); // Destinatário
-                    //$this->email->cc('comunicacao@atenas.edu.br');
-                    $this->email->cc($data['email']);
-                    //$this->email->bcc($data['email']);
-                    $this->email->subject($assunto);
-                    $this->email->message($mensagem);
-
-
-
-                    if ($this->email->send()) {
-                        $data['message'] = toBd($this->input->post('message'));
-                        $this->bancosite->salvar('campus_contacts', $data);
-                        setMsg('<p>Contato realizado com sucesso. <br>
-                            Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
-                        redirect(base_url("site/contato/$dataCampus->shurtName"));
-                    } else {
-                        redirect(base_url("site/contato/$dataCampus->shurtName"));
-                        setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
-                    }
+                if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
+                    setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
                 } else {
-                    setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
+
+                    if ($resultado->success == 1) {
+                        if ($this->input->post('description') != '') {
+                            $outhersInformation = $this->input->post('description');
+                        } else {
+                            $outhersInformation = '';
+                        }
+
+
+                        // $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
+                        //  $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
+
+                        $data['name'] = $this->input->post('eman');
+                        $data['email'] = $this->input->post('liame');
+                        $data['phone'] = $this->input->post('enohp');
+                        $data['message'] = $this->input->post('megasnem');
+
+                        setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
+                        date_default_timezone_set('America/Sao_Paulo');
+
+                        $date = date('Y-m-d H:i:s');
+
+                        $data['campusid'] = $dataCampus->id;
+
+                        $mensagem = "<p>O (A)" .
+                            "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
+                            "Email: " . $data['email'] . "<br/>" .
+                            "Celular: " . $data['phone'] . "<br/>" .
+                            "Mensagem: " . $data['message'] . "<br/>" .
+                            "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
+                            "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
+
+                        $this->load->library('email');
+
+                        //Inicia o processo de configuração para o envio do email
+                        $config['protocol'] = 'mail'; // define o protocolo utilizado
+                        $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+                        $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+                        $config['mailtype'] = 'html';
+                        $config['newline'] = '\r\n';
+                        $config['charset'] = 'utf-8';
+
+                        //$email = 'soaresdev.wil@gmail.com';
+                        $email = $dataCampus->email;
+                        $this->email->initialize($config);
+
+                        $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;
+                        $this->email->from('faleconosco@atenas.edu.br', 'Fale Conosco'); //quem mandou
+                        $this->email->to($email); // Destinatário
+                        //$this->email->cc('comunicacao@atenas.edu.br');
+                        $this->email->cc($data['email']);
+                        //$this->email->bcc($data['email']);
+                        $this->email->subject($assunto);
+                        $this->email->message($mensagem);
+
+
+
+                        if ($this->email->send()) {
+                            $data['message'] = toBd($this->input->post('message'));
+                            $this->bancosite->salvar('campus_contacts', $data);
+                            setMsg('<p>Contato realizado com sucesso. <br>
+                            Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
+                            redirect(base_url("site/contato/$dataCampus->shurtName"));
+                        } else {
+                            redirect(base_url("site/contato/$dataCampus->shurtName"));
+                            setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
+                        }
+                    } else {
+                        setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
+                    }
                 }
             } else {
                 setMsg('<p>Erro! reCaptcha não foi validado; </p>', 'error');

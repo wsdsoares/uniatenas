@@ -80,37 +80,38 @@ $uricampus = $this->uri->segment(3);
 
         <?php
         $atributos = array('role' => 'form');
-        //echo form_open("Site/contato/$uricampus", $atributos);
+        echo form_open("Site/contato/$uricampus", $atributos);
         ?>
         <div class="form-group">
           <span>Nome</span>
           <?php
-          echo form_input(array('name' => 'name', 'class' => 'form-control', 'placeholder' => "Nome"), set_value('name'));
+          echo form_input(array('name' => 'eman', 'class' => 'form-control', 'placeholder' => "Nome"), set_value('eman'));
           ?>
 
         </div>
         <div class="form-group">
           <span>Email</span>
           <?php
-          echo form_input(array('name' => 'email', 'type' => 'email', 'class' => 'form-control', 'placeholder' => "E-mail"), set_value('email'));
+          echo form_input(array('name' => 'liame', 'type' => 'email', 'class' => 'form-control', 'placeholder' => "E-mail"), set_value('liame'));
           ?>
 
         </div>
         <div class="form-group">
           <span>Telefone</span>
           <?php
-          echo form_input(array('name' => 'phone', 'class' => 'form-control', 'placeholder' => "Telefone"), set_value('phone'));
+          echo form_input(array('name' => 'enohp', 'class' => 'form-control', 'placeholder' => "Telefone"), set_value('enohp'));
           ?>
         </div>
         <div class="form-group">
           <span>Mensagem</span>
           <?php
-          echo form_textarea(array('name' => 'message', 'class' => 'form-control', 'placeholder' => "Mensagem", 'pattern' => "[a-zA-Z0-9]+"), set_value('message'));
+          echo form_textarea(array('name' => 'megasnem', 'class' => 'form-control', 'placeholder' => "Mensagem", 'pattern' => "[a-zA-Z0-9]+"), set_value('megasnem'));
           ?>
         </div>
 
         <?php $key = "6Lc1NxEmAAAAAHN54LwwjpRzBWsM3dPEyXh22xJI"; ?>
         <div class="g-recaptcha" data-sitekey="<?php echo $key ?>"></div>
+        <input type="hidden" name="hidden-input" id="hidden-input" value="@AAAAAHN54Lw#&">
         <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar" onclick="return validaFormularioRecaptcha()">
         <?php
         echo form_close();
