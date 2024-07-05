@@ -1,6 +1,7 @@
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <?php
 $uricampus = $this->uri->segment(3);
+
 ?>
 
 <section id="contact">
@@ -15,7 +16,8 @@ $uricampus = $this->uri->segment(3);
         <div class="row">
           <div class="col-xs-9">
             <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="<?php echo $campus->mapsFrame ?>" frameborder="0" style="border:0" allowfullscreen></iframe>
+              <iframe class="embed-responsive-item" src="<?php echo $campus->mapsFrame ?>" frameborder="0"
+                style="border:0" allowfullscreen></iframe>
             </div>
           </div>
           <div class="col-xs-12">
@@ -26,42 +28,42 @@ $uricampus = $this->uri->segment(3);
               <?php
               if (isset($campus->street)) {
               ?>
-                <div class="form-group">
-                  <span><i class="fa fa-map-marker-alt"></i> <?php echo $campus->street; ?></span>
-                </div>
+              <div class="form-group">
+                <span><i class="fa fa-map-marker-alt"></i> <?php echo $campus->street; ?></span>
+              </div>
               <?php
               }
               if (isset($campus->phone) and $campus->phone != null) {
               ?>
-                <div class="form-group">
-                  <span><i class="fas fa-phone-volume"></i>
-                    <?php
+              <div class="form-group">
+                <span><i class="fas fa-phone-volume"></i>
+                  <?php
                     echo $campus->phone;
                     ?>
-                  </span>
-                </div>
+                </span>
+              </div>
               <?php
               }
 
               if (isset($campus->email)) {
               ?>
-                <div class="form-group">
-                  <span><i class="fas fa-envelope"></i>
-                    <?php echo $campus->email; ?>
-                    <?php
+              <div class="form-group">
+                <span><i class="fas fa-envelope"></i>
+                  <?php echo $campus->email; ?>
+                  <?php
                     if ($campus->id == 1) {
                     ?>
-                      <br>
-                      <span><i class="fas fa-envelope"></i>
-                        <?php
+                  <br>
+                  <span><i class="fas fa-envelope"></i>
+                    <?php
                         echo "ouvidoria@atenas.edu.br";
                         ?>
-                      </span>
-                    <?php
+                  </span>
+                  <?php
                     }
 
                     ?>
-                </div>
+              </div>
               <?php
               }
               ?>
@@ -112,7 +114,8 @@ $uricampus = $this->uri->segment(3);
         <?php $key = "6Lc1NxEmAAAAAHN54LwwjpRzBWsM3dPEyXh22xJI"; ?>
         <div class="g-recaptcha" data-sitekey="<?php echo $key ?>"></div>
         <input type="hidden" name="hidden-input" id="hidden-input" value="@AAAAAHN54Lw#&">
-        <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar" onclick="return validaFormularioRecaptcha()">
+        <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar"
+          onclick="return validaFormularioRecaptcha()">
         <?php
         echo form_close();
         ?>
@@ -122,9 +125,9 @@ $uricampus = $this->uri->segment(3);
   </div>
 </section>
 <script type="text/javascript">
-  function validaFormularioRecaptcha() {
-    if (grecaptcha.getResponse() == "") {
-      return false;
-    }
+function validaFormularioRecaptcha() {
+  if (grecaptcha.getResponse() == "") {
+    return false;
   }
+}
 </script>

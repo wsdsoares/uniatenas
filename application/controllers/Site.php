@@ -1017,11 +1017,11 @@ and revistas.id =$id;
                 } else {
 
                     if ($resultado->success == 1) {
-                        if ($this->input->post('description') != '') {
-                            $outhersInformation = $this->input->post('description');
-                        } else {
-                            $outhersInformation = '';
-                        }
+                        // if ($this->input->post('description') != '') {
+                        //     $outhersInformation = $this->input->post('description');
+                        // } else {
+                        //     $outhersInformation = '';
+                        // }
 
 
                         // $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
@@ -1059,6 +1059,7 @@ and revistas.id =$id;
 
                         //$email = 'soaresdev.wil@gmail.com';
                         $email = $dataCampus->email;
+                        // $email = 'kolmakuyda@gufum.com';
                         $this->email->initialize($config);
 
                         $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;
@@ -1070,10 +1071,8 @@ and revistas.id =$id;
                         $this->email->subject($assunto);
                         $this->email->message($mensagem);
 
-
-
                         if ($this->email->send()) {
-                            $data['message'] = toBd($this->input->post('message'));
+                            $data['message'] = toBd($this->input->post('megasnem'));
                             $this->bancosite->salvar('campus_contacts', $data);
                             setMsg('<p>Contato realizado com sucesso. <br>
                             Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
