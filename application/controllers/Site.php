@@ -1016,21 +1016,15 @@ and revistas.id =$id;
                     setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
                 } else {
 
+
                     if ($resultado->success == 1) {
-                        if ($this->input->post('description') != '') {
-                            $outhersInformation = $this->input->post('description');
-                        } else {
-                            $outhersInformation = '';
-                        }
 
-
-                        // $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
-                        //  $data = elements(array('name', 'email', 'phone', 'message'), $this->input->post());
-
-                        $data['name'] = $this->input->post('eman');
-                        $data['email'] = $this->input->post('liame');
+                        $data['name'] = strip_tags(trim($this->input->post('eman')));
+                        $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);
                         $data['phone'] = $this->input->post('enohp');
-                        $data['message'] = $this->input->post('megasnem');
+                        $data['message'] = trim($this->input->post('megasnem'));
+
+                        $mensagem = trim($_POST["mensagem"]);
 
                         setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
                         date_default_timezone_set('America/Sao_Paulo');
@@ -1059,6 +1053,7 @@ and revistas.id =$id;
 
                         //$email = 'soaresdev.wil@gmail.com';
                         $email = $dataCampus->email;
+                        //$email = 'wilhaods@gmail.com';
                         $this->email->initialize($config);
 
                         $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;
@@ -1070,10 +1065,8 @@ and revistas.id =$id;
                         $this->email->subject($assunto);
                         $this->email->message($mensagem);
 
-                        38999186776
-
                         if ($this->email->send()) {
-                            $data['message'] = toBd($this->input->post('message'));
+                            $data['message'] = toBd($this->input->post('megasnem'));
                             $this->bancosite->salvar('campus_contacts', $data);
                             setMsg('<p>Contato realizado com sucesso. <br>
                             Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');

@@ -68,13 +68,11 @@ p {
                     <?php } ?>
                   </div>
                 </div>
-
               </div>
             </div>
             <?php
               }
               ?>
-
             <?php
           }
             ?>

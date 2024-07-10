@@ -346,7 +346,7 @@ class Painel_servicos extends CI_Controller
 
     $paginaEspecifica = $this->painelbd->where($colunasTabelaConteudoPagina, 'page_contents', $joinConteudoPagina, $wherePaginaEspecifica, null)->row();
 
-    $this->form_validation->set_rules('title', 'Titulo', 'required');
+    // $this->form_validation->set_rules('title', 'Titulo', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
     $this->form_validation->set_rules('order', 'Ordem', 'required');
     $dados_form['updated_at'] = date('Y-m-d H:i:s');
