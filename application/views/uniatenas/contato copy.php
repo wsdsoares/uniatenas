@@ -1,10 +1,9 @@
-<?php
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-?>
 <?php
 $uricampus = $this->uri->segment(3);
-?>
 
+?>
 
 <section id="contact">
   <div class="container">
@@ -84,11 +83,8 @@ $uricampus = $this->uri->segment(3);
 
         <?php
         $atributos = array('role' => 'form');
-        echo form_open("site/contato/$uricampus", $atributos);
+        echo form_open("Site/contato/$uricampus", $atributos);
         ?>
-        <input type="hidden" name="sitekey" id="sitekey" value="<?php echo SITE_KEY; ?>">
-        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
-
         <div class="form-group">
           <span>Nome</span>
           <?php
@@ -116,32 +112,23 @@ $uricampus = $this->uri->segment(3);
           ?>
         </div>
 
-        <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar">
+        <?php $key = "6Lc1NxEmAAAAAHN54LwwjpRzBWsM3dPEyXh22xJI"; ?>
+        <div class="g-recaptcha" data-sitekey="<?php echo $key ?>"></div>
         <input type="hidden" name="hidden-input" id="hidden-input" value="@AAAAAHN54Lw#&">
-
+        <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar"
+          onclick="return validaFormularioRecaptcha()">
         <?php
         echo form_close();
         ?>
       </div>
     </div>
+
   </div>
 </section>
-
-<script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://www.google.com/recaptcha/api.js?render=<?php echo SITE_KEY; ?>"></script>
-<script>
-grecaptcha.ready(function() {
-
-  // Recuperar a chave "SITE_KEY"
-  var sitekey = document.getElementById('sitekey').value;
-
-  // Enviar a SITE_KEY, o tipo de página "homepage", para o Google e obter o token
-  grecaptcha.execute(sitekey, {
-    action: 'submit'
-  }).then(function(token) {
-
-    // Enviar o token retornado pelo Google para o formulário
-    document.getElementById('g-recaptcha-response').value = token;
-  });
-});
+<script type="text/javascript">
+function validaFormularioRecaptcha() {
+  if (grecaptcha.getResponse() == "") {
+    return false;
+  }
+}
 </script>

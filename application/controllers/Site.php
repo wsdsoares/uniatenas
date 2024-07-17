@@ -978,6 +978,10 @@ and revistas.id =$id;
 
     public function contato($uricampus = NULL)
     {
+        define('SITE_KEY', '6LfI_xAqAAAAAPb9z6VmpAxGHgDxJRzUfE-7XC3q');
+        define('SECRET_KEY', '6LfI_xAqAAAAAIe6Z9LLTV_PEEid8IaZ902QQXnH');
+        define('POSSUI_SSL', false);
+
 
         if ($uricampus == null) {
             redirect("");
@@ -986,7 +990,7 @@ and revistas.id =$id;
         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
 
         $this->form_validation->set_rules('eman', 'Nome', 'required|ucfirst');
-        $this->form_validation->set_rules('liame', 'E-mail', 'required');
+        $this->form_validation->set_rules('liame', 'E-mail', 'required|valid_email');
         $this->form_validation->set_rules('enohp', 'Telefone', 'required');
         $this->form_validation->set_rules('megasnem', 'Mensagem', 'required');
 
@@ -997,27 +1001,35 @@ and revistas.id =$id;
         } else {
 
             if (!empty($this->input->post('enviarForm'))) {
+                $dados['g-recaptcha-response'] = $this->input->post('g-recaptcha-response');
 
-                $url = "https://www.google.com/recaptcha/api/siteverify";
-                $secret = "6Lc1NxEmAAAAADgQbDjiqScjBzvga54vmJt1jsmZ";
-                $response = $this->input->post('g-recaptcha-response');
-                $variaveis = "secret=" . $secret . "&response=" . $response;
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $variaveis);
-                $resposta = curl_exec($ch);
-                curl_close($ch);
+                // Iniciar o CURL
+                $curl = curl_init();
 
-                $resultado = json_decode($resposta);
+                // Enviar a requisição
+                curl_setopt($curl, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify?secret=" . SECRET_KEY . "&response=" . $dados['g-recaptcha-response']);
 
-                if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
-                    setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
-                } else {
+                // Ativar ou desativar a verificação do SSL
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, POSSUI_SSL);
 
+                // Utilizado CURLOPT_RETURNTRANSFER para esperar a resposta da URL
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-                    if ($resultado->success == 1) {
+                // Executar solicitação de curl
+                $resposta = curl_exec($curl);
+
+                // Fecha uma sessão cURL e libera todos os recursos
+                curl_close($curl);
+
+                // var_dump($resposta);
+                $dados_recaptcha = json_decode($resposta);
+
+                // var_dump($dados_recaptcha);
+
+                if ($dados_recaptcha->success) {
+                    if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
+                        setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
+                    } else {
 
                         $data['name'] = strip_tags(trim($this->input->post('eman')));
                         $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);
@@ -1025,7 +1037,7 @@ and revistas.id =$id;
                         $data['message'] = trim($this->input->post('megasnem'));
 
                         $mensagem = trim($_POST["mensagem"]);
-                        
+
                         setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
                         date_default_timezone_set('America/Sao_Paulo');
 
@@ -1069,18 +1081,18 @@ and revistas.id =$id;
                             $data['message'] = toBd($this->input->post('megasnem'));
                             $this->bancosite->salvar('campus_contacts', $data);
                             setMsg('<p>Contato realizado com sucesso. <br>
-                            Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
+                                Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
                             redirect(base_url("site/contato/$dataCampus->shurtName"));
                         } else {
                             redirect(base_url("site/contato/$dataCampus->shurtName"));
                             setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
                         }
-                    } else {
-                        setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
                     }
+                } else {
+                    setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
                 }
             } else {
-                setMsg('<p>Erro! reCaptcha não foi validado; </p>', 'error');
+                setMsg('<p>Erro! Dados do formulário inválido!; </p>', 'error');
             }
         }
 
@@ -1098,6 +1110,132 @@ and revistas.id =$id;
         );
         $this->load->view('templates/master', $data);
     }
+
+
+    // public function contato($uricampus = NULL)
+    // {
+
+    //     if ($uricampus == null) {
+    //         redirect("");
+    //     }
+
+    //     $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
+
+    //     $this->form_validation->set_rules('eman', 'Nome', 'required|ucfirst');
+    //     $this->form_validation->set_rules('liame', 'E-mail', 'required');
+    //     $this->form_validation->set_rules('enohp', 'Telefone', 'required');
+    //     $this->form_validation->set_rules('megasnem', 'Mensagem', 'required');
+
+    //     if ($this->form_validation->run() == FALSE) {
+    //         if (validation_errors()) :
+    //             setMsg(validation_errors(), 'error');
+    //         endif;
+    //     } else {
+
+    //         if (!empty($this->input->post('enviarForm'))) {
+
+    //             $url = "https://www.google.com/recaptcha/api/siteverify";
+    //             $secret = "6Lc1NxEmAAAAADgQbDjiqScjBzvga54vmJt1jsmZ";
+    //             $response = $this->input->post('g-recaptcha-response');
+    //             $variaveis = "secret=" . $secret . "&response=" . $response;
+    //             $ch = curl_init();
+    //             curl_setopt($ch, CURLOPT_URL, $url);
+    //             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    //             curl_setopt($ch, CURLOPT_POST, 1);
+    //             curl_setopt($ch, CURLOPT_POSTFIELDS, $variaveis);
+    //             $resposta = curl_exec($ch);
+    //             curl_close($ch);
+
+    //             $resultado = json_decode($resposta);
+
+    //             if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
+    //                 setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
+    //             } else {
+
+
+    //                 if ($resultado->success == 1) {
+
+    //                     $data['name'] = strip_tags(trim($this->input->post('eman')));
+    //                     $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);
+    //                     $data['phone'] = $this->input->post('enohp');
+    //                     $data['message'] = trim($this->input->post('megasnem'));
+
+    //                     $mensagem = trim($_POST["mensagem"]);
+
+    //                     setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
+    //                     date_default_timezone_set('America/Sao_Paulo');
+
+    //                     $date = date('Y-m-d H:i:s');
+
+    //                     $data['campusid'] = $dataCampus->id;
+
+    //                     $mensagem = "<p>O (A)" .
+    //                         "<b>" . $data['name'] . "</b> fez conato pelo site." . "<br/>" .
+    //                         "Email: " . $data['email'] . "<br/>" .
+    //                         "Celular: " . $data['phone'] . "<br/>" .
+    //                         "Mensagem: " . $data['message'] . "<br/>" .
+    //                         "O conato veio da página de " . $dataCampus->name . ' - ' . $dataCampus->city . "<br/>" . "<br/>" .
+    //                         "O contato foi realizado no dia <b>" . date('d/m/Y H:i:s', strtotime($date)) . '</b>';
+
+    //                     $this->load->library('email');
+
+    //                     //Inicia o processo de configuração para o envio do email
+    //                     $config['protocol'] = 'mail'; // define o protocolo utilizado
+    //                     $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+    //                     $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+    //                     $config['mailtype'] = 'html';
+    //                     $config['newline'] = '\r\n';
+    //                     $config['charset'] = 'utf-8';
+
+    //                     //$email = 'soaresdev.wil@gmail.com';
+    //                     $email = $dataCampus->email;
+    //                     //$email = 'wilhaods@gmail.com';
+    //                     $this->email->initialize($config);
+
+    //                     $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;
+    //                     $this->email->from('faleconosco@atenas.edu.br', 'Fale Conosco'); //quem mandou
+    //                     $this->email->to($email); // Destinatário
+    //                     //$this->email->cc('comunicacao@atenas.edu.br');
+    //                     $this->email->cc($data['email']);
+    //                     //$this->email->bcc($data['email']);
+    //                     $this->email->subject($assunto);
+    //                     $this->email->message($mensagem);
+
+    //                     if ($this->email->send()) {
+    //                         $data['message'] = toBd($this->input->post('megasnem'));
+    //                         $this->bancosite->salvar('campus_contacts', $data);
+    //                         setMsg('<p>Contato realizado com sucesso. <br>
+    //                         Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
+    //                         redirect(base_url("site/contato/$dataCampus->shurtName"));
+    //                     } else {
+    //                         redirect(base_url("site/contato/$dataCampus->shurtName"));
+    //                         setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
+    //                     }
+    //                 } else {
+    //                     setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
+    //                 }
+    //             }
+    //         } else {
+    //             setMsg('<p>Erro! reCaptcha não foi validado; </p>', 'error');
+    //         }
+    //     }
+
+    //     $data = array(
+    //         'head' => array(
+    //             'title' => 'Contato - UniAtenas ',
+    //         ),
+    //         'titulo' => 'Contato - UniAtenas',
+    //         'conteudo' => 'uniatenas/contato',
+    //         'dados' => array(
+    //             'campus' => $dataCampus
+    //         ),
+    //         'js' => null,
+    //         'footer' => ''
+    //     );
+    //     $this->load->view('templates/master', $data);
+    // }
+
+
 
     public function contatonapp($uricampus = NULL)
     {

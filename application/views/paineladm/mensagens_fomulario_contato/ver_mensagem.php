@@ -12,8 +12,8 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
-            echo $msg;
+        if ($msg = getMsg()) {
+          echo $msg;
         }
         ?>
         <h2 class="card-inside-title">Dados da Mensagem </h2>
@@ -26,7 +26,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array( 'class' => 'form-control'), set_value('title',$mensagemContato->name));
+                echo form_input(array('class' => 'form-control'), set_value('title', $mensagemContato->name));
                 ?>
               </div>
             </div>
@@ -39,7 +39,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array( 'class' => 'form-control'), set_value('title',$mensagemContato->email));
+                echo form_input(array('class' => 'form-control'), set_value('title', $mensagemContato->email));
                 ?>
               </div>
             </div>
@@ -52,7 +52,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array( 'class' => 'form-control'), set_value('title',$mensagemContato->phone));
+                echo form_input(array('class' => 'form-control'), set_value('title', $mensagemContato->phone));
                 ?>
               </div>
             </div>
@@ -68,7 +68,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array( 'class' => 'form-control'), set_value('title',date('d-m-Y H:i:s',strToTime($mensagemContato->datacreated))));
+                echo form_input(array('class' => 'form-control'), set_value('title', date('d-m-Y H:i:s', strToTime($mensagemContato->datacreated))));
                 ?>
               </div>
             </div>
@@ -81,7 +81,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array( 'class' => 'form-control'), set_value('title',$mensagemContato->city));
+                echo form_input(array('class' => 'form-control'), set_value('title', $mensagemContato->city));
                 ?>
               </div>
             </div>
@@ -94,9 +94,11 @@
                 <label for="title">Descrição do local da infraestrutura
                   <small> </small>
                 </label>
-                <?php
-                  echo form_textarea(array('class' => 'form-control'), toHtml(set_value('description',$mensagemContato->message)));
-                ?>
+                <p>
+                  <?php
+                  echo $mensagemContato->message;
+                  ?>
+                </p>
               </div>
             </div>
           </div>
@@ -109,8 +111,8 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo anchor("Painel_mensagens_contatos/lista_mensagens_contatos/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
+            echo anchor("Painel_mensagens_contatos/lista_mensagens_contatos/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
       </div>

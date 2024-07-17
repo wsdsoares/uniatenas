@@ -102,6 +102,7 @@ class Painel_graduacao extends CI_Controller
             'courses_pages' => 'courses_pages.campus_has_courses_id = campus_has_courses.id',
         );
 
+
         $whereCursosPorCampus = array('campus.id' => $campus->id, 'courses.modalidade' => $uriModalidade);
         $listaInformacoesPorCursos = $this->painelbd->where($colunasResultadoCursos, 'campus_has_courses', $joinCampus, $whereCursosPorCampus, array('campo' => 'courses.name', 'ordem' => 'asc'), NULL)->result();
 
