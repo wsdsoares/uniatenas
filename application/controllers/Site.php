@@ -992,7 +992,7 @@ and revistas.id =$id;
         $this->form_validation->set_rules('eman', 'Nome', 'required|ucfirst');
         $this->form_validation->set_rules('liame', 'E-mail', 'required|valid_email');
         $this->form_validation->set_rules('enohp', 'Telefone', 'required');
-        $this->form_validation->set_rules('megasnem', 'Mensagem', 'required');
+        $this->form_validation->set_rules('megasnem', 'Mensagem', 'required|strip_image_tags');
 
         if ($this->form_validation->run() == FALSE) {
             if (validation_errors()) :
