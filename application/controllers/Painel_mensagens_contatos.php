@@ -17,14 +17,6 @@ class Painel_mensagens_contatos extends CI_Controller
     {
         verificaLogin();
 
-        $colunasResultadoCursos =
-            array(
-                'campus.id',
-                'campus.name',
-                'campus.city',
-                'campus.uf'
-            );
-
         $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
