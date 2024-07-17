@@ -31,6 +31,18 @@
               </div>
             </div>
           </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="title">Título Breve (ou Título Imagem)</label>
+                <?php
+                echo form_input(array('name' => 'title_short', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title_short'));
+                ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row clearfix">
           <div class="col-sm-6">
             <label for="title">Link de Redirecionamento</label>
             <div class="input-group">

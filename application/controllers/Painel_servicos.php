@@ -300,6 +300,12 @@ class Painel_servicos extends CI_Controller
       if (!empty($this->input->post('link_redir')) and $this->input->post('link_redir') != '') {
         $dados_form['link_redir'] = $this->input->post('link_redir');
       }
+      if (!empty($this->input->post('title_short')) and $this->input->post('title_short') != '') {
+        $dados_form['title_short'] = $this->input->post('title_short');
+      }
+      if (!empty($this->input->post('link_redir')) and $this->input->post('link_redir') != '') {
+        $dados_form['link_redir'] = $this->input->post('link_redir');
+      }
 
       $dados_form['title'] = $this->input->post('title');
       $dados_form['status'] = $this->input->post('status');
@@ -339,7 +345,7 @@ class Painel_servicos extends CI_Controller
 
     $pagina = $this->painelbd->where(array('pages.id', 'pages.title'), 'pages', null, array('pages.id' => $idPagina, 'pages.campusid' => $campus->id))->row();
 
-    $colunasTabelaConteudoPagina = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.order', 'page_contents.img_destaque', 'page_contents.link_redir', 'page_contents.status');
+    $colunasTabelaConteudoPagina = array('page_contents.id', 'page_contents.title', 'page_contents.title_short', 'page_contents.description', 'page_contents.order', 'page_contents.img_destaque', 'page_contents.link_redir', 'page_contents.status');
     $joinConteudoPagina = array('pages' => 'pages.id = page_contents.pages_id');
 
     $wherePaginaEspecifica = array('page_contents.id' => $itemId);
@@ -368,6 +374,9 @@ class Painel_servicos extends CI_Controller
       if ($paginaEspecifica->title != $this->input->post('title')) {
         $dados_form['title'] = $this->input->post('title');
       }
+      if ($paginaEspecifica->title_short != $this->input->post('title_short')) {
+        $dados_form['title_short'] = $this->input->post('title_short');
+      }
 
       if ($paginaEspecifica->status != $this->input->post('status')) {
         $dados_form['status'] = $this->input->post('status');
@@ -375,7 +384,6 @@ class Painel_servicos extends CI_Controller
       if ($paginaEspecifica->order != $this->input->post('order')) {
         $dados_form['order'] = $this->input->post('order');
       }
-
 
       if (isset($_FILES['img_destaque']) && !empty($_FILES['img_destaque']['name'])) {
 
