@@ -92,11 +92,11 @@
             ?>
           </div>
           <script type="text/javascript">
-            // replace: substitui o formato padrão do textarea (descricao)
-            // e aplica as configurações do CKEDitor através do arquivo config.js
-            var editor = CKEDITOR.replace('description', {
-              customConfig: 'config.js'
-            });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
           </script>
         </div>
         <div class="row clearfix">
@@ -130,5 +130,4 @@
       </div>
     </div>
   </div>
-</div>
 </div>

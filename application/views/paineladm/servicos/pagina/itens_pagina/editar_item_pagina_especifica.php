@@ -86,55 +86,55 @@
               ?>
             </div>
           </div>
+        </div>
+        <div class="row clearfix">
 
-          <div class="row clearfix">
-
-            <div class="col-sm-12">
-              <label for="title">Descrição do item
-                <small> (Explicação e inforamções pertinentes ao item)</small>
-              </label>
-              <?php
-              echo form_textarea('description', to_html(set_value('description', $paginaEspecifica->description)));
-              ?>
-            </div>
-            <script type="text/javascript">
-              // replace: substitui o formato padrão do textarea (descricao)
-              // e aplica as configurações do CKEDitor através do arquivo config.js
-              var editor = CKEDITOR.replace('description', {
-                customConfig: 'config.js'
-              });
-            </script>
+          <div class="col-sm-12">
+            <label for="title">Descrição do item
+              <small> (Explicação e inforamções pertinentes ao item)</small>
+            </label>
+            <?php
+            echo form_textarea('description', to_html(set_value('description', $paginaEspecifica->description)));
+            ?>
           </div>
-          <div class="row clearfix">
-            <div class="col-sm-4">
-              <div class="form-group">
-                <div class="form-line">
-                  <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
-                  <?php
-                  $optionSituation = array(
-                    '1' => 'Visível - Ativo',
-                    '0' => 'Oculto - Inativo'
-                  );
-                  echo form_dropdown('status', $optionSituation, set_value('status', $paginaEspecifica->status), array('class' => 'form-control show-tick'));
-                  ?>
-                </div>
+          <script type="text/javascript">
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
+          </script>
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <div class="form-line">
+                <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
+                <?php
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status', $paginaEspecifica->status), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
-
-          <div class="row clearfix">
-            <div class="col-sm-6">
-              <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
-              echo anchor("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
-            </div>
-          </div>
-          <?php
-          echo form_close();
-          ?>
         </div>
+
+        <div class="row clearfix">
+          <div class="col-sm-6">
+            <?php
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Cadastrar');
+            echo anchor("Painel_servicos/lista_item_pagina_especifica/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
+          </div>
+        </div>
+        <?php
+        echo form_close();
+        ?>
       </div>
     </div>
   </div>
+</div>
 </div>
