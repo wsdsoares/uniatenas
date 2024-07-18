@@ -44,12 +44,15 @@
               <div class="col-sm-2 text-center">
                 <div class="card">
                   <h5 class="card-title">SUBMENU - <?php echo $submenu->title; ?></h5>
+                  <span style="background:#D3D3D3	;padding:2%;">TIPO: <b><?php echo $submenu->tipo_pagina; ?></b></span>
                   <p class="card-text"><small>(Gerenciar dados e informações. <br /> Textos, fotos,
                       contatos)</small>
                   </p>
+
                   <?php
                   echo anchor("Painel_servicos/lista_item_pagina_especifica/$campus->id/$submenu->id", 'Gerenciar', array('class' => 'btn btn-success'));
                   ?>
+
                 </div>
               </div>
             <?php
@@ -62,3 +65,4 @@
       ?>
     </div>
   </div>
+</div>

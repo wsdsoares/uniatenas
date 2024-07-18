@@ -51,6 +51,44 @@ class Servicos extends CI_Controller
         $this->load->view('templates/master', $data);
     }
 
+    public function gerais($uricampus = NULL, $pagina = NULL)
+    {
+
+        if ($uricampus == null) {
+            redirect("");
+        }
+
+        $dataCampus = $this->bancosite->where(array('campus.id', 'campus.instagram', 'campus.city', 'campus.shurtName', 'campus.facebook'), 'campus', NULL, array('shurtName' => $uricampus))->row();
+
+        $page = $this->bancosite->getWhere('pages', array('title' => $pagina, 'tipo_pagina' => 'item_geral', 'pagina' => 'servicos', 'campusid' => $dataCampus->id))->row();
+
+        $whereConteudoPagina = array('page_contents.pages_id' => $page->id, 'page_contents.tipo' => 'informacoesPagina', 'page_contents.status' => 1);
+        $pages_content = $this->bancosite->where('*', 'page_contents', null, $whereConteudoPagina)->result();
+
+        $pages_content_contato = $this->bancosite->where('*', 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'contatos'))->row();
+
+        $colunasResultadoAtendimento = array('page_contents.id', 'page_contents.title', 'page_contents.description', 'page_contents.status', 'page_contents.pages_id');
+        $conteudoAtendimento = $this->bancosite->where($colunasResultadoAtendimento, 'page_contents', null, array('pages_id' => $page->id, 'status' => 1, 'order' => 'atendimento'))->row();
+
+        $data = array(
+            'head' => array(
+                'title' => strtoupper($page->title) . ' ' . $dataCampus->city,
+            ),
+            'footer' => '',
+            'menu' => '',
+            'js' => null,
+            'conteudo' => 'uniatenas/servicos/geral',
+            'dados' => array(
+                'campus' => $dataCampus,
+                'conteudoPagina' => $pages_content,
+                'conteudoContato' => $pages_content_contato,
+                'conteudoAtendimento' => $conteudoAtendimento = isset($conteudoAtendimento) ? $conteudoAtendimento : '',
+            )
+        );
+        $this->output->cache(14400);
+        $this->load->view('templates/master', $data);
+    }
+
 
     public function NPJ($uricampus = null)
     {
