@@ -82,7 +82,13 @@
                       <?php echo $item->id; ?>
                     </td>
                     <td>
-                      <?php echo $item->title; ?>
+                      <?php
+                      if ($item->titulo_descritivo != '' or $item->titulo_descritivo != null) {
+                        echo $item->titulo_descritivo;
+                      } else {
+                        echo $item->title;
+                      }
+                      ?>
                     </td>
 
 

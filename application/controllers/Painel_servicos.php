@@ -83,7 +83,7 @@ class Painel_servicos extends CI_Controller
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-    $this->form_validation->set_rules('title', 'Página', 'required');
+    $this->form_validation->set_rules('titulo_descritivo', 'Título Menu Página', 'required');
     $this->form_validation->set_rules('tipo_pagina', 'Tipo Página', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
 
@@ -92,7 +92,8 @@ class Painel_servicos extends CI_Controller
         setMsg(validation_errors(), 'error');
       endif;
     } else {
-      $dados_form['title'] = '' . lcfirst(str_replace("_", '', noAccentuation($this->input->post('title'))));
+      $dados_form['titulo_descritivo'] = $this->input->post('titulo_descritivo');
+      $dados_form['title'] = '' . lcfirst(str_replace("_", '', noAccentuation(strtolower($this->input->post('titulo_descritivo')))));
       $dados_form['tipo_pagina'] = $this->input->post('tipo_pagina');
       $dados_form['pagina'] = 'servicos';
       $dados_form['status'] = $this->input->post('status');
@@ -128,7 +129,7 @@ class Painel_servicos extends CI_Controller
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
     $pagina = $this->painelbd->where('*', 'pages', NULL, array('pages.id' => $idPagina))->row();
 
-    $this->form_validation->set_rules('title', 'Página', 'required');
+    $this->form_validation->set_rules('titulo_descritivo', 'Título Menu Página', 'required');
     $this->form_validation->set_rules('tipo_pagina', 'Tipo Página', 'required');
     $this->form_validation->set_rules('status', 'Situação', 'required');
 
@@ -137,8 +138,8 @@ class Painel_servicos extends CI_Controller
         setMsg(validation_errors(), 'error');
       endif;
     } else {
-      if ($pagina->title != $this->input->post('title')) {
-        $dados_form['title'] = '' . lcfirst(str_replace("_", '', noAccentuation($this->input->post('title'))));
+      if ($pagina->titulo_descritivo != $this->input->post('titulo_descritivo')) {
+        $dados_form['titulo_descritivo'] = $this->input->post('titulo_descritivo');
       }
       if ($pagina->tipo_pagina != $this->input->post('tipo_pagina')) {
         $dados_form['tipo_pagina'] = $this->input->post('tipo_pagina');

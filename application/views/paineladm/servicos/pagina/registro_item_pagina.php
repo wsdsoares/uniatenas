@@ -21,26 +21,26 @@
         <!-- <?php //echo form_open_multipart("Painel_estagios_convenios/cadastrar_documentos_estagios_convenios/$campus->id/$conteudoItemEstagiosConvenios->id") 
               ?> -->
         <?php echo form_open("Painel_servicos/registro_item_pagina/$campus->id") ?>
+        <br />
         <h2 class="card-inside-title">Informações</h2>
         <div class="row clearfix">
-          <div class="col-xs-5">
-            <p>
-              <?php echo "Nesse Item, colocar texto Breve (Limite 30 caracteres). <br/> Quer criar o item >> Estágios Convênios <br/> <br/> No Campo abaixo coloque: EstagiosConvenios"; ?>
-            </p>
+          <div class="col-sm-7">
             <div class="form-group">
               <div class="form-line">
-
-                <label for="title">Nome do Menu</label>
+                <div class="bg-info" style="padding: 10px;margin-bottom:10px;">
+                  <?php echo "Lembre-se de colocar um título breve, por exemplo: Estágios Convênios. <br/> Não colocar caracteres especiais, como $ % @ # .... Entre outros."; ?>
+                </div>
+                <label for="title">Título do Menu (Página)</label>
 
                 <?php
-                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => '', 'maxlength' => '30'), set_value('title'));
+                echo form_input(array('name' => 'titulo_descritivo', 'class' => 'form-control', 'placeholder' => 'Titíulo do menu/página'), set_value('titulo_descritivo'));
                 ?>
               </div>
             </div>
           </div>
         </div>
         <div class="row clearfix">
-          <div class="col-xs-3">
+          <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
                 <label for="status">Tipo Página <small>( Geral ou Núcleo)</small></label>
@@ -55,7 +55,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-3">
+          <div class="col-sm-3">
             <div class="form-group">
               <div class="form-line">
                 <label for="status">Status <small>(1 -Visível, 0 - Oculto)</small></label>

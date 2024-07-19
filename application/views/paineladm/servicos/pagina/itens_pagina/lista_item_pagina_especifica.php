@@ -100,7 +100,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Título página</th>
-                <th>Imagem</th>
+                <th>Imagem/Texto</th>
                 <th>Situação</th>
                 <th>Filial</th>
                 <th>Modificado em, por:</th>
@@ -111,7 +111,7 @@
                 <th>Ações</th>
                 <th>#</th>
                 <th>Título página</th>
-                <th>Imagem</th>
+                <th>Imagem/Texto</th>
                 <th>Situação</th>
                 <th>Filial</th>
                 <th>Modificado em, por:</th>
@@ -136,16 +136,14 @@
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->title; ?></td>
                 <td>
-
                   <?php
-                      if ($item->order == 0) {
-                        echo 'Texto de introdução da página <br/><small><i>Primeiro texto exibido na página</i></small>';
-                      } else {
+                      if (isset($item->img_destaque) and !empty($item->img_destaque)) {
                         echo anchor(base_url(verifyImg($item->img_destaque)), '<img src="' . base_url(verifyImg($item->img_destaque)) . '" class="thumbnail">', array('target' => '_blank'));
                       }
                       ?>
-                </td>
-                </td>
+
+
+                  <?php echo substr($item->description, 0, 150).'...';?>< </td>
                 <td>
                   <?php
                       if ($item->status == '0') {

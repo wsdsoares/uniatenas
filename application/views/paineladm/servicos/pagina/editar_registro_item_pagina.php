@@ -22,17 +22,16 @@
         <?php echo form_open("Painel_servicos/editar_registro_item_pagina/$campus->id/$informacoesPagina->id") ?>
         <h2 class="card-inside-title">Informações</h2>
         <div class="row clearfix">
-          <div class="col-xs-5">
-            <p>
-              <?php echo "Nesse Item, colocar texto Breve (Limite 30 caracteres). <br/> Quer criar o item >> Estágios Convênios <br/> <br/> No Campo abaixo coloque: EstagiosConvenios"; ?>
-            </p>
+          <div class="col-xs-7">
             <div class="form-group">
               <div class="form-line">
-
-                <label for="title">Nome do Menu</label>
+                <div class="bg-info" style="padding: 10px;margin-bottom:10px;">
+                  <?php echo "Lembre-se de colocar um título breve, por exemplo: Estágios Convênios. <br/> Não colocar caracteres especiais, como $ % @ # .... Entre outros."; ?>
+                </div>
+                <label for="title">Título do Menu (Página)</label>
 
                 <?php
-                echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => '', 'maxlength' => '30'), set_value('title', $informacoesPagina->title));
+                echo form_input(array('name' => 'titulo_descritivo', 'class' => 'form-control', 'placeholder' => '',), set_value('titulo_descritivo', $informacoesPagina->titulo_descritivo));
                 ?>
               </div>
             </div>
