@@ -39,17 +39,18 @@ $joinCountCursosEad = array(
 );
 $verificaCursosEaD = $this->bancosite->where(array('courses.id'), 'campus_has_courses', $joinCountCursosEad, array('campus_has_courses.campus_id' => $informacoesCampus->id))->num_rows();
 
+$whereArraySubmenuNucleos = array('pages.campusid' => $informacoesCampus->id, 'pages.pagina' => 'servicos', 'pages.status' => 1, 'pages.tipo_pagina' => 'nucleos');
+$existePaginaServicosSubmenuNucleos =  $this->bancosite->where(array('pages.id'), 'pages', null, $whereArraySubmenuNucleos)->num_rows();
+$verificaPaginaServicosSubmenuNucleos =  $this->bancosite->where(array('pages.id', 'pages.title', 'pages.titulo_descritivo'), 'pages', null, $whereArraySubmenuNucleos)->result();
 
-$existePaginaServicosSubmenuNucleos =  $this->bancosite->where(array('pages.id'), 'pages', null, array('pages.campusid' => $informacoesCampus->id, 'pages.pagina' => 'servicos', 'pages.status' => 1))->num_rows();
-$verificaPaginaServicosSubmenuNucleos =  $this->bancosite->where(array('pages.id'), 'pages', null, array('pages.campusid' => $informacoesCampus->id, 'pages.pagina' => 'servicos', 'pages.status' => 1))->result();
 // echo '<br>';
 // echo '<br>';
 // echo '<br>';
 // echo '<br>';
 // echo '<br>';
 // echo '<pre>';
-// //print_r($verificaPaginaServicosSubmenuNucleos);
-// //print_r($verificaPaginaServicosSubmenuNucleos);
+// print_r($verificaPaginaServicosSubmenuNucleos);
+// // print_r($verificaPaginaServicosSubmenuNucleos);
 // echo '</pre>';
 
 // $colunasItensSubmneuNucleos = array(
@@ -310,13 +311,16 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                           <li>
                             <ul>
                               <?php
-                                foreach(){
+                                foreach ($verificaPaginaServicosSubmenuNucleos as $submenuServicosNucleos) {
                                 ?>
                               <li class="itensMenu">
-                                <?php echo anchor('site/napp/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Atendimento Psicopedagógico(NAPP) '); ?>
+                                <?php
+                                    $tituloMenu = isset($submenuServicosNucleos->titulo_descritivo) ? $submenuServicosNucleos->titulo_descritivo : $submenuServicosNucleos->title;
+                                    echo anchor("servicos/nucleos/$informacoesCampus->shurtName/$submenuServicosNucleos->title", '<i class="fas fa-angle-right"></i> ' . $tituloMenu);
+                                    ?>
                               </li>
                               <?php
-                              }
+                                }
                                 ?>
                             </ul>
                           </li>
