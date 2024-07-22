@@ -198,7 +198,7 @@ class Painel_servicos extends CI_Controller
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
     $colunasItensSubmneu = array(
-      'pages.id', 'pages.title', 'pages.tipo_pagina'
+      'pages.id', 'pages.title', 'pages.tipo_pagina', 'pages.titulo_descritivo'
     );
     $listaItensSubmenuPaginaServicos =  $this->painelbd->where($colunasItensSubmneu, 'pages', null, array('pages.campusid' => $uriCampus, 'pages.pagina' => 'servicos'))->result();
 

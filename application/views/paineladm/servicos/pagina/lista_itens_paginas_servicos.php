@@ -40,10 +40,11 @@
             <?php
 
             foreach ($itensSubmenuPaginaServicos as $submenu) {
+              $nomeMenu = !empty($submenu->titulo_descritivo) ? $submenu->titulo_descritivo : $submenu->title;;
             ?>
               <div class="col-sm-2 text-center">
                 <div class="card">
-                  <h5 class="card-title">SUBMENU - <?php echo $submenu->title; ?></h5>
+                  <h5 class="card-title">SUBMENU - <?php echo $nomeMenu; ?></h5>
                   <span style="background:#D3D3D3	;padding:2%;">TIPO: <b><?php echo $submenu->tipo_pagina; ?></b></span>
                   <p class="card-text"><small>(Gerenciar dados e informações. <br /> Textos, fotos,
                       contatos)</small>
