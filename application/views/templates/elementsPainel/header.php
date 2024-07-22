@@ -383,21 +383,13 @@ $permissionCampusArray = '';
               echo anchor('Painel_servicos/lista_campus_servicos/gerais', '<span>Itens Gerais</span>');
               ?>
             </li>
-            <li>
-              <?php
-              echo anchor('Painel_servicos/lista_campus_servicos/nucleos', '<span>Núcleos</span>');
-              ?>
-            </li>
+
             <li>
               <?php
               //echo anchor('Painel_servicos/lista_campus_servicos/portais', '<span>Portais</span>');
               ?>
             </li>
-            <li>
-              <?php
-              echo anchor('Painel_napp/lista_campus_napp', '<span>NAPP</span>');
-              ?>
-            </li>
+
             <li>
               <?php
               echo anchor('Painel_estagios_convenios/lista_campus_estagios_convenios', '<span>Estágio e Convênios</span>');
