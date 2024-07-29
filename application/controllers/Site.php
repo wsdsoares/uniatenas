@@ -978,9 +978,12 @@ and revistas.id =$id;
 
     public function contato($uricampus = NULL)
     {
+
+        date_default_timezone_set('America/Sao_Paulo');
         define('SITE_KEY', '6LfI_xAqAAAAAPb9z6VmpAxGHgDxJRzUfE-7XC3q');
         define('SECRET_KEY', '6LfI_xAqAAAAAIe6Z9LLTV_PEEid8IaZ902QQXnH');
         define('POSSUI_SSL', false);
+        define('ID_RANDOMICO_FORM_CONTATO', md5(date('d/m/Y H:i')));
 
 
         if ($uricampus == null) {
@@ -1027,9 +1030,10 @@ and revistas.id =$id;
                 // var_dump($dados_recaptcha);
 
                 if ($dados_recaptcha->success) {
+
                     if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
                         setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
-                    } else {
+                        // } else {
 
                         $data['name'] = strip_tags(trim($this->input->post('eman')));
                         $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);

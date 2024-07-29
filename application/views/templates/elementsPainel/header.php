@@ -7,11 +7,11 @@ include_once 'navbar.php';
 $permissionCampusArray = '';
 ?>
 <script type="text/javascript">
-  function ativo() {
-    const elemento = document.querySelectorAll("<li> .active");
-    console.log(elemento);
-    alert(elemento);
-  }
+function ativo() {
+  const elemento = document.querySelectorAll("<li> .active");
+  console.log(elemento);
+  alert(elemento);
+}
 </script>
 <section>
   <aside id="leftsideba" class="sidebar">
