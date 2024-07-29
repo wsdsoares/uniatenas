@@ -1068,8 +1068,8 @@ and revistas.id =$id;
                         $config['charset'] = 'utf-8';
 
                         //$email = 'soaresdev.wil@gmail.com';
-                        $email = $dataCampus->email;
-                        //$email = 'wilhaods@gmail.com';
+                        //$email = $dataCampus->email;
+                        $email = 'wilhaods@gmail.com';
                         $this->email->initialize($config);
 
                         $assunto = 'Fale Conosco' . $dataCampus->name . ' - ' . $dataCampus->city;

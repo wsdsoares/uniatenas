@@ -1,6 +1,16 @@
-<?php
+<style>
+  .btn-enviar-form-contato {
+    padding: 10px;
+    color: #FFF !important;
+    border: 1px solid #f4630b !important;
+    border-radius: 10px !important;
+  }
 
-?>
+  .btn-enviar-form-contato:hover {
+    border: 1px solid #f4630b !important;
+    color: #000 !important;
+  }
+</style>
 <?php
 $uricampus = $this->uri->segment(3);
 ?>
@@ -73,7 +83,7 @@ $uricampus = $this->uri->segment(3);
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6 col-xs-12">
         <div class="row">
           <p class="col-12" style="display: flex; height: 200px; justify-content: center; align-items: center;">
             <button type="button" class="btn btn-primary btn-lg" style="border-radius: 10px;" data-toggle="modal" data-target="#<?php echo ID_RANDOMICO_FORM_CONTATO; ?>">
@@ -136,7 +146,7 @@ $uricampus = $this->uri->segment(3);
               ?>
             </div>
 
-            <input type="submit" class="btn btn-default" name="enviarForm" value="Enviar" onclick="enviarFormulario()">
+            <input type="submit" class="btn btn-enviar-form-contato" name="enviarForm" value="Enviar" onclick="enviarFormulario()">
             <input type="hidden" name="hidden-input" id="hidden-input" value="@AAAAAHN54Lw#&">
 
             <?php
