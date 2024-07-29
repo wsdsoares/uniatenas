@@ -1002,7 +1002,7 @@ and revistas.id =$id;
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
-
+            echo '<script>alert("Formulário em Validação")</script>';
             if (!empty($this->input->post('enviarForm'))) {
                 $dados['g-recaptcha-response'] = $this->input->post('g-recaptcha-response');
 
@@ -1030,11 +1030,12 @@ and revistas.id =$id;
                 // var_dump($dados_recaptcha);
 
                 if ($dados_recaptcha->success) {
+                    echo '<script>alert("recaptcha ok")</script>';
 
                     if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
                         setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
                     } else {
-
+                        echo '<script>alert("recaptcha ok - Entrou no header")</script>';
                         $data['name'] = strip_tags(trim($this->input->post('eman')));
                         $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);
                         $data['phone'] = $this->input->post('enohp');
