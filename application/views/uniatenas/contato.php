@@ -142,11 +142,12 @@ $uricampus = $this->uri->segment(3);
             <div class="form-group">
               <span>Mensagem</span>
               <?php
+
               echo form_textarea(array('name' => 'megasnem', 'class' => 'form-control', 'placeholder' => "Mensagem", 'pattern' => "[a-zA-Z0-9]+"), set_value('megasnem'));
               ?>
             </div>
 
-            <input type="submit" class="btn btn-enviar-form-contato" name="enviarForm" value="Enviar" onclick="enviarFormulario()">
+            <input type="submit" class="btn btn-enviar-form-contato" name="enviarForm" value="Enviar">
             <input type="hidden" name="hidden-input" id="hidden-input" value="@AAAAAHN54Lw#&">
 
             <?php
@@ -162,11 +163,6 @@ $uricampus = $this->uri->segment(3);
     </div>
   </div>
 </section>
-<script>
-  function enviarFormulario() {
-    document.getElementById('meuFormulario').submit();
-  }
-</script>
 <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo SITE_KEY; ?>"></script>
 <script>
