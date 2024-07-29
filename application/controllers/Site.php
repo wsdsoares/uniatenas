@@ -1033,7 +1033,7 @@ and revistas.id =$id;
 
                     if ($this->input->post('hidden-input') != '@AAAAAHN54Lw#&') {
                         setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
-                        // } else {
+                    } else {
 
                         $data['name'] = strip_tags(trim($this->input->post('eman')));
                         $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);
