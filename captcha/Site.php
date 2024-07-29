@@ -981,7 +981,6 @@ and revistas.id =$id;
         define('SITE_KEY', '6LfI_xAqAAAAAPb9z6VmpAxGHgDxJRzUfE-7XC3q');
         define('SECRET_KEY', '6LfI_xAqAAAAAIe6Z9LLTV_PEEid8IaZ902QQXnH');
         define('POSSUI_SSL', false);
-        define('ID_RANDOMICO_FORM_CONTATO', md5(date('d/m/Y H:i')));
         $this->load->helper('security');
 
 
@@ -1095,10 +1094,10 @@ and revistas.id =$id;
                         }
                     }
                 } else {
-                    setMsg('<p>Erro! O campo recaptcha precisa ser validado! ERRO 504.  </p>', 'error');
+                    setMsg('<p>Erro! O campo recaptcha precisa ser validado  </p>', 'error');
                 }
             } else {
-                setMsg('<p>Erro! Dados do formulário inválido! </p>', 'error');
+                setMsg('<p>Erro! Dados do formulário inválido!; </p>', 'error');
             }
         }
 
