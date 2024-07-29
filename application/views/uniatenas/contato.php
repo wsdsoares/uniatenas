@@ -85,17 +85,17 @@ $uricampus = $this->uri->segment(3);
       </div>
       <div class="col-md-6 col-xs-12">
         <div class="row">
-          <p class="col-12" style="display: flex; height: 200px; justify-content: center; align-items: center;">
+          <p class="col-xs-12" style="display: flex; height: 200px; justify-content: center; align-items: center;">
             <button type="button" class="btn btn-primary btn-lg" style="border-radius: 10px;" data-toggle="modal" data-target="#<?php echo ID_RANDOMICO_FORM_CONTATO; ?>">
               Preencher formulário contato
             </button>
-          <p>
+
             <?php
             if ($msg = getMsg()) {
               echo $msg;
             }
             ?>
-          </p>
+
         </div>
       </div>
     </div>
