@@ -1040,7 +1040,7 @@ and revistas.id =$id;
                         $data['name'] = strip_tags(trim($this->input->post('eman')));
                         $data['email'] = filter_var(trim($this->input->post('liame')), FILTER_SANITIZE_EMAIL);
                         $data['phone'] = $this->input->post('enohp');
-                        $data['message'] = trim($this->input->post('megasnem'));
+                        $data['message'] = preg_replace("/<a[^>]+\>[a-z]+/i", "", trim($this->input->post('megasnem')));
 
                         $mensagem = trim($_POST["mensagem"]);
 
