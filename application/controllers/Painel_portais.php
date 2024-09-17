@@ -85,3 +85,4 @@ class Painel_portais extends CI_Controller
 
     $this->load->view('templates/layoutPainelAdm', $data);
   }
+  

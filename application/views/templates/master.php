@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html>
 <?php
-    if (isset($head['head_conteudo']) and $head['head_conteudo'] !== NULL and ! empty($head['head_conteudo'])) {
-      $this->load->view($head['head_conteudo'], $head);
-    } else {
-      $this->load->view('templates/elements/headMaster', $head);
-    }
-    ?>
+if (isset($head['head_conteudo']) and $head['head_conteudo'] !== NULL and !empty($head['head_conteudo'])) {
+  $this->load->view($head['head_conteudo'], $head);
+} else {
+  $this->load->view('templates/elements/headMaster', $head);
+}
+?>
 
 <body>
-
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5J2LCLK9" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <?php
- 
-    if (isset($menu) and $menu !== NULL and ! empty($menu)) {
-        $this->load->view("$menu");
-    } else {
-        $this->load->view("templates/elements/menuMaster");
-    }
 
-    $this->load->view($conteudo, $dados);
+  if (isset($menu) and $menu !== NULL and !empty($menu)) {
+    $this->load->view("$menu");
+  } else {
+    $this->load->view("templates/elements/menuMaster");
+  }
 
-    if ($footer !== NULL) {
-        $this->load->view('templates/elements/footer', $footer);
-    }
-    if ($js !== NULL) {
-        $this->load->view($js);
-    }
-    ?>
+  $this->load->view($conteudo, $dados);
+
+  if ($footer !== NULL) {
+    $this->load->view('templates/elements/footer', $footer);
+  }
+  if ($js !== NULL) {
+    $this->load->view($js);
+  }
+  ?>
   <div class="cookies-container">
     <div class="cookies-content">
       <p> Usamos cookies para analisar suas interações neste site e melhorar a sua experiência de navegação. Ao usar

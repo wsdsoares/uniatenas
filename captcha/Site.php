@@ -38,7 +38,7 @@ class Site extends CI_Controller
 
         $news = $this->bancosite->getQuery($queryNews)->result();
 
-        //$midias = $this->bancosite->getWhere('banners', array('type' => 'slideshowprincipal', 'campusid' => $dataCampus->id,'status'=> 1), array('campo' => 'id', 'ordem' => 'desc'))->result();
+
         $midiasql = "SELECT * FROM at_site.banners
                     WHERE type = 'slideshowprincipal' AND campusid = $dataCampus->id AND status = 1
                     ORDER BY priority asc";
@@ -46,9 +46,6 @@ class Site extends CI_Controller
         $midias = $this->bancosite->getQuery($midiasql)->result();
 
         $eventSpace = $this->bancosite->getWhere('event_space', array('campusid' => $dataCampus->id))->result();
-        // $queryBannerLast = "select max(id) as lastRegister from banners where campusid =$dataCampus->id and status =1";
-
-        //$idativo = $this->bancosite->getQuery($queryBannerLast)->row();
         $sqlCategoria = "
                      SELECT
                      photos_category.id,
@@ -1330,9 +1327,7 @@ and revistas.id =$id;
     }
 
 
-    public function erro_404()
-    {
-    }
+    public function erro_404() {}
 
     public function graduacaoEad($codEad = null)
     {
@@ -1696,7 +1691,13 @@ and revistas.id =$id;
                 "/(é|è|ê|ë)/",
                 "/(É|È|Ê|Ë)/",
                 "/(í|ì|î|ï)/",
-                "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"
+                "/(Í|Ì|Î|Ï)/",
+                "/(ó|ò|õ|ô|ö)/",
+                "/(Ó|Ò|Õ|Ô|Ö)/",
+                "/(ú|ù|û|ü)/",
+                "/(Ú|Ù|Û|Ü)/",
+                "/(ñ)/",
+                "/(Ñ)/"
             ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('name'));
             $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
 

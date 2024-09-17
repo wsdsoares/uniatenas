@@ -2,6 +2,25 @@
 <html lang="pt-br">
 
 <head>
+  <!-- Google Tag Manager  28-08-2024-->
+  <script>
+  (function(w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+      'gtm.start': new Date().getTime(),
+      event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-5J2LCLK9');
+  </script>
+  <!-- End Google Tag Manager -->
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169618030-1"></script>
   <script src="assets/js/lgpd.js"></script>
@@ -15,6 +34,11 @@
 
   gtag('config', 'UA-169618030-1');
   </script>
+
+  <!-- Link Verification Facebook-META -->
+  <meta name="facebook-domain-verification" content="f5mj4d5chi4p6k3yhjw3n9y7fmkr44" />
+  <!-- Fim link Verification Facebook-META 02-09-24-->
+
   <!-- Meta tags Obrigatórias -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,6 +56,10 @@
 </head>
 
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5J2LCLK9" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <div class="cookies-container">
     <!--div class="cookies-content">
       <p> Usamos cookies para analisar suas interações neste site e melhorar a sua experiência de navegação. Ao usar
@@ -59,12 +87,12 @@
         $localCampus = noAccentuation(mb_strtolower(removerAcentos($local->shurtName)));
       ?>
       <style>
-      .bg- <?php echo $local->$localCampus?> {
+      .bg- <?php echo $local->$localCampus ?> {
         background:
       }
       </style>
       <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <div class="dados" style="background:rgba(<?php echo $local->cor_fundo_lista_campusRGBA?>,0.3);">
+        <div class="dados" style="background:rgba(<?php echo $local->cor_fundo_lista_campusRGBA ?>,0.3);">
           <div class="col-xs-12">
             <div class="dadosCampus">
               <?php echo anchor('atenas/inicio/' . $localCampus, '
