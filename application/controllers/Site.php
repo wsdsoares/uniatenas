@@ -984,7 +984,6 @@ and revistas.id =$id;
         define('ID_RANDOMICO_FORM_CONTATO', md5(date('d/m/Y H:i')));
         $this->load->helper('security');
 
-
         if ($uricampus == null) {
             redirect("");
         }
@@ -1005,6 +1004,10 @@ and revistas.id =$id;
                 setMsg(validation_errors(), 'error');
             endif;
         } else {
+            // if ($_SESSION['NOME'] != 'ANTISPAM') {
+            //     redirect(base_url("site/contato/$dataCampus->shurtName"));
+            //     setMsg('<p>Erro! O campo recaptcha precisa ser validado! ERRO 504.  </p>', 'error');
+            // }
 
             if (!empty($this->input->post('enviarForm'))) {
                 $dados['g-recaptcha-response'] = $this->input->post('g-recaptcha-response');
@@ -1083,16 +1086,18 @@ and revistas.id =$id;
                         $this->email->subject($assunto);
                         $this->email->message($mensagem);
 
-                        if ($this->email->send()) {
-                            $data['message'] = toBd($this->input->post('megasnem'));
-                            $this->bancosite->salvar('campus_contacts', $data);
-                            setMsg('<p>Contato realizado com sucesso. <br>
-                                Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
-                            redirect(base_url("site/contato/$dataCampus->shurtName"));
-                        } else {
-                            redirect(base_url("site/contato/$dataCampus->shurtName"));
-                            setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
-                        }
+                        echo '<script>alert("Teste - Deu certo")</script>';
+
+                        // if ($this->email->send()) {
+                        //     $data['message'] = toBd($this->input->post('megasnem'));
+                        //     $this->bancosite->salvar('campus_contacts', $data);
+                        //     setMsg('<p>Contato realizado com sucesso. <br>
+                        //         Enviamos um email, em sua caixa postal, com as informações do seu contato.</p>', 'success');
+                        //     redirect(base_url("site/contato/$dataCampus->shurtName"));
+                        // } else {
+                        //     redirect(base_url("site/contato/$dataCampus->shurtName"));
+                        //     setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem pelo nosso Whatsapp (38)9.9805-9502 </p>', 'error');
+                        // }
                     }
                 } else {
                     setMsg('<p>Erro! O campo recaptcha precisa ser validado! ERRO 504.  </p>', 'error');
