@@ -119,29 +119,36 @@ $uricampus = $this->uri->segment(3);
                 <div class="form-group">
                   <span>Nome</span>
                   <?php
-                  echo form_input(array('name' => 'eman', 'class' => 'form-control', 'placeholder' => "Nome"), set_value('eman'));
+                  echo form_input(array('name' => 'eman', 'class' => 'form-control', 'placeholder' => "Nome", 'required' => 'required'), set_value('eman'));
                   ?>
 
                 </div>
                 <div class="form-group">
                   <span>Email</span>
                   <?php
-                  echo form_input(array('name' => 'liame', 'type' => 'email', 'class' => 'form-control', 'placeholder' => "E-mail"), set_value('liame'));
+                  echo form_input(array('name' => 'liame', 'type' => 'email', 'class' => 'form-control', 'placeholder' => "E-mail", 'required' => 'required'), set_value('liame'));
                   ?>
 
                 </div>
                 <div class="form-group">
                   <span>Telefone</span>
                   <?php
-                  echo form_input(array('name' => 'enohp', 'class' => 'form-control', 'placeholder' => "Telefone"), set_value('enohp'));
+                  echo form_input(array('name' => 'enohp', 'class' => 'form-control', 'placeholder' => "Telefone", 'required' => 'required'), set_value('enohp'));
                   ?>
                 </div>
                 <div class="form-group">
                   <span>Mensagem</span>
                   <?php
 
-                  echo form_textarea(array('name' => 'megasnem', 'class' => 'form-control', 'placeholder' => "Mensagem", 'pattern' => "[a-zA-Z0-9]+"), set_value('megasnem'));
+                  echo form_textarea(array('name' => 'megasnem', 'class' => 'form-control', 'placeholder' => "Mensagem", 'pattern' => "[a-zA-Z0-9]+", 'required' => 'required'), set_value('megasnem'));
                   ?>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">Responda a questão, para habilitar o botão de Enviar: <br />Quanto é
+                    <span class="captcha"><?php echo (rand(1, 9)); ?></span>+<span
+                      class="captcha"><?php echo (rand(1, 9)); ?></span>?</label>
+                  <input name="soma" type="text" class="form-control" required>
+
                 </div>
 
                 <input type="submit" class="btn btn-enviar-form-contato" name="enviarForm" value="Enviar">
@@ -161,7 +168,7 @@ $uricampus = $this->uri->segment(3);
     </div>
   </div>
 </section>
-
+<?php session_destroy(); ?>
 <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://www.google.com/recaptcha/api.js?render=<?php echo SITE_KEY; ?>"></script>
 <script>
@@ -180,3 +187,31 @@ grecaptcha.ready(function() {
   });
 });
 </script>
+
+<script type="text/javascript">
+$("form").on("submit", function() {
+  var dados = [];
+  var s1 = parseInt($(".captcha:eq(0)").text()); // valor do 1º número
+  var s2 = parseInt($(".captcha:eq(1)").text()); // valor do 2º número
+  var ss = parseInt($("[name='soma']").val()); // valor da soma
+
+  if (s1 + s2 != ss) {
+    alert("Soma incorreta!");
+    return false;
+
+  } else {
+    alert("Soma correta!");
+    return true;
+  }
+
+
+});
+</script>
+<?php
+// print_r($_SESSION);
+// if (isset($_SESSION['NOME'])) {
+//   echo '<script>alert("existe sessão")</script>';
+// } else {
+//   echo '<script>alert("' . $_SESSION['NOME'] . ' - Não Existe")</script>';
+// }
+?>
