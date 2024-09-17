@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CodeIgniter
  *
@@ -56,10 +57,12 @@
 //echo $_SERVER["HTTP_HOST"];
 
 
-if($_SERVER["HTTP_HOST"]=='localhost'){
+if ($_SERVER["HTTP_HOST"] == 'localhost') {
     $workplace = 'development';
-}else{
+    define('CONST_PROTOCOLO', 'http://');
+} else {
     $workplace = 'production';
+    define('CONST_PROTOCOLO', 'https://');
 }
 
 
@@ -75,7 +78,7 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : $workplac
  */
 switch (ENVIRONMENT) {
     case 'development':
-        error_reporting(- 1);
+        error_reporting(-1);
         ini_set('display_errors', 1);
         break;
 
@@ -83,9 +86,9 @@ switch (ENVIRONMENT) {
     case 'production':
         ini_set('display_errors', 0);
         if (version_compare(PHP_VERSION, '5.3', '>=')) {
-            error_reporting(E_ALL & ~ E_NOTICE & ~ E_DEPRECATED & ~ E_STRICT & ~ E_USER_NOTICE & ~ E_USER_DEPRECATED);
+            error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
         } else {
-            error_reporting(E_ALL & ~ E_NOTICE & ~ E_STRICT & ~ E_USER_NOTICE);
+            error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
         }
         break;
 
@@ -104,7 +107,7 @@ switch (ENVIRONMENT) {
  * Set the path if it is not in the same directory as this file.
  */
 //$system_path = 'system';
-$system_path = '..'.DIRECTORY_SEPARATOR.'core_codeigniter'.DIRECTORY_SEPARATOR.'system';
+$system_path = '..' . DIRECTORY_SEPARATOR . 'core_codeigniter' . DIRECTORY_SEPARATOR . 'system';
 
 /*
  * ---------------------------------------------------------------
@@ -273,5 +276,3 @@ define('VIEWPATH', $view_folder . DIRECTORY_SEPARATOR);
  * And away we go...
  */
 require_once BASEPATH . 'core/CodeIgniter.php';
-?>
-
