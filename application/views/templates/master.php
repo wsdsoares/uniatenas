@@ -41,114 +41,117 @@ if (isset($head['head_conteudo']) and $head['head_conteudo'] !== NULL and !empty
 
     </div>
   </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- 
+  Linha removida pois estava bloqueando o menu collapsed com a opção de responsividade 18-09-2024
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+  -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
   <style>
-  p {
-    margin: 0px;
-    text-align: center;
-  }
-
-  .diva {
-    color: blue;
-  }
-
-
-
-  @keyframes slideUp {
-
-    to {
-      transform: initial;
-      opacity: initial;
+    p {
+      margin: 0px;
+      text-align: center;
     }
 
-  }
-
-  .cookies-content {
-    box-shadow: 0 1px 3px rgba (0, 0, 0, 0.15);
-    background: white;
-    max-width: 1100px;
-    border-radius: 5px;
-    padding: 1rem;
-    margin: 0 auto;
-    display: grid;
-    gap: 0.5rem;
-    opacity: 0;
-    transform: translateY(100rem);
-    animation: slideUp 0.5s forwards;
-  }
-
-  .cookies-container {
-    color: black;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    position: fixed;
-    width: 100%;
-    bottom: 2rem;
-    z-index: 1000;
-  }
+    .diva {
+      color: blue;
+    }
 
 
-  .cookies-save {
-    grid-column: 2;
-    grid-row: 1/2;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background: #006ad4;
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 0.5rem 1.5rem;
-    font-size: 1rem;
 
-  }
+    @keyframes slideUp {
+
+      to {
+        transform: initial;
+        opacity: initial;
+      }
+
+    }
+
+    .cookies-content {
+      box-shadow: 0 1px 3px rgba (0, 0, 0, 0.15);
+      background: white;
+      max-width: 1100px;
+      border-radius: 5px;
+      padding: 1rem;
+      margin: 0 auto;
+      display: grid;
+      gap: 0.5rem;
+      opacity: 0;
+      transform: translateY(100rem);
+      animation: slideUp 0.5s forwards;
+    }
+
+    .cookies-container {
+      color: black;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      position: fixed;
+      width: 100%;
+      bottom: 2rem;
+      z-index: 1000;
+    }
+
+
+    .cookies-save {
+      grid-column: 2;
+      grid-row: 1/2;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: #006ad4;
+      color: white;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+
+    }
   </style>
   <script>
-  function cookies(functions) {
-    const container = document.querySelector('.cookies-container');
-    const save = document.querySelector('.cookies-save');
-    functions[aceitar];
-    if (!container || !save) {
-      return null;
+    function cookies(functions) {
+      const container = document.querySelector('.cookies-container');
+      const save = document.querySelector('.cookies-save');
+      functions[aceitar];
+      if (!container || !save) {
+        return null;
+      }
+
+      const localPref = JSON.parse(window.localStorage.getItem('cookies-Uniatenas'));
+      if (localPref) activateFunctions(localPref);
+
+      function getFormPref() {
+        return ["aceitar"]
+          .filter((el) => el.checked)
+          .map((el) => el.getAttribute('data-function'));
+      }
+
+      function activateFunctions(pref) {
+
+        container.style.display = 'none';
+        window.localStorage.setItem('cookies-Uniatenas', JSON.stringify(pref));
+      }
+
+      function handleSave() {
+        const pref = getFormPref();
+        activateFunctions(pref);
+      }
+
+      save.addEventListener('click', handleSave);
     }
 
-    const localPref = JSON.parse(window.localStorage.getItem('cookies-Uniatenas'));
-    if (localPref) activateFunctions(localPref);
-
-    function getFormPref() {
-      return ["aceitar"]
-        .filter((el) => el.checked)
-        .map((el) => el.getAttribute('data-function'));
+    function marketing() {
+      console.log('Função de marketing');
     }
 
-    function activateFunctions(pref) {
-
-      container.style.display = 'none';
-      window.localStorage.setItem('cookies-Uniatenas', JSON.stringify(pref));
+    function analytics() {
+      console.log('Função de analytics');
     }
 
-    function handleSave() {
-      const pref = getFormPref();
-      activateFunctions(pref);
+    function aceitar() {
+      console.log('Cookies Uniatenas');
     }
 
-    save.addEventListener('click', handleSave);
-  }
-
-  function marketing() {
-    console.log('Função de marketing');
-  }
-
-  function analytics() {
-    console.log('Função de analytics');
-  }
-
-  function aceitar() {
-    console.log('Cookies Uniatenas');
-  }
-
-  cookies({
-    aceitar
-  });
+    cookies({
+      aceitar
+    });
   </script>
 
 </body>

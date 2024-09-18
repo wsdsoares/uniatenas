@@ -11,20 +11,20 @@
 <head>
   <!-- Google Tag Manager -->
   <script>
-  (function(w, d, s, l, i) {
-    w[l] = w[l] || [];
-    w[l].push({
-      'gtm.start': new Date().getTime(),
-      event: 'gtm.js'
-    });
-    var f = d.getElementsByTagName(s)[0],
-      j = d.createElement(s),
-      dl = l != 'dataLayer' ? '&l=' + l : '';
-    j.async = true;
-    j.src =
-      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-    f.parentNode.insertBefore(j, f);
-  })(window, document, 'script', 'dataLayer', 'GTM-5J2LCLK9');
+    (function(w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5J2LCLK9');
   </script>
   <!-- End Google Tag Manager -->
 
@@ -34,30 +34,29 @@
 
   <!-- Facebook Pixel Code -->
   <script>
-  ! function(f, b, e, v, n, t, s) {
-    if (f.fbq) return;
-    n = f.fbq = function() {
-      n.callMethod ?
-        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-    };
-    if (!f._fbq) f._fbq = n;
-    n.push = n;
-    n.loaded = !0;
-    n.version = '2.0';
-    n.queue = [];
-    t = b.createElement(e);
-    t.async = !0;
-    t.src = v;
-    s = b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t, s)
-  }(window, document, 'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '1147667018954085');
-  fbq('track', 'PageView');
+    ! function(f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function() {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1147667018954085');
+    fbq('track', 'PageView');
   </script>
   <noscript>
-    <img height="1" width="1" src="https://www.facebook.com/tr?id=1147667018954085&ev=PageView
-&noscript=1" />
+    <img height="1" width="1" src="https://www.facebook.com/tr?id=1147667018954085&ev=PageView&noscript=1" />
   </noscript>
   <!-- End Facebook Pixel Code -->
 
@@ -108,59 +107,59 @@
   </script>
 
   <script type="text/javascript" language="javascript">
-  $(document).ready(function() {
+    $(document).ready(function() {
 
-    var _containerBtn = $('[data-container="botao-voltar"]');
-    var _containerMenu = $('[data-container="menu"]');
-    var _containerLink = $('[data-container="link"]');
-    //Evento Scrool do menu
-    _containerLink.click(function() {
-      var _sessao = $(this).data('link');
+      var _containerBtn = $('[data-container="botao-voltar"]');
+      var _containerMenu = $('[data-container="menu"]');
+      var _containerLink = $('[data-container="link"]');
+      //Evento Scrool do menu
+      _containerLink.click(function() {
+        var _sessao = $(this).data('link');
 
-      function Posicao(Seletor) {
-        var _alturaMenu = parseInt(109);
-        var _posicao = parseInt(($('[data-container="' + Seletor + '"]').position().top) - _alturaMenu);
+        function Posicao(Seletor) {
+          var _alturaMenu = parseInt(109);
+          var _posicao = parseInt(($('[data-container="' + Seletor + '"]').position().top) - _alturaMenu);
 
-        return _posicao;
-      }
-      $('html,body').animate({
-        scrollTop: Posicao(_sessao)
-      }, 10);
+          return _posicao;
+        }
+        $('html,body').animate({
+          scrollTop: Posicao(_sessao)
+        }, 10);
 
-      return false;
+        return false;
+      });
+
+      $('#link').on('change', function() {
+        var url = $(this).val();
+        if (url) {
+          window.open(url, "_self");
+        }
+        return false;
+      });
     });
-
-    $('#link').on('change', function() {
-      var url = $(this).val();
-      if (url) {
-        window.open(url, "_self");
-      }
-      return false;
-    });
-  });
   </script>
   <script type="text/javascript" language="javascript">
-  $(function() {
-    $('.toggle-menu').click(function() {
-      $('.exo-menu').toggleClass('display');
+    $(function() {
+      $('.toggle-menu').click(function() {
+        $('.exo-menu').toggleClass('display');
+
+      });
 
     });
-
-  });
   </script>
   <script>
-  $(document).ready(function() {
-    $(".dropdown").hover(
-      function() {
-        $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).fadeIn("400");
-        $(this).toggleClass('open');
-      },
-      function() {
-        $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).fadeOut("400");
-        $(this).toggleClass('open');
-      }
-    );
-  });
+    $(document).ready(function() {
+      $(".dropdown").hover(
+        function() {
+          $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).fadeIn("400");
+          $(this).toggleClass('open');
+        },
+        function() {
+          $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).fadeOut("400");
+          $(this).toggleClass('open');
+        }
+      );
+    });
   </script>
 
 
@@ -169,7 +168,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
   <?php if (isset($head['css'])) { ?>
-  <link rel="stylesheet" href="<?php echo $head['css'] ?>">
+    <link rel="stylesheet" href="<?php echo $head['css'] ?>">
   <?php
   }
   ?>
