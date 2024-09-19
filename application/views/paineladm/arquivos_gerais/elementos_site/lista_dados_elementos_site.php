@@ -62,9 +62,9 @@
               <?php
               foreach ($dados['dadosElementosSite'] as $item):
               ?>
-                <tr>
-                  <td class="center">
-                    <?php
+              <tr>
+                <td class="center">
+                  <?php
 
                     echo '<a href=' . base_url("Painel_geral/editar_dados_elemento_site/$campus->id/$item->id") . '>'
                       . '<i class="material-icons">edit</i>'
@@ -73,33 +73,33 @@
                       . '<i class="material-icons">delete</i>'
                       . '</a>';
                     ?>
-                  </td>
-                  <td><?php echo $item->id; ?></td>
-                  <td><?php echo $item->nome; ?></td>
-                  <td><?php echo $item->link; ?></td>
-                  <td><?php echo $item->cor_hexadecimal; ?></td>
-                  <td><?php echo $item->tipo; ?></td>
+                </td>
+                <td><?php echo $item->id; ?></td>
+                <td><?php echo $item->nome; ?></td>
+                <td><?php echo $item->link; ?></td>
+                <td><?php echo $item->cor_hexadecimal   ''; ?></td>
+                <td><?php echo $item->tipo; ?></td>
 
-                  <td>
-                    <?php
+                <td>
+                  <?php
                     if ($item->status == '0') {
                       echo 'Inativo';
                     } else {
                       echo 'Ativo';
                     }
                     ?>
-                  </td>
-                  <td><?php echo $item->city; ?></td>
+                </td>
+                <td><?php echo $item->city; ?></td>
 
-                  <td>
-                    <?php
+                <td>
+                  <?php
                     $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
                     echo date("d/m/Y H:m:s", strtotime($dateModification)) . ' - ' . $item->user_id;
                     ?>
-                  </td>
+                </td>
 
 
-                </tr>
+              </tr>
               <?php
               endforeach;
               ?>
@@ -139,11 +139,11 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-  $('#modalDelete').on('show.bs.modal', function(e) {
-    var nomeItem = $(e.relatedTarget).attr('data-nome');
-    var id = $(e.relatedTarget).attr('data-id');
-    $(this).find('.nomeItem').text(nomeItem);
-    $(this).find('#btnCerteza').attr('href',
-      '<?php echo base_url("Painel_geral/deletar_item_elemento_site/$campus->id/"); ?>' + id);
-  });
+$('#modalDelete').on('show.bs.modal', function(e) {
+  var nomeItem = $(e.relatedTarget).attr('data-nome');
+  var id = $(e.relatedTarget).attr('data-id');
+  $(this).find('.nomeItem').text(nomeItem);
+  $(this).find('#btnCerteza').attr('href',
+    '<?php echo base_url("Painel_geral/deletar_item_elemento_site/$campus->id/"); ?>' + id);
+});
 </script>

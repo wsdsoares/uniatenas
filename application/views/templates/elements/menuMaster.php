@@ -102,98 +102,123 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
 }
 ?>
 <style>
-.first-itens-topo,
-.botoes-acesso-rapido,
-.links-topo,
-.itens-topo {
-  display: flex;
-  justify-content: space-between;
-}
+  @media screen and (min-width: 427px) {
 
-.botoes-acesso-rapido,
-.first-itens-topo {
-  align-items: center;
-}
+    .first-itens-topo,
+    .botoes-acesso-rapido,
+    .links-topo,
+    .itens-topo {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 
-.first-itens-topo {
-  float: left;
-}
+  @media screen and (max-width: 426px) {
 
-.redes-sociais {
-  margin-right: 1rem;
-}
+    .first-itens-topo,
+    .botoes-acesso-rapido,
+    .links-topo,
+    .itens-topo {
+      display: flex;
+      justify-content: center;
+    }
 
-.redes-sociais a,
-.botoes-acesso-rapido a {
-  color: #fff;
-  font-size: 12px;
-  justify-content: space-between;
-}
+    .links-topo,
+    .first-itens-topo,
+    .botoes-acesso-rapido {
+      display: grid;
+    }
 
-.item-acesso-rapido a {
-  margin-left: 10px;
-}
+    .botao-link-top-first {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
 
-.links-topo {
-  justify-content: center;
-}
+  .botoes-acesso-rapido,
+  .first-itens-topo {
+    align-items: center;
+  }
 
-.botao-link-topo,
-.botao-link-top-first {
-  text-align: center;
-}
+  .first-itens-topo {
+    float: left;
+  }
 
-.botao-link-top,
-.botao-link-top-first {
-  font-size: 14px;
-  color: #fff;
-  padding: 6px 6px 6px;
-  margin-left: 3px;
-  border-radius: 4px;
-}
+  .redes-sociais {
+    margin-right: 1rem;
+  }
 
-.botao-link-top {
-  background: #f4630b;
-}
+  .redes-sociais a,
+  .botoes-acesso-rapido a {
+    color: #fff;
+    font-size: 12px;
+    justify-content: space-between;
+  }
 
-.botao-link-top-first {
-  background-color: <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
-  margin-right: 20px;
-  border: 1px solid <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
-}
+  .item-acesso-rapido a {
+    margin-left: 10px;
+  }
 
-.botao-link-top {
-  font-size: 14px;
-  color: #fff;
-  padding: 6px 6px 6px;
-  background: #f4630b;
-  margin-left: 3px;
-  border-radius: 4px;
-}
+  .links-topo {
+    justify-content: center;
+  }
 
-.botao-link-top:nth-child(1) {
-  margin-right: 5px;
-}
+  .botao-link-topo,
+  .botao-link-top-first {
+    text-align: center;
+  }
 
-.botao-link-top .fa {
-  font-size: 18px;
-  color: #fff;
-}
+  .botao-link-top,
+  .botao-link-top-first {
+    font-size: 14px;
+    color: #fff;
+    padding: 6px 6px 6px;
+    margin-left: 3px;
+    border-radius: 4px;
+  }
 
-.botao-link-top span .fa {
-  padding-right: 0;
-}
+  .botao-link-top {
+    background: #f4630b;
+  }
 
-.botao-link-top:hover {
-  background: #000;
-  color: #fff;
-}
+  .botao-link-top-first {
+    background-color: <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
+    margin-right: 20px;
+    border: 1px solid <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
+  }
 
-.botao-link-top-first:hover {
-  background: #f1f1f1;
-  color: <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
-  border: 1px solid <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
-}
+  .botao-link-top {
+    font-size: 14px;
+    color: #fff;
+    padding: 6px 6px 6px;
+    background: #f4630b;
+    margin-left: 3px;
+    border-radius: 4px;
+  }
+
+  .botao-link-top:nth-child(1) {
+    margin-right: 5px;
+  }
+
+  .botao-link-top .fa {
+    font-size: 18px;
+    color: #fff;
+  }
+
+  .botao-link-top span .fa {
+    padding-right: 0;
+  }
+
+  .botao-link-top:hover {
+    background: #000;
+    color: #fff;
+  }
+
+  .botao-link-top-first:hover {
+    background: #f1f1f1;
+    color: <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
+    border: 1px solid <?php echo $linkVetibularTopo1->cor_hexadecimal ?>;
+  }
 </style>
 <div data-container="menu" class="headermenu">
   <header class="header navbar-fixed-top">
@@ -219,23 +244,23 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                     <?php
                     if (isset($linkVetibularTopo1)) {
                     ?>
-                    <div class="botao-link-topo">
-                      <a href="<?php print($linkVetibularTopo1->link) ?>" class="mx-auto botao-link-top-first">
-                        <i class="fa fa-pencil hidden-xs" aria-hidden="true"></i><?php echo $linkVetibularTopo1->nome ?>
-                      </a>
-                    </div>
+                      <div class="botao-link-topo">
+                        <a href="<?php print($linkVetibularTopo1->link) ?>" class="mx-auto botao-link-top-first">
+                          <i class="fa fa-pencil hidden-xs" aria-hidden="true"></i><?php echo $linkVetibularTopo1->nome ?>
+                        </a>
+                      </div>
                     <?php
                     }
                     ?>
                     <?php
                     if (isset($linkVetibularTopo)) {
                     ?>
-                    <div class="botao-link-topo">
-                      <a href="<?php print($linkVetibularTopo->link) ?>" class="mx-auto botao-link-top">
-                        <i class="fa fa-graduation-cap hidden-xs"
-                          aria-hidden="true"></i><?php echo $linkVetibularTopo->nome ?>
-                      </a>
-                    </div>
+                      <div class="botao-link-topo">
+                        <a href="<?php print($linkVetibularTopo->link) ?>" class="mx-auto botao-link-top">
+                          <i class="fa fa-graduation-cap hidden-xs"
+                            aria-hidden="true"></i><?php echo $linkVetibularTopo->nome ?>
+                        </a>
+                      </div>
                     <?php
                     }
                     ?>
@@ -243,13 +268,13 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                   <div class="botoes-acesso-rapido">
                     <div class="item-acesso-rapido">
                       <?php if ($informacoesCampus->shurtName == 'paracatu') { ?>
-                      <a href="https://outlook.live.com/owa/">
+                        <a href="https://outlook.live.com/owa/">
 
                         <?php } else { ?>
-                        <a href="https://webmail-seguro.com.br/atenas.edu.br/">
+                          <a href="https://webmail-seguro.com.br/atenas.edu.br/">
                           <?php } ?>
                           <i class="fa fa-envelope"></i> <span class="top-page hidden-xs">Webmail</span>
-                        </a>
+                          </a>
                     </div>
                     <div class="item-acesso-rapido">
                       <?php
@@ -260,7 +285,7 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                       <?php
                       if (isset($linkBibliotecaTopo)) {
                       ?>
-                      <?php
+                        <?php
                         echo anchor($linkBibliotecaTopo->link, '<i class="fas fa-book"></i><span class="top-page-alunos hidden-xs">' . $linkBibliotecaTopo->nome . '</span>');
                         ?>
                       <?php
@@ -310,9 +335,9 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                       <?php
                       if ($informacoesCampus->id == '1' or $informacoesCampus->id == '2' or $informacoesCampus->id == '3' or $informacoesCampus->id == '6') {
                       ?>
-                      <li>
-                        <?php echo anchor('site/trabalheConosco/' . $informacoesCampus->shurtName, 'Trabalhe Conosco'); ?>
-                      </li>
+                        <li>
+                          <?php echo anchor('site/trabalheConosco/' . $informacoesCampus->shurtName, 'Trabalhe Conosco'); ?>
+                        </li>
 
                       <?php
                       }
@@ -334,7 +359,7 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                       <?php
                       if ($verificaCursosEaD > 0) {
                       ?>
-                      <li><?php echo anchor('graduacao/ead/' . $informacoesCampus->shurtName, 'EaD'); ?></li>
+                        <li><?php echo anchor('graduacao/ead/' . $informacoesCampus->shurtName, 'EaD'); ?></li>
                       <?php
                       }
                       ?>
@@ -343,24 +368,24 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                   <?php
                   if (isset($verificaPaginaComoIngressar)) {
                   ?>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                      Como ingressar<span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu menu-simpes" role="menu">
-                      <?php
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        Como ingressar<span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu menu-simpes" role="menu">
+                        <?php
                         if ($listaMenuItensComoIngressar) {
                           foreach ($listaMenuItensComoIngressar as $itemIngressar) {
                         ?>
-                      <li>
-                        <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/$itemIngressar->title_short", "$itemIngressar->title"); ?>
-                      </li>
-                      <?php
+                            <li>
+                              <?php echo anchor("graduacao/como_ingressar/$informacoesCampus->shurtName/$itemIngressar->title_short", "$itemIngressar->title"); ?>
+                            </li>
+                        <?php
                           }
                         }
                         ?>
-                    </ul>
-                  </li>
+                      </ul>
+                    </li>
                   <?php
                   }
                   ?>
@@ -388,19 +413,19 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
 
                               if (isset($verificaPaginaEstagiosConvenios)) {
                               ?>
-                              <li class="itensMenu">
-                                <?php echo anchor('EstagiosConvenios/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Estágios e convênios'); ?>
-                              </li>
+                                <li class="itensMenu">
+                                  <?php echo anchor('EstagiosConvenios/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> Estágios e convênios'); ?>
+                                </li>
                               <?php
                               }
                               if ($informacoesCampus->id == '1') {
                               ?>
-                              <li class="itensMenu">
-                                <?php echo anchor('Huna/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> HUNA
+                                <li class="itensMenu">
+                                  <?php echo anchor('Huna/inicio/' . $informacoesCampus->shurtName, '<i class="fas fa-angle-right"></i> HUNA
                                                                         -
                                                                         Hospital Universitário Atenas'); ?>
-                                <a href="#"></a>
-                              </li>
+                                  <a href="#"></a>
+                                </li>
                               <?php
                               }
                               ?>
@@ -411,12 +436,12 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                               <?php
                               foreach ($verificaPaginaServicosSubmenuGerais as $existePaginaServicosSubmenuGerais) {
                               ?>
-                              <li class="itensMenu">
-                                <?php
+                                <li class="itensMenu">
+                                  <?php
                                   $tituloMenu = isset($existePaginaServicosSubmenuGerais->titulo_descritivo) ? $existePaginaServicosSubmenuGerais->titulo_descritivo : $existePaginaServicosSubmenuGerais->title;
                                   echo anchor("servicos/nucleos/$informacoesCampus->shurtName/$existePaginaServicosSubmenuGerais->title", '<i class="fas fa-angle-right"></i> ' . $tituloMenu);
                                   ?>
-                              </li>
+                                </li>
                               <?php
                               }
                               ?>
@@ -443,12 +468,12 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                               <?php
                                               foreach ($verificaPaginaServicosSubmenuNucleos as $submenuServicosNucleos) {
                               ?>
-                              <li class="itensMenu">
-                                <?php
+                                <li class="itensMenu">
+                                  <?php
                                                 $tituloMenu = isset($submenuServicosNucleos->titulo_descritivo) ? $submenuServicosNucleos->titulo_descritivo : $submenuServicosNucleos->title;
                                                 echo anchor("servicos/nucleos/$informacoesCampus->shurtName/$submenuServicosNucleos->title", '<i class="fas fa-angle-right"></i> ' . $tituloMenu);
                                   ?>
-                              </li>
+                                </li>
                               <?php
                                               }
                               ?>
@@ -456,17 +481,17 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                           </li>
                         </ul>
                       </li>
-                      <?php
+                    <?php
                                             }
                     ?>
-                      <li class="hidden-xs"><a href="#" style=""></a></li>
-                      <li class="divider hidden-xs"></li>
-                      <li class="dropdown-header hidden-xs">Portais</li>
-                      <li>
-                        <?php echo anchor("PortalAlunos/portal/$informacoesCampus->shurtName", 'Portal do Aluno'); ?>
-                      </li>
-                      <li><a href="http://177.69.195.4/Corpore.Net/Login.aspx">Portal do
-                          Professor</a></li>
+                    <li class="hidden-xs"><a href="#" style=""></a></li>
+                    <li class="divider hidden-xs"></li>
+                    <li class="dropdown-header hidden-xs">Portais</li>
+                    <li>
+                      <?php echo anchor("PortalAlunos/portal/$informacoesCampus->shurtName", 'Portal do Aluno'); ?>
+                    </li>
+                    <li><a href="http://177.69.195.4/Corpore.Net/Login.aspx">Portal do
+                        Professor</a></li>
                     </ul>
                   </li>
                   <li class="dropdown">
@@ -485,18 +510,18 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
 
                       if (isset($verificaPaginaRevistas)) {
                       ?>
-                      <li class="itensMenu">
-                        <?php echo anchor('IniciacaoCientifica/revistas/' . $informacoesCampus->shurtName, 'Revistas'); ?>
-                      </li>
+                        <li class="itensMenu">
+                          <?php echo anchor('IniciacaoCientifica/revistas/' . $informacoesCampus->shurtName, 'Revistas'); ?>
+                        </li>
                       <?php
                       }
                       ?>
                       <?php
                       if ($informacoesCampus->id == '1') {
                       ?>
-                      <li class="itensMenu">
-                        <?php echo anchor('IniciacaoCientifica/trabalho_conclusao_curso/' . $informacoesCampus->shurtName, 'Trabalho de Conclusão de Curso'); ?>
-                      </li>
+                        <li class="itensMenu">
+                          <?php echo anchor('IniciacaoCientifica/trabalho_conclusao_curso/' . $informacoesCampus->shurtName, 'Trabalho de Conclusão de Curso'); ?>
+                        </li>
                       <?php
                       }
                       ?>
