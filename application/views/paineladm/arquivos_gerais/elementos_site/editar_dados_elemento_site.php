@@ -13,8 +13,8 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
-            echo $msg;
+        if ($msg = getMsg()) {
+          echo $msg;
         }
         ?>
         <?php echo form_open("Painel_geral/editar_dados_elemento_site/$campus->id/$elementoSite->id") ?>
@@ -29,7 +29,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'nome', 'class' => 'form-control', 'placeholder' => 'Nom ou Titulo do item'), set_value('nome',$elementoSite->nome));
+                echo form_input(array('name' => 'nome', 'class' => 'form-control', 'placeholder' => 'Nom ou Titulo do item'), set_value('nome', $elementoSite->nome));
                 ?>
               </div>
             </div>
@@ -42,7 +42,21 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'link', 'class' => 'form-control', 'placeholder' => 'http://link.com.br'), set_value('link',$elementoSite->link));
+                echo form_input(array('name' => 'link', 'class' => 'form-control', 'placeholder' => 'http://link.com.br'), set_value('link', $elementoSite->link));
+                ?>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="title">Cor Hexadecimal <small> (caso tenha)</small></label>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="material-icons">insert_link</i>
+              </span>
+
+              <div class="form-line">
+                <?php
+                echo form_input(array('name' => 'cor_hexadecimal', 'class' => 'form-control', 'placeholder' => 'Ex.: #9400D3'), set_value('cor_hexadecimal', $elementoSite->cor_hexadecimal));
                 ?>
               </div>
             </div>
@@ -54,14 +68,15 @@
               <div class="form-line">
                 <label for="campusid">Tipo <small>(Topo Site, Rodapé)</small></label>
                 <?php
-                    $optionTipo= array(
-                        'topo_site' => 'Topo - Site',
-                        'rodape' => 'Rodapé - Site',
-                        'link_vestibular' => 'Link vestibular - Top Site',
-                        'link_biblioteca' => 'Link Biblioteca - Topo Site',
-                    );
-                    echo form_dropdown('tipo', $optionTipo, set_value('tipo',$elementoSite->tipo), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionTipo = array(
+                  'topo_site' => 'Topo - Site',
+                  'rodape' => 'Rodapé - Site',
+                  'link_vestibular' => 'Link vestibular - Top Site',
+                  'link_vestibular_medicina' => 'Link vestibular Medicina - Top Site',
+                  'link_biblioteca' => 'Link Biblioteca - Topo Site',
+                );
+                echo form_dropdown('tipo', $optionTipo, set_value('tipo', $elementoSite->tipo), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -73,12 +88,12 @@
               <div class="form-line">
                 <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status',$elementoSite->status), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status', $elementoSite->status), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -86,10 +101,10 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_geral/lista_dados_elementos_site/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_geral/lista_dados_elementos_site/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
-              ?>
+            ?>
           </div>
         </div>
 
