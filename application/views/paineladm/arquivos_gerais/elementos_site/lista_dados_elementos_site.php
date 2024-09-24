@@ -77,7 +77,7 @@
                 <td><?php echo $item->id; ?></td>
                 <td><?php echo $item->nome; ?></td>
                 <td><?php echo $item->link; ?></td>
-                <td><?php echo $item->cor_hexadecimal   ''; ?></td>
+                <td><?php echo $item->cor_hexadecimal; ?></td>
                 <td><?php echo $item->tipo; ?></td>
 
                 <td>
