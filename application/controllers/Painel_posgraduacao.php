@@ -17,18 +17,58 @@ class Painel_posgraduacao extends CI_Controller
 
     date_default_timezone_set('America/Sao_Paulo');
   }
-
-  public function lista_cursos_posgraduacao($uriModalidade = 'ead')
+  public function lista_campus_posgraduacao()
   {
-    $listagemDosCursos = $this->painelbd->where('*', 'courses', NULL, array('courses.modalidade' => $uriModalidade, 'types' => 'PosGraduacao'))->result();
+    verificaLogin();
+
+    $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
+    $data = array(
+      'titulo' => 'UniAtenas',
+      'conteudo' => 'paineladm/cursos_posgraduacao/lista_campus_posgraduacao',
+      'dados' => array(
+        'page' => "Lista informações Campus - <b>Pós Graduação</b>",
+        'campus' => $listagemDosCampus,
+        'tipo' => ''
+      )
+    );
+
+    $this->load->view('templates/layoutPainelAdm', $data);
+  }
+
+  public function lista_cursos_posgraduacao($uriCampus = null, $uriModalidade = 'ead')
+  {
+    $colunasPosGraduacao =
+      array(
+        'courses.id',
+        'courses.name',
+        'campus_has_courses.id',
+        'campus_has_courses.status',
+        'courses.icone',
+        'courses.created_at',
+        'courses.user_id'
+      );
+
+    $joinCoursesCampusHasCourses = array(
+      'campus' => 'campus.id = campus_has_courses.campus_id',
+      'courses' => 'courses.id = campus_has_courses.courses_id'
+    );
+
+    $whereCursosPos = array('courses.modalidade' => $uriModalidade, 'types' => 'PosGraduacao', 'campus_id' => $uriCampus);
+
+    $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+    $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
+
+
+    $listagemDosCursos = $this->painelbd->where($colunasPosGraduacao, 'campus_has_courses', $joinCoursesCampusHasCourses, $whereCursosPos)->result();
     $data = array(
       'titulo' => 'UniAtenas',
       'conteudo' => 'paineladm/cursos_posgraduacao/lista_cursos_posgraduacao',
       'dados' => array(
         // 'permissionCampusArray' => $_SESSION['permissionCampus'],
-        'page' => "Lista de Cursos de Pós Graduação da IES - <strong><i> (Grupo Atenas)</i></strong>",
+        'page' => "Lista de Cursos de Pós Graduação - <strong><i> $campus->city</i></strong>",
         'cursos' => $listagemDosCursos,
         'modalidade' => $uriModalidade,
+        'campus' => $campus,
         'tipo' => 'tabelaDatatable'
       )
     );
