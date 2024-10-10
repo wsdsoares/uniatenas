@@ -1571,12 +1571,17 @@ and revistas.id =$id;
 
         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
         $queryDirigentes = "
-            SELECT * FROM dirigentes 
+            SELECT 
+            dirigentes.id,
+            dirigentes.nome,
+            dirigentes.email,
+            dirigentes.cargo
+             FROM dirigentes 
             join campus on campus.id = dirigentes.id_campus 
             WHERE 
                 dirigentes.cargo NOT LIKE '%coordenador%' 
             and dirigentes.status =1
-            AND dirigentes.id_campus = $dataCampus->id ";
+            AND campus.id = $dataCampus->id ";
         $dirigentes = $this->bancosite->getQuery($queryDirigentes)->result();
 
         $data = array(
