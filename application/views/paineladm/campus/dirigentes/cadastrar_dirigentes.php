@@ -13,11 +13,11 @@
       </div>
       <div class="body">
         <?php
-        if ($msg = getMsg()){
-            echo $msg;
+        if ($msg = getMsg()) {
+          echo $msg;
         }
         ?>
-        <?php echo form_open_multipart('Painel_Campus/cadastrar_dirigente') ?>
+        <?php echo form_open_multipart("Painel_Campus/cadastrar_dirigente/$campus->id") ?>
 
         <h2 class="card-inside-title">Informações do Dirigentes</h2>
         <div class="row clearfix">
@@ -29,7 +29,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'nome', 'class' => 'form-control', 'placeholder' => 'Nome completo'), set_value('nome'));
+                echo form_input(array('name' => 'nome', 'class' => 'form-control', 'placeholder' => 'Nome completo'), set_value('nome'));
                 ?>
               </div>
             </div>
@@ -43,7 +43,7 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'email', 'class' => 'form-control', 'placeholder' => 'Email'), set_value('email'));
+                echo form_input(array('name' => 'email', 'class' => 'form-control', 'placeholder' => 'Email'), set_value('email'));
                 ?>
               </div>
             </div>
@@ -58,13 +58,13 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'cargo', 'class' => 'form-control', 'placeholder' => 'Ex.: Pró-Reitor Administrativo'), set_value('cargo'));
+                echo form_input(array('name' => 'cargo', 'class' => 'form-control', 'placeholder' => 'Ex.: Pró-Reitor Administrativo'), set_value('cargo'));
                 ?>
               </div>
             </div>
           </div>
 
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <label for="title">Cargo <small> (Mesmo cargo, para os campus que são centros
                 universitários)</small></label>
             <div class="input-group">
@@ -73,11 +73,11 @@
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'cargo2', 'class' => 'form-control', 'placeholder' => ' Ex.: Diretor Administrativo'), set_value('cargo2'));
+                echo form_input(array('name' => 'cargo2', 'class' => 'form-control', 'placeholder' => ' Ex.: Diretor Administrativo'), set_value('cargo2'));
                 ?>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <h2 class="card-inside-title">Foto do dirigente</h2>
@@ -101,12 +101,12 @@
               <div class="form-line">
                 <label for="campusid">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
-                    echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
-                    ?>
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
+                echo form_dropdown('status', $optionSituation, set_value('status'), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -114,10 +114,10 @@
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor('Painel_Campus/lista_dirigentes', 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_Campus/lista_dirigentes/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
-              ?>
+            ?>
           </div>
         </div>
 

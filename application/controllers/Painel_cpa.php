@@ -111,7 +111,7 @@ class Painel_cpa extends CI_Controller
       'titulo' => 'UniAtenas',
       'conteudo' => 'paineladm/campus/cpa/contatos/cadastrar_contato_pagina_cpa',
       'dados' => array(
-        'tituloPagina' => "Informações de contato página cpa - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'tituloPagina' =>cc
         'pagina' => $pagina,
         'contatoPaginaCpa' => $contatoPaginaCpa = isset($contatoPaginaCpa) ? $contatoPaginaCpa : '',
         'campus' => $campus,

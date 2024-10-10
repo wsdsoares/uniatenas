@@ -2,8 +2,8 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
-          echo $msg;
+      if ($msg = getMsg()) {
+        echo $msg;
       }
       ?>
       <div class="header">
@@ -12,11 +12,17 @@
         </h2>
 
       </div>
+
       <div class="botoes-acoes-formularios">
         <div class="container">
           <div class="col-xs-6">
             <?php
-            echo anchor("Painel_campus/cadastrar_dirigente", '<i class="material-icons">add_box</i> CADASTRAR Dirigente', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+            echo anchor("Painel_campus/cadastrar_dirigente/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR Dirigente', array('class' => 'btn btn-primary m-t-15 waves-effect'));
+            ?>
+          </div>
+          <div class="col-xs-6">
+            <?php
+            echo anchor('Painel_campus/lista_campus_dirigentes', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
             ?>
           </div>
 
@@ -33,7 +39,7 @@
                 <th>#</th>
                 <th>Nome</th>
                 <th>Foto</th>
-                <th>Cargo/ Cargo 2</th>
+                <th>Cargo</th>
                 <th>Situação</th>
                 <th>Modificado em, por:</th>
               </tr>
@@ -44,68 +50,68 @@
                 <th>#</th>
                 <th>Nome</th>
                 <th>Foto</th>
-                <th>Cargo/ Cargo 2</th>
+                <th>Cargo</th>
                 <th>Situação</th>
                 <th>Modificado em, por:</th>
               </tr>
             </tfoot>
             <tbody>
               <?php
-              foreach ($dados['dirigentes'] as $diretor){
+              foreach ($dados['dirigentes'] as $diretor) {
               ?>
-              <tr>
-                <td class="center">
-                  <?php 
+                <tr>
+                  <td class="center">
+                    <?php
 
-                  echo '<a href=' . base_url("Painel_campus/editar_dirigente/$diretor->id") . '>'
+                    echo '<a href=' . base_url("Painel_campus/editar_dirigente/$campus->id/$diretor->id") . '>'
                       . '<i class="material-icons">edit</i>'
                       . '</a> ';
-                  // echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
-                  //     . '<i class="material-icons">delete</i>'
-                  //     . '</a>';
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $diretor->nome . '" data-id="' . $diretor->id . '" >'
+                      . '<i class="material-icons">delete</i>'
+                      . '</a>';
 
-                  // $redirect = 'Painel_home-slideshow';
-                  // $table = 'banners';
+                    // $redirect = 'Painel_home-slideshow';
+                    // $table = 'banners';
 
-                  // if ($campus->status == 1) {
-                  //     echo  '<i class="material-icons">visibility</i>'
-                  //         . '</a>';
-                  // } elseif ($campus->status == 0) {
-                  //     echo  '<i class="material-icons">visibility_off</i>'
-                  //         . '</a>';
-                  // }
-                  ?>
-                </td>
-                <td><?php echo $diretor->id; ?></td>
-                <td><?php echo $diretor->nome; ?></td>
-                <td>
+                    // if ($campus->status == 1) {
+                    //     echo  '<i class="material-icons">visibility</i>'
+                    //         . '</a>';
+                    // } elseif ($campus->status == 0) {
+                    //     echo  '<i class="material-icons">visibility_off</i>'
+                    //         . '</a>';
+                    // }
+                    ?>
+                  </td>
+                  <td><?php echo $diretor->id; ?></td>
+                  <td><?php echo $diretor->nome; ?></td>
+                  <td>
 
-                  <?php 
-                  if(!empty ($diretor->photo)){ 
-                    echo anchor(base_url(verifyImg($diretor->photo)), '<img src="' . base_url(verifyImg($diretor->photo)) . '" class="thumbnail">', array('target' => '_blank'));
-                  }
-                  ?>
-                </td>
-                <td><?php echo $diretor->cargo.'/ <br/>'.$diretor->cargo2; ?></td>
-                <td>
-                  <?php
-                    if($diretor->status =='0'){
+                    <?php
+                    if (!empty($diretor->photo)) {
+                      echo anchor(base_url(verifyImg($diretor->photo)), '<img src="' . base_url(verifyImg($diretor->photo)) . '" class="thumbnail">', array('target' => '_blank'));
+                    }
+                    ?>
+                  </td>
+                  <td><?php echo $diretor->cargo; ?></td>
+                  <td>
+                    <?php
+                    if ($diretor->status == '0') {
                       echo 'Inativo';
-                    }else{
+                    } else {
                       echo 'Ativo';
                     }
                     ?>
-                </td>
-                <td>
-                  <?php 
+                  </td>
+                  <td>
+                    <?php
                     $dateModification = empty($diretor->updated_at) ? $diretor->created_at : $diretor->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).'.'.$diretor->user_id; 
+                    echo date("d/m/Y H:m:s", strtotime($dateModification)) . '.' . $diretor->user_id;
                     ?>
-                </td>
-              </tr>
+                  </td>
+                </tr>
               <?php
-                }
-                ?>
+              }
+              ?>
             </tbody>
           </table>
         </div>
@@ -140,14 +146,12 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
-
-  console.log()
-
-});
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_campus/deletar_dirigente/$campus->id/"); ?>' + id);
+  });
 </script>

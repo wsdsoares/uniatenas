@@ -1336,9 +1336,7 @@ and revistas.id =$id;
     }
 
 
-    public function erro_404()
-    {
-    }
+    public function erro_404() {}
 
     public function graduacaoEad($codEad = null)
     {
@@ -1572,8 +1570,14 @@ and revistas.id =$id;
         }
 
         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
-
-        $dirigentes = $this->bancosite->getQuery("SELECT * FROM dirigentes WHERE cargo NOT LIKE '%coordenador%' ")->result();
+        $queryDirigentes = "
+            SELECT * FROM dirigentes 
+            join campus on campus.id = dirigentes.id_campus 
+            WHERE 
+                dirigentes.cargo NOT LIKE '%coordenador%' 
+            and dirigentes.status =1
+            AND dirigentes.id_campus = $dataCampus->id ";
+        $dirigentes = $this->bancosite->getQuery($queryDirigentes)->result();
 
         $data = array(
             'head' => array(
@@ -1702,7 +1706,13 @@ and revistas.id =$id;
                 "/(é|è|ê|ë)/",
                 "/(É|È|Ê|Ë)/",
                 "/(í|ì|î|ï)/",
-                "/(Í|Ì|Î|Ï)/", "/(ó|ò|õ|ô|ö)/", "/(Ó|Ò|Õ|Ô|Ö)/", "/(ú|ù|û|ü)/", "/(Ú|Ù|Û|Ü)/", "/(ñ)/", "/(Ñ)/"
+                "/(Í|Ì|Î|Ï)/",
+                "/(ó|ò|õ|ô|ö)/",
+                "/(Ó|Ò|Õ|Ô|Ö)/",
+                "/(ú|ù|û|ü)/",
+                "/(Ú|Ù|Û|Ü)/",
+                "/(ñ)/",
+                "/(Ñ)/"
             ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('name'));
             $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
 
