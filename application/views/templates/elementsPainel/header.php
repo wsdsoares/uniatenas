@@ -7,11 +7,11 @@ include_once 'navbar.php';
 $permissionCampusArray = '';
 ?>
 <script type="text/javascript">
-  function ativo() {
-    const elemento = document.querySelectorAll("<li> .active");
-    console.log(elemento);
-    alert(elemento);
-  }
+function ativo() {
+  const elemento = document.querySelectorAll("<li> .active");
+  console.log(elemento);
+  alert(elemento);
+}
 </script>
 <section>
   <aside id="leftsideba" class="sidebar">
@@ -136,7 +136,7 @@ $permissionCampusArray = '';
           <ul class="ml-menu">
             <li>
               <?php
-              echo anchor('Painel_campus/lista_dirigentes', '<span>Dirigentes <strong>(Diretores/Reitores)</strong></span>');
+              echo anchor('Painel_campus/lista_campus_dirigentes', '<span>Dirigentes <strong>(Diretores/Reitores)</strong></span>');
               ?>
             </li>
             <li>
