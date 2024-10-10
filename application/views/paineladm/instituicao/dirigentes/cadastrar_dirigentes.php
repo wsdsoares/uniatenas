@@ -49,8 +49,10 @@
                                     <option value="0" selected="selected" class='form-control show-tick'>-- Selecione --</option>
                                     <option value="Coordenador de Curso" class='form-control show-tick'> Coordenador de Curso</option>
                                     <option value="Reitor/ Diretor Geral" class='form-control show-tick'> Reitor/ Diretor Geral</option>
-                                    <option value="Diretora Administrativa e Financeira/ Diretora Administrativa e Financeira" class='form-control show-tick'> Pro-Reitora/ Diretora Administrativa e Financeira</option>
-                                    <option value="Pró-Reitor Acadêmico/ Diretor Acadêmico" class='form-control show-tick'> Pro-Reitor/ Diretor Acadêmico</option>
+                                    <option value="Diretora Administrativa e Financeira/ Diretora Administrativa e Financeira"
+                                        class='form-control show-tick'> Pro-Reitora/ Diretora Administrativa e Financeira</option>
+                                    <option value="Pró-Reitor Acadêmico/ Diretor Acadêmico" class='form-control show-tick'> Pro-Reitor/
+                                        Diretor Acadêmico</option>
                                 </select>
                             </div>
                         </div>

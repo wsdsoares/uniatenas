@@ -19,26 +19,28 @@ class Painel_home extends CI_Controller
         date_default_timezone_set('America/Sao_Paulo');
     }
 
-    public function lista_campus(){
+    public function lista_campus()
+    {
         verificaLogin();
 
         $page = 'Lista de Campus';
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/home/lista_campus',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => 'Lista de BANNERS - Por Campus',
-                'campus'=> $listagemDosCampus,
-                'tipo'=>''
+                'campus' => $listagemDosCampus,
+                'tipo' => ''
             )
         );
 
@@ -50,13 +52,18 @@ class Painel_home extends CI_Controller
     {
         $uriCampus = $this->uri->segment(3);
 
-        $colunasCampus = array('campus.id','campus.name','campus.city','campus.uf');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city', 'campus.uf');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         $fieldsSlide = array(
-            'banners.id', 'banners.created_at', 'banners.updated_at',
-            'banners.title', 'banners.datestart', 'banners.dateend',
-            'banners.files', 'banners.user_id',
+            'banners.id',
+            'banners.created_at',
+            'banners.updated_at',
+            'banners.title',
+            'banners.datestart',
+            'banners.dateend',
+            'banners.files',
+            'banners.user_id',
             'banners.status',
             'campus.name as nameCampus',
             'campus.city',
@@ -65,7 +72,7 @@ class Painel_home extends CI_Controller
         $dataJoinSlide = array(
             'campus' => 'campus.id = banners.campusid '
         );
-        $itens = $this->painelbd->where($fieldsSlide, 'banners', $dataJoinSlide, array('campus.id'=>$campus->id), array('campo' => 'id', 'ordem' => 'desc'))->result();
+        $itens = $this->painelbd->where($fieldsSlide, 'banners', $dataJoinSlide, array('campus.id' => $campus->id), array('campo' => 'id', 'ordem' => 'desc'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/home/slideshow/lista_slideshow',
@@ -79,12 +86,11 @@ class Painel_home extends CI_Controller
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-
-    public function cadastrar_slideshow($uriCampus=NULL)
+    public function cadastrar_slideshow($uriCampus = NULL)
     {
         $this->load->helper('file');
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
         $this->form_validation->set_rules('title', 'Título', 'required');
 
@@ -99,9 +105,9 @@ class Painel_home extends CI_Controller
             endif;
         } else {
 
-            $path = 'assets/images/slideshow/'.$campus->id;
+            $path = 'assets/images/slideshow/' . $campus->id;
             is_way($path);
-            
+
             if (unique_name_args(noAccentuation($this->input->post('title'), NULL), $path)) {
                 $name_tmp = null;
             } else {
@@ -110,7 +116,7 @@ class Painel_home extends CI_Controller
 
             $upload = $this->bd->uploadFiles('files', $path, $types = 'jpg|JPG|png|jpeg|JPEG', $name_tmp);
 
-            if ($upload):
+            if ($upload) {
                 //upload efetuado
 
                 $dados_form = elements(array('title', 'datestart', 'dateend', 'linkRedir', 'status', 'priority', 'briefText'), $this->input->post());
@@ -134,36 +140,33 @@ class Painel_home extends CI_Controller
                         $dados_form['priority'] = $ordem->priority;
                         $updatePosition = true;
                         $this->bd->alterar('banners', 'priority', 'id', $ordem->id, $ordem->priority + 1);
-
                     }
                 }
-
-            else:
+            } else {
                 //erro no upload
                 $msg = $this->upload->display_errors();
                 $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
                 setMsg($msg, 'erro');
-            endif;
-            if ($this->bd->salvar('banners', $dados_form) == TRUE) {
+            }
 
+            if ($this->bd->salvar('banners', $dados_form) == TRUE) {
                 setMsg('<p>Publicação cadastrada com sucesso.</p>', 'success');
-                redirect('Painel_home/slideshow/'.$campus->id);
+                redirect('Painel_home/slideshow/' . $campus->id);
             } else {
                 setMsg('<p>Erro! A publicação não foi cadastrada.</p>', 'error');
-                redirect('Painel_home/slideshow/'.$campus->id);
+                redirect('Painel_home/slideshow/' . $campus->id);
             }
         }
 
-
-        $condition = array('status' => 1, 'campus_id' => '$campus');
-        $dados = $this->painelbd->getWhere('midias', $condition)->result();
+        // $condition = array('status' => 1, 'campus_id' => '$campus');
+        // $dados = $this->painelbd->getWhere('midias', $condition)->result();
         $locaisCampus = $this->bd->where('*', 'campus', null, array('visible' => 'SIM'))->result();
-
 
         $data = array(
             'titulo' => 'Início - Slides',
             'conteudo' => 'paineladm/home/slideshow/cadastrar_slideshow',
-            'dados' => array('slideshow' => $dados,
+            'dados' => array(
+                'slideshow' => $dados,
                 'locaisCampus' => $locaisCampus,
                 'page' => "Cadastro Banners - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
                 'revistas_id' => '',
@@ -190,7 +193,7 @@ class Painel_home extends CI_Controller
             foreach ($orders as $order) {
                 $result_order .= '<option value="' . $order->id . '">' . $order->priority . '</option>';
             }
-            echo(json_encode($orders));
+            echo (json_encode($orders));
         } else {
             //take all banners, visible and not visible
             $midiasql = "SELECT * FROM at_site.banners
@@ -202,23 +205,23 @@ class Painel_home extends CI_Controller
         };
     }
 
-    public function editarSlideShow($uriCampus=NULL,$id = NULL)
+    public function editarSlideShow($uriCampus = NULL, $id = NULL)
     {
         date_default_timezone_set('America/Sao_Paulo');
 
         if (empty($id)) {
             redirect('Paginas/editarSlideShow');
         }
-        $colunasCampus = array('campus.id','campus.name','campus.city');
-        $campus = $this->painelbd->where($colunasCampus,'campus',NULL, array('campus.id'=>$uriCampus))->row();
+        $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
+        $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
-        $itens = $this->painelbd->where('*', 'banners', null, array('banners.id'=>$id), array('campo' => 'id', 'ordem' => 'desc'))->result();
-        
+        $itens = $this->painelbd->where('*', 'banners', null, array('banners.id' => $id), array('campo' => 'id', 'ordem' => 'desc'))->result();
+
         $this->form_validation->set_rules('title', 'Título', 'required');
         $this->form_validation->set_rules('status', 'Situação', 'required');
         // $this->form_validation->set_message('greater_than', 'Informe o campus');
 
-        $arquivos = isset($_FILES["files"]) ? $_FILES["files"] :'';
+        $arquivos = isset($_FILES["files"]) ? $_FILES["files"] : '';
         $arquivoAtual = $this->input->post('fileatual');
 
         if (!isset($arquivos) and isset($arquivoAtual)) {
@@ -227,10 +230,18 @@ class Painel_home extends CI_Controller
         }
 
         $fieldsSlide = array(
-            'banners.id', 'banners.created_at', 'banners.updated_at',
-            'banners.title', 'banners.datestart', 'banners.dateend',
-            'banners.files', 'banners.user_id', 'banners.priority',
-            'banners.status', 'banners.linkredir', 'banners.briefText',
+            'banners.id',
+            'banners.created_at',
+            'banners.updated_at',
+            'banners.title',
+            'banners.datestart',
+            'banners.dateend',
+            'banners.files',
+            'banners.user_id',
+            'banners.priority',
+            'banners.status',
+            'banners.linkredir',
+            'banners.briefText',
             'campus.id as idCampus',
             'campus.name as nameCampus',
             'campus.city',
@@ -267,17 +278,17 @@ class Painel_home extends CI_Controller
             if ($itens->status != $this->input->post('status')) {
                 $dados_form['status'] = $this->input->post('status');
             }
-            if ($itens->linkRedir != $this->input->post('linkRedir') and $this->input->post('linkRedir') !='') {
+            if ($itens->linkRedir != $this->input->post('linkRedir') and $this->input->post('linkRedir') != '') {
                 $dados_form['linkRedir'] = $this->input->post('linkRedir');
             }
 
             if ($itens->user_id != $this->session->userdata('codusuario')) {
                 $dados_form['user_id'] = $this->session->userdata('codusuario');
             }
-            
+
             if (isset($_FILES['files']) && !empty($_FILES['files']['name'])) {
 
-                $path = 'assets/images/slideshow/'.$campus->id;
+                $path = 'assets/images/slideshow/' . $campus->id;
                 is_way($path);
                 if (unique_name_args(noAccentuation($this->input->post('title'), NULL), $path)) {
                     $name_tmp = null;
@@ -286,12 +297,11 @@ class Painel_home extends CI_Controller
                 }
 
                 $upload = $this->painelbd->uploadFiles('files', $path, $types = 'jpg|JPG|png|PNG|jpeg|JPEG', $name_tmp);
-                if ($upload){
+                if ($upload) {
                     //upload efetuado
-                    $dados_form['files'] = $path.'/'.$upload['file_name'];
+                    $dados_form['files'] = $path . '/' . $upload['file_name'];
                     $dados_form['type'] = 'slideshowprincipal';
-
-                }else{
+                } else {
                     //erro no upload
                     $msg = $this->upload->display_errors();
                     $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
@@ -303,11 +313,11 @@ class Painel_home extends CI_Controller
             $dados_form['campusid'] = $campus->id;
             $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['updated_at'] = date('Y-m-d H:i:s');
-            
-            if ($this->painelbd->salvar('banners', $dados_form) == TRUE){
+
+            if ($this->painelbd->salvar('banners', $dados_form) == TRUE) {
                 setMsg('<p>Publicação editada com sucesso.</p>', 'success');
-                redirect('Painel_home/slideShow/'.$campus->id);
-            }else{
+                redirect('Painel_home/slideShow/' . $campus->id);
+            } else {
                 setMsg('<p>Erro! A publicação não foi editada.</p>', 'error');
             }
         }
@@ -324,13 +334,14 @@ class Painel_home extends CI_Controller
                 'campus' => $campus,
                 'tipo' => 'slideshow',
                 'page' => "Edição Banners - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
-                'idSlid' => $id)
+                'idSlid' => $id
+            )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
 
-    public function delete_slideshow($uriCampus=NULL,$id)
+    public function delete_slideshow($uriCampus = NULL, $id)
     {
         verifica_login();
         $slideold = $this->painelbd->getWhere('banners', array('id' => $id))->row();
@@ -345,7 +356,6 @@ class Painel_home extends CI_Controller
 
 
         if (copy($origem, $destino) || $nome == '<') {
-
         }
         if ($this->bd->deletar('banners', $id)) {
             setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
@@ -354,7 +364,6 @@ class Painel_home extends CI_Controller
             setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
             redirect("Painel_home/slideshow/$uriCampus");
         }
-
     }
 
 
@@ -384,7 +393,6 @@ class Painel_home extends CI_Controller
             setMsg($messageNot, 'error');
             redirect($redirect);
         }
-
     }
 
     /***************Fim função genérica de alterar status********************/
@@ -419,11 +427,13 @@ class Painel_home extends CI_Controller
         $data = array(
             'titulo' => 'Início - Slides',
             'conteudo' => 'paineladm/financeiro/cadastrar',
-            'dados' => array('slideshow' => $dados,
+            'dados' => array(
+                'slideshow' => $dados,
                 'cursos' => '',
                 'page' => '',
                 'revistas_id' => '',
-                'tipo' => 'slideshow')
+                'tipo' => 'slideshow'
+            )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
@@ -432,37 +442,39 @@ class Painel_home extends CI_Controller
     /************************************
      *  Modulo de arquivos e fotos temporarios  
      * ***********************************/
-    public function lista_campus_temps(){
+    public function lista_campus_temps()
+    {
         verificaLogin();
 
         $page = 'Lista de Campus';
-        $colunasResultadoCursos = 
-            array('campus.id',
-            'campus.name',
-            'campus.city',
-            'campus.uf'
-        );
-    
-        $listagemDosCampus = $this->painelbd->where('*','campus',NULL, array('visible' => 'SIM'))->result();
+        $colunasResultadoCursos =
+            array(
+                'campus.id',
+                'campus.name',
+                'campus.city',
+                'campus.uf'
+            );
+
+        $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
             'conteudo' => 'paineladm/temps/lista_campus_temps',
             'dados' => array(
                 // 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'page' => 'Listagem de Arquivos temporários - Por Campus',
-                'campus'=> $listagemDosCampus,
-                'tipo'=> '' 
+                'campus' => $listagemDosCampus,
+                'tipo' => ''
             )
         );
 
         $this->load->view('templates/layoutPainelAdm', $data);
     }
-    
+
     public function tempArg()
     {
         verificaLogin();
         $listagem = $this->bd->where('*', 'files_temp', NULL, array('status' => '1'), array('campo' => 'id', 'ordem' => 'DESC'))->result();
-        
+
         $data = array(
             'titulo' => 'Arquivos -temporarios',
             'conteudo' => 'paineladm/temps/lista',
@@ -537,7 +549,8 @@ class Painel_home extends CI_Controller
             'dados' => array(
                 'permissionCampusArray' => $_SESSION['permissionCampus'],
                 'temps' => $dados,
-                'tipo' => 'temps')
+                'tipo' => 'temps'
+            )
         );
         $this->load->view('templates/layoutPainelAdm', $data);
     }
@@ -568,7 +581,6 @@ class Painel_home extends CI_Controller
                 $path = 'assets/temps';
                 $name_tmp = noAccentuation($this->input->post('title'), 'temp');
                 $upload = $this->bd->uploadFiles('arquivo', $path, $types = 'jpg|JPG|png|jpeg|JPEG|pdf|PDF|doc|DOC|docx|DOCX', $name_tmp);
-
             }
 
             if ($dados->title != $this->input->post('title')) {

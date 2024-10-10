@@ -56,7 +56,6 @@
  */
 //echo $_SERVER["HTTP_HOST"];
 
-
 if ($_SERVER["HTTP_HOST"] == 'localhost') {
     $workplace = 'development';
     define('CONST_PROTOCOLO', 'http://');
