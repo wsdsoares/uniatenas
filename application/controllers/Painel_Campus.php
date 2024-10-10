@@ -1076,6 +1076,7 @@ class Painel_campus extends CI_Controller
      * Página: todas as dirigentes - Informações no link
      * uniatenas/site/dirigentes/NOME_DO_CAMPUS
      *************************************************************************/
+
     public function lista_campus_dirigentes()
     {
         verificaLogin();
