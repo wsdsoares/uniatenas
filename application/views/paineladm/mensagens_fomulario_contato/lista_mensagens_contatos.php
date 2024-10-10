@@ -6,14 +6,14 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
-          echo $msg;
+      if ($msg = getMsg()) {
+        echo $msg;
       }
       ?>
       <div class="alert alert-info">
-        <?php 
-            echo "O email configurado para recebimento dessas mensagens é o email: <strong>'$campus->email'</strong> dentro do cadastro do CAMPUS";
-            ?>
+        <?php
+        echo "O email configurado para recebimento dessas mensagens é o email: <strong>'$campus->email'</strong> dentro do cadastro do CAMPUS";
+        ?>
       </div>
       <div class="header">
         <h2>
@@ -25,9 +25,9 @@
         <div class="container">
 
           <div class="col-xs-6">
-            <?php 
-          echo anchor("Painel_mensagens_contatos/lista_campus_mensagens_contatos", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
-          ?>
+            <?php
+            echo anchor("Painel_mensagens_contatos/lista_campus_mensagens_contatos", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            ?>
           </div>
         </div>
       </div>
@@ -59,39 +59,36 @@
               <?php
               foreach ($dados['listaMensagensContato'] as $item):
               ?>
-              <tr>
-                <td class="center">
-                  <?php 
+                <tr>
+                  <td class="center">
+                    <?php
 
-                    echo '<a href=' . base_url("Painel_cpa/editar_dados_cpa/$campus->id/$item->id") . '>'
-                        . '<i class="material-icons">edit</i>'
-                        . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="'.$item->name.'" data-id="'. $item->id . '" >'
-                        . '<i class="material-icons">delete</i>'
-                        . '</a>';
+                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->name . '" data-id="' . $item->id . '" >'
+                      . '<i class="material-icons">delete</i>'
+                      . '</a>';
 
-                  ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo toHtml($item->name)?></td>
-                <td>
-                  <?php 
-                  echo toHtml(substr ($item->message, 0, 50))."....";
-                  ?>
-                </td>
+                    ?>
+                  </td>
+                  <td><?php echo $item->id; ?></td>
+                  <td><?php echo toHtml($item->name) ?></td>
+                  <td>
+                    <?php
+                    echo toHtml(substr($item->message, 0, 50)) . "....";
+                    ?>
+                  </td>
 
-                <td>
-                  <?php 
+                  <td>
+                    <?php
                     echo anchor("Painel_mensagens_contatos/ver_mensagem/$campus->id/$item->id", '<i class="material-icons">desktop_windows</i> Visualizar mensagem', array('class' => 'btn btn-info m-t-15 waves-effect'));
                     ?>
-                </td>
+                  </td>
 
-                <td> <?php echo date("d/m/Y",strtotime($item->datacreated)); ?></td>
+                  <td> <?php echo date("d/m/Y", strtotime($item->datacreated)); ?></td>
 
-              </tr>
+                </tr>
               <?php
-                endforeach;
-                ?>
+              endforeach;
+              ?>
             </tbody>
           </table>
         </div>
@@ -128,11 +125,11 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_mensagens_contatos/deletar_mensagem_contato/$campus->id/"); ?>' + id);
-});
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_mensagens_contatos/deletar_mensagem_contato/$campus->id/"); ?>' + id);
+  });
 </script>
