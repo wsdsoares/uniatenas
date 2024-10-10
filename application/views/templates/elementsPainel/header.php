@@ -7,11 +7,11 @@ include_once 'navbar.php';
 $permissionCampusArray = '';
 ?>
 <script type="text/javascript">
-function ativo() {
-  const elemento = document.querySelectorAll("<li> .active");
-  console.log(elemento);
-  alert(elemento);
-}
+  function ativo() {
+    const elemento = document.querySelectorAll("<li> .active");
+    console.log(elemento);
+    alert(elemento);
+  }
 </script>
 <section>
   <aside id="leftsideba" class="sidebar">
@@ -40,7 +40,6 @@ function ativo() {
             <li>
               <?php
               echo anchor('Painel_campus/lista_campus_botoes_acessos', '<span>Botões de Acesso Rápido</span>');
-              // echo anchor('Painel_campus/lista_botoes_acesso_rapido_camp', '<span>Botões de Acesso Rápido</span>');
               ?>
             </li>
             <li>

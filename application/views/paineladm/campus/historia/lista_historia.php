@@ -19,19 +19,19 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-6">
-              <?php 
-                if(isset($paginaNossaHistoria) and $paginaNossaHistoria != '' ){
-                  $tituloBotao = "EDITAR";
-                }else{
-                  $tituloBotao = "CADASTRAR";
-                }
-                echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> '.$tituloBotao.' página (menu financeiro)', array('class' => 'btn alerts_info'));
+              <?php
+              if (isset($paginaNossaHistoria) and $paginaNossaHistoria != '') {
+                $tituloBotao = "EDITAR";
+              } else {
+                $tituloBotao = "CADASTRAR";
+              }
+              echo anchor("Painel_financeiro/cadastrar_pagina_financeiro/$campus->id/", '<i class="material-icons">desktop_mac</i> ' . $tituloBotao . ' página (menu história)', array('class' => 'btn alerts_info'));
               ?>
             </div>
             <div class="col-xs-6">
               <?php
-              if(isset($paginaNossaHistoria) and $paginaNossaHistoria != '' ){
-                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaNossaHistoria->id", '<i class="material-icons">contact_phone</i> '.$tituloBotao.' contatos (financeiro)', array('class' => 'btn btn-blue1'));
+              if (isset($paginaNossaHistoria) and $paginaNossaHistoria != '') {
+                echo anchor("Painel_financeiro/cadastrar_contato_pagina_financeiro/$campus->id/$paginaNossaHistoria->id", '<i class="material-icons">contact_phone</i> ' . $tituloBotao . ' contatos (história)', array('class' => 'btn btn-blue1'));
               }
               ?>
             </div>
@@ -46,9 +46,9 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
- 
-      if ($msg = getMsg()){
-          echo $msg;
+
+      if ($msg = getMsg()) {
+        echo $msg;
       }
       ?>
       <div class="header">
@@ -60,12 +60,12 @@
       <div class="botoes-acoes-formularios">
         <div class="container">
           <div class="col-xs-6">
-            <?php echo anchor("Painel_campus/cadastrar_historia/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR História', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_campus/cadastrar_historia/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR História', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
           <div class="col-xs-6">
-            <?php 
-          echo anchor('Painel_campus/lista_campus_nossa_historia', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
-          ?>
+            <?php
+            echo anchor('Painel_campus/lista_campus_nossa_historia', '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            ?>
           </div>
         </div>
       </div>
@@ -101,13 +101,13 @@
               <?php
               foreach ($dados['conteudosPagina'] as $item):
               ?>
-              <tr>
-                <td class="center">
-                  <?php 
+                <tr>
+                  <td class="center">
+                    <?php
 
                     echo '<a href=' . base_url("Painel_Campus/editar_historia/$campus->id/$item->id") . '>'
-                        . '<i class="material-icons">edit</i>'
-                        . '</a> ';
+                      . '<i class="material-icons">edit</i>'
+                      . '</a> ';
                     /*echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
@@ -123,36 +123,36 @@
                               . '</a>';
                       }
                       */
-                  ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->title;?></td>
-                <td><?php echo $item->description;?></td>
+                    ?>
+                  </td>
+                  <td><?php echo $item->id; ?></td>
+                  <td><?php echo $item->title; ?></td>
+                  <td><?php echo $item->description; ?></td>
 
-                <td>
-                  <?php
-                    if($item->status =='0'){
+                  <td>
+                    <?php
+                    if ($item->status == '0') {
                       echo 'Inativo';
-                    }else{
+                    } else {
                       echo 'Ativo';
                     }
                     ?>
-                </td>
-                <td><?php echo $item->city;?></td>
+                  </td>
+                  <td><?php echo $item->city; ?></td>
 
-                <td> <?php echo date("d/m/Y",strtotime($item->created_at)); ?></td>
-                <td>
-                  <?php 
+                  <td> <?php echo date("d/m/Y", strtotime($item->created_at)); ?></td>
+                  <td>
+                    <?php
                     $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo date("d/m/Y H:m:s",strtotime($dateModification)).' - '.$item->user_id; 
+                    echo date("d/m/Y H:m:s", strtotime($dateModification)) . ' - ' . $item->user_id;
                     ?>
-                </td>
+                  </td>
 
 
-              </tr>
+                </tr>
               <?php
-                endforeach;
-                ?>
+              endforeach;
+              ?>
             </tbody>
           </table>
         </div>
@@ -187,14 +187,14 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href', '<?php echo base_url("Painel_home/delete_slideshow/"); ?>' + id);
 
-  console.log()
+    console.log()
 
-});
+  });
 </script>
