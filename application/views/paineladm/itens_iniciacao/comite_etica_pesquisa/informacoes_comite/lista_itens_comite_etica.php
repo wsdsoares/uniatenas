@@ -6,7 +6,7 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <?php
-      if ($msg = getMsg()){
+      if ($msg = getMsg()) {
         echo $msg;
       }
       ?>
@@ -22,97 +22,97 @@
         <div class="container">
 
           <div class="col-xs-6">
-            <?php echo anchor("Painel_pesquisa_comite/cadastrar_itens_comite_etica/$campus->id/$pagina->id", '<i class="material-icons">add_box</i> CADASTRAR Item', array('class' => 'btn btn-primary m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_pesquisa_comite/cadastrar_itens_comite_etica/$campus->id/$pagina->id", '<i class="material-icons">add_box</i> CADASTRAR Item', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
 
           <div class="col-xs-6">
-            <?php echo anchor("Painel_pesquisa_comite/lista_itens_comite_etica/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect'));?>
+            <?php echo anchor("Painel_pesquisa_comite/lista_informacoes_comite_etica/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
         </div>
       </div>
       <br />
       <?php
-      
-      if(isset($listaInformacoesPaginaIniciacaoCientifica) and $listaInformacoesPaginaIniciacaoCientifica != '' ){
-      ?>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-            <thead>
-              <tr>
-                <th>Ações</th>
-                <th>#</th>
-                <th>Título</th>
-                <th>Sub Título</th>
-                <th>Ordem</th>
-                <th>Situação</th>
-                <th>Descrição...</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>Ações</th>
-                <th>#</th>
-                <th>Título</th>
-                <th>Sub Título</th>
-                <th>Ordem</th>
-                <th>Situação</th>
-                <th>Descrição...</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <?php
-              foreach ($dados['listaInformacoesPaginaIniciacaoCientifica'] as $item):
-                  ?>
-              <tr>
-                <td class="center">
-                  <?php 
 
-                    echo '<a href=' . base_url("Painel_pesquisa_comite/editar_itens_comite_pesquisa/$campus->id/$pagina->id/$item->id") . '>'
+      if (isset($listaInformacoesPaginaIniciacaoCientifica) and $listaInformacoesPaginaIniciacaoCientifica != '') {
+      ?>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+              <thead>
+                <tr>
+                  <th>Ações</th>
+                  <th>#</th>
+                  <th>Título</th>
+                  <th>Sub Título</th>
+                  <th>Ordem</th>
+                  <th>Situação</th>
+                  <th>Descrição...</th>
+                  <th>Modificado em, por:</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Ações</th>
+                  <th>#</th>
+                  <th>Título</th>
+                  <th>Sub Título</th>
+                  <th>Ordem</th>
+                  <th>Situação</th>
+                  <th>Descrição...</th>
+                  <th>Modificado em, por:</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php
+                foreach ($dados['listaInformacoesPaginaIniciacaoCientifica'] as $item):
+                ?>
+                  <tr>
+                    <td class="center">
+                      <?php
+
+                      echo '<a href=' . base_url("Painel_pesquisa_comite/editar_itens_comite_pesquisa/$campus->id/$pagina->id/$item->id") . '>'
                         . '<i class="material-icons">edit</i>'
                         . '</a> ';
-                    echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
                         . '<i class="material-icons">delete</i>'
                         . '</a>';
-                  ?>
-                </td>
-                <td><?php echo $item->id; ?></td>
-                <td><?php echo $item->title;?></td>
-                <td><?php echo $item->title_short;?></td>
-                <td><?php echo $item->order;?></td>
+                      ?>
+                    </td>
+                    <td><?php echo $item->id; ?></td>
+                    <td><?php echo $item->title; ?></td>
+                    <td><?php echo $item->title_short; ?></td>
+                    <td><?php echo $item->order; ?></td>
 
-                <td>
-                  <?php
-                    if($item->status =='0'){
+                    <td>
+                      <?php
+                      if ($item->status == '0') {
                         $situacao = 'Inativo';
-                    }else{
+                      } else {
                         $situacao = 'Ativo';
-                    }
+                      }
 
-                    echo $situacao;
-                    ?>
-                </td>
-                <td><?php echo substr($item->description, 0, 150).'...';?></td>
-
-
-                <td>
-                  <?php 
-                    $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
-                    echo $dateModification . ' - ' . $item->user_id;
-                    ?>
-                </td>
+                      echo $situacao;
+                      ?>
+                    </td>
+                    <td><?php echo substr($item->description, 0, 150) . '...'; ?></td>
 
 
-              </tr>
-              <?php
+                    <td>
+                      <?php
+                      $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
+                      echo $dateModification . ' - ' . $item->user_id;
+                      ?>
+                    </td>
+
+
+                  </tr>
+                <?php
                 endforeach;
                 ?>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
       <?php
       }
       ?>
@@ -146,13 +146,13 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_iniciacao_cientifica/deletar_item_iniciacao/$campus->id/$pagina->id/"); ?>' +
-    id);
-});
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_iniciacao_cientifica/deletar_item_iniciacao/$campus->id/$pagina->id/"); ?>' +
+      id);
+  });
 </script>
