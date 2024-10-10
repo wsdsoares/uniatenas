@@ -63,21 +63,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="col-md-6">
-            <label for="title">Cargo <small> (Mesmo cargo, para os campus que são centros
-                universitários)</small></label>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="material-icons">assignment_ind</i>
-              </span>
-              <div class="form-line">
-                <?php
-                echo form_input(array('name' => 'cargo2', 'class' => 'form-control', 'placeholder' => ' Ex.: Diretor Administrativo'), set_value('cargo2'));
-                ?>
-              </div>
-            </div>
-          </div> -->
         </div>
 
         <h2 class="card-inside-title">Foto do dirigente</h2>

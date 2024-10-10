@@ -61,25 +61,14 @@
               ?>
                 <tr>
                   <td class="center">
-                    <?php
 
+                    <?php
                     echo '<a href=' . base_url("Painel_campus/editar_dirigente/$campus->id/$diretor->id") . '>'
                       . '<i class="material-icons">edit</i>'
                       . '</a> ';
                     echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $diretor->nome . '" data-id="' . $diretor->id . '" >'
                       . '<i class="material-icons">delete</i>'
                       . '</a>';
-
-                    // $redirect = 'Painel_home-slideshow';
-                    // $table = 'banners';
-
-                    // if ($campus->status == 1) {
-                    //     echo  '<i class="material-icons">visibility</i>'
-                    //         . '</a>';
-                    // } elseif ($campus->status == 0) {
-                    //     echo  '<i class="material-icons">visibility_off</i>'
-                    //         . '</a>';
-                    // }
                     ?>
                   </td>
                   <td><?php echo $diretor->id; ?></td>
