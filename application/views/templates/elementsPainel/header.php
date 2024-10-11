@@ -7,11 +7,11 @@ include_once 'navbar.php';
 $permissionCampusArray = '';
 ?>
 <script type="text/javascript">
-function ativo() {
-  const elemento = document.querySelectorAll("<li> .active");
-  console.log(elemento);
-  alert(elemento);
-}
+  function ativo() {
+    const elemento = document.querySelectorAll("<li> .active");
+    console.log(elemento);
+    alert(elemento);
+  }
 </script>
 <section>
   <aside id="leftsideba" class="sidebar">
@@ -249,14 +249,16 @@ function ativo() {
 
 
         <li class="header">Gestão - Trabalhe Conosco</li>
-        <!-- <li>
-          <a href="javascript:void(0);" class="menu-toggle">
+        <li>
+          <?php echo anchor('Painel_trabalhe_conosco/lista_campus_trabalhe_conosco', '<i class="material-icons">menu_book</i><span>Trabalhe Conosco</span>'); ?>
+
+          <!-- <a href="ch" class="menu-toggle">
             <i class="material-icons">menu_book</i>
             <span>Trabalhe Conosco</span>
-          </a>
+          </a> -->
 
           <ul class="ml-menu">
-            <li>
+            <!-- <li>
               <?php echo anchor('TrabalheConosco/curriculosRecebidos', '<span>Curriculos - Recebidos</span>'); ?>
             </li>
 
@@ -265,10 +267,10 @@ function ativo() {
             </li>
             <li>
               <?php echo anchor('TrabalheConosco/areasSetores', '<span>Áreas / Setores</span>'); ?>
-            </li>
+            </li> -->
           </ul>
-        </li> -->
         </li>
+
         <?php //include_once('itens_header/item_h_financeiro.php');
         ?>
         <?php //include_once('itens_header/item_h_mural_institutional_norms.php'); 
@@ -434,29 +436,6 @@ function ativo() {
           </a>
           <ul class="ml-menu">
             <li>
-              <a href="javascript:void(0);" class="menu-toggle">
-                <span>Publicações</span>
-              </a>
-              <ul class="ml-menu">
-                <li>
-                  <?php
-                  echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
-                  ?>
-                </li>
-
-                <li>
-                  <?php
-                  echo anchor('Painel_pesquisa_tcc/lista_campus_tcc', '<span>Monografias - TCC</span>');
-                  ?>
-                </li>
-                <li>
-                  <?php
-                  //comentado até a definição correta do processo
-                  /*echo anchor('publicacoes/anaisMonografia', '
-                                              <span>Anais</span>');*/
-                  ?>
-                </li>
-              </ul>
               <?php
               echo anchor('Painel_publicacoes/lista_campus_revistas', '<span>Revistas</span>');
               ?>
@@ -498,7 +477,7 @@ function ativo() {
         &copy; <a href="javascript:void(0);">UNIATENAS - PAINEL</a>.
       </div>
       <div class="version">
-        <b>Version: </b> 1.0.2
+        <b>Version: </b> 2.1
       </div>
     </div>
   </aside>

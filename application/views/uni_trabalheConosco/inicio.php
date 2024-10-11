@@ -3,17 +3,24 @@ $uricampus = $this->uri->segment(3);
 ?>
 <div class="dados_gerais">
   <div class="container">
-    <h2 class="text"><?php echo $conteudoPag[0]->title . ' - ' . $campus->name . ' - ' . $campus->city; ?></h2>
+    <h2 class="text"><?php echo 'Trabalhe Conosco - ' . $campus->name . ' - ' . $campus->city; ?></h2>
     <div class="row">
+      <?php
+      echo '<pre>';
+      print_r($conteudoPag);
+      print_r($imagemLGPD);
+      print_r($linkRedir);
+      echo '</pre>';
+      ?>
       <style>
-      .panelResume {
-        background: #16A085;
-      }
+        .panelResume {
+          background: #16A085;
+        }
 
-      .panelResume span {
-        color: #000;
-        font-weight: bold;
-      }
+        .panelResume span {
+          color: #000;
+          font-weight: bold;
+        }
       </style>
       <br />
 
@@ -25,7 +32,7 @@ $uricampus = $this->uri->segment(3);
             </div>
           </div>
           <div class="col-xs-12 panelsite">
-            <p>Você pode fazer o cadastro do seu curriculum em nosso banco de talentos.</p>
+            <p><?php echo $conteudoPag[0]->title; ?></p>
             <p class="text-center">
 
             <div class="">
@@ -44,22 +51,20 @@ $uricampus = $this->uri->segment(3);
                           <h4 class="modal-title">Termo de aceite - LGPD</h4>
                         </div>
                         <div class="modal-body">
+                          <?php foreach ($imagemLGPD as $imagem) { ?>
 
-                          <img src='<?php echo base_url('assets/images/trabalheConosco/') ?>01.jpg' width="100%"
-                            height="100%" />
-                          <img src='<?php echo base_url('assets/images/trabalheConosco/') ?>02.jpg' width="100%"
-                            height="100%" />
-                          <img src='<?php echo base_url('assets/images/trabalheConosco/') ?>03.jpg' width="100%"
-                            height="100%" />
+                            <img src='<?php echo base_url($imagem->img_destaque); ?>' width="100%" height="100%" />
+
+                          <?php } ?>
                           <div class="modal-footer">
                             <input type="checkbox" id="aceito" name="aceito" value="Aceito o Termo">
-                            <label for="aceito"> Aceito o termo de uso do Portal RM Banco de Talentos.
+                            <label for="aceito"> <?php echo $aceiteTrabalhe->title ?>
                             </label><br /><br />
                             <button type="button" class="btnEdital" data-dismiss="modal" id="confirmar"
                               style="visibility: hidden;"
-                              onclick="window.location='http://177.69.195.4/FrameHTML/RM/Rhu-BancoTalentos/#/RM/Rhu-BancoTalentos/home';">Confirmar</button>
+                              onclick="window.location='<?php echo $linkRedir->link_redir ?>'">Confirmar</button>
                             <button type="button" class="btnEdital" data-dismiss="modal" id="Fechar"
-                              style="background:red !important; border-color:red !important;">Fechar</button>
+                              tyle="background:red !important; border-color:red !important;">Fechar</button>
                           </div>
                           <div>
 
@@ -71,15 +76,15 @@ $uricampus = $this->uri->segment(3);
                   </div>
                 </div>
                 <script>
-                var aceite = document.getElementById("aceito");
-                document.getElementById('aceito')
-                  .addEventListener('click', function(event) {
-                    if (aceite.checked) {
-                      document.getElementById('confirmar').style.visibility = "visible";
-                    } else {
-                      document.getElementById('confirmar').style.visibility = "hidden";
-                    }
-                  });
+                  var aceite = document.getElementById("aceito");
+                  document.getElementById('aceito')
+                    .addEventListener('click', function(event) {
+                      if (aceite.checked) {
+                        document.getElementById('confirmar').style.visibility = "visible";
+                      } else {
+                        document.getElementById('confirmar').style.visibility = "hidden";
+                      }
+                    });
                 </script>
               </body>
             </div>

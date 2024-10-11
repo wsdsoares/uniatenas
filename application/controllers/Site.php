@@ -1616,18 +1616,42 @@ and revistas.id =$id;
 
         $page = $this->bancosite->getWhere('pages', array('title' => 'trabalheconosco', 'campusid' => $dataCampus->id))->row();
 
-        $localidades = $this->bancosite->getAll('campus')->result();
-
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $page->id))->result();
 
-        $areasAtuacao = $this->bancosite->getWhere('areas')->result();
-        $vagasAbertas = $this->bancosite->getWhere('resume_job_vacancy', array('status' => '1'))->result();
+        $queryImagemLGPD =
+            "SELECT 
+                page_contents.id, page_contents.tipo, page_contents.img_destaque
+                FROM `page_contents` 
+                WHERE page_contents.pages_id = '$page->id'
+                and page_contents.tipo = 'imagem'";
 
-        $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
-        $tablePhones = "campus_has_setores";
-        $dataJoinPhones = array("contatos_setores" => "contatos_setores.setoresidcamp = campus_has_setores.id");
-        $wherePhones = array("campus_has_setores.id" => 1, "contatos_setores.visiblepage" => 1);
-        $phones = $this->Painelsite->where($filedPhones, $tablePhones, $dataJoinPhones, $wherePhones)->result();
+        $imagemLGPD =  $this->bancosite->getQuery($queryImagemLGPD)->result();
+
+        $queryLinkRedir =
+            "SELECT 
+                page_contents.id, page_contents.tipo, page_contents.link_redir
+                FROM page_contents
+                WHERE page_contents.pages_id = '$page->id'
+                and page_contents.tipo = 'linkExterno'";
+
+        $LinkRedir =  $this->bancosite->getQuery($queryLinkRedir)->row();
+
+        $queryAceiteTrabalho =
+            "SELECT 
+                page_contents.id, page_contents.tipo, page_contents.title
+                FROM page_contents
+                WHERE page_contents.pages_id = '$page->id'
+                and page_contents.tipo = 'aceiteTrabalheConosco'";
+        $aceiteTrabalhe =  $this->bancosite->getQuery($queryAceiteTrabalho)->row();
+
+        // $areasAtuacao = $this->bancosite->getWhere('areas')->result();
+        // $vagasAbertas = $this->bancosite->getWhere('resume_job_vacancy', array('status' => '1'))->result();
+
+        // $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
+        // $tablePhones = "campus_has_setores";
+        // $dataJoinPhones = array("contatos_setores" => "contatos_setores.setoresidcamp = campus_has_setores.id");
+        // $wherePhones = array("campus_has_setores.id" => 1, "contatos_setores.visiblepage" => 1);
+        // $phones = $this->Painelsite->where($filedPhones, $tablePhones, $dataJoinPhones, $wherePhones)->result();
 
         $data = array(
             'head' => array(
@@ -1639,11 +1663,11 @@ and revistas.id =$id;
             'js' => null,
             'dados' => array(
                 'campus' => $dataCampus,
-                'idativo' => '$idativo',
-                'localidades' => $localidades,
+                'linkRedir' => $LinkRedir,
+                'imagemLGPD' => $imagemLGPD,
                 'conteudoPag' => $conteudoPrincipal,
-                'vagasAbertas' => $vagasAbertas,
-                'contatos' => $phones
+                'aceiteTrabalhe' => $aceiteTrabalhe,
+
             )
         );
         $this->load->view('templates/master', $data);
