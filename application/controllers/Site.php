@@ -1621,7 +1621,7 @@ and revistas.id =$id;
         $queryImagemLGPD =
             "SELECT 
                 page_contents.id, page_contents.tipo, page_contents.img_destaque
-                FROM `page_contents` 
+                FROM page_contents 
                 WHERE page_contents.pages_id = '$page->id'
                 and page_contents.tipo = 'imagem'";
 
@@ -1644,15 +1644,6 @@ and revistas.id =$id;
                 and page_contents.tipo = 'aceiteTrabalheConosco'";
         $aceiteTrabalhe =  $this->bancosite->getQuery($queryAceiteTrabalho)->row();
 
-        // $areasAtuacao = $this->bancosite->getWhere('areas')->result();
-        // $vagasAbertas = $this->bancosite->getWhere('resume_job_vacancy', array('status' => '1'))->result();
-
-        // $filedPhones = array("contatos_setores.phone", "contatos_setores.ramal", "contatos_setores.visiblepage", "contatos_setores.email", "contatos_setores.phonesetor");
-        // $tablePhones = "campus_has_setores";
-        // $dataJoinPhones = array("contatos_setores" => "contatos_setores.setoresidcamp = campus_has_setores.id");
-        // $wherePhones = array("campus_has_setores.id" => 1, "contatos_setores.visiblepage" => 1);
-        // $phones = $this->Painelsite->where($filedPhones, $tablePhones, $dataJoinPhones, $wherePhones)->result();
-
         $data = array(
             'head' => array(
                 'title' => 'Trabalhe Conosco - ' . $dataCampus->city,
@@ -1673,414 +1664,414 @@ and revistas.id =$id;
         $this->load->view('templates/master', $data);
     }
 
-    public function envioCurriculo($uricampus = NULL, $vaga = NULL)
-    {
+    //     public function envioCurriculo($uricampus = NULL, $vaga = NULL)
+    //     {
 
-        if ($uricampus == null) {
-            redirect("");
-        }
-        $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus, 'visible' => 'SIM'))->row();
-        $this->load->helper('file');
+    //         if ($uricampus == null) {
+    //             redirect("");
+    //         }
+    //         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus, 'visible' => 'SIM'))->row();
+    //         $this->load->helper('file');
 
-        $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
-        $this->form_validation->set_rules('email', 'E-mail', 'required');
-        $this->form_validation->set_rules('gender', 'Gênero', 'required');
-        $this->form_validation->set_rules('areacodecelphone', 'Código de Àrea', 'required');
-        $this->form_validation->set_rules('celphone', 'Telefone', 'required');
+    //         $this->form_validation->set_rules('name', 'Nome', 'required|ucfirst');
+    //         $this->form_validation->set_rules('email', 'E-mail', 'required');
+    //         $this->form_validation->set_rules('gender', 'Gênero', 'required');
+    //         $this->form_validation->set_rules('areacodecelphone', 'Código de Àrea', 'required');
+    //         $this->form_validation->set_rules('celphone', 'Telefone', 'required');
 
-        if ($this->input->post('schoolingid') == '0') {
-            $this->form_validation->set_rules('schoolingid', 'Escolaridade', 'select_validate');
-            $this->form_validation->set_message('select_validate', 'Você precisa selecionar sua escolaridade.');
-        } else {
-            $this->form_validation->set_rules('schoolingid', 'Escolaridade');
-        }
+    //         if ($this->input->post('schoolingid') == '0') {
+    //             $this->form_validation->set_rules('schoolingid', 'Escolaridade', 'select_validate');
+    //             $this->form_validation->set_message('select_validate', 'Você precisa selecionar sua escolaridade.');
+    //         } else {
+    //             $this->form_validation->set_rules('schoolingid', 'Escolaridade');
+    //         }
 
-        $this->form_validation->set_rules('address', 'Endereço', 'required');
-        $this->form_validation->set_rules('city', 'Cidade', 'required');
+    //         $this->form_validation->set_rules('address', 'Endereço', 'required');
+    //         $this->form_validation->set_rules('city', 'Cidade', 'required');
 
-        if ($this->input->post('state') == '0') {
-            $this->form_validation->set_rules('state', 'Estado', 'select_validate');
-            $this->form_validation->set_message('select_validate', 'Você precisa selecionar um estado (UF).');
-        } else {
-            $this->form_validation->set_rules('state', 'Estado');
-        }
+    //         if ($this->input->post('state') == '0') {
+    //             $this->form_validation->set_rules('state', 'Estado', 'select_validate');
+    //             $this->form_validation->set_message('select_validate', 'Você precisa selecionar um estado (UF).');
+    //         } else {
+    //             $this->form_validation->set_rules('state', 'Estado');
+    //         }
 
-        if ($vaga == 1) {
+    //         if ($vaga == 1) {
 
-            if ($this->input->post('campusid') == '0') {
-                $this->form_validation->set_rules('campusid', 'Campus', 'select_validate');
-                $this->form_validation->set_message('select_validate', 'Você precisa selecionar um local/Campus para envio do seu currículo.');
-            } else {
-                $this->form_validation->set_rules('campusid', 'Campus');
-            }
-            $this->form_validation->set_rules('typeResume', 'Tipo de Currículo', 'required');
-        }
-
-
-        if (empty($_FILES['files']['name'])) {
-            $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
-            $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
-        }
+    //             if ($this->input->post('campusid') == '0') {
+    //                 $this->form_validation->set_rules('campusid', 'Campus', 'select_validate');
+    //                 $this->form_validation->set_message('select_validate', 'Você precisa selecionar um local/Campus para envio do seu currículo.');
+    //             } else {
+    //                 $this->form_validation->set_rules('campusid', 'Campus');
+    //             }
+    //             $this->form_validation->set_rules('typeResume', 'Tipo de Currículo', 'required');
+    //         }
 
 
-        if ($this->form_validation->run() == false) {
-            if (validation_errors()) {
-                setMsg(validation_errors(), 'error');
-            }
-        } else {
-
-            $path = 'assets/files/trabalheConosco/panel/resume';
-            $name_tmp = preg_replace(array(
-                "/(á|à|ã|â|ä)/",
-                "/(Á|À|Ã|Â|Ä)/",
-                "/(é|è|ê|ë)/",
-                "/(É|È|Ê|Ë)/",
-                "/(í|ì|î|ï)/",
-                "/(Í|Ì|Î|Ï)/",
-                "/(ó|ò|õ|ô|ö)/",
-                "/(Ó|Ò|Õ|Ô|Ö)/",
-                "/(ú|ù|û|ü)/",
-                "/(Ú|Ù|Û|Ü)/",
-                "/(ñ)/",
-                "/(Ñ)/"
-            ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('name'));
-            $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
-
-            // matriz de saída
-            $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-
-            // devolver a string
-            $name_tmp = str_replace($what, $by, $name_tmp);
-
-            $upload = $this->bancosite->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
-
-            if ($upload) {
-
-                $dadosForm = elements(array('name', 'email', 'gender', 'areacodecelphone', 'celphone', 'schoolingid', 'address', 'city', 'state'), $this->input->post());
-
-                $dadosForm['campusid'] = ($vaga == 1) ? $this->input->post('campusid') : $this->bancosite->getWhere('resume_job_vacancy', array('id' => $vaga))->row()->campusid;
-                $dadosForm['vacancyid'] = ($vaga <> 1) ? $vaga : 1;
-
-                $dadosForm['files'] = $path . '/' . $upload['file_name'];
-
-                $dadosForm['whatsapp'] = $this->input->post('whatsapp');
-
-                if (!empty($dadosForm['whatsapp'])) {
-                    $dadosForm['whatsapp'] = $this->input->post('whatsapp');
-                } else {
-                    $dadosForm['whatsapp'] = null;
-                }
-
-                //$dadosForm['whatsapp'] = !empty($this->input->post('whatsapp')) ? $this->input->post('whatsapp') : null;
-
-                if (!empty($dadosForm['areacode'])) {
-                    $dadosForm['areacode'] = $this->input->post('areacode');
-                } else {
-                    $dadosForm['areacode'] = null;
-                }
-                //$dadosForm['areacode'] = !empty($this->input->post('areacode')) ? $this->input->post('areacode') : null;
+    //         if (empty($_FILES['files']['name'])) {
+    //             $this->form_validation->set_rules('files', 'Arquivo', 'callback_file_check');
+    //             $this->form_validation->set_message('file_check', 'Você precisa informar um arquivo em formato PDF.');
+    //         }
 
 
-                if (!empty($dadosForm['phone'])) {
-                    $dadosForm['phone'] = $this->input->post('phone');
-                } else {
-                    $dadosForm['phone'] = null;
-                }
+    //         if ($this->form_validation->run() == false) {
+    //             if (validation_errors()) {
+    //                 setMsg(validation_errors(), 'error');
+    //             }
+    //         } else {
 
-                // $dadosForm['phone'] = !empty($this->input->post('phone')) ? $this->input->post('phone') : null;
+    //             $path = 'assets/files/trabalheConosco/panel/resume';
+    //             $name_tmp = preg_replace(array(
+    //                 "/(á|à|ã|â|ä)/",
+    //                 "/(Á|À|Ã|Â|Ä)/",
+    //                 "/(é|è|ê|ë)/",
+    //                 "/(É|È|Ê|Ë)/",
+    //                 "/(í|ì|î|ï)/",
+    //                 "/(Í|Ì|Î|Ï)/",
+    //                 "/(ó|ò|õ|ô|ö)/",
+    //                 "/(Ó|Ò|Õ|Ô|Ö)/",
+    //                 "/(ú|ù|û|ü)/",
+    //                 "/(Ú|Ù|Û|Ü)/",
+    //                 "/(ñ)/",
+    //                 "/(Ñ)/"
+    //             ), explode(" ", "a A e E i I o O u U n N"), $this->input->post('name'));
+    //             $what = array('ä', 'ã', 'à', 'á', 'â', 'ê', 'ë', 'è', 'é', 'ï', 'ì', 'í', 'ö', 'õ', 'ò', 'ó', 'ô', 'ü', 'ù', 'ú', 'û', 'À', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ', 'ç', 'Ç', ' ', '-', '(', ')', ',', ';', ':', '|', '!', '"', '#', '$', '%', '&', '/', '=', '?', '~', '^', '>', '<', 'ª', 'º', "’");
 
-                setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
-                date_default_timezone_set('America/Sao_Paulo');
+    //             // matriz de saída
+    //             $by = array('a', 'a', 'a', 'a', 'a', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'A', 'A', 'E', 'I', 'O', 'U', 'n', 'n', 'c', 'C', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
-                $this->load->library('email');
+    //             // devolver a string
+    //             $name_tmp = str_replace($what, $by, $name_tmp);
 
-                //Inicia o processo de configuração para o envio do email
-                $config['protocol'] = 'mail'; // define o protocolo utilizado
-                $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
-                $config['validate'] = TRUE; // define se haverá validação dos endereços de email
-                $config['mailtype'] = 'html';
-                $config['newline'] = '\r\n';
-                $config['charset'] = 'utf-8';
+    //             $upload = $this->bancosite->do_uploadFiles('files', $path, $types = 'pdf', $name_tmp);
 
-                $this->email->initialize($config);
+    //             if ($upload) {
 
-                $mensagem = '<style type="text/css">
-    @media only screen and (max-width:600px) {p, ul li, ol li, a { font-size:14px!important; line-height:150%!important } h1 { font-size:26px!important; text-align:center; line-height:120%!important } h2 { font-size:24px!important; text-align:center; line-height:120%!important } h3 { font-size:20px!important; text-align:center; line-height:120%!important } h1 a { font-size:26px!important } h2 a { font-size:24px!important } h3 a { font-size:20px!important } .es-menu td a { font-size:13px!important } .es-header-body p, .es-header-body ul li, .es-header-body ol li, .es-header-body a { font-size:13px!important } .es-footer-body p, .es-footer-body ul li, .es-footer-body ol li, .es-footer-body a { font-size:13px!important } .es-infoblock p, .es-infoblock ul li, .es-infoblock ol li, .es-infoblock a { font-size:11px!important } *[class="gmail-fix"] { display:none!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3 { text-align:right!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-button-border { display:block!important } a.es-button { font-size:14px!important; display:block!important; border-left-width:0px!important; border-right-width:0px!important } .es-btn-fw { border-width:10px 0px!important; text-align:center!important } .es-adaptive table, .es-btn-fw, .es-btn-fw-brdr, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .es-adapt-td { display:block!important; width:100%!important } .adapt-img { width:100%!important; height:auto!important } .es-m-p0 { padding:0px!important } .es-m-p0r { padding-right:0px!important } .es-m-p0l { padding-left:0px!important } .es-m-p0t { padding-top:0px!important } .es-m-p0b { padding-bottom:0!important } .es-m-p20b { padding-bottom:20px!important } .es-mobile-hidden, .es-hidden { display:none!important } .es-desk-hidden { display:table-row!important; width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } .es-desk-menu-hidden { display:table-cell!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } table.es-social { display:inline-block!important } table.es-social td { display:inline-block!important } }
-    #outlook a {
-        padding:0;
-    }
-    .ExternalClass {
-        width:100%;
-    }
-    .ExternalClass,
-    .ExternalClass p,
-    .ExternalClass span,
-    .ExternalClass font,
-    .ExternalClass td,
-    .ExternalClass div {
-        line-height:100%;
-    }
-    .es-button {
-        mso-style-priority:100!important;
-        text-decoration:none!important;
-    }
-    a[x-apple-data-detectors] {
-        color:inherit!important;
-        text-decoration:none!important;
-        font-size:inherit!important;
-        font-family:inherit!important;
-        font-weight:inherit!important;
-        line-height:inherit!important;
-    }
-    .es-desk-hidden {
-        display:none;
-        float:left;
-        overflow:hidden;
-        width:0;
-        max-height:0;
-        line-height:0;
-        mso-hide:all;
-    }
-    .es-button-border:hover a.es-button {
-        background:#3498db!important;
-        border-color:#3498db!important;
-    }
-    .es-button-border:hover {
-        border-color:#42d159 #42d159 #42d159 #42d159!important;
-        background:#3498db!important;
-    }
-</style>
-<div style="width:100%;font-family:roboto,    helvetica, arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;">
-    <div class="es-wrapper-color" style="background-color:#F6F6F6;">
-        <!--[if gte mso 9]>
-                             <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
-                                     <v:fill type="tile" color="#f6f6f6"></v:fill>
-                             </v:background>
-                     <![endif]-->
-        <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;">
-            <tr style="border-collapse:collapse;">
-                <td valign="top" style="padding:0;Margin:0;">
-                    <table cellpadding="0" cellspacing="0" class="es-content" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
-                        <tr style="border-collapse:collapse;">
-                            <td align="center" style="padding:0;Margin:0;">
-                                <table bgcolor="transparent" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;">
-                                    <tr style="border-collapse:collapse;">
-                                        <td align="left" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;">
-                                            <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                
-                                            </table></td>
-                                    </tr>
-                                </table></td>
-                        </tr>
-                    </table>
-                    <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
-                        <tr style="border-collapse:collapse;">
-                            <td align="center" style="padding:0;Margin:0;">
-                                <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" bgcolor="transparent" align="center">
-                                    <tr style="border-collapse:collapse;">
-                                        <td style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:20px;padding-right:20px;background-position:center bottom;" align="left">
-                                            <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                <tr style="border-collapse:collapse;">
-                                                    <td width="560" valign="top" align="center" style="padding:0;Margin:0;">
-                                                        <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                            <tr style="border-collapse:collapse;">
-                                                                <td align="center" style="padding:0;Margin:0;"><img src="http://www.atenas.edu.br/uniatenas/assets/images/logoUniatenas.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="189"></td>
-                                                            </tr>
-                                                        </table></td>
-                                                </tr>
-                                            </table></td>
-                                    </tr>
-                                </table></td>
-                        </tr>
-                    </table>
-                    <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
-                        <tr style="border-collapse:collapse;">
-                            <td align="center" style="padding:0;Margin:0;">
-                                <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" bgcolor="transparent" align="center">
-                                    <tr style="border-collapse:collapse;">
-                                        <td style="padding:0;Margin:0;padding-bottom:20px;background-position:center top;" align="left">
-                                            <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                <tr style="border-collapse:collapse;">
-                                                    <td width="600" valign="top" align="center" style="padding:0;Margin:0;">
-                                                        <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;background-position:center bottom;background-color:#FFFFFF;border-radius:5px;" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
-                                                            <tr style="border-collapse:collapse;">
-                                                                <td align="left"  class="es-m-txt-l" style="Margin:0;padding-bottom:5px;padding-top:20px;padding-left:20px;padding-right:20px;"><h2 style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:roboto,    helvetica, arial, sans-serif;font-size:22px;font-style:normal;font-weight:normal;color:#3F3D3D;">Olá ' . $dadosForm['name'] . ',</h2></td>
-                                                            </tr>
-                                                            <tr style="border-collapse:collapse;">
-                                                                <td align="center" style="Margin:0;padding-bottom:5px;padding-top:10px;padding-left:20px;padding-right:20px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:roboto,    helvetica, arial, sans-serif;line-height:21px;color:#3F3D3D;">
-                                                                
-                                                                
-                                                                <img style="width: 700px;" src="http://www.atenas.edu.br/uniatenas/assets/images/uploads/img-email.png" >
-                                                                </td>
-                                                            </tr>
-                                                            <tr style="border-collapse:collapse;">
-                                                            
-                                                                <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#31CB4B none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:7px;width:auto;">
-                                                                
-                                                                </span>
+    //                 $dadosForm = elements(array('name', 'email', 'gender', 'areacodecelphone', 'celphone', 'schoolingid', 'address', 'city', 'state'), $this->input->post());
 
-                                                                </td>
-                                                                
-                                                            </tr>
-                                                        </table></td>
-                                                        
-                                                        <p>Esta é uma mensagem automática, favor não responder este e-mail.<br/></p>
-                                                </tr>
-                                            </table>
-                                            </td>
-                                             
-                                    </tr>
-                                </table></td>
-                        </tr>
-                    </table>
-                    <table class="es-footer" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
-                        <tr style="border-collapse:collapse;">
-                            <td align="center" style="padding:0;Margin:0;">
-                                <table class="es-footer-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" bgcolor="rgba(0, 0, 0, 0)" align="center">
-                                    <tr style="border-collapse:collapse;">
-                                        <td style="Margin:0;padding-top:5px;padding-bottom:20px;padding-left:20px;padding-right:10px;background-position:center top;background-color:transparent;" bgcolor="transparent" align="left">
-                                            <!--[if mso]><table width="560" cellpadding="0" cellspacing="0"><tr><td width="270" valign="top"><![endif]-->
-                                            <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
-                                                <tr style="border-collapse:collapse;">
-                                                    <td width="520" valign="top" align="center" style="padding:0;Margin:0;">
-                                                        
-                          </td>
-                                                </tr>
-                                            </table>
-                                            
-                                            <!--[if mso]></td></tr></table><![endif]--></td>
-                                    </tr>
-                                </table></td>
-                        </tr>
-                    </table>
-                    <table cellpadding="0" cellspacing="0" class="es-content" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
-                        <tr style="border-collapse:collapse;">
-                            <td align="center" style="padding:0;Margin:0;">
-                                <table bgcolor="transparent" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;">
-                                    <tr style="border-collapse:collapse;">
-                                        <td align="left" style="Margin:0;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px;background-position:left top;">
-                                            <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                                                
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table></td>
-                        </tr>
-                    </table></td>
-            </tr>
-        </table>
-    </div>  
-</div>';
+    //                 $dadosForm['campusid'] = ($vaga == 1) ? $this->input->post('campusid') : $this->bancosite->getWhere('resume_job_vacancy', array('id' => $vaga))->row()->campusid;
+    //                 $dadosForm['vacancyid'] = ($vaga <> 1) ? $vaga : 1;
+
+    //                 $dadosForm['files'] = $path . '/' . $upload['file_name'];
+
+    //                 $dadosForm['whatsapp'] = $this->input->post('whatsapp');
+
+    //                 if (!empty($dadosForm['whatsapp'])) {
+    //                     $dadosForm['whatsapp'] = $this->input->post('whatsapp');
+    //                 } else {
+    //                     $dadosForm['whatsapp'] = null;
+    //                 }
+
+    //                 //$dadosForm['whatsapp'] = !empty($this->input->post('whatsapp')) ? $this->input->post('whatsapp') : null;
+
+    //                 if (!empty($dadosForm['areacode'])) {
+    //                     $dadosForm['areacode'] = $this->input->post('areacode');
+    //                 } else {
+    //                     $dadosForm['areacode'] = null;
+    //                 }
+    //                 //$dadosForm['areacode'] = !empty($this->input->post('areacode')) ? $this->input->post('areacode') : null;
 
 
-                $assunto = 'Inscrição - Trabalhe Conosco Site Uniatenas';
+    //                 if (!empty($dadosForm['phone'])) {
+    //                     $dadosForm['phone'] = $this->input->post('phone');
+    //                 } else {
+    //                     $dadosForm['phone'] = null;
+    //                 }
 
-                $this->email->from('resposta@uniatenas.edu.br', 'Trabalhe conosco - UniAtenas'); //quem mandou
-                $this->email->to($dadosForm['email']);
+    //                 // $dadosForm['phone'] = !empty($this->input->post('phone')) ? $this->input->post('phone') : null;
 
-                $this->email->subject($assunto);
-                $this->email->message($mensagem);
+    //                 setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
+    //                 date_default_timezone_set('America/Sao_Paulo');
 
-                if ($this->email->send()) {
-                    $this->bancosite->salvar('resume', $dadosForm);
-                    $this->email->clear();
+    //                 $this->load->library('email');
 
-                    $this->email->from('resposta@uniatenas.edu.br', 'Trabalhe Conosco'); //quem mandou
-                    $this->email->to('rh.estrategico@uniatenas.edu.br');
+    //                 //Inicia o processo de configuração para o envio do email
+    //                 $config['protocol'] = 'mail'; // define o protocolo utilizado
+    //                 $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+    //                 $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+    //                 $config['mailtype'] = 'html';
+    //                 $config['newline'] = '\r\n';
+    //                 $config['charset'] = 'utf-8';
+
+    //                 $this->email->initialize($config);
+
+    //                 $mensagem = '<style type="text/css">
+    //     @media only screen and (max-width:600px) {p, ul li, ol li, a { font-size:14px!important; line-height:150%!important } h1 { font-size:26px!important; text-align:center; line-height:120%!important } h2 { font-size:24px!important; text-align:center; line-height:120%!important } h3 { font-size:20px!important; text-align:center; line-height:120%!important } h1 a { font-size:26px!important } h2 a { font-size:24px!important } h3 a { font-size:20px!important } .es-menu td a { font-size:13px!important } .es-header-body p, .es-header-body ul li, .es-header-body ol li, .es-header-body a { font-size:13px!important } .es-footer-body p, .es-footer-body ul li, .es-footer-body ol li, .es-footer-body a { font-size:13px!important } .es-infoblock p, .es-infoblock ul li, .es-infoblock ol li, .es-infoblock a { font-size:11px!important } *[class="gmail-fix"] { display:none!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3 { text-align:right!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-button-border { display:block!important } a.es-button { font-size:14px!important; display:block!important; border-left-width:0px!important; border-right-width:0px!important } .es-btn-fw { border-width:10px 0px!important; text-align:center!important } .es-adaptive table, .es-btn-fw, .es-btn-fw-brdr, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .es-adapt-td { display:block!important; width:100%!important } .adapt-img { width:100%!important; height:auto!important } .es-m-p0 { padding:0px!important } .es-m-p0r { padding-right:0px!important } .es-m-p0l { padding-left:0px!important } .es-m-p0t { padding-top:0px!important } .es-m-p0b { padding-bottom:0!important } .es-m-p20b { padding-bottom:20px!important } .es-mobile-hidden, .es-hidden { display:none!important } .es-desk-hidden { display:table-row!important; width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } .es-desk-menu-hidden { display:table-cell!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } table.es-social { display:inline-block!important } table.es-social td { display:inline-block!important } }
+    //     #outlook a {
+    //         padding:0;
+    //     }
+    //     .ExternalClass {
+    //         width:100%;
+    //     }
+    //     .ExternalClass,
+    //     .ExternalClass p,
+    //     .ExternalClass span,
+    //     .ExternalClass font,
+    //     .ExternalClass td,
+    //     .ExternalClass div {
+    //         line-height:100%;
+    //     }
+    //     .es-button {
+    //         mso-style-priority:100!important;
+    //         text-decoration:none!important;
+    //     }
+    //     a[x-apple-data-detectors] {
+    //         color:inherit!important;
+    //         text-decoration:none!important;
+    //         font-size:inherit!important;
+    //         font-family:inherit!important;
+    //         font-weight:inherit!important;
+    //         line-height:inherit!important;
+    //     }
+    //     .es-desk-hidden {
+    //         display:none;
+    //         float:left;
+    //         overflow:hidden;
+    //         width:0;
+    //         max-height:0;
+    //         line-height:0;
+    //         mso-hide:all;
+    //     }
+    //     .es-button-border:hover a.es-button {
+    //         background:#3498db!important;
+    //         border-color:#3498db!important;
+    //     }
+    //     .es-button-border:hover {
+    //         border-color:#42d159 #42d159 #42d159 #42d159!important;
+    //         background:#3498db!important;
+    //     }
+    // </style>
+    // <div style="width:100%;font-family:roboto,    helvetica, arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;">
+    //     <div class="es-wrapper-color" style="background-color:#F6F6F6;">
+    //         <!--[if gte mso 9]>
+    //                              <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+    //                                      <v:fill type="tile" color="#f6f6f6"></v:fill>
+    //                              </v:background>
+    //                      <![endif]-->
+    //         <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top;">
+    //             <tr style="border-collapse:collapse;">
+    //                 <td valign="top" style="padding:0;Margin:0;">
+    //                     <table cellpadding="0" cellspacing="0" class="es-content" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+    //                         <tr style="border-collapse:collapse;">
+    //                             <td align="center" style="padding:0;Margin:0;">
+    //                                 <table bgcolor="transparent" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;">
+    //                                     <tr style="border-collapse:collapse;">
+    //                                         <td align="left" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;">
+    //                                             <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+
+    //                                             </table></td>
+    //                                     </tr>
+    //                                 </table></td>
+    //                         </tr>
+    //                     </table>
+    //                     <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+    //                         <tr style="border-collapse:collapse;">
+    //                             <td align="center" style="padding:0;Margin:0;">
+    //                                 <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" bgcolor="transparent" align="center">
+    //                                     <tr style="border-collapse:collapse;">
+    //                                         <td style="Margin:0;padding-top:15px;padding-bottom:15px;padding-left:20px;padding-right:20px;background-position:center bottom;" align="left">
+    //                                             <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+    //                                                 <tr style="border-collapse:collapse;">
+    //                                                     <td width="560" valign="top" align="center" style="padding:0;Margin:0;">
+    //                                                         <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+    //                                                             <tr style="border-collapse:collapse;">
+    //                                                                 <td align="center" style="padding:0;Margin:0;"><img src="http://www.atenas.edu.br/uniatenas/assets/images/logoUniatenas.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;" width="189"></td>
+    //                                                             </tr>
+    //                                                         </table></td>
+    //                                                 </tr>
+    //                                             </table></td>
+    //                                     </tr>
+    //                                 </table></td>
+    //                         </tr>
+    //                     </table>
+    //                     <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+    //                         <tr style="border-collapse:collapse;">
+    //                             <td align="center" style="padding:0;Margin:0;">
+    //                                 <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" bgcolor="transparent" align="center">
+    //                                     <tr style="border-collapse:collapse;">
+    //                                         <td style="padding:0;Margin:0;padding-bottom:20px;background-position:center top;" align="left">
+    //                                             <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+    //                                                 <tr style="border-collapse:collapse;">
+    //                                                     <td width="600" valign="top" align="center" style="padding:0;Margin:0;">
+    //                                                         <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;background-position:center bottom;background-color:#FFFFFF;border-radius:5px;" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+    //                                                             <tr style="border-collapse:collapse;">
+    //                                                                 <td align="left"  class="es-m-txt-l" style="Margin:0;padding-bottom:5px;padding-top:20px;padding-left:20px;padding-right:20px;"><h2 style="Margin:0;line-height:26px;mso-line-height-rule:exactly;font-family:roboto,    helvetica, arial, sans-serif;font-size:22px;font-style:normal;font-weight:normal;color:#3F3D3D;">Olá ' . $dadosForm['name'] . ',</h2></td>
+    //                                                             </tr>
+    //                                                             <tr style="border-collapse:collapse;">
+    //                                                                 <td align="center" style="Margin:0;padding-bottom:5px;padding-top:10px;padding-left:20px;padding-right:20px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:roboto,    helvetica, arial, sans-serif;line-height:21px;color:#3F3D3D;">
 
 
-                    $this->email->subject($assunto);
-                    $arquivoPDF = $dadosForm['files'];
+    //                                                                 <img style="width: 700px;" src="http://www.atenas.edu.br/uniatenas/assets/images/uploads/img-email.png" >
+    //                                                                 </td>
+    //                                                             </tr>
+    //                                                             <tr style="border-collapse:collapse;">
 
-                    if ($dadosForm['campusid'] == 1) {
-                        $campusName = 'Paracatu';
-                    } elseif ($dadosForm['campusid'] == 2) {
-                        $campusName = 'Sete Lagoas';
-                    } elseif ($dadosForm['campusid'] == 1) {
-                        $campusName = 'Passos';
-                    } elseif ($dadosForm['campusid'] == 99) {
-                        $campusName = " Qualquer campus que tenha vaga";
-                        $campusName = " Qualquer campus que tenha vaga";
-                    }
+    //                                                                 <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#31CB4B none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:7px;width:auto;">
 
-                    date_default_timezone_set('America/Sao_Paulo');
+    //                                                                 </span>
 
-                    $mensagemRH = "<p>O(A) Sr.(a) " .
-                        "<b>" . $dadosForm['name'] . "</b> fez contato pelo site, interessado em trabalhar conosco." . "<br/>" .
-                        "Email: " . $dadosForm['email'] . "<br/>" .
-                        "Celular/ Telefone: (" . $dadosForm['areacodecelphone'] . ")" . $dadosForm['celphone'] . " -  (" . $dadosForm['areacode'] . ") " . $dadosForm['phone'] . " <br/>" .
-                        "Endereço: " . $dadosForm['address'] . ", " . $dadosForm['city'] . " - " . $dadosForm['state'] . " <br/>" .
-                        "Curriculo PDF: " . "<a href='http://www.atenas.edu.br/uniatenas/$arquivoPDF'>Ver arquivo.</a>" .
-                        "Interessado no Campus : " . $campusName . "<br/>";
+    //                                                                 </td>
 
-                    $this->email->message($mensagemRH);
+    //                                                             </tr>
+    //                                                         </table></td>
+
+    //                                                         <p>Esta é uma mensagem automática, favor não responder este e-mail.<br/></p>
+    //                                                 </tr>
+    //                                             </table>
+    //                                             </td>
+
+    //                                     </tr>
+    //                                 </table></td>
+    //                         </tr>
+    //                     </table>
+    //                     <table class="es-footer" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
+    //                         <tr style="border-collapse:collapse;">
+    //                             <td align="center" style="padding:0;Margin:0;">
+    //                                 <table class="es-footer-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;" width="600" cellspacing="0" cellpadding="0" bgcolor="rgba(0, 0, 0, 0)" align="center">
+    //                                     <tr style="border-collapse:collapse;">
+    //                                         <td style="Margin:0;padding-top:5px;padding-bottom:20px;padding-left:20px;padding-right:10px;background-position:center top;background-color:transparent;" bgcolor="transparent" align="left">
+    //                                             <!--[if mso]><table width="560" cellpadding="0" cellspacing="0"><tr><td width="270" valign="top"><![endif]-->
+    //                                             <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+    //                                                 <tr style="border-collapse:collapse;">
+    //                                                     <td width="520" valign="top" align="center" style="padding:0;Margin:0;">
+
+    //                           </td>
+    //                                                 </tr>
+    //                                             </table>
+
+    //                                             <!--[if mso]></td></tr></table><![endif]--></td>
+    //                                     </tr>
+    //                                 </table></td>
+    //                         </tr>
+    //                     </table>
+    //                     <table cellpadding="0" cellspacing="0" class="es-content" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
+    //                         <tr style="border-collapse:collapse;">
+    //                             <td align="center" style="padding:0;Margin:0;">
+    //                                 <table bgcolor="transparent" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;">
+    //                                     <tr style="border-collapse:collapse;">
+    //                                         <td align="left" style="Margin:0;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px;background-position:left top;">
+    //                                             <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+
+    //                                             </table>
+    //                                         </td>
+    //                                     </tr>
+    //                                 </table></td>
+    //                         </tr>
+    //                     </table></td>
+    //             </tr>
+    //         </table>
+    //     </div>  
+    // </div>';
 
 
-                    $this->email->send();
-                    $this->email->clear();
+    //                 $assunto = 'Inscrição - Trabalhe Conosco Site Uniatenas';
 
-                    setMsg('<p>Cadastro realizado com sucesso! <br>
-                        Enviamos um email, em sua caixa postal, com as informações a respeito do seu cadastro.</p>', 'success');
-                    redirect(current_url());
-                } else {
-                    setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem para faleconosco@atenas.edu.br </p>', 'error');
-                    redirect(current_url());
-                }
-            } else {
-                //erro no upload
-                $msg = $this->upload->display_errors();
-                $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
-                setMsg($msg, 'erro');
-            }
-        }
+    //                 $this->email->from('resposta@uniatenas.edu.br', 'Trabalhe conosco - UniAtenas'); //quem mandou
+    //                 $this->email->to($dadosForm['email']);
 
-        $localidades = $this->bancosite->getAll('campus')->result();
-        $escolaridades = $this->bancosite->getWhere('resume_schooling')->result();
-        $areasAtuacaoDocente = $this->bancosite->getWhere('resume_sector_area', array('type' => 'areas', 'situacao' => '1'))->result();
-        $areasAtuacaoTecnico = $this->bancosite->getWhere('resume_sector_area', array('type' => 'setor', 'situacao' => '1'))->result();
+    //                 $this->email->subject($assunto);
+    //                 $this->email->message($mensagem);
 
-        if (!empty($vaga)) {
-            $queryVacancy = "
-                        SELECT
-                        resume_job_vacancy.id,
-                        resume_job_vacancy.name,
-                        resume_job_vacancy.files,
-                        campus.id as campusid,
-                        campus.name as campus_name,
-                        resume_sector_area.id as id_area,
-                        resume_sector_area.name as name_area
-                    FROM
-                        at_site.resume_job_vacancy
-                    inner join campus on campus.id = resume_job_vacancy.campusid
-                    inner join resume_sector_area on resume_sector_area.id = resume_job_vacancy.sectorareaid
-                    where resume_job_vacancy.id = 9
-                    ";
+    //                 if ($this->email->send()) {
+    //                     $this->bancosite->salvar('resume', $dadosForm);
+    //                     $this->email->clear();
 
-            $infoVaga = $this->bancosite->getQuery($queryVacancy)->row();
-        } else {
-            $infoVaga = '';
-        }
+    //                     $this->email->from('resposta@uniatenas.edu.br', 'Trabalhe Conosco'); //quem mandou
+    //                     $this->email->to('rh.estrategico@uniatenas.edu.br');
 
-        $data = array(
-            'head' => array(
-                'title' => 'Trabalhe Conosco',
-            ),
-            'conteudo' => 'uni_trabalheConosco/envioCurriculo',
-            'menu' => '',
-            'footer' => '',
-            'js' => null,
-            'dados' => array(
-                'campus' => $dataCampus,
-                'idativo' => '$idativo',
-                'localidades' => $localidades,
-                'escolaridades' => $escolaridades,
-                'infoVaga' => $infoVaga,
-                'areasAtuacaoDocente' => $areasAtuacaoDocente,
-                'areasAtuacaoTecnico' => $areasAtuacaoTecnico,
-            )
-        );
-        $this->load->view('templates/master', $data);
-    }
+
+    //                     $this->email->subject($assunto);
+    //                     $arquivoPDF = $dadosForm['files'];
+
+    //                     if ($dadosForm['campusid'] == 1) {
+    //                         $campusName = 'Paracatu';
+    //                     } elseif ($dadosForm['campusid'] == 2) {
+    //                         $campusName = 'Sete Lagoas';
+    //                     } elseif ($dadosForm['campusid'] == 1) {
+    //                         $campusName = 'Passos';
+    //                     } elseif ($dadosForm['campusid'] == 99) {
+    //                         $campusName = " Qualquer campus que tenha vaga";
+    //                         $campusName = " Qualquer campus que tenha vaga";
+    //                     }
+
+    //                     date_default_timezone_set('America/Sao_Paulo');
+
+    //                     $mensagemRH = "<p>O(A) Sr.(a) " .
+    //                         "<b>" . $dadosForm['name'] . "</b> fez contato pelo site, interessado em trabalhar conosco." . "<br/>" .
+    //                         "Email: " . $dadosForm['email'] . "<br/>" .
+    //                         "Celular/ Telefone: (" . $dadosForm['areacodecelphone'] . ")" . $dadosForm['celphone'] . " -  (" . $dadosForm['areacode'] . ") " . $dadosForm['phone'] . " <br/>" .
+    //                         "Endereço: " . $dadosForm['address'] . ", " . $dadosForm['city'] . " - " . $dadosForm['state'] . " <br/>" .
+    //                         "Curriculo PDF: " . "<a href='http://www.atenas.edu.br/uniatenas/$arquivoPDF'>Ver arquivo.</a>" .
+    //                         "Interessado no Campus : " . $campusName . "<br/>";
+
+    //                     $this->email->message($mensagemRH);
+
+
+    //                     $this->email->send();
+    //                     $this->email->clear();
+
+    //                     setMsg('<p>Cadastro realizado com sucesso! <br>
+    //                         Enviamos um email, em sua caixa postal, com as informações a respeito do seu cadastro.</p>', 'success');
+    //                     redirect(current_url());
+    //                 } else {
+    //                     setMsg('<p>Erro! Infelismente, houve um erro. Você pode tentar novamente mais tarde, ou nos enviar uma mensagem para faleconosco@atenas.edu.br </p>', 'error');
+    //                     redirect(current_url());
+    //                 }
+    //             } else {
+    //                 //erro no upload
+    //                 $msg = $this->upload->display_errors();
+    //                 $msg .= '<p> São permitidos arquivos' . $types . '.</p>';
+    //                 setMsg($msg, 'erro');
+    //             }
+    //         }
+
+    //         $localidades = $this->bancosite->getAll('campus')->result();
+    //         $escolaridades = $this->bancosite->getWhere('resume_schooling')->result();
+    //         $areasAtuacaoDocente = $this->bancosite->getWhere('resume_sector_area', array('type' => 'areas', 'situacao' => '1'))->result();
+    //         $areasAtuacaoTecnico = $this->bancosite->getWhere('resume_sector_area', array('type' => 'setor', 'situacao' => '1'))->result();
+
+    //         if (!empty($vaga)) {
+    //             $queryVacancy = "
+    //                         SELECT
+    //                         resume_job_vacancy.id,
+    //                         resume_job_vacancy.name,
+    //                         resume_job_vacancy.files,
+    //                         campus.id as campusid,
+    //                         campus.name as campus_name,
+    //                         resume_sector_area.id as id_area,
+    //                         resume_sector_area.name as name_area
+    //                     FROM
+    //                         at_site.resume_job_vacancy
+    //                     inner join campus on campus.id = resume_job_vacancy.campusid
+    //                     inner join resume_sector_area on resume_sector_area.id = resume_job_vacancy.sectorareaid
+    //                     where resume_job_vacancy.id = 9
+    //                     ";
+
+    //             $infoVaga = $this->bancosite->getQuery($queryVacancy)->row();
+    //         } else {
+    //             $infoVaga = '';
+    //         }
+
+    //         $data = array(
+    //             'head' => array(
+    //                 'title' => 'Trabalhe Conosco',
+    //             ),
+    //             'conteudo' => 'uni_trabalheConosco/envioCurriculo',
+    //             'menu' => '',
+    //             'footer' => '',
+    //             'js' => null,
+    //             'dados' => array(
+    //                 'campus' => $dataCampus,
+    //                 'idativo' => '$idativo',
+    //                 'localidades' => $localidades,
+    //                 'escolaridades' => $escolaridades,
+    //                 'infoVaga' => $infoVaga,
+    //                 'areasAtuacaoDocente' => $areasAtuacaoDocente,
+    //                 'areasAtuacaoTecnico' => $areasAtuacaoTecnico,
+    //             )
+    //         );
+    //         $this->load->view('templates/master', $data);
+    //     }
 
     public function informanapp($uricampus = NULL)
     {

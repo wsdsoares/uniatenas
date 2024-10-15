@@ -6,21 +6,22 @@ $uricampus = $this->uri->segment(3);
     <h2 class="text"><?php echo 'Trabalhe Conosco - ' . $campus->name . ' - ' . $campus->city; ?></h2>
     <div class="row">
       <?php
-      echo '<pre>';
-      print_r($conteudoPag);
-      print_r($imagemLGPD);
-      print_r($linkRedir);
-      echo '</pre>';
+      // echo '<pre>';
+      // print_r($conteudoPag);
+      // echo '<-->';
+      // print_r($imagemLGPD);
+      // print_r($linkRedir);
+      // echo '</pre>';
       ?>
       <style>
-        .panelResume {
-          background: #16A085;
-        }
+      .panelResume {
+        background: #16A085;
+      }
 
-        .panelResume span {
-          color: #000;
-          font-weight: bold;
-        }
+      .panelResume span {
+        color: #000;
+        font-weight: bold;
+      }
       </style>
       <br />
 
@@ -31,6 +32,9 @@ $uricampus = $this->uri->segment(3);
               <span></span>
             </div>
           </div>
+          <?php
+          if (!empty($conteudoPag)) {
+          ?>
           <div class="col-xs-12 panelsite">
             <p><?php echo $conteudoPag[0]->title; ?></p>
             <p class="text-center">
@@ -53,7 +57,7 @@ $uricampus = $this->uri->segment(3);
                         <div class="modal-body">
                           <?php foreach ($imagemLGPD as $imagem) { ?>
 
-                            <img src='<?php echo base_url($imagem->img_destaque); ?>' width="100%" height="100%" />
+                          <img src='<?php echo base_url($imagem->img_destaque); ?>' width="100%" height="100%" />
 
                           <?php } ?>
                           <div class="modal-footer">
@@ -76,21 +80,24 @@ $uricampus = $this->uri->segment(3);
                   </div>
                 </div>
                 <script>
-                  var aceite = document.getElementById("aceito");
-                  document.getElementById('aceito')
-                    .addEventListener('click', function(event) {
-                      if (aceite.checked) {
-                        document.getElementById('confirmar').style.visibility = "visible";
-                      } else {
-                        document.getElementById('confirmar').style.visibility = "hidden";
-                      }
-                    });
+                var aceite = document.getElementById("aceito");
+                document.getElementById('aceito')
+                  .addEventListener('click', function(event) {
+                    if (aceite.checked) {
+                      document.getElementById('confirmar').style.visibility = "visible";
+                    } else {
+                      document.getElementById('confirmar').style.visibility = "hidden";
+                    }
+                  });
                 </script>
               </body>
             </div>
+
             </p>
           </div>
-
+          <?php
+          }
+          ?>
         </div>
       </div>
 

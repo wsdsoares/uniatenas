@@ -39,6 +39,7 @@ $verificaPaginaNapp = $this->bancosite->where('*', 'pages', null, array('title' 
 $verificaPaginaRevistas = $this->bancosite->where('*', 'pages', null, array('title' => 'revistas', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
 $verificaPaginaComoIngressar = $this->bancosite->where(array('pages.id', 'pages.title'), 'pages', null, array('title' => 'comoingressar', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
 $verificaPaginaEstagiosConvenios = $this->bancosite->where('*', 'pages', null, array('title' => 'estagiosConvenios', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
+$verificaPaginaTrabalheConosco = $this->bancosite->where('*', 'pages', null, array('title' => 'trabalheconosco', 'campusid' => $informacoesCampus->id, 'status' => 1))->row();
 
 $joinCountCursosEad = array(
   'courses' => 'courses.id = campus_has_courses.courses_id',
@@ -333,7 +334,7 @@ if (isset($verificaPaginaComoIngressar) and $verificaPaginaComoIngressar != '') 
                         <?php echo anchor('site/localizacao/' . $informacoesCampus->shurtName, 'Localização - Campus'); ?>
                       </li>
                       <?php
-                      if ($informacoesCampus->id == '1' or $informacoesCampus->id == '2' or $informacoesCampus->id == '3' or $informacoesCampus->id == '6') {
+                      if (isset($verificaPaginaTrabalheConosco)) {
                       ?>
                         <li>
                           <?php echo anchor('site/trabalheConosco/' . $informacoesCampus->shurtName, 'Trabalhe Conosco'); ?>

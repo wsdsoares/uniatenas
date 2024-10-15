@@ -7,7 +7,7 @@
     <div class="card">
       <div class="header">
         <h2>
-          <?php echo "Página estágio e convênios - Menu ESTÁGIOS E CONVÊNIOS do SITE"; ?>
+          <?php echo $page; ?>
         </h2>
         <div>
           <span>
@@ -19,6 +19,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-4">
+              <br />
               <?php
               if (isset($paginaTrabalheConosco) and $paginaTrabalheConosco != '') {
                 $tituloBotao = "EDITAR";
@@ -65,10 +66,10 @@
               <div class="col-sm-2 text-center">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Itens da Estágio</h5>
-                    <p class="card-text"><small>(Apresentação e outros)</small></p>
+                    <h5 class="card-title">Imagens do Termo de aceite</h5>
+                    <p class="card-text"><small>(Imagens de termo de aceite)</small></p>
                     <?php
-                    echo anchor("Painel_trabalhe_conosco/lista_itens_estagios_convenios/$campus->id/$paginaTrabalheConosco->id", 'Ver Itens', array('class' => 'btn btn-primary'));
+                    echo anchor("Painel_trabalhe_conosco/lista_imagens_termo_aceite/$campus->id/$paginaTrabalheConosco->id", 'Ver Imagens', array('class' => 'btn btn-primary'));
                     ?>
                   </div>
                 </div>
@@ -77,10 +78,12 @@
               <div class="col-sm-2 text-center">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Instituições Convêniadas</h5>
-                    <p class="card-text"><small>(Empresas parceiras)</small></p>
+                    <h5 class="card-title">Textos</h5>
+                    <p class="card-text"><small>(Textos do conteúdo e texto do botão, texto do checkbox de aceite, link de
+                        redirecionamento)</small>
+                    </p>
                     <?php
-                    echo anchor("Painel_trabalhe_conosco/lista_empresas_conveniadas/$campus->id/$paginaTrabalheConosco->id", 'Ver empresas', array('class' => 'btn btn-primary'));
+                    echo anchor("Painel_trabalhe_conosco/lista_empresas_conveniadas/$campus->id/$paginaTrabalheConosco->id", 'Ver textos', array('class' => 'btn btn-primary'));
                     ?>
                   </div>
                 </div>

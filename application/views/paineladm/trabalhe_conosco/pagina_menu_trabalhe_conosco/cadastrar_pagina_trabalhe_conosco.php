@@ -1,6 +1,3 @@
-<?php 
-$paginaCpaStatus = $dados['paginaCpa'] !="" ? $dados['paginaCpa'] : '';
-?>
 <div class="block-header">
   <h2>PAINEL ADMINISTRATIVO - SITE</h2>
 </div>
@@ -13,15 +10,15 @@ $paginaCpaStatus = $dados['paginaCpa'] !="" ? $dados['paginaCpa'] : '';
           <?php echo $page; ?>
         </h2>
       </div>
-      <?php 
+      <?php
       ?>
       <div class="body">
         <?php
-          if ($msg = getMsg()){
-            echo $msg;
-          }
-          ?>
-        <?php echo form_open("Painel_cpa/cadastrar_pagina_cpa/$campus->id") ?>
+        if ($msg = getMsg()) {
+          echo $msg;
+        }
+        ?>
+        <?php echo form_open("Painel_trabalhe_conosco/cadastrar_pagina_trabalhe_conosco/$campus->id") ?>
 
         <h2 class="card-inside-title">Informações do Página
         </h2>
@@ -35,7 +32,7 @@ $paginaCpaStatus = $dados['paginaCpa'] !="" ? $dados['paginaCpa'] : '';
               </span>
               <div class="form-line">
                 <?php
-                  echo form_input(array('name' => 'title', 'class' => 'form-control','readonly'=>"readonly"), set_value('title','MENU - cpa'));
+                echo form_input(array('name' => 'title', 'class' => 'form-control', 'readonly' => "readonly"), set_value('title', 'MENU - Trabalhe Conosco'));
                 ?>
               </div>
             </div>
@@ -45,14 +42,14 @@ $paginaCpaStatus = $dados['paginaCpa'] !="" ? $dados['paginaCpa'] : '';
               <div class="form-line">
                 <label for="status">Status <small>(1 -Visível, 0 - Oculto)</small></label>
                 <?php
-                    $optionSituation = array(
-                        '1' => 'Visível - Ativo',
-                        '0' => 'Oculto - Inativo'
-                    );
+                $optionSituation = array(
+                  '1' => 'Visível - Ativo',
+                  '0' => 'Oculto - Inativo'
+                );
 
-                    $status = isset($dados['paginaCpa']->status) ? $dados['paginaCpa']->status : '0';
-                    echo form_dropdown('status', $optionSituation, set_value('status',$status), array('class' => 'form-control show-tick'));
-                    ?>
+                $status = isset($dados['paginaTrabalheConosco']->status) ? $dados['paginaTrabalheConosco']->status : '0';
+                echo form_dropdown('status', $optionSituation, set_value('status', $status), array('class' => 'form-control show-tick'));
+                ?>
               </div>
             </div>
           </div>
@@ -60,9 +57,9 @@ $paginaCpaStatus = $dados['paginaCpa'] !="" ? $dados['paginaCpa'] : '';
         <div class="row clearfix">
           <div class="col-sm-12">
             <?php
-              echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-              echo anchor("Painel_cpa/lista_dados_cpa/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
-              ?>
+            echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
+            echo anchor("Painel_trabalhe_conosco/lista_informacoes_trabalhe_conosco/$campus->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            ?>
           </div>
         </div>
 
