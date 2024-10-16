@@ -150,14 +150,14 @@ class Painel_trabalhe_conosco extends CI_Controller
 
     verificaLogin();
 
-    $queryImagemLGPD =
-      "SELECT 
-        page_contents.id, page_contents.tipo, page_contents.img_destaque
-        FROM page_contents 
-        WHERE page_contents.pages_id = '$page->id'
-        and page_contents.tiponz = 'imagem'";
+    // $queryImagemLGPD =
+    //   "SELECT 
+    //     page_contents.id, page_contents.tipo, page_contents.img_destaque
+    //     FROM page_contents 
+    //     WHERE page_contents.pages_id = '$page->id'
+    //     and page_contents.tiponz = 'imagem'";
 
-    $imagemLGPD =  $this->bancosite->getQuery($queryImagemLGPD)->result();
+    // $imagemLGPD =  $this->bancosite->getQuery($queryImagemLGPD)->result();
 
     $colunasCampus = array('campus.id', 'campus.name', 'campus.city');
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
@@ -192,11 +192,12 @@ class Painel_trabalhe_conosco extends CI_Controller
     $conteudosPagina = $this->painelbd->where($colunasConteudoPagina, 'page_contents', $joinConteudoPagina, $whereConteudoPagina)->result();
 
     $data = array(
-      'titulo' => 'UniAtenas - Submenu Serviços',
-      'conteudo' => 'paineladm/servicos/pagina/itens_pagina/lista_item_pagina_especifica',
+      'titulo' => 'UniAtenas - Submenu Trabalhe Conosco',
+      // 'conteudo' => 'paineladm/servicos/pagina/itens_pagina/lista_item_pagina_especifica',
+      'conteudo' => 'paineladm/trabalhe_conosco/imagens/lista_imagens_termo_aceite',
       'dados' => array(
         'conteudosPagina' => $conteudosPagina,
-        'page' => "Lista itens específicos do Menu >> (<b>$pagina->title</b>) << -<strong><i>Campus - $campus->name ($campus->city) </i></strong>",
+        'page' => "Lista imagens do Termo de Aceite -  >> (<b>$pagina->title</b>) << -<strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         'pagina' => $pagina,
         'tipo' => 'tabelaDatatable'
