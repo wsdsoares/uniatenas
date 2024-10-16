@@ -1644,6 +1644,15 @@ and revistas.id =$id;
                 and page_contents.tipo = 'aceiteTrabalheConosco'";
         $aceiteTrabalhe =  $this->bancosite->getQuery($queryAceiteTrabalho)->row();
 
+        $queryBotao =
+            "SELECT 
+                page_contents.id, page_contents.tipo, page_contents.title
+                FROM page_contents
+                WHERE page_contents.pages_id = '$page->id'
+                and page_contents.tipo = 'textoBotao'";
+
+        $textoBotao =  $this->bancosite->getQuery($queryBotao)->row();
+
         $data = array(
             'head' => array(
                 'title' => 'Trabalhe Conosco - ' . $dataCampus->city,
@@ -1655,6 +1664,7 @@ and revistas.id =$id;
             'dados' => array(
                 'campus' => $dataCampus,
                 'linkRedir' => $LinkRedir,
+                'textoBotao' => $textoBotao,
                 'imagemLGPD' => $imagemLGPD,
                 'conteudoPag' => $conteudoPrincipal,
                 'aceiteTrabalhe' => $aceiteTrabalhe,

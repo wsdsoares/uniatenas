@@ -17,7 +17,7 @@
         }
         ?>
         <?php
-        echo form_open_multipart("Painel_trabalhe_conosco/cadastrar_fotos_galeria/$campus->id/$categoriaFoto->id");
+        echo form_open_multipart("Painel_trabalhe_conosco/cadastrar_imagem_termo_aceite/$campus->id/$pagina->id/$paginaConteudos->id");
         ?>
         <div class="row clearfix">
         </div>
@@ -25,7 +25,7 @@
           <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <label for="title">Título da Foto</label>
+                <label for="title">Título Imagem</label>
                 <?php
                 echo form_input(array('name' => 'title', 'class' => 'form-control', 'placeholder' => 'Título'), set_value('title'));
                 ?>
@@ -42,7 +42,7 @@
             <div class="form-group">
               <div class="form-line">
                 <?php echo form_upload(array('name' => 'file[]', 'class' => 'input-group'), set_value('file[]'), 'multiple'); ?>
-              </div>
+              </div>git
             </div>
           </div>
         </div>
@@ -71,10 +71,7 @@
             echo form_submit(array('name' => 'submit', 'class' => 'btn btn-lg btn-primary m-t-15 m-r-15 waves-effect'), 'SALVAR');
             ?>
             <?php
-            echo anchor("Painel_Campus/lista_fotos_infraestrutura/$categoriaFoto->id/$campus->id", '
-                <i class = "material-icons">
-                assignment_return
-                </i> <span>Voltar</span>', array('class' => 'btn btn-warning m-t-15 waves-effect'));
+            echo anchor("Painel_trabalhe_conosco/lista_imagens_termo_aceite/$campus->id/$pagina->id/$paginaConteudos->id", '<i class = "material-icons">assignment_return</i> <span>Voltar</span>', array('class' => 'btn btn-warning m-t-15 waves-effect'));
             ?>
           </div>
         </div>

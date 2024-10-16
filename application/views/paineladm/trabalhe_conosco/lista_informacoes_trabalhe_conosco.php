@@ -66,10 +66,10 @@
               <div class="col-sm-2 text-center">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Imagens do Termo de aceite</h5>
-                    <p class="card-text"><small>(Imagens de termo de aceite)</small></p>
+                    <h5 class="card-title">Items página trabalhe conosco</h5>
+                    <p class="card-text"><small>(Descrições, imagens do termo de aceite)</small></p>
                     <?php
-                    echo anchor("Painel_trabalhe_conosco/lista_imagens_termo_aceite/$campus->id/$paginaTrabalheConosco->id", 'Ver Imagens', array('class' => 'btn btn-primary'));
+                    echo anchor("Painel_trabalhe_conosco/lista_itens_trabalhe_conosco/$campus->id/$paginaTrabalheConosco->id", 'Ver Itens', array('class' => 'btn btn-primary'));
                     ?>
                   </div>
                 </div>

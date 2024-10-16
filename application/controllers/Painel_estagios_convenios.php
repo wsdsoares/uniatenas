@@ -443,7 +443,7 @@ class Painel_estagios_convenios extends CI_Controller
   {
     verifica_login();
 
-    $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $id))->row();
+    $item = $this->painelbd->where('*', 'page_contents', NULL, array('page_contents.id' => $paginaId))->row();
 
     if ($this->painelbd->deletar('page_contents', $item->id)) {
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
@@ -462,7 +462,9 @@ class Painel_estagios_convenios extends CI_Controller
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
     $coluntaResultadoConteudoItemEstagiosConvenios = array(
-      'page_contents.title', 'page_contents.id', 'page_contents.pages_id'
+      'page_contents.title',
+      'page_contents.id',
+      'page_contents.pages_id'
     );
     $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $idConteudoPagina);
     $conteudoItemEstagiosConvenios = $this->painelbd->where($coluntaResultadoConteudoItemEstagiosConvenios, 'page_contents', NULL, $whereConteudoItemEstagiosConvenios)->row();
@@ -514,7 +516,9 @@ class Painel_estagios_convenios extends CI_Controller
     $campus = $this->painelbd->where($colunasCampus, 'campus', NULL, array('campus.id' => $uriCampus))->row();
 
     $coluntaResultadoConteudoItemEstagiosConvenios = array(
-      'page_contents.title', 'page_contents.id', 'page_contents.pages_id'
+      'page_contents.title',
+      'page_contents.id',
+      'page_contents.pages_id'
     );
     $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $idConteudoPagina);
     $conteudoItemEstagiosConvenios = $this->painelbd->where($coluntaResultadoConteudoItemEstagiosConvenios, 'page_contents', NULL, $whereConteudoItemEstagiosConvenios)->row();
@@ -598,7 +602,9 @@ class Painel_estagios_convenios extends CI_Controller
     $documentoEstagiosConvenios = $this->painelbd->where($colunaResultadoArquivo, 'page_contents_files', $joinArquivo, $whereArquivo)->row();
 
     $coluntaResultadoConteudoItemEstagiosConvenios = array(
-      'page_contents.title', 'page_contents.id', 'page_contents.pages_id'
+      'page_contents.title',
+      'page_contents.id',
+      'page_contents.pages_id'
     );
     $whereConteudoItemEstagiosConvenios = array('page_contents.id' => $documentoEstagiosConvenios->id_page_contents);
     $conteudoItemEstagiosConvenios = $this->painelbd->where($coluntaResultadoConteudoItemEstagiosConvenios, 'page_contents', NULL, $whereConteudoItemEstagiosConvenios)->row();

@@ -13,69 +13,76 @@
       <div class="header">
         <h2>
           <?php echo $page; ?>
+
         </h2>
         <br />
       </div>
       <div class="botoes-acoes-formularios">
         <div class="container">
+
           <br />
           <div class="col-xs-6">
-            <?php echo anchor("Painel_trabalhe_conosco/registro_item_pagina/$campus->id", '<i class="material-icons">add_box</i> Cadastrar Imagem', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
+            <?php echo anchor("Painel_trabalhe_conosco/cadastrar_imagem_termo_aceite/$campus->id/$pagina->id/$paginaConteudos->id", '<i class="material-icons">add_box</i> Cadastrar Imagem', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
           </div>
 
           <div class="col-xs-6">
-            <?php echo anchor("Painel_trabalhe_conosco/lista_informacoes_trabalhe_conosco/$campus->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
+            <?php echo anchor("Painel_trabalhe_conosco/lista_itens_trabalhe_conosco/$campus->id/$pagina->id", '<i class="material-icons">arrow_back</i> Voltar', array('class' => 'btn btn-warning m-t-15 waves-effect')); ?>
           </div>
 
         </div>
       </div>
       <br />
       <?php
-
+      // echo '<pre>';
+      // print_r($conteudosPagina);
+      // echo '</pre>';
       if (isset($conteudosPagina) and $conteudosPagina != '') {
       ?>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-            <thead>
-              <tr>
-                <th></th>
-                <th>#</th>
-                <th>SUBMENU</th>
-                <th>Situação</th>
-                <th>Tipo Serviço</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th></th>
-                <th>#</th>
-                <th>SUBMENU</th>
-                <th>Situação</th>
-                <th>Tipo Serviço</th>
-                <th>Modificado em, por:</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <?php
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Título</th>
+                  <th>Imagem</th>
+                  <th>Situação</th>
+                  <th>Modificado em, por:</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Título</th>
+                  <th>Imagem</th>
+                  <th>Situação</th>
+                  <th>Modificado em, por:</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <?php
                 foreach ($dados['conteudosPagina'] as $item) :
                 ?>
-              <tr>
-                <td class="center">
+                  <tr>
+                    <td class="center">
 
-                </td>
+                    </td>
 
-                <td>
-                  <?php echo $item->id; ?>
-                </td>
-                <td>
-                  <?php echo $item->title; ?>
-                </td>
-
-
-                <td>
-                  <?php
+                    <td>
+                      <?php echo $item->id; ?>
+                    </td>
+                    <td>
+                      <?php echo $item->title; ?>
+                    </td>
+                    <td>
+                      <?php
+                      echo anchor(base_url(verifyImg($item->file)), '<img src="' . base_url(verifyImg($item->file)) . '" class="thumbnail">', array('target' => '_blank'));
+                      ?>
+                    </td>
+                    <td>
+                      <?php
                       if ($item->status == '0') {
                         $situacao = 'Inativo';
                       } else {
@@ -84,36 +91,24 @@
 
                       echo $situacao;
                       ?>
-                </td>
+                    </td>
 
-                <td>
-                  <?php
-                      if ($item->tipo_pagina == 'item_geral') {
-                        $tipoPagina = 'Geral';
-                      } else {
-                        $tipoPagina = 'Núcleo';
-                      }
-
-                      echo $tipoPagina;
-                      ?>
-                </td>
-
-                <td>
-                  <?php
+                    <td>
+                      <?php
                       $dateModification = empty($item->updated_at) ? $item->created_at : $item->updated_at;
                       echo $dateModification . ' - ' . $item->user_id;
                       ?>
-                </td>
+                    </td>
 
 
-              </tr>
-              <?php
+                  </tr>
+                <?php
                 endforeach;
                 ?>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
       <?php
       }
       ?>
@@ -147,13 +142,13 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_servicos/deletar_registro_item_pagina/$campus->id/"); ?>' +
-    id);
-});
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_servicos/deletar_registro_item_pagina/$campus->id/"); ?>' +
+      id);
+  });
 </script>
