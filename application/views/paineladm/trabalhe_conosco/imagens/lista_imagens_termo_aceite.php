@@ -33,9 +33,7 @@
       </div>
       <br />
       <?php
-      // echo '<pre>';
-      // print_r($conteudosPagina);
-      // echo '</pre>';
+
       if (isset($conteudosPagina) and $conteudosPagina != '') {
       ?>
         <div class="body">
@@ -67,7 +65,15 @@
                 ?>
                   <tr>
                     <td class="center">
+                      <?php
 
+                      echo '<a href=' . base_url("Painel_trabalhe_conosco/editar_itens_trabalhe_conosco/$campus->id/$paginaConteudos->id/$item->id") . '>'
+                        . '<i class="material-icons">edit</i>'
+                        . '</a> ';
+                      echo '<a href="" data-toggle="modal" data-target="#modalDelete" data-nome="' . $item->title . '" data-id="' . $item->id . '" >'
+                        . '<i class="material-icons">delete</i>'
+                        . '</a>';
+                      ?>
                     </td>
 
                     <td>
@@ -148,7 +154,7 @@
 
     $(this).find('.nomeItem').text(nomeItem);
     $(this).find('#btnCerteza').attr('href',
-      '<?php echo base_url("Painel_servicos/deletar_registro_item_pagina/$campus->id/"); ?>' +
+      '<?php echo base_url("Painel_trabalhe_conosco/deletar_imgem_termo_aceite/$campus->id/$pagina->id/$paginaConteudos->id/"); ?>' +
       id);
   });
 </script>

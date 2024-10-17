@@ -16,7 +16,8 @@
           <p>Atenção: Nessa página é gerenciada apenas:
           <ul>
             <li>Texto descritivo da página</li>
-            <li>Imagens do termo de aceite</li>
+            <li>Link de Redirecionamentoe</li>
+            <li>Item - Imagem do termo de aceite</li>
           </ul>
           </p>
         </div>
@@ -54,10 +55,8 @@
                 <?php
                 $optionSituation = array(
                   'informacoesPagina' => 'Descrição da página',
-                  'imagem' => 'Termo de Aceite - Imagem',
-                  'linkExterno' => 'Link Externo',
-                  'aceiteTrabalheConosco' => 'Texto Termo Aceite',
-                  'textoBotao' => 'Texto Botão'
+                  'imagem' => 'Item - Imagem do termo de aceite',
+                  'linkExterno' => 'Link Externo'
                 );
                 echo form_dropdown('tipo', $optionSituation, set_value('tipo'), array('class' => 'form-control show-tick'));
                 ?>
@@ -97,11 +96,11 @@
           </div>
         </div>
         <script type="text/javascript">
-        // replace: substitui o formato padrão do textarea (descricao)
-        // e aplica as configurações do CKEDitor através do arquivo config.js
-        var editor = CKEDITOR.replace('description', {
-          customConfig: 'config.js'
-        });
+          // replace: substitui o formato padrão do textarea (descricao)
+          // e aplica as configurações do CKEDitor através do arquivo config.js
+          var editor = CKEDITOR.replace('description', {
+            customConfig: 'config.js'
+          });
         </script>
         <div class="separacao-forms"></div>
 
@@ -125,7 +124,7 @@
           <div class="col-sm-12">
             <?php
             echo form_submit(array('name' => 'cadastrar', 'class' => 'btn btn-primary m-t-15 waves-effect'), 'Salvar');
-            echo anchor("Painel_trabalhe_conosco/lista_itens_trabalhe_conosco/$campus->id/$pagina->id/$paginaConteudos->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
+            echo anchor("Painel_trabalhe_conosco/lista_itens_trabalhe_conosco/$campus->id/$pagina->id", 'Voltar', array('class' => "btn btn-danger m-t-15 waves-effect"));
 
             ?>
           </div>

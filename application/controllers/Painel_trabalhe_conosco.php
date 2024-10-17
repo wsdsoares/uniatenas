@@ -434,25 +434,23 @@ class Painel_trabalhe_conosco extends CI_Controller
         $_FILES['file']['error'] = $files['file']['error'][$i];
         $_FILES['file']['size'] = $files['file']['size'][$i];
 
-        $name_tmp = noAccentuation($this->input->post('title') . '-' . [$i]);
-        $upload = $this->painelbd->uploadFiles('file', $path, $types = 'jpg|JPG|jpeg|JPEG|png|PNG', $name_tmp);
+        $upload = $this->painelbd->uploadFiles('file', $path, $types = 'jpg|JPG|jpeg|JPEG|png|PNG', NULL);
 
         if ($upload) {
           $dados_form['user_id'] = $this->session->userdata('codusuario');
           $dados_form['file'] = $path . '/' . $upload['file_name'];
           $dados_form['title'] = $this->input->post('title');
           $dados_form['status'] = $this->input->post('status');
-          $dados_form['id_page_contents'] =  $paginaConteudos->id;
           // $dados_form['categoria'] = trim($categoriaInfraestrutura->title);
-
+          $dados_form['id_page_contents'] = $paginaConteudos->id;
 
           if ($id = $this->painelbd->salvar('page_contents_photos', $dados_form)) {
             if ($number_of_files == ($i + 1)) {
-              setMsg('<p>Imagem cadastrada com sucesso.</p>', 'success');
+              setMsg('<p>Fotos cadastrada com sucesso.</p>', 'success');
               redirect("Painel_trabalhe_conosco/lista_imagens_termo_aceite/$campus->id/$pagina->id/$paginaConteudos->id");
             }
           } else {
-            setMsg('<p>Erro! A Imagem não pode ser cadastrada.</p>', 'error');
+            setMsg('<p>Erro! A foto não pode ser cadastrada.</p>', 'error');
           }
         } else {
           //erro no upload
@@ -477,20 +475,20 @@ class Painel_trabalhe_conosco extends CI_Controller
     $this->load->view('templates/layoutPainelAdm', $data);
   }
 
-  public function deletar_imgem_termo_aceite($uriCampus = NULL, $idImagemTermoAceite = NULL, $id = null)
+  public function deletar_imgem_termo_aceite($uriCampus = NULL, $idPagina = NULL, $idPaginaConteudo = null, $id = null)
   {
 
-    $item = $this->painelbd->where('*', 'page_contents_files', NULL, array('page_contents_files.id' => $id))->row();
+    $item = $this->painelbd->where('*', 'page_contents_photos', NULL, array('page_contents_photos.id' => $id))->row();
 
-    $arquivo = $item->files;
+    $arquivo = $item->file;
 
-    if ($this->painelbd->deletar('page_contents_files', $item->id)) {
-      unlink($item->files);
+    if ($this->painelbd->deletar('page_contents_photos', $item->id)) {
+      unlink($arquivo);
       setMsg('<p>O Arquivo foi deletado com sucesso.</p>', 'success');
-      redirect("Painel_trabalhe_conosco/lista_arquivos_cpa/$uriCampus/$idImagemTermoAceite");
+      redirect("Painel_trabalhe_conosco/lista_imagens_termo_aceite/$uriCampus/$idPagina/$idPaginaConteudo");
     } else {
       setMsg('<p>Erro! O Arquivo foi não deletado.</p>', 'error');
-      redirect("Painel_trabalhe_conosco/lista_arquivos_cpa/$uriCampus/$idImagemTermoAceite");
+      redirect("Painel_trabalhe_conosco/lista_imagens_termo_aceite/$uriCampus/$idPagina/$idPaginaConteudo");
     }
   }
 }

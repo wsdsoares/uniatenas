@@ -1620,10 +1620,14 @@ and revistas.id =$id;
 
         $queryImagemLGPD =
             "SELECT 
-                page_contents.id, page_contents.tipo, page_contents.img_destaque
-                FROM page_contents 
+                page_contents_photos.id, page_contents_photos.file, page_contents.img_destaque
+                FROM page_contents_photos 
+                join page_contents on page_contents.id = page_contents_photos.id_page_contents
+                and page_contents.tipo = 'imagem'
+                and page_contents_photos.status = 1
+                and page_contents.status = 1
                 WHERE page_contents.pages_id = '$page->id'
-                and page_contents.tipo = 'imagem'";
+                ";
 
         $imagemLGPD =  $this->bancosite->getQuery($queryImagemLGPD)->result();
 
@@ -1636,22 +1640,6 @@ and revistas.id =$id;
 
         $LinkRedir =  $this->bancosite->getQuery($queryLinkRedir)->row();
 
-        $queryAceiteTrabalho =
-            "SELECT 
-                page_contents.id, page_contents.tipo, page_contents.title
-                FROM page_contents
-                WHERE page_contents.pages_id = '$page->id'
-                and page_contents.tipo = 'aceiteTrabalheConosco'";
-        $aceiteTrabalhe =  $this->bancosite->getQuery($queryAceiteTrabalho)->row();
-
-        $queryBotao =
-            "SELECT 
-                page_contents.id, page_contents.tipo, page_contents.title
-                FROM page_contents
-                WHERE page_contents.pages_id = '$page->id'
-                and page_contents.tipo = 'textoBotao'";
-
-        $textoBotao =  $this->bancosite->getQuery($queryBotao)->row();
 
         $data = array(
             'head' => array(
@@ -1664,11 +1652,8 @@ and revistas.id =$id;
             'dados' => array(
                 'campus' => $dataCampus,
                 'linkRedir' => $LinkRedir,
-                'textoBotao' => $textoBotao,
                 'imagemLGPD' => $imagemLGPD,
-                'conteudoPag' => $conteudoPrincipal,
-                'aceiteTrabalhe' => $aceiteTrabalhe,
-
+                'conteudoPag' => $conteudoPrincipal
             )
         );
         $this->load->view('templates/master', $data);

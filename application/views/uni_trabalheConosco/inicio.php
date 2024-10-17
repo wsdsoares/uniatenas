@@ -45,10 +45,10 @@ $uricampus = $this->uri->segment(3);
                   <div class="container">
                     <div class="text-center">
                       <?php
-                      if (isset($textoBotao)) {
+                      if (isset($imagemLGPD)) {
                       ?>
                         <button type="button" class="btnEdital" data-toggle="modal" data-target="#myModal">
-                          <?php echo $textoBotao->title ?>
+                          Cadastrar Curriculum
                         </button>
                       <?php
                       }
@@ -67,12 +67,12 @@ $uricampus = $this->uri->segment(3);
                             <div class="modal-body">
                               <?php foreach ($imagemLGPD as $imagem) { ?>
 
-                                <img src='<?php echo base_url($imagem->img_destaque); ?>' width="100%" height="100%" />
+                                <img src='<?php echo base_url($imagem->file); ?>' width="100%" height="100%" />
 
                               <?php } ?>
                               <div class="modal-footer">
                                 <input type="checkbox" id="aceito" name="aceito" value="Aceito o Termo">
-                                <label for="aceito"> <?php echo $aceiteTrabalhe->title ?>
+                                <label for="aceito"> Aceito termo de Uso do Portal RM Banco de Talentos
                                 </label><br /><br />
                                 <button type="button" class="btnEdital" data-dismiss="modal" id="confirmar"
                                   style="visibility: hidden;"

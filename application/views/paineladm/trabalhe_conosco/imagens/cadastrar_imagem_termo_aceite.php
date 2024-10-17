@@ -42,7 +42,7 @@
             <div class="form-group">
               <div class="form-line">
                 <?php echo form_upload(array('name' => 'file[]', 'class' => 'input-group'), set_value('file[]'), 'multiple'); ?>
-              </div>git
+              </div>
             </div>
           </div>
         </div>

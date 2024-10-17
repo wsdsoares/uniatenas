@@ -11,6 +11,18 @@
           <?php echo $page; ?>
         </h2>
       </div>
+      <div class="col-xs-12 p-2" style="background-color: #FAEBD7	;">
+        <div class="container">
+          <p>Atenção: Nessa página é gerenciada apenas:
+          <ul>
+            <li>Texto descritivo da página</li>
+            <li>Link de Redirecionamentoe</li>
+            <li>Item - Imagem do termo de aceite</li>
+          </ul>
+          </p>
+        </div>
+
+      </div>
       <div class="body">
         <?php
         if ($msg = getMsg()) {
@@ -43,10 +55,8 @@
                 <?php
                 $optionSituation = array(
                   'informacoesPagina' => 'Descrição da página',
-                  'imagem' => 'Termo de Aceite - Imagem',
-                  'linkExterno' => 'Link Externo',
-                  'aceiteTrabalheConosco' => 'Texto Termo Aceite',
-                  'textoBotao' => 'Texto Botão'
+                  'imagem' => 'Item - Imagem do termo de aceite',
+                  'linkExterno' => 'Link Externo'
                 );
                 echo form_dropdown('tipo', $optionSituation, set_value('tipo', $paginaTrabalheConosco->tipo), array('class' => 'form-control show-tick'));
                 ?>
