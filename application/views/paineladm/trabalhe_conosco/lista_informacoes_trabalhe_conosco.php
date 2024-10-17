@@ -60,42 +60,77 @@
       <?php
       if (isset($paginaTrabalheConosco) and $paginaTrabalheConosco != '') {
       ?>
-        <div class="botoes-acoes-formularios">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-2 text-center">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Items página trabalhe conosco</h5>
-                    <p class="card-text"><small>(Descrições, imagens do termo de aceite)</small></p>
-                    <?php
-                    echo anchor("Painel_trabalhe_conosco/lista_itens_trabalhe_conosco/$campus->id/$paginaTrabalheConosco->id", 'Ver Itens', array('class' => 'btn btn-primary'));
-                    ?>
+      <?php
+        $dados = {
+          'Descrição da página',
+          'Termo de Aceite - Imagem',
+          'Link Externo',
+          'Texto Termo Aceite',
+          'Texto Botão'
+        };
+        //echo form_dropdown('tipo', $optionSituation, set_value('tipo'), array('class' => 'form-control show-tick'));
+        ?>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Item</th>
+                <th>Situação</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>Item</th>
+                <th>Situação</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <style>
+              .textos-botoes {
+                display: flex;
+                justify-content: space-between;
+              }
+              </style>
+
+              <tr>
+                <td class="center">
+                  <i class="material-icons">settings</i>
+                </td>
+                <td>
+                  <div class="textos-botoes">
+                    <div class="item-texto">
+                      <span>Descrição da Página</span>
+                    </div>
+                    <div class="item-botao">
+                      <?php
+                        echo anchor('Painel_trabalhe_conosco/lista_imagens_termo_aceite/$campus->id/$pagina->id/$item->id', 'Acessar', array('class' => "btn-opcoes-curso btn btn-primary"));
+                        ?>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="col-sm-2 text-center">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Textos</h5>
-                    <p class="card-text"><small>(Textos do conteúdo e texto do botão, texto do checkbox de aceite, link de
-                        redirecionamento)</small>
-                    </p>
+                </td>
+                <td>
+                  <div class="btn-opcoes-curso">
                     <?php
-                    echo anchor("Painel_trabalhe_conosco/lista_empresas_conveniadas/$campus->id/$paginaTrabalheConosco->id", 'Ver textos', array('class' => 'btn btn-primary'));
-                    ?>
+
+                      ?>
                   </div>
-                </div>
-              </div>
+                </td>
+                <td>
 
-            </div>
+              </tr>
 
-          </div>
+            </tbody>
+          </table>
         </div>
-    </div>
-  <?php
+      </div>
+
+      <?php
       }
-  ?>
+      ?>
+    </div>
   </div>
 </div>

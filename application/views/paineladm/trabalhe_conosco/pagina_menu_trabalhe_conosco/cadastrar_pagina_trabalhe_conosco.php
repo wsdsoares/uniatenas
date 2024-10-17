@@ -18,6 +18,7 @@
           echo $msg;
         }
         ?>
+
         <?php echo form_open("Painel_trabalhe_conosco/cadastrar_pagina_trabalhe_conosco/$campus->id") ?>
 
         <h2 class="card-inside-title">Informações do Página

@@ -11,6 +11,17 @@
           <?php echo $page; ?>
         </h2>
       </div>
+      <div class="col-xs-12 p-2" style="background-color: #FAEBD7	;">
+        <div class="container">
+          <p>Atenção: Nessa página é gerenciada apenas:
+          <ul>
+            <li>Texto descritivo da página</li>
+            <li>Imagens do termo de aceite</li>
+          </ul>
+          </p>
+        </div>
+
+      </div>
       <div class="body">
         <?php
         if ($msg = getMsg()) {
@@ -86,11 +97,11 @@
           </div>
         </div>
         <script type="text/javascript">
-          // replace: substitui o formato padrão do textarea (descricao)
-          // e aplica as configurações do CKEDitor através do arquivo config.js
-          var editor = CKEDITOR.replace('description', {
-            customConfig: 'config.js'
-          });
+        // replace: substitui o formato padrão do textarea (descricao)
+        // e aplica as configurações do CKEDitor através do arquivo config.js
+        var editor = CKEDITOR.replace('description', {
+          customConfig: 'config.js'
+        });
         </script>
         <div class="separacao-forms"></div>
 
