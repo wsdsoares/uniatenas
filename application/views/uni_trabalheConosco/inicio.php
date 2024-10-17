@@ -5,14 +5,7 @@ $uricampus = $this->uri->segment(3);
   <div class="container">
     <h2 class="text"><?php echo 'Trabalhe Conosco - ' . $campus->name . ' - ' . $campus->city; ?></h2>
     <div class="row">
-      <?php
-      // echo '<pre>';
-      // print_r($conteudoPag);
-      // echo '<-->';
-      // print_r($imagemLGPD);
-      // print_r($linkRedir);
-      // echo '</pre>';
-      ?>
+
       <style>
       .panelResume {
         background: #16A085;
