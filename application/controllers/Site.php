@@ -1620,7 +1620,7 @@ and revistas.id =$id;
 
         $queryImagemLGPD =
             "SELECT 
-                page_contents_photos.id, page_contents_photos.file, page_contents.img_destaque
+                page_contents_photos.id, page_contents_photos.file, page_contents_photos.status, page_contents.status
                 FROM page_contents_photos 
                 join page_contents on page_contents.id = page_contents_photos.id_page_contents
                 and page_contents.tipo = 'imagem'
