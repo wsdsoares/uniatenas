@@ -23,15 +23,6 @@ class Painel_home extends CI_Controller
     {
         verificaLogin();
 
-        $page = 'Lista de Campus';
-        $colunasResultadoCursos =
-            array(
-                'campus.id',
-                'campus.name',
-                'campus.city',
-                'campus.uf'
-            );
-
         $listagemDosCampus = $this->painelbd->where('*', 'campus', NULL, array('visible' => 'SIM'))->result();
         $data = array(
             'titulo' => 'UniAtenas',
@@ -366,7 +357,6 @@ class Painel_home extends CI_Controller
         }
     }
 
-
     /***************função genérica de alterar status********************/
     public function statusAlter($id = NULL, $status = null, $redirect = null, $table = null)
     {
@@ -396,47 +386,6 @@ class Painel_home extends CI_Controller
     }
 
     /***************Fim função genérica de alterar status********************/
-
-
-    /**     Modulo de finaceiro  */
-
-    public function financeiro()
-    {
-
-        $page = $this->painelbd->getWhere('pages', array('title' => 'financeiro', 'campusid' => 1))->row();
-        $listagem = $this->painelbd->getWhere('page_contents', array('pages_id' => $page->id))->result();
-        $data = array(
-            'titulo' => 'UniAtenas',
-            // 'conteudo' => 'paineladm/itens_paginas/dirigentes/lista',
-            'conteudo' => 'paineladm/financeiro/lista',
-            'dados' => array(
-                'permissionCampusArray' => $_SESSION['permissionCampus'],
-                'listagem' => $listagem,
-                'tipo' => ''
-            )
-        );
-        $this->load->view('templates/layoutPainelAdm', $data);
-    }
-
-    public function cadastrar_financeiro()
-    {
-
-        $page = $this->painelbd->getWhere('pages', array('title' => 'financeiro', 'campusid' => 1))->row();
-        $condition = array('status' => 1, 'pages_id' => $page->id);
-        $dados = $this->painelbd->getWhere('page_contents', $condition)->result();
-        $data = array(
-            'titulo' => 'Início - Slides',
-            'conteudo' => 'paineladm/financeiro/cadastrar',
-            'dados' => array(
-                'slideshow' => $dados,
-                'cursos' => '',
-                'page' => '',
-                'revistas_id' => '',
-                'tipo' => 'slideshow'
-            )
-        );
-        $this->load->view('templates/layoutPainelAdm', $data);
-    }
 
 
     /************************************

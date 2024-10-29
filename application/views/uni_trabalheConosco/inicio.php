@@ -41,74 +41,115 @@ $uricampus = $this->uri->segment(3);
 
             <div class="">
 
-              <body onselectstart='return false' ondragstart='return false' oncontextmenu='return false'>
+              <<<<<<< HEAD <body onselectstart='return false' ondragstart='return false' oncontextmenu='return false'>
                 <div class="container">
                   <div class="text-center">
-                    <?php
-                      // if (!empty($imagemLGPD)) {
-                      ?>
-                    <button type="button" class="btnEdital" data-toggle="modal" data-target="#myModal">
-                      Cadastrar Curriculum
-                    </button>
-                    <?php
-                      // }
-                      ?>
-                  </div>
-                  <?php
-                    if (!empty($imagemLGPD)) {
-                    ?>
-                  <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Termo de aceite - LGPD</h4>
-                        </div>
-                        <div class="modal-body">
-                          <?php foreach ($imagemLGPD as $imagem) { ?>
+                    =======
 
-                          <img src='<?php echo base_url($imagem->file); ?>' width="100%" height="100%" />
+                    <body onselectstart='return false' ondragstart='return false' oncontextmenu='return false'>
+                      <div class="container">
+                        <div class="text-center">
 
-                          <?php } ?>
-                          <div class="modal-footer">
-                            <input type="checkbox" id="aceito" name="aceito" value="Aceito o Termo">
-                            <label for="aceito"> Aceito termo de Uso do Portal RM Banco de Talentos
-                            </label><br /><br />
-                            <button type="button" class="btnEdital" data-dismiss="modal" id="confirmar"
-                              style="visibility: hidden;"
-                              onclick="window.location='<?php echo $linkRedir->link_redir ?>'">Confirmar</button>
-                            <button type="button" class="btnEdital" data-dismiss="modal" id="Fechar"
-                              tyle="background:red !important; border-color:red !important;">Fechar</button>
-                          </div>
+                          <button type="button" class="btnEdital" data-toggle="modal" data-target="#myModal">
+                            Cadastrar Curriculum
+                          </button>
 
                         </div>
+                        >>>>>>> 54e959cb5eb68be92e2227c3a220aba2e940f5de
+                        <?php
+                          // if (!empty($imagemLGPD)) {
+                          ?>
+                        <button type="button" class="btnEdital" data-toggle="modal" data-target="#myModal">
+                          Cadastrar Curriculum
+                        </button>
+                        <?php
+                          // }
+                          ?>
                       </div>
-                    </div>
+                      <?php
+                        if (!empty($imagemLGPD)) {
+                        ?>
+                      <<<<<<< HEAD <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">Termo de aceite - LGPD</h4>
+                            </div>
+                            <div class="modal-body">
+                              <?php foreach ($imagemLGPD as $imagem) { ?>
+
+                              <img src='<?php echo base_url($imagem->file); ?>' width="100%" height="100%" />
+
+                              <?php } ?>
+                              <div class="modal-footer">
+                                <input type="checkbox" id="aceito" name="aceito" value="Aceito o Termo">
+                                <label for="aceito"> Aceito termo de Uso do Portal RM Banco de Talentos
+                                </label><br /><br />
+                                <button type="button" class="btnEdital" data-dismiss="modal" id="confirmar"
+                                  style="visibility: hidden;"
+                                  onclick="window.location='<?php echo $linkRedir->link_redir ?>'">Confirmar</button>
+                                <button type="button" class="btnEdital" data-dismiss="modal" id="Fechar"
+                                  tyle="background:red !important; border-color:red !important;">Fechar</button>
+                                =======
+                                <div id="myModal" class="modal fade" role="dialog">
+                                  <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Termo de aceite - LGPD</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        <?php
+                                            foreach ($imagemLGPD as $imagem) {
+                                            ?>
+                                        <img src='<?php echo base_url($imagem->file); ?>' width="100%" height="100%" />
+                                        <?php
+                                            }
+                                            ?>
+                                        <div class="modal-footer">
+                                          <input type="checkbox" id="aceito" name="aceito" value="Aceito o Termo">
+                                          <label for="aceito"> Aceito termo de Uso do Portal RM Banco de Talentos
+                                          </label><br /><br />
+                                          <button type="button" class="btnEdital" data-dismiss="modal" id="confirmar"
+                                            style="visibility: hidden;"
+                                            onclick="window.location='<?php echo $linkRedir->link_redir ?>'">Confirmar</button>
+                                          <button type="button" class="btnEdital" data-dismiss="modal" id="Fechar"
+                                            tyle="background:red !important; border-color:red !important;">Fechar</button>
+                                        </div>
+
+                                      </div>
+                                      >>>>>>> 54e959cb5eb68be92e2227c3a220aba2e940f5de
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <?php } ?>
+                          </div>
+                        </div>
+                        <script>
+                        var aceite = document.getElementById("aceito");
+                        document.getElementById('aceito')
+                          .addEventListener('click', function(event) {
+                            if (aceite.checked) {
+                              document.getElementById('confirmar').style.visibility = "visible";
+                            } else {
+                              document.getElementById('confirmar').style.visibility = "hidden";
+                            }
+                          });
+                        </script>
+                    </body>
                   </div>
-                  <?php } ?>
+
+                  </p>
                 </div>
+                <?php
+              }
+                ?>
             </div>
-            <script>
-            var aceite = document.getElementById("aceito");
-            document.getElementById('aceito')
-              .addEventListener('click', function(event) {
-                if (aceite.checked) {
-                  document.getElementById('confirmar').style.visibility = "visible";
-                } else {
-                  document.getElementById('confirmar').style.visibility = "hidden";
-                }
-              });
-            </script>
-            </body>
           </div>
 
-          </p>
         </div>
-        <?php
-          }
-      ?>
-      </div>
-    </div>
-
-  </div>
-</div>v
+      </div>v

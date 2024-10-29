@@ -367,7 +367,13 @@ class Site extends CI_Controller
 
         $dataCampus = $this->bancosite->where('*', 'campus', NULL, array('shurtName' => $uricampus))->row();
 
-        $pages_content = $this->bancosite->getWhere('pages', array('title' => 'espacoeventos', 'campusid' => $dataCampus->id))->row();
+        // $pages_content2 = $this->bancosite->getWhere('pages', array('title' => 'espacoeventos', 'campusid' => $dataCampus->id))->row();
+        $pages_content = $this->bancosite->where(array('pages.id'), 'pages', NULL, array('title' => 'espacoseventos', 'campusid' => $dataCampus->id), NULL)->row();
+
+        echo '<pre>';
+        print_r($dataCampus);
+        print_r($pages_content);
+        echo '</pre>';
         $conteudoPrincipal = $this->bancosite->getWhere('page_contents', array('pages_id' => $pages_content->id))->result();
         $eventSpace = $this->bancosite->getWhere('event_space', array('campusid' => $dataCampus->id))->result();
 

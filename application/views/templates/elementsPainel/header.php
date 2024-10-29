@@ -96,7 +96,18 @@ $permissionCampusArray = '';
           <ul class="ml-menu">
             <li>
               <?php
+              echo anchor('Painel_home/lista_campus', '<span>Itens página home</span>');
+              ?>
+            </li>
+            <li>
+              <?php
               echo anchor('Painel_home/lista_campus', '<span>Banners Principal - Slide</span>');
+              ?>
+            </li>
+            <li>
+              <?php
+
+              echo anchor('Painel_espacos_eventos/lista_campus_espacos_eventos', '<span>Espaços Eventos</span>');
               ?>
             </li>
           </ul>
