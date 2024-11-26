@@ -84,6 +84,7 @@ class Graduacao extends CI_Controller
             
             where campus.id =" . $dataCampus->id . "
             and modalidade='presencial'
+            and campus_has_courses.status =1
             order by courses.name";
 
     $cursos = $this->bancosite->getQuery($sql)->result();
