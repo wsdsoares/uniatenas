@@ -82,8 +82,8 @@ class Painel_graduacao extends CI_Controller
             array(
                 'courses.id',
                 'campus_has_courses.id as campus_coursesid',
-                'courses.name',
-                'courses.status as statusCourses',
+                'courses.name as nomeCurso',
+                'campus_has_courses.status as statusCourses',
                 'courses.icone',
                 'campus.id as campusid',
                 'campus.name as campusName',
@@ -193,15 +193,18 @@ class Painel_graduacao extends CI_Controller
 
             $dados_form['campus_id'] = $campus->id;
             $dados_form['courses_id'] = $this->input->post('courses_id');
+            // $status =  $dados_form['status'] = $this->input->post('status');
             $status =  $dados_form['status'] = $this->input->post('status');
-            $dados_form['user_id'] = $this->session->userdata('codusuario');
             $dados_form['id'] =  $vinculo_campus_has_courses->id;
 
-            if ($idCourseCampus = $this->painelbd->salvar('campus_has_courses', $dados_form, 'exibirIdInsert')) {
+            $dados_form['user_id'] = $this->session->userdata('codusuario');
+            $dados_form['updated_at'] = date('Y-m-d H:i:s');
 
-                $dados_form_course_page['campus_has_courses_id'] = $idCourseCampus;
-                $dados_form_course_page['userid'] = $this->session->userdata('codusuario');
-                $dados_form_course_page['status'] = $status;
+            // if ($idCourseCampus = $this->painelbd->salvar('campus_has_courses', $dados_form, 'exibirIdInsert')) {
+            if ($this->painelbd->salvar('campus_has_courses', $dados_form, 'exibirIdInsert')) {
+                // $dados_form_course_page['campus_has_courses_id'] = $idCourseCampus;
+                // $dados_form_course_page['userid'] = $this->session->userdata('codusuario');
+                // $dados_form_course_page['status'] = $status;
 
                 setMsg('<p>Informações do curso atualizada com sucesso.</p>', 'success');
                 redirect(base_url("Painel_graduacao/lista_cursos/$campus->id/presencial"));

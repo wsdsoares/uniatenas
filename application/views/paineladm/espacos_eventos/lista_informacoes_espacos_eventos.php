@@ -56,7 +56,7 @@
           <?php
           if (isset($paginaEspacosEventos) and $paginaEspacosEventos != '') {
           ?>
-          <!-- <div class="col-xs-6">
+            <!-- <div class="col-xs-6">
               <?php echo anchor("Painel_espacos_eventos/cadastrar_informacoes_espacos_eventos/$campus->id", '<i class="material-icons">add_box</i> CADASTRAR item da página Espaços Eventos', array('class' => 'btn btn-primary m-t-15 waves-effect')); ?>
             </div> -->
           <?php
@@ -75,37 +75,36 @@
       if (isset($conteudosPagina) and $conteudosPagina != '') {
       ?>
 
-      <div class="body">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-3 text-center">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Informações Página Espaços Eventos</h5>
-                  <p class="card-text"><small>(Apresentação, vídeo, descrição)</small></p>
-                  <?php
+        <div class="body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-3 text-center">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Informações Página Espaços Eventos</h5>
+                    <p class="card-text"><small>(Apresentação, vídeo, descrição)</small></p>
+                    <?php
                     echo anchor("Painel_espacos_eventos/cadastrar_item_pagina_eventos/$campus->id/$pagina->id", 'Ver Item', array('class' => 'btn btn-primary'));
                     ?>
 
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-3 text-center">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Locais - Espaços para Eventos</h5>
-                  <p class="card-text"><small>(Cadastro de locais, fotos, descrição e características)</small></p>
-
-                  <?php
-                    echo anchor("Painel_secretaria/calendarios_semestre/$campus->id/$pagina->id", 'Ver Itens-Locais', array('class' => 'btn btn-primary'));
+              <div class="col-sm-3 text-center">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Locais - Espaços para Eventos</h5>
+                    <p class="card-text"><small>(Cadastro de locais, fotos, descrição e características)</small></p>
+                    <?php
+                    echo anchor("Painel_espacos_eventos/lista_locais_espacos_eventos/$campus->id/$pagina->id", 'Ver Itens-Locais', array('class' => 'btn btn-primary'));
                     ?>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- <div class="body">
+        <!-- <div class="body">
       //     <div class="table-responsive">
       //       <table class="table table-bordered table-striped table-hover dataTable js-exportable">
       //         <thead>
@@ -228,13 +227,13 @@
 <?php $this->load->view('templates/elementsPainel/footers/footerDelete'); ?>
 
 <script type="text/javascript">
-$('#modalDelete').on('show.bs.modal', function(e) {
-  var nomeItem = $(e.relatedTarget).attr('data-nome');
-  var id = $(e.relatedTarget).attr('data-id');
+  $('#modalDelete').on('show.bs.modal', function(e) {
+    var nomeItem = $(e.relatedTarget).attr('data-nome');
+    var id = $(e.relatedTarget).attr('data-id');
 
-  $(this).find('.nomeItem').text(nomeItem);
-  $(this).find('#btnCerteza').attr('href',
-    '<?php echo base_url("Painel_espacos_eventos/deletar_item_espacos_eventos/$campus->id/"); ?>' +
-    id);
-});
+    $(this).find('.nomeItem').text(nomeItem);
+    $(this).find('#btnCerteza').attr('href',
+      '<?php echo base_url("Painel_espacos_eventos/deletar_item_espacos_eventos/$campus->id/"); ?>' +
+      id);
+  });
 </script>

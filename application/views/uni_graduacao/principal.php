@@ -165,17 +165,17 @@ $uriLocal = $this->uri->segment(3);
         <div id="filters" class="button-group ">
           <button class="button is-checked" data-filter="*">Todos os cursos</button>
           <?php if ($uriLocal == 'paracatu') {
-            ?>
+          ?>
             <button class="button" data-filter=".cat-1">Exatas</button>
-            <?php
+          <?php
           }
           ?>
           <button class="button" data-filter=".cat-2">Saúde</button>
           <?php if ($uriLocal == 'paracatu') {
-            ?>
+          ?>
             <button class="button" data-filter=".cat-3">Humanas / Social</button>
             <button class="button" data-filter=".cat-4">EaD</button>
-            <?php
+          <?php
           }
           ?>
         </div>
@@ -197,7 +197,7 @@ $uriLocal = $this->uri->segment(3);
 
             $idEfeito = mb_substr($row['name'], 0, 3);
 
-            ?>
+          ?>
             <div class="item <?php echo $cat; ?>" data-category="transition">
               <ul class="grid cs-style-3">
                 <div class="col-sm-6">
@@ -228,13 +228,20 @@ $uriLocal = $this->uri->segment(3);
                     <?php
                     if (isset($row['link_vestibular']) and $row['link_vestibular'] != '') {
 
-                      ?>
+                    ?>
                       <div class="col-sm-12 col-md-12 text-center">
                         <a href="<?php echo $row['link_vestibular'] ?>" class="btn btns btn-lg">
-                          VESTIBULAR ONLINE
+                          <?php
+
+                          if ($row['name'] != 'Medicina') {
+                            echo 'VESTIBULAR ONLINE';
+                          } else {
+                            echo 'VESTIBULAR TRADICIONAL';
+                          }
+                          ?>
                         </a>
                       </div>
-                      <?php
+                    <?php
                     }
                     ?>
 
@@ -242,12 +249,12 @@ $uriLocal = $this->uri->segment(3);
                 </div>
               </ul>
             </div>
-            <?php
+          <?php
           }
           ?>
         </div>
         <?php if ($uriLocal == 'paracatu') {
-          ?>
+        ?>
           <div class="item cat-uniasselvi" data-category="transition">
             <div class="item-inner">
               <h3 class="text-center">Cursos a distância</h3>
@@ -276,7 +283,7 @@ $uriLocal = $this->uri->segment(3);
               </center>
             </div>
           </div>
-          <?php
+        <?php
         }
         ?>
       </div>

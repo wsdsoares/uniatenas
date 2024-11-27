@@ -222,6 +222,7 @@ class Painel_espacos_eventos extends CI_Controller
 
     $coluncasLocaisEspacos = array(
       'event_space.id',
+      'event_space.id_pages',
       'event_space.name',
       'event_space.photocape',
       'event_space.status',
@@ -232,38 +233,17 @@ class Painel_espacos_eventos extends CI_Controller
       'event_space.user_id'
     );
     $joinEspacoEventos = array(
-      'page_contents' => 'page_contents.id = event_space.id_page_contents',
+      'page_contents' => 'page_contents.id = event_space.id_pages',
       'campus' => 'campus.id= event_space.campusid'
     );
 
-    $listaLocaisEspcacoEventos = $this->painelbd->where($coluncasLocaisEspacos, 'event_space', $joinEspacoEventos, array());
-
-
-
-    $listaLocaisEspcacoEventos =  $this->painelbd->getQuery(
-      "SELECT 
-          event_space.id,
-          event_space.name,
-          event_space.photocape,
-          event_space.status,
-          event_space.description, 
-          event_space.capacity, 
-          event_space.created_at, 
-          event_space.updated_at, 
-          event_space.user_id
-        FROM 
-          event_space
-        INNER JOIN pages ON pages.id = event_space.id_page_contents
-        INNER JOIN campus ON campus.id= event_space.campusid
-        WHERE 
-            pages.id = '$pagina->id' "
-    )->result();
+    $listaLocaisEspcacoEventos = $this->painelbd->where($coluncasLocaisEspacos, 'event_space', $joinEspacoEventos, array('event_space.id_pages' => $pagina->id))->result();
 
     $data = array(
-      'titulo' => 'UniAtenas',
-      'conteudo' => 'paineladm/espacos_eventos/lista_informacoes_espacos_eventos',
+      'titulo' => 'UniAtenas - Locais Eventos',
+      'conteudo' => 'paineladm/espacos_eventos/locais/lista_locais_espacos_eventos',
       'dados' => array(
-        'conteudosPagina' => $listaLocaisEspcacoEventos,
+        'listaLocaisEspcacoEventos' => $listaLocaisEspcacoEventos,
         'page' => "Cadastro de informações Espaços Eventos - <strong><i>Campus - $campus->name ($campus->city) </i></strong>",
         'campus' => $campus,
         'pagina' => $pagina = isset($pagina) ? $pagina : '',
