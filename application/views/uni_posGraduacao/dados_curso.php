@@ -181,7 +181,8 @@ $uricampus = $this->uri->segment(3);
         ?>
 
         <div class="col-sm-12 col-md-12 text-center">
-          <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
+          <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank"
+            class="btn btns btn-lg">
             INSCREVA-SE AGORA!
           </a>
         </div>
@@ -234,8 +235,9 @@ $uricampus = $this->uri->segment(3);
                 if (isset($dadosCurso['informacoesCurso']->link_vestibular) and $dadosCurso['informacoesCurso']->link_vestibular != '') {
                 ?>
                   <div class="col-sm-12 col-md-12 text-center">
-                    <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank" class="btn btns btn-lg">
-                      VESTIBULAR ONLINE
+                    <a href="<?php echo $dadosCurso['informacoesCurso']->link_vestibular ?>" target="_blank"
+                      class="btn btns btn-lg">
+                      INSCREVA-SE AGORA!
                     </a>
                   </div>
                 <?php
